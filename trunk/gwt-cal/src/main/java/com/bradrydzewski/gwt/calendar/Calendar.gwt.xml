@@ -1,0 +1,24 @@
+
+<module>
+
+ <!-- Inherit the core Web Toolkit stuff -->
+    <inherits name="com.google.gwt.user.User" />
+    <inherits name="com.google.gwt.user.UserAgent"/>
+ 
+ <!-- Add some Style -->
+    <stylesheet src="gwt-calendar.css"/>
+    <stylesheet src="Calendar.css"/>
+    <stylesheet src="DayView.css"/>
+    
+ <!-- Deferred Binding for better browser compatibility -->
+    <replace-with class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingImpl">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingImpl"/>
+    </replace-with>
+    <replace-with class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingIE6Impl">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingImpl"/>
+        <any>
+            <when-property-is name="user.agent" value="ie6"/>
+            <when-property-is name="user.agent" value="ie7"/>
+        </any>
+    </replace-with>
+</module>
