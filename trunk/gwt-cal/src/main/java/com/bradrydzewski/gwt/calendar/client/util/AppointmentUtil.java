@@ -41,7 +41,10 @@ public class AppointmentUtil {
 
             if (tmpAppt.getEnd().before(endDate)) {
 
-                if (tmpAppt.getStart().after(startDate)) {
+                //TODO: probably can shorten this by using the compareTo method
+                
+                
+                if (tmpAppt.getStart().after(startDate) || tmpAppt.getStart().equals(startDate)) {
                     group.add(tmpAppt);
                 } else {
                     // System.out.println(" exiting filter at index " +i+ " ,"
