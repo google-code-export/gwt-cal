@@ -38,9 +38,22 @@
 	font-size: 12px;
 	display: block;
 	position:relative;
+        border-top:1px solid #FFF;
 }
+/*
 .gwt-calendar .hour-label .gwt-Label {
 	position:absolute;top:50%;left:0px;margin-top:-0.5em;line-height:1; text-align:center;width:100%;
+}*/
+.gwt-calendar .hour-label .hour-layout {
+	position:absolute;top:50%;left:0px;margin-top:-0.5em;line-height:1; text-align:center;width:100%;
+}
+
+.gwt-calendar .hour-label .hour-text {
+	display:inline;
+}
+
+.gwt-calendar .hour-label .ampm-text {
+	display:inline;
 }
 
 .gwt-calendar .gwt-appointment-panel {
@@ -277,4 +290,4 @@
 	background-color: #8DAFEA;
 }
 /* An html element can have 1 or many styles, separated by spaces. */
-	/* example: class="gwt-appointment gwt-appointment-green" has properties of both styles, the second takes precedence */
+/* example: class="gwt-appointment gwt-appointment-green" has properties of both styles, the second takes precedence */
