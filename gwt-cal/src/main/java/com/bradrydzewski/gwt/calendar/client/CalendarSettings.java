@@ -2,71 +2,71 @@ package com.bradrydzewski.gwt.calendar.client;
 
 public class CalendarSettings {
 
-	
-	public static CalendarSettings DEFAULT_SETTINGS = new CalendarSettings();
-	
-	private int pixelsPerInterval = 30; //IE6 cannot be less than 20!!!!! 
-	private int intervalsPerHour = 2; 
-	private int workingHourStart = 8;
-	private int workingHourEnd = 17;
-	private int scrollToHour = 8; //default hour that gets scrolled to
-	private boolean enableDragDrop = true;
-	
-	public CalendarSettings() {
-		
-	}
-		
+    public static CalendarSettings DEFAULT_SETTINGS = new CalendarSettings();
+    private int pixelsPerInterval = 30; //IE6 cannot be less than 20!!!!! 
+    private int intervalsPerHour = 2;
+    private int workingHourStart = 8;
+    private int workingHourEnd = 17;
+    private int scrollToHour = 8; //default hour that gets scrolled to
+    private boolean enableDragDrop = true;
+    private boolean offsetHourLabels = true;
 
-	public int getPixelsPerInterval() {
-		return pixelsPerInterval;
-	}
+    public CalendarSettings() {
+    }
 
-	public void setPixelsPerInterval(int px) {
-		pixelsPerInterval = px;
-	}
-	
-	public int getIntervalsPerHour() {
-		return intervalsPerHour;
-	}
+    public int getPixelsPerInterval() {
+        return pixelsPerInterval;
+    }
 
-	public void setIntervalsPerHour(int intervals) {
-		intervalsPerHour = intervals;
-	}
+    public void setPixelsPerInterval(int px) {
+        pixelsPerInterval = px;
+    }
 
+    public int getIntervalsPerHour() {
+        return intervalsPerHour;
+    }
 
+    public void setIntervalsPerHour(int intervals) {
+        intervalsPerHour = intervals;
+    }
 
+    public int getWorkingHourStart() {
+        return workingHourStart;
+    }
 
+    public void setWorkingHourStart(int start) {
+        workingHourStart = start;
+    }
 
+    public int getWorkingHourEnd() {
+        return workingHourEnd;
+    }
 
-	public int getWorkingHourStart() {
-		return workingHourStart;
-	}
+    public void setWorkingHourEnd(int end) {
+        workingHourEnd = end;
+    }
 
-	public void setWorkingHourStart(int start) {
-		workingHourStart = start;
-	}
+    public int getScrollToHour() {
+        return scrollToHour;
+    }
 
-	public int getWorkingHourEnd() {
-		return workingHourEnd;
-	}
+    public void setScrollToHour(int hour) {
+        scrollToHour = hour;
+    }
 
-	public void setWorkingHourEnd(int end) {
-		workingHourEnd = end;
-	}
+    public boolean isEnableDragDrop() {
+        return enableDragDrop;
+    }
 
-	public int getScrollToHour() {
-		return scrollToHour;
-	}
+    public void setEnableDragDrop(boolean enableDragDrop) {
+        this.enableDragDrop = enableDragDrop;
+    }
 
-	public void setScrollToHour(int hour) {
-		scrollToHour = hour;
-	}
+    public boolean isOffsetHourLabels() {
+        return offsetHourLabels;
+    }
 
-	public boolean isEnableDragDrop() {
-		return enableDragDrop;
-	}
-
-	public void setEnableDragDrop(boolean enableDragDrop) {
-		this.enableDragDrop = enableDragDrop;
-	}
+    public void setOffsetHourLabels(boolean offsetHourLabels) {
+        this.offsetHourLabels = offsetHourLabels;
+    }
 }
