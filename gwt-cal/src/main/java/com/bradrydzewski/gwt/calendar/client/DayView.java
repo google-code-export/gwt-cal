@@ -14,7 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class DayView extends CalendarView {
 
     // <editor-fold desc="Static Fields" defaultState="collapse">
-    private static final String GWT_CALENDAR_STYLE = "gwt-calendar";
+    private static final String GWT_CALENDAR_STYLE = "gwt-cal";
     // </editor-fold>
     
     // <editor-fold desc="Private Fields" defaultState="collapse">
@@ -47,6 +47,17 @@ public class DayView extends CalendarView {
     // </editor-fold>
     
     // <editor-fold desc="Public Methods" defaultState="collapse">
+    
+    public void testAddToGrid(Appointment appt) {
+        this.dayViewBody.getGrid().grid.add(appt);
+    }
+    public void testAdd(Appointment appt) {
+        rootPanel.add(appt);
+    }
+    public void testAddToScrollBody(Appointment appt) {
+        dayViewBody.add(appt);
+    }
+    
     @Override
     public void doLayout() {
 
@@ -69,7 +80,7 @@ public class DayView extends CalendarView {
 
         // remove all appointments from their parent
         for (AppointmentInterface appt : appointments) {
-            ((Widget) appt).removeFromParent();
+            //((Widget) appt).removeFromParent();
         }
 
         Date tmpDate = (Date) getDate().clone();

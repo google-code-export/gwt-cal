@@ -5,10 +5,10 @@
     <inherits name="com.google.gwt.user.User" />
     <inherits name="com.google.gwt.user.UserAgent"/>
  
- <!-- Add some Style -->
+ <!-- Add some Style 
     <stylesheet src="gwt-calendar.css"/>
     <stylesheet src="Calendar.css"/>
-    <stylesheet src="DayView.css"/>
+    <stylesheet src="DayView.css"/>-->
     
  <!-- Deferred Binding for better browser compatibility -->
     <replace-with class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingImpl">
