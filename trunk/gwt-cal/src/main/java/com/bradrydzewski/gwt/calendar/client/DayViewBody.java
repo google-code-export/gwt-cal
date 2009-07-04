@@ -8,6 +8,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment.VerticalAlignmentConstant;
+import com.google.gwt.user.client.ui.Widget;
 
 public class DayViewBody extends Composite {
 	private FlexTable layout = new FlexTable();
@@ -16,7 +17,9 @@ public class DayViewBody extends Composite {
 	private DayViewGrid grid = null;
 	private HasSettings settings = null;
 
-	
+	public void add(Widget w) {
+            scrollPanel.add(w);
+        }
 	
 	public ScrollPanel getScrollPanel() {
 		return scrollPanel;
@@ -63,9 +66,17 @@ public class DayViewBody extends Composite {
 		// grid.build(8, 17, 1);
 		grid.setStyleName("gwt-appointment-panel");
 		// timeline.prepare();
+                
+                
+
+                //TODO: use CSS to set table layout
+                layout.getCellFormatter().setWidth(0, 0, "50px");
+		DOM.setStyleAttribute(layout.getElement(), "tableLayout", "fixed");                
+                
 		layout.setWidget(0, 0, timeline);
 		layout.setWidget(0, 1, grid);
 		scrollPanel.add(layout);
+                
 	}
 
 	public void setDays(Date date, int days) {

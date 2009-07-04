@@ -2,9 +2,10 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * The DayGrid draws the grid that displays days / time intervals in the
@@ -15,12 +16,32 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class DayViewGrid /*Impl*/ extends Composite {
 	
+    
+        class Div extends ComplexPanel {
+            	
+	  public Div() {
+            setElement(DOM.createDiv());
+	  }
+          @Override
+          public boolean remove(Widget w) {
+            boolean removed = super.remove(w);
+            return removed;
+          }
+            @Override
+              public void add(Widget w) {
+                super.add(w, getElement());
+              }
+         }
+    
+    
+    
 	private static final int CELL_HEIGHT = 50;
 	private static final String INTERVAL_MAJOR_STYLE = "major-time-interval";
 	private static final String INTERVAL_MINOR_STYLE = "minor-time-interval";
 	private static final String WORKING_HOUR_STYLE = "working-hours";
 	// private FlexTable grid = new FlexTable();
-	protected AbsolutePanel grid = new AbsolutePanel();
+	protected ComplexPanel grid = new Div();
+        
 	private HasSettings settings = null;
 	//private FormattingImpl impl = GWT.create(FormattingImpl.class);
 	//protected int offset = -1;
@@ -48,6 +69,7 @@ public class DayViewGrid /*Impl*/ extends Composite {
 	public void build(int workingHourStart, int workingHourStop, int days) {
 
 		grid.clear();
+                
 		
 		int intervalsPerHour = settings.getSettings().getIntervalsPerHour();//2; //30 minute intervals
 		float intervalSize = settings.getSettings().getPixelsPerInterval();
@@ -60,7 +82,7 @@ public class DayViewGrid /*Impl*/ extends Composite {
 
 		// for(int days=0;days<3;days++) {
 
-		for (int i = 0; i <= HOURS_PER_DAY; i++) {
+		for (int i = 0; i < HOURS_PER_DAY; i++) {
 			
 			boolean isWorkingHours = (i >= workingHourStart && i <= workingHourStop);
 			

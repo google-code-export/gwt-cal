@@ -225,13 +225,12 @@
 	filter: alpha(opacity = 100);
 	opacity: 1;
 	-webkit-box-shadow: 3px 3px 5px #BBB;
+        -moz-box-shadow: 3px 3px 5px #BBB;
 }
 
 .gwt-appointment-selected .footer {
-	cursor: s-resize;
-	filter: alpha(opacity = 100);
-	opacity: 1;
-}
+	cursor: s-resize;        
+}/*filter: alpha(opacity = 100); opacity: 1; */
 
 .gwt-appointment-selected .header {
 	cursor: move;
