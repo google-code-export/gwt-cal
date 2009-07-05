@@ -1,0 +1,16 @@
+#summary Getting started with the gwt-cal component library.
+
+= Setup =
+
+ # Add the gwt-cal jar file to your project's build path. Right-click on the project node in the Package Explorer and select 'Build Path > Add External Archives...'. Specify the downloaded `gwt-cal-<version>.jar`
+ # Modify `<Your Application>.gwt.xml` to inherit the gwt-cal module and theme:
+
+{{{
+  <inherits name='com.bradrydzewski.gwt.calendar.Calendar' />
+  <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
+}}}
+
+
+= Code Snippets =
+
+_coming soon_
