@@ -6,6 +6,8 @@
   * Add drag / drop to day view
   * Drag / drop prompts user to confirm desired change
   * Replace HasValue with ItemSelected ... more appropriate
+  * Select appointment using arrow keys
+  * Appointment double-click to fire event also
 
 = Release Notes =
 
