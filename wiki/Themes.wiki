@@ -15,6 +15,10 @@ The gwt-library includes a set of themes to style the calendar widget. The desir
   <inherits name='com.bradrydzewski.gwt.calendar.theme.ical.iCal' />
 }}}
 
+*Preview examples of each theme:*
+ * [http://google.latest.gwt-web-calendar.appspot.com/ Google theme]
+ * [http://outlook.latest.gwt-web-calendar.appspot.com/ Outlook theme]
+ * [http://gwt-web-calendar.appspot.com/ iCal(ish) theme]
 
 === iCal Hour Labels ===
 
