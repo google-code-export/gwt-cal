@@ -40,7 +40,7 @@ iCal hour labels, however, are aligned on the same x-axis as major hour interval
  2am -----
 </pre>
 
-By default, all labels are centered between major hour intervals. To change this default behavior we need to create a `CalendarSettings` object and set the hour labels to offset.  
+By default, all labels are centered between major hour intervals. To change this default behavior we need to create a `CalendarSettings` object and set the hour labels offset to true.  
 {{{
 CalendarSettings settings = new CalendarSettings();
 settings.setOffsetHourLabels(true);
