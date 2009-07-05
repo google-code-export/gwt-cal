@@ -2,7 +2,7 @@
 
 = Summary =
 
-the gwt-cal widget supports all major browsers from IE6 to Safari4:
+the gwt-cal widget supports all major browsers from IE6 to Safari4 -
 
 [http://www.w3schools.com/images/compatible_firefox.gif]
 [http://www.w3schools.com/images/compatible_safari.gif]
@@ -26,4 +26,3 @@ Note: older browsers (such as IE6, IE7 and Opera) do not provide full support fo
 || Chrome            || 2.x       || Full    || || 
 || Safari            || 3.x       || Full    || || 
 || Safari            || 4.x       || Full    || || 
-
