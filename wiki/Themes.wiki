@@ -31,7 +31,7 @@ To achieve a more authentic iCal style we also need to change how the Hour label
  ---------
 </pre>
 
-iCal hour labels are aligned on the same x-axis as major hour intervals as demonstrated below:
+iCal hour labels, however, are aligned on the same x-axis as major hour intervals:
 <pre>
  1am -----
      |
@@ -46,4 +46,3 @@ CalendarSettings settings = new CalendarSettings();
 settings.setOffsetHourLabels(true);
 }}}
 The `CalendarSettings` can be provided to the `DayView` either through the constructor or a setter. The hour labels will then align to the major hour interval's x-axis.
-
