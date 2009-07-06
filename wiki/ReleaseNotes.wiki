@@ -1,7 +1,5 @@
 #summary gwt-cal project release notes
 
-= Release Notes =
-
 === Version 0.8 ===
   * Day / multi-Day View
   * Configurable time intervals (15min,30min,1hr)
