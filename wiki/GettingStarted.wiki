@@ -14,8 +14,7 @@
 
 = Simple Example =
 
-Adding the calendar widget to a `Panel` just like any standard gwt widget:
-
+Adding the calendar widget to a `Panel` just like any standard gwt widget. 
 {{{
 DayView dayView = new DayView();
 dayView.setDate(new Date()); //calendar date, not required
@@ -66,3 +65,9 @@ for(int i=0;i<1000;i++) {
 
 dayView.resumeLayout();
 }}}
+
+= Layout =
+
+As discussed, layout is calculated when an appointment is added, or when `resumeLayout` is invoked. Layout is also calculated when `setDays` and `setDate` are added.
+
+There is no need to recalculate layout when the width or height of the calendar changes. The items use %'s to position the appointments on the screen. That being said, you should never set the calendar's height to a % - only use a fixed pixel value. Feel free to set calendar width to a % or fixed pixel value.
