@@ -11,6 +11,57 @@
 }}}
 
 
-= Code Snippets =
+= Simple Example =
 
-_coming soon_
+Adding the calendar widget to a `Panel` just like any standard gwt widget:
+
+{{{
+DayView dayView = new DayView();
+dayView.setDate(new Date()); //calendar date, not required
+dayView.setDays(3); //number of days displayed at a time, not required
+add(dayView);
+}}}
+
+You can then hook up an event listener to capture when an appointment is selected:
+{{{
+dayView.addValueChangeHandler(new ValueChangeHandler<Appointment>(){
+	@Override
+	public void onValueChange(ValueChangeEvent<Appointment> event) {
+		// TODO Auto-generated method stub			
+	}		
+});
+}}}
+
+= Adding Appointment =
+
+The following code snippet demonstrates how to create and add an appointment to the calendar widget. Every time an appointment is added to the calendar widget the layout is re-calculated and performed.
+
+{{{
+Appointment appt = new Appointment();
+appt.setStart(...);
+appt.setEnd(...);
+appt.setTitle(...);
+appt.addStyleName("gwt-appointment-blue");
+dayView.add(appt);
+}}}
+
+== appointment style ==
+
+When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Available color styles are: `gwt-appointment-blue`, `gwt-appointment-green`
+
+== appointments in batch ==
+
+As stated earlier, every time an appointment is added to the calendar widget the layout is re-calculated. If you plan to add many appointments at once you should suspend the layout and then resume it once you are complete:
+
+{{{
+dayView.suspendLayout();
+
+//load 1,000 appointments into calendar
+for(int i=0;i<1000;i++) {
+	Appointment appt = new Appointment();
+	...
+	dayView.add(appt);
+}
+
+dayView.resumeLayout();
+}}}
