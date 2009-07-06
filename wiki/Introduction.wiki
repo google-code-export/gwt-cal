@@ -1,13 +1,16 @@
 #summary Introduction to gwt-cal
 
-= Introduction =
+= About =
 
 Add your content here.
 
 
-= Details =
+= Roadmap =
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * Create Month view and List view
+  * Add drag / drop to day view
+  * Drag / drop prompts user to confirm desired change
+  * Replace HasValue with ItemSelected ... more appropriate
+  * Select appointment using arrow keys
+  * Appointment double-click to fire event also
+  * Handle Multi-day appointments
