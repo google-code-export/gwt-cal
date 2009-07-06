@@ -16,7 +16,7 @@ The following items will be the primary focus of future releases:
   * Create Month view and List view
   * Add drag / drop to day view
   * Drag / drop prompts user to confirm desired change
-  * Replace HasValue with ItemSelected ... more appropriate
+  * Replace `HasValue` with `ItemSelected` ... more appropriate
   * Select appointment using arrow keys
   * Appointment double-click to fire event also
   * Handle Multi-day appointments
