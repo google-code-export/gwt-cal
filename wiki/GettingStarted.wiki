@@ -19,6 +19,8 @@ Adding the calendar widget to a `Panel` just like any standard gwt widget.
 DayView dayView = new DayView();
 dayView.setDate(new Date()); //calendar date, not required
 dayView.setDays(3); //number of days displayed at a time, not required
+dayView.setWidth("500px");
+dayView.setHeight("400px");
 add(dayView);
 }}}
 
