@@ -3,7 +3,7 @@
 === Version 0.8 ===
   * Day / multi-Day View
   * Configurable time intervals (15min,30min,1hr)
-  * HasValue event fires when item selected
+  * `HasValue` event fires when item selected
   * Add iCal, Google and Outlook themes
   * Fixed ie6 and ie7 opacity issues
   * Added drop shadow for ie6 and ie7
