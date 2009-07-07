@@ -80,6 +80,10 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         this.days = days;
         doLayout();
     }
+    
+    protected ArrayList<Appointment> getAppointments() {
+        return appointments;
+    }
 
     public int getAppointmentCount() {
         return appointments.size();

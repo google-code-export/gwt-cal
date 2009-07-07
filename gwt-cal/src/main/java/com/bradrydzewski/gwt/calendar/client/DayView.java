@@ -113,14 +113,14 @@ public class DayView extends CalendarView {
     public void setHeight(String height) {
 
         super.setHeight(height);
-        this.dayViewBody.setHeight(this.getOffsetHeight() - this.dayViewHeader.getOffsetHeight() + "px");
+        this.dayViewBody.setHeight(this.getOffsetHeight() - 2 - this.dayViewHeader.getOffsetHeight() + "px");
     }
 
     @Override
     public void setSize(String width, String height) {
 
         super.setSize(width, height);
-        this.dayViewBody.setHeight(this.getOffsetHeight() - this.dayViewHeader.getOffsetHeight() + "px");
+        this.dayViewBody.setHeight(this.getOffsetHeight() - 2 - this.dayViewHeader.getOffsetHeight() + "px");
     }
 
     @Override
