@@ -12,7 +12,7 @@ Features include:
 
 = Feedback = 
 
-Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. [http://groups.google.com/group/gwt-cal Click here] to post your comments.
+Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. [http://groups.google.com/group/gwt-cal/web/community-feedback Click here] to post your comments.
 
 = Roadmap =
 
