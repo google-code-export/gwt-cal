@@ -10,6 +10,10 @@ Features include:
  * ability to customize display duration (15min, 30min, 1hour, etc)
  * multiple themes provided out-of-the-box. easy to customize
 
+= Feedback = 
+
+Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. [Click here] to post your comments.
+
 = Roadmap =
 
 The following items will be the primary focus of future releases:
