@@ -1,0 +1,4 @@
+
+= Feedback =
+
+Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. Enter your comments below
