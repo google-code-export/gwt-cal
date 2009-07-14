@@ -1,4 +1,4 @@
-#summary describes gwt-cal browser compatibility
+#summary matrix to describe gwt-cal browser compatibility
 
 = Summary =
 
