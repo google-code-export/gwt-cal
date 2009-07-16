@@ -1,5 +1,6 @@
 package com.bradrydzewski.gwt.calendar.client;
 
+import com.google.gwt.event.dom.client.HasKeyPressHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -32,7 +33,7 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         
         initWidget(rootPanel);
         this.settings = settings;
-        sinkEvents(Event.ONMOUSEDOWN);
+        sinkEvents(Event.ONMOUSEDOWN | Event.KEYEVENTS); 
     }
     
     public abstract void doLayout();
@@ -97,6 +98,27 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         return selectedAppointment;
     }
 
+    public boolean selectNextAppointment() {
+        
+        if(getSelectedAppointment()==null) return false;
+        int index = appointments.indexOf(getSelectedAppointment());
+        if(index>=appointments.size()) return false;
+        Appointment appt = appointments.get(index+1);
+        if(appt.isVisible()==false) return false;
+        this.setSelectedAppointment(appt);
+        return true;
+    }
+    
+    public boolean selectPreviousAppointment() {
+        if(getSelectedAppointment()==null) return false;
+        int index = appointments.indexOf(getSelectedAppointment());
+        if(index<=0) return false;
+        Appointment appt = appointments.get(index-1);
+        if(appt.isVisible()==false) return false;
+        this.setSelectedAppointment(appt);
+        return true;
+    }
+
     public void setSelectedAppointment(Appointment appointment) {
 
         // add appointment if doesn't exist
@@ -131,6 +153,7 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
 
     public void removeAppointment(Appointment appointment) {
         appointments.remove(appointment);
+        selectedAppointment = null;
         sortPending = true;
         doLayout();
     }
