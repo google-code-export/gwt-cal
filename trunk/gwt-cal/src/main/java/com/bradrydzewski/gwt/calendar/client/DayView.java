@@ -16,15 +16,12 @@ public class DayView extends CalendarView {
     // <editor-fold desc="Static Fields" defaultState="collapse">
     private static final String GWT_CALENDAR_STYLE = "gwt-cal";
     // </editor-fold>
-    
     // <editor-fold desc="Private Fields" defaultState="collapse">
     private DayViewHeader dayViewHeader = null;
     private DayViewBody dayViewBody = null;
     private DayViewLayoutStrategy layoutStrategy = null;
     // </editor-fold>
-    
     // <editor-fold desc="Constructors" defaultState="collapse">
-    
     public DayView() {
         this(CalendarSettings.DEFAULT_SETTINGS);
     }
@@ -45,19 +42,7 @@ public class DayView extends CalendarView {
     }
 
     // </editor-fold>
-    
     // <editor-fold desc="Public Methods" defaultState="collapse">
-    
-    public void testAddToGrid(Appointment appt) {
-        this.dayViewBody.getGrid().grid.add(appt);
-    }
-    public void testAdd(Appointment appt) {
-        rootPanel.add(appt);
-    }
-    public void testAddToScrollBody(Appointment appt) {
-        dayViewBody.add(appt);
-    }
-    
     @Override
     public void doLayout() {
 
@@ -106,21 +91,22 @@ public class DayView extends CalendarView {
     }
 
     public void scrollToHour(int hour) {
-        dayViewBody.getScrollPanel().setScrollPosition(hour * getSettings().getIntervalsPerHour() * getSettings().getPixelsPerInterval() * hour);
+        dayViewBody.getScrollPanel().setScrollPosition(hour *
+                getSettings().getIntervalsPerHour() * getSettings().getPixelsPerInterval());
     }
 
     @Override
     public void setHeight(String height) {
 
         super.setHeight(height);
-        this.dayViewBody.setHeight(this.getOffsetHeight() - 2 - this.dayViewHeader.getOffsetHeight() + "px");
+        dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() + "px");
     }
 
     @Override
     public void setSize(String width, String height) {
 
         super.setSize(width, height);
-        this.dayViewBody.setHeight(this.getOffsetHeight() - 2 - this.dayViewHeader.getOffsetHeight() + "px");
+        dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() + "px");
     }
 
     @Override
