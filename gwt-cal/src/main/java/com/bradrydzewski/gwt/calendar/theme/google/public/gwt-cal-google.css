@@ -229,7 +229,7 @@
 }
 
 .gwt-cal .gwt-appointment .timeline-fill {
-	background: blue url(gwt_cal_demo/line-pattern-template-inverse.gif);
+	/*background: blue url(gwt_cal_demo/line-pattern-template-inverse.gif);*/
 	position: absolute;
 	width: 100%;
 	height: 100%;
