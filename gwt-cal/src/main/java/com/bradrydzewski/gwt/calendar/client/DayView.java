@@ -2,6 +2,12 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.gwt.event.dom.client.KeyPressHandler;
+import com.google.gwt.event.dom.client.KeyUpEvent;
+import com.google.gwt.event.dom.client.KeyUpHandler;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -14,23 +20,20 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.user.client.ui.impl.FocusImpl;
 
 public class DayView extends CalendarView {
 
-    private boolean lastWasKeyDown = false;    
-    private Element focusable = null;
-    
     // <editor-fold desc="Static Fields" defaultState="collapse">
     private static final String GWT_CALENDAR_STYLE = "gwt-cal";
     // </editor-fold>
-    
     // <editor-fold desc="Private Fields" defaultState="collapse">
     private DayViewHeader dayViewHeader = null;
     private DayViewBody dayViewBody = null;
     private DayViewLayoutStrategy layoutStrategy = null;
+    private boolean lastWasKeyDown = false;
+    private FocusPanel focusPanel = new FocusPanel();
     // </editor-fold>
-    
+
     // <editor-fold desc="Constructors" defaultState="collapse">
     public DayView() {
         this(CalendarSettings.DEFAULT_SETTINGS);
@@ -45,21 +48,49 @@ public class DayView extends CalendarView {
         this.layoutStrategy = new DayViewLayoutStrategy(this);
 
         this.setStyleName(GWT_CALENDAR_STYLE);
+
+        //focusPanel.setVisible(false);
+        rootPanel.add(focusPanel);
+
         rootPanel.add(dayViewHeader);
         rootPanel.add(dayViewBody);
 
 
-        // Create naturally-focusable element
-        focusable = focusImpl.createFocusable();
-        // Hide element and append it to root div
-        DOM.setIntStyleAttribute(focusable, "zIndex", -1);
-        DOM.appendChild(getElement(), focusable);
+
+        //border: 0px none ; width: 0px; height: 0px; position: absolute; top: -5px; left: -5px;
+        DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
+        DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "height", "0px");
+        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0px");
+        focusPanel.addKeyPressHandler(new KeyPressHandler() {
+
+            public void onKeyPress(KeyPressEvent event) {
+
+                if (!lastWasKeyDown) {
+                    keyboardNavigation(event.getNativeEvent().getKeyCode());
+                }
+                lastWasKeyDown = false;
+            }
+        });
+        focusPanel.addKeyUpHandler(new KeyUpHandler() {
+
+            public void onKeyUp(KeyUpEvent event) {
+
+                lastWasKeyDown = false;
+            }
+        });
+        focusPanel.addKeyDownHandler(new KeyDownHandler() {
+
+            public void onKeyDown(KeyDownEvent event) {
+                keyboardNavigation(event.getNativeEvent().getKeyCode());
+                lastWasKeyDown = true;
+            }
+        });
+
 
         doLayout();
     }
-
-    static final FocusImpl focusImpl = FocusImpl.getFocusImplForPanel();
-
 
     // </editor-fold>
     // <editor-fold desc="Public Methods" defaultState="collapse">
@@ -135,61 +166,41 @@ public class DayView extends CalendarView {
         int eventType = DOM.eventGetType(event);
 
         switch (eventType) {
-            case Event.ONMOUSEDOWN: {
-                if (DOM.eventGetCurrentTarget(event) == getElement()) {
-                    Element elem = DOM.eventGetTarget(event);
-                    Appointment appt =
-                            AppointmentUtil.checkAppointmentElementClicked(elem, appointments);
-                    if (appt != null) {
-                        setValue(appt);
-                    }
-                }
-                break;
-            }
-            case Event.ONKEYPRESS: {
-                if (!lastWasKeyDown) {
-                    keyboardNavigation(event);
-                }
-                lastWasKeyDown = false;
-                break;
-            }
-            case Event.ONKEYDOWN: {
-                keyboardNavigation(event);
-                lastWasKeyDown = true;
-                break;
-            }
-            case Event.ONKEYUP: {
+            case Event.ONMOUSEDOWN:
+                 {
+                    if (DOM.eventGetCurrentTarget(event) == getElement()) {
+                        Element elem = DOM.eventGetTarget(event);
+                        Appointment appt =
+                                AppointmentUtil.checkAppointmentElementClicked(elem, appointments);
+                        if (appt != null) {
+                            setValue(appt);
+                        //focusPanel.setFocus(true);
+                        }
+                        //} else if(getSelectedAppointment()!=null) {
+                        //    focusPanel.setFocus(true);
+                        //}
+                        focusPanel.setFocus(true);
+                        DOM.eventCancelBubble(event, true);
+                        DOM.eventPreventDefault(event);
 
-                lastWasKeyDown = false;
-                break;
-            }
-        }
-
+                        //break;
+                        return;
+                    }//end if
+            } //end case
+        } //end switch
+        
         super.onBrowserEvent(event);
     }
 
-    private void keyboardNavigation(Event event) {
-
-
-        //only proceed if an appointment is selected
-        if (getSelectedAppointment() == null) {
-            return;
-        }
-
-        //get the key
-        int key = DOM.eventGetKeyCode(event);
-        //Window.alert("pressed: " + key);
+    private void keyboardNavigation(
+            int key) {
         switch (key) {
             case KeyCodes.KEY_DELETE: {
-                DOM.eventCancelBubble(event, true);
-                DOM.eventPreventDefault(event);
                 removeAppointment((Appointment) getSelectedAppointment());
                 break;
             }
             case KeyCodes.KEY_LEFT:
             case KeyCodes.KEY_UP: {
-                DOM.eventCancelBubble(event, true);
-                DOM.eventPreventDefault(event);
                 selectPreviousAppointment();
                 dayViewBody.getScrollPanel().ensureVisible((UIObject) getSelectedAppointment());
                 break;
@@ -202,5 +213,21 @@ public class DayView extends CalendarView {
             }
         }
     }
+
+    private void keyboardNavigation(Event event) {
+
+
+        //only proceed if an appointment is selected
+        if (getSelectedAppointment() == null) {
+            return;
+        }
+
+        //get the key
+        int key = DOM.eventGetKeyCode(event);
+        keyboardNavigation(key);
+    //GWT.log("pressed: " + key,null);
+
+    }
+
     // </editor-fold>
 }

@@ -9,7 +9,7 @@ public class CalendarSettings {
     private int workingHourEnd = 17;
     private int scrollToHour = 8; //default hour that gets scrolled to
     private boolean enableDragDrop = true;
-    private boolean offsetHourLabels = true;
+    private boolean offsetHourLabels = false;
 
     public CalendarSettings() {
     }
