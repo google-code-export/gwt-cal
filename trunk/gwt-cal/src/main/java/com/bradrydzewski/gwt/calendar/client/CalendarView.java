@@ -105,7 +105,7 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         if(index>=appointments.size()) return false;
         Appointment appt = appointments.get(index+1);
         if(appt.isVisible()==false) return false;
-        this.setSelectedAppointment(appt);
+        this.setValue(appt);
         return true;
     }
     
@@ -115,7 +115,7 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         if(index<=0) return false;
         Appointment appt = appointments.get(index-1);
         if(appt.isVisible()==false) return false;
-        this.setSelectedAppointment(appt);
+        this.setValue(appt);
         return true;
     }
 
