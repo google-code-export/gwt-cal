@@ -8,6 +8,7 @@ import com.google.gwt.event.dom.client.KeyPressEvent;
 import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -16,7 +17,6 @@ import java.util.Date;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.UIObject;
 import com.google.gwt.user.client.ui.Widget;
@@ -57,7 +57,8 @@ public class DayView extends CalendarView {
 
 
 
-        //border: 0px none ; width: 0px; height: 0px; position: absolute; top: -5px; left: -5px;
+        //Can probably move this to base CalendarView class, since this functionality
+        // will be shared among all views.. right?
         DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
         DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
         DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
@@ -164,36 +165,47 @@ public class DayView extends CalendarView {
     @SuppressWarnings("fallthrough")
     public void onBrowserEvent(Event event) {
         int eventType = DOM.eventGetType(event);
+        Element elem = DOM.eventGetTarget(event);
 
         switch (eventType) {
-            case Event.ONMOUSEDOWN:
-                 {
-                    if (DOM.eventGetCurrentTarget(event) == getElement()) {
-                        Element elem = DOM.eventGetTarget(event);
-                        Appointment appt =
-                                AppointmentUtil.checkAppointmentElementClicked(elem, appointments);
-                        if (appt != null) {
-                            setValue(appt);
-                        //focusPanel.setFocus(true);
-                        }
-                        //} else if(getSelectedAppointment()!=null) {
-                        //    focusPanel.setFocus(true);
-                        //}
-                        focusPanel.setFocus(true);
-                        DOM.eventCancelBubble(event, true);
-                        DOM.eventPreventDefault(event);
+            case Event.ONDBLCLICK: {
+                if (getSelectedAppointment() != null) {
+                    /* get appointment element ... need to cast, unfortunately */
+                    Element apptElement = 
+                            ((Appointment)getSelectedAppointment()).getElement();
+                    /* if the selected appointment (or one of its child elements
+                     * was clicked fire the double click event */
+                    if(DOM.isOrHasChild(apptElement, elem) ) {
+                        OpenEvent.fire(this, getSelectedAppointment());
+                    }
+                }
+                break;
+            }
+            case Event.ONMOUSEDOWN: {
+                if (DOM.eventGetCurrentTarget(event) == getElement()) {
+                    
+                    Appointment appt =
+                            AppointmentUtil.checkAppointmentElementClicked(elem, appointments);
+                    if (appt != null) {
+                        setValue(appt);
+                    }
 
-                        //break;
-                        return;
-                    }//end if
+                    /* give focus so we can use up/down arrows */
+                    focusPanel.setFocus(true);
+
+                    /* cancel events so Firefox / Chrome don't give
+                     * the scroll panel focus. */
+                    DOM.eventCancelBubble(event, true);
+                    DOM.eventPreventDefault(event);
+                    return;
+                }//end if
             } //end case
         } //end switch
-        
+
         super.onBrowserEvent(event);
     }
 
-    private void keyboardNavigation(
-            int key) {
+    void keyboardNavigation(int key) {
         switch (key) {
             case KeyCodes.KEY_DELETE: {
                 removeAppointment((Appointment) getSelectedAppointment());
@@ -213,21 +225,5 @@ public class DayView extends CalendarView {
             }
         }
     }
-
-    private void keyboardNavigation(Event event) {
-
-
-        //only proceed if an appointment is selected
-        if (getSelectedAppointment() == null) {
-            return;
-        }
-
-        //get the key
-        int key = DOM.eventGetKeyCode(event);
-        keyboardNavigation(key);
-    //GWT.log("pressed: " + key,null);
-
-    }
-
     // </editor-fold>
 }
