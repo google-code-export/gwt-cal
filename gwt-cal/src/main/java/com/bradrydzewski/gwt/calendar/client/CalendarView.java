@@ -1,6 +1,12 @@
 package com.bradrydzewski.gwt.calendar.client;
 
-import com.google.gwt.event.dom.client.HasKeyPressHandlers;
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.google.gwt.event.logical.shared.HasOpenHandlers;
+import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -17,7 +23,9 @@ import java.util.Date;
  * properties.
  * @author Brad Rydzewski
  */
-public abstract class CalendarView extends Composite implements HasValue<Appointment>, HasSettings {
+public abstract class CalendarView extends Composite implements 
+        HasSelectionHandlers<AppointmentInterface>, HasOpenHandlers<AppointmentInterface>,
+        HasValue<Appointment>, HasSettings {
 
     protected AbsolutePanel rootPanel = new AbsolutePanel();
     protected boolean layoutSuspended = false;
@@ -33,7 +41,7 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
         
         initWidget(rootPanel);
         this.settings = settings;
-        sinkEvents(Event.ONMOUSEDOWN | Event.KEYEVENTS); 
+        sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS);
     }
     
     public abstract void doLayout();
@@ -199,15 +207,27 @@ public abstract class CalendarView extends Composite implements HasValue<Appoint
 
         if (fireEvents) {
             ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
-
+            if(newValue!=oldValue)
+                SelectionEvent.fire(this, newValue);
         }
 
     }
+
 
     @Override
     public HandlerRegistration addValueChangeHandler(
             ValueChangeHandler<Appointment> handler) {
 
         return addHandler(handler, ValueChangeEvent.getType());
+    }
+
+    @Override
+    public HandlerRegistration addSelectionHandler(SelectionHandler<AppointmentInterface> handler) {
+        return addHandler(handler, SelectionEvent.getType());
+    }
+
+    @Override
+    public HandlerRegistration addOpenHandler(OpenHandler<AppointmentInterface> handler) {
+        return addHandler(handler, OpenEvent.getType());
     }
 }
