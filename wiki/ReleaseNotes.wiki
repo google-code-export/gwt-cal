@@ -1,6 +1,16 @@
 #summary gwt-cal project release notes
 
-=== Version 0.8 ===
+=== Version 0.8.1 (July 21) ===
+  * Delete key removes selected appointment
+  * Deletion fires `DeleteEvent`, ability to cancel
+  * Arrow keys change selected appointment
+  * Appointment double-click fires `OpenEvent`
+  * Added all Google colors to Google theme, [http://code.google.com/p/gwt-cal/issues/detail?id=7 Issue #7]
+  * Fixed `DayView.scrollToHour()` scrolls too far, [http://code.google.com/p/gwt-cal/issues/detail?id=1 Issue #1]
+
+=== Version 0.8.0 (July 7) ===
+
+_Moved from private repository to Google Code, released under GPLv3 License. Project features include:_
   * Day / multi-Day View
   * Configurable time intervals (15min,30min,1hr)
   * `HasValue` event fires when item selected
