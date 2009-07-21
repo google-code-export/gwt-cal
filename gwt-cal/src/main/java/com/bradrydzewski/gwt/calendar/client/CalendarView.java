@@ -1,6 +1,10 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
+import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.RollbackException;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -23,8 +27,9 @@ import java.util.Date;
  * properties.
  * @author Brad Rydzewski
  */
-public abstract class CalendarView extends Composite implements 
+public abstract class CalendarView extends Composite implements
         HasSelectionHandlers<AppointmentInterface>, HasOpenHandlers<AppointmentInterface>,
+        HasDeleteHandlers<AppointmentInterface>,
         HasValue<Appointment>, HasSettings {
 
     protected AbsolutePanel rootPanel = new AbsolutePanel();
@@ -38,12 +43,12 @@ public abstract class CalendarView extends Composite implements
     private CalendarSettings settings = null;
 
     public CalendarView(CalendarSettings settings) {
-        
+
         initWidget(rootPanel);
         this.settings = settings;
         sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS);
     }
-    
+
     public abstract void doLayout();
 
     public void suspendLayout() {
@@ -89,7 +94,7 @@ public abstract class CalendarView extends Composite implements
         this.days = days;
         doLayout();
     }
-    
+
     protected ArrayList<Appointment> getAppointments() {
         return appointments;
     }
@@ -107,22 +112,34 @@ public abstract class CalendarView extends Composite implements
     }
 
     public boolean selectNextAppointment() {
-        
-        if(getSelectedAppointment()==null) return false;
+
+        if (getSelectedAppointment() == null) {
+            return false;
+        }
         int index = appointments.indexOf(getSelectedAppointment());
-        if(index>=appointments.size()) return false;
-        Appointment appt = appointments.get(index+1);
-        if(appt.isVisible()==false) return false;
+        if (index >= appointments.size()) {
+            return false;
+        }
+        Appointment appt = appointments.get(index + 1);
+        if (appt.isVisible() == false) {
+            return false;
+        }
         this.setValue(appt);
         return true;
     }
-    
+
     public boolean selectPreviousAppointment() {
-        if(getSelectedAppointment()==null) return false;
+        if (getSelectedAppointment() == null) {
+            return false;
+        }
         int index = appointments.indexOf(getSelectedAppointment());
-        if(index<=0) return false;
-        Appointment appt = appointments.get(index-1);
-        if(appt.isVisible()==false) return false;
+        if (index <= 0) {
+            return false;
+        }
+        Appointment appt = appointments.get(index - 1);
+        if (appt.isVisible() == false) {
+            return false;
+        }
         this.setValue(appt);
         return true;
     }
@@ -159,11 +176,23 @@ public abstract class CalendarView extends Composite implements
         doLayout();
     }
 
+    public void removeAppointment(Appointment appointment, boolean fireEvents) {
+
+        boolean commitChange = true;
+
+        if (fireEvents) {
+            commitChange = DeleteEvent.fire(this, getSelectedAppointment());
+        }
+        if (commitChange) {
+            appointments.remove(appointment);
+            selectedAppointment = null;
+            sortPending = true;
+            doLayout();
+        }
+    }
+
     public void removeAppointment(Appointment appointment) {
-        appointments.remove(appointment);
-        selectedAppointment = null;
-        sortPending = true;
-        doLayout();
+        removeAppointment(appointment, false);
     }
 
     public void addAppointment(Appointment appointment) {
@@ -207,12 +236,17 @@ public abstract class CalendarView extends Composite implements
 
         if (fireEvents) {
             ValueChangeEvent.fireIfNotEqual(this, oldValue, newValue);
-            if(newValue!=oldValue)
+            if (newValue != oldValue) {
                 SelectionEvent.fire(this, newValue);
+            }
         }
 
     }
 
+    public HandlerRegistration addDeleteHandler(
+            DeleteHandler<AppointmentInterface> handler) {
+        return addHandler(handler, DeleteEvent.getType());
+    }
 
     @Override
     public HandlerRegistration addValueChangeHandler(
