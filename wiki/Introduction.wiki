@@ -26,5 +26,5 @@ The following items will be the primary focus of future releases:
   * Delete key removes selected appointment <font color='green' size='2'>added in r53</font>
   * Arrow keys change selected appointment <font color='green' size='2'>added in r56</font>
   * Appointment double-click to fire event also <font color='green' size='2'>added in r53</font>
-  * Drag / drop prompts user to confirm desired change
+  * Drag / drop prompts user to confirm desired change 
   * Deletion prompts user to confirm, ability to cancel <font color='green' size='2'>added in r61</font>
