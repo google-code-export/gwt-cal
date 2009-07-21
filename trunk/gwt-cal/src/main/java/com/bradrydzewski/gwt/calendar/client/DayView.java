@@ -178,6 +178,9 @@ public class DayView extends CalendarView {
                     if(DOM.isOrHasChild(apptElement, elem) ) {
                         OpenEvent.fire(this, getSelectedAppointment());
                     }
+                    
+                    /* give focus so we can use up/down arrows */
+                    focusPanel.setFocus(true);
                 }
                 break;
             }
@@ -208,7 +211,7 @@ public class DayView extends CalendarView {
     void keyboardNavigation(int key) {
         switch (key) {
             case KeyCodes.KEY_DELETE: {
-                removeAppointment((Appointment) getSelectedAppointment());
+                removeAppointment((Appointment) getSelectedAppointment(),true);
                 break;
             }
             case KeyCodes.KEY_LEFT:
