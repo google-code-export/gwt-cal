@@ -18,10 +18,13 @@ Have you downloaded or checked-out gwt-cal? If so, I would really appreciate you
 
 The following items will be the primary focus of future releases:
   * Refactoring, code cleanup, commenting! and maybe some unit tests
-  * Create Month view and List view
-  * Add drag / drop to day view
+  * Create Month view
+  * Create List view
+  * Drag / Drop appointments to change date, time and duration
+  * Drag across time blocks to create a new appointment
+  * Support for Multi-day appointments
+  * Delete key removes selected appointment <font color='green' size='2'>added in r53</font>
+  * Arrow keys change selected appointment <font color='green' size='2'>added in r56</font>
+  * Appointment double-click to fire event also <font color='green' size='2'>added in r53</font>
   * Drag / drop prompts user to confirm desired change
-  * Replace `HasValue` with `ItemSelected` ... more appropriate
-  * Select appointment using arrow keys
-  * Appointment double-click to fire event also
-  * Handle Multi-day appointments
+  * Deletion prompts user to confirm, ability to cancel
