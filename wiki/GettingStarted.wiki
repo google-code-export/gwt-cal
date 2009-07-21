@@ -51,6 +51,29 @@ dayView.add(appt);
 
 When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Available color styles are: `gwt-appointment-blue`, `gwt-appointment-green`
 
+*Update*: As of build r58 (thanks to [http://code.google.com/u/SpaceRoosters/ SpaceRoosters]) the Google theme supports all appointment colors: 
+ * gwt-appointment-red
+ * gwt-appointment-green
+ * gwt-appointment-blue
+ * gwt-appointment-pink
+ * gwt-appointment-purple
+ * gwt-appointment-darkpurple
+ * gwt-appointment-steelblue
+ * gwt-appointment-lightblue
+ * gwt-appointment-teal
+ * gwt-appointment-lightgreen
+ * gwt-appointment-yellowgreen
+ * gwt-appointment-yellow
+ * gwt-appointment-orange
+ * gwt-appointment-redorange
+ * gwt-appointment-lightbrown
+ * gwt-appointment-lightpurple
+ * gwt-appointment-grey
+ * gwt-appointment-bluegrey
+ * gwt-appointment-lightteal
+ * gwt-appointment-yellowgrey
+ * gwt-appointment-brown
+
 == appointments in batch ==
 
 As stated earlier, every time an appointment is added to the calendar widget the layout is re-calculated. If you plan to add many appointments at once you should suspend the layout and then resume it once you are complete:
