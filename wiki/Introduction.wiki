@@ -21,7 +21,7 @@ The following items will be the primary focus of future releases:
   * Create Month view
   * Create List view
   * Drag / Drop appointments to change date, time and duration
-  * Drag across time blocks to create a new appointment
+  * Drag across time blocks to create a new appointment <font color='green' size='2'>added partial support in r65</font>
   * Support for Multi-day appointments
   * Delete key removes selected appointment <font color='green' size='2'>added in r53</font>
   * Arrow keys change selected appointment <font color='green' size='2'>added in r56</font>
