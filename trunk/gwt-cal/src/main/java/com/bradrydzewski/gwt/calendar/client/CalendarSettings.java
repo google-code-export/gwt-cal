@@ -10,6 +10,11 @@ public class CalendarSettings {
     private int scrollToHour = 8; //default hour that gets scrolled to
     private boolean enableDragDrop = true;
     private boolean offsetHourLabels = false;
+    
+    /*
+     * Clicks required to fire TimeBlockClickEvent.
+     */
+    private Click timeBlockClickNumber = Click.Single;
 
     public CalendarSettings() {
     }
@@ -68,5 +73,19 @@ public class CalendarSettings {
 
     public void setOffsetHourLabels(boolean offsetHourLabels) {
         this.offsetHourLabels = offsetHourLabels;
+    }
+
+    public Click getTimeBlockClickNumber() {
+        return timeBlockClickNumber;
+    }
+
+    public void setTimeBlockClickNumber(Click timeBlockClickNumber) {
+        this.timeBlockClickNumber = timeBlockClickNumber;
+    }
+    
+    
+    
+    public enum Click {
+        Double, Single
     }
 }

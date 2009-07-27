@@ -1,5 +1,6 @@
 package com.bradrydzewski.gwt.calendar.client;
 
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.KeyCodes;
@@ -183,6 +184,14 @@ public class DayView extends CalendarView {
                     /* give focus so we can use up/down arrows */
                     focusPanel.setFocus(true);
                 }
+
+                if (getSettings().getTimeBlockClickNumber() == Click.Double &&
+                        elem == dayViewBody.getGrid().gridOverlay.getElement()) {
+                    int x = DOM.eventGetClientX(event);
+                    int y = DOM.eventGetClientY(event);
+                    timeBlockClick(x, y);
+                }
+
                 break;
             }
             case Event.ONMOUSEDOWN: {
@@ -194,16 +203,11 @@ public class DayView extends CalendarView {
                         setValue(appt);
                     } else {
                         //handle time block click
-                        if (elem == dayViewBody.getGrid().gridOverlay.getElement()) {
-                            //Here is where we fire the event
-                            //need to get the exact block / day that was clicked
-                            //get overlay left position
-                            //get overlay top position
-                            //get overlay width
-                            //get X,Y click coordinate
+                        if (getSettings().getTimeBlockClickNumber() == Click.Single &&
+                                elem == dayViewBody.getGrid().gridOverlay.getElement()) {
                             int x = DOM.eventGetClientX(event);
                             int y = DOM.eventGetClientY(event);
-                            timeBlockClick(x,y);
+                            timeBlockClick(x, y);
                         }
                     }
 
@@ -227,23 +231,23 @@ public class DayView extends CalendarView {
         int top = dayViewBody.getScrollPanel().getAbsoluteTop();
         int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
         int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
-        
+
         //x & y are based on screen position,need to get x/y relative to component
         int relativeY = y - top + scrollOffset;
         int relativeX = x - left;
 
         //find the interval clicked and day clicked
         double interval = Math.floor(relativeY / (double) getSettings().getPixelsPerInterval());
-        double day = Math.floor((double)relativeX / ((double)width / (double)getDays()));
-        
+        double day = Math.floor((double) relativeX / ((double) width / (double) getDays()));
+
         //create new appointment date based on click
         Date newStartDate = getDate();
         newStartDate.setHours(0);
         newStartDate.setMinutes(0);
         newStartDate.setSeconds(0);
-        newStartDate.setMinutes((int)interval * (60 / getSettings().getIntervalsPerHour()) );
-        newStartDate.setDate(newStartDate.getDate() + (int)day);
-        
+        newStartDate.setMinutes((int) interval * (60 / getSettings().getIntervalsPerHour()));
+        newStartDate.setDate(newStartDate.getDate() + (int) day);
+
         TimeBlockClickEvent.fire(this, newStartDate);
     }
 
