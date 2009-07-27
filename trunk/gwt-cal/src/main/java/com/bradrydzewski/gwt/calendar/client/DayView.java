@@ -1,5 +1,6 @@
 package com.bradrydzewski.gwt.calendar.client;
 
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
@@ -171,14 +172,14 @@ public class DayView extends CalendarView {
             case Event.ONDBLCLICK: {
                 if (getSelectedAppointment() != null) {
                     /* get appointment element ... need to cast, unfortunately */
-                    Element apptElement = 
-                            ((Appointment)getSelectedAppointment()).getElement();
+                    Element apptElement =
+                            ((Appointment) getSelectedAppointment()).getElement();
                     /* if the selected appointment (or one of its child elements
                      * was clicked fire the double click event */
-                    if(DOM.isOrHasChild(apptElement, elem) ) {
+                    if (DOM.isOrHasChild(apptElement, elem)) {
                         OpenEvent.fire(this, getSelectedAppointment());
                     }
-                    
+
                     /* give focus so we can use up/down arrows */
                     focusPanel.setFocus(true);
                 }
@@ -186,11 +187,24 @@ public class DayView extends CalendarView {
             }
             case Event.ONMOUSEDOWN: {
                 if (DOM.eventGetCurrentTarget(event) == getElement()) {
-                    
+
                     Appointment appt =
                             AppointmentUtil.checkAppointmentElementClicked(elem, appointments);
                     if (appt != null) {
                         setValue(appt);
+                    } else {
+                        //handle time block click
+                        if (elem == dayViewBody.getGrid().gridOverlay.getElement()) {
+                            //Here is where we fire the event
+                            //need to get the exact block / day that was clicked
+                            //get overlay left position
+                            //get overlay top position
+                            //get overlay width
+                            //get X,Y click coordinate
+                            int x = DOM.eventGetClientX(event);
+                            int y = DOM.eventGetClientY(event);
+                            timeBlockClick(x,y);
+                        }
                     }
 
                     /* give focus so we can use up/down arrows */
@@ -208,10 +222,35 @@ public class DayView extends CalendarView {
         super.onBrowserEvent(event);
     }
 
+    void timeBlockClick(int x, int y) {
+        int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
+        int top = dayViewBody.getScrollPanel().getAbsoluteTop();
+        int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
+        int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
+        
+        //x & y are based on screen position,need to get x/y relative to component
+        int relativeY = y - top + scrollOffset;
+        int relativeX = x - left;
+
+        //find the interval clicked and day clicked
+        double interval = Math.floor(relativeY / (double) getSettings().getPixelsPerInterval());
+        double day = Math.floor((double)relativeX / ((double)width / (double)getDays()));
+        
+        //create new appointment date based on click
+        Date newStartDate = getDate();
+        newStartDate.setHours(0);
+        newStartDate.setMinutes(0);
+        newStartDate.setSeconds(0);
+        newStartDate.setMinutes((int)interval * (60 / getSettings().getIntervalsPerHour()) );
+        newStartDate.setDate(newStartDate.getDate() + (int)day);
+        
+        TimeBlockClickEvent.fire(this, newStartDate);
+    }
+
     void keyboardNavigation(int key) {
         switch (key) {
             case KeyCodes.KEY_DELETE: {
-                removeAppointment((Appointment) getSelectedAppointment(),true);
+                removeAppointment((Appointment) getSelectedAppointment(), true);
                 break;
             }
             case KeyCodes.KEY_LEFT:

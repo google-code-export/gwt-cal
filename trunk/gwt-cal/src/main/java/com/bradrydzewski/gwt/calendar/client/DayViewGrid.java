@@ -41,6 +41,7 @@ public class DayViewGrid /*Impl*/ extends Composite {
 	private static final String WORKING_HOUR_STYLE = "working-hours";
 	// private FlexTable grid = new FlexTable();
 	protected ComplexPanel grid = new Div();
+        protected SimplePanel gridOverlay = new SimplePanel();
         
 	private HasSettings settings = null;
 	//private FormattingImpl impl = GWT.create(FormattingImpl.class);
@@ -125,6 +126,14 @@ public class DayViewGrid /*Impl*/ extends Composite {
 			DOM.setStyleAttribute(dayPanel.getElement(), "left", dayLeft
 					+ "%");
 		}
+                
+                
+                gridOverlay.setHeight("100%");
+                gridOverlay.setWidth("100%");
+                DOM.setStyleAttribute(gridOverlay.getElement(), "position", "absolute");
+                DOM.setStyleAttribute(gridOverlay.getElement(), "left", "0px");
+                DOM.setStyleAttribute(gridOverlay.getElement(), "top", "0px");
+                grid.add(gridOverlay);
 	}
 
 

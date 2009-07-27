@@ -4,7 +4,9 @@ import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
-import com.bradrydzewski.gwt.calendar.client.event.RollbackException;
+import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -29,7 +31,7 @@ import java.util.Date;
  */
 public abstract class CalendarView extends Composite implements
         HasSelectionHandlers<AppointmentInterface>, HasOpenHandlers<AppointmentInterface>,
-        HasDeleteHandlers<AppointmentInterface>,
+        HasDeleteHandlers<AppointmentInterface>, HasTimeBlockClickHandlers<Date>,
         HasValue<Appointment>, HasSettings {
 
     protected AbsolutePanel rootPanel = new AbsolutePanel();
@@ -72,7 +74,7 @@ public abstract class CalendarView extends Composite implements
     }
 
     public Date getDate() {
-        return date;
+        return (Date)date.clone();
     }
 
     public void setDate(Date date, int days) {
@@ -243,9 +245,16 @@ public abstract class CalendarView extends Composite implements
 
     }
 
+    @Override
     public HandlerRegistration addDeleteHandler(
             DeleteHandler<AppointmentInterface> handler) {
         return addHandler(handler, DeleteEvent.getType());
+    }
+
+    @Override
+    public HandlerRegistration addTimeBlockClickHandler(
+            TimeBlockClickHandler<Date> handler) {
+        return addHandler(handler, TimeBlockClickEvent.getType());
     }
 
     @Override
