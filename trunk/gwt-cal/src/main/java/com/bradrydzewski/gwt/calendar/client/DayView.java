@@ -3,6 +3,7 @@ package com.bradrydzewski.gwt.calendar.client;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
@@ -11,12 +12,14 @@ import com.google.gwt.event.dom.client.KeyPressHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.user.client.Command;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
 
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -31,6 +34,7 @@ public class DayView extends CalendarView {
     // <editor-fold desc="Private Fields" defaultState="collapse">
     private DayViewHeader dayViewHeader = null;
     private DayViewBody dayViewBody = null;
+    private DayViewMultiDayBody multiViewBody = null;
     private DayViewLayoutStrategy layoutStrategy = null;
     private boolean lastWasKeyDown = false;
     private FocusPanel focusPanel = new FocusPanel();
@@ -48,6 +52,7 @@ public class DayView extends CalendarView {
         this.dayViewBody = new DayViewBody(this);
         this.dayViewHeader = new DayViewHeader(this);
         this.layoutStrategy = new DayViewLayoutStrategy(this);
+        this.multiViewBody = new DayViewMultiDayBody(this);
 
         this.setStyleName(GWT_CALENDAR_STYLE);
 
@@ -55,6 +60,7 @@ public class DayView extends CalendarView {
         rootPanel.add(focusPanel);
 
         rootPanel.add(dayViewHeader);
+        rootPanel.add(multiViewBody);
         rootPanel.add(dayViewBody);
 
 
@@ -92,8 +98,32 @@ public class DayView extends CalendarView {
         });
 
 
-        doLayout();
+
+        DeferredCommand.addCommand(new Command(){
+			@Override
+			public void execute() {
+                if(GWT.isScript()) {
+                    doComponentLayout();
+                }
+				//doLayout();
+			}
+		});
     }
+
+    public void doComponentLayout() {
+
+        //System.out.println(getOffsetHeight() + " - 2 - " + dayViewHeader.getOffsetHeight() + " - " +  multiViewBody.getOffsetHeight() + "px");
+        if(getOffsetHeight()>0) {
+            dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
+            //System.out.println("doComponentLayout called");
+        }
+    }
+
+    public void onLoad() {
+        doComponentLayout();
+        //System.out.println("onLoad()");
+    }
+
 
     // </editor-fold>
     // <editor-fold desc="Public Methods" defaultState="collapse">
@@ -105,6 +135,7 @@ public class DayView extends CalendarView {
             return;
         }
 
+        multiViewBody.setDays((Date) getDate().clone(), getDays());
         dayViewHeader.setDays((Date) getDate().clone(), getDays());
         dayViewHeader.setYear((Date) getDate().clone());
         dayViewBody.setDays((Date) getDate().clone(), getDays());
@@ -142,6 +173,9 @@ public class DayView extends CalendarView {
 
             tmpDate.setDate(tmpDate.getDate() + 1);
         }
+
+        //as part of layout set height
+        doComponentLayout();
     }
 
     public void scrollToHour(int hour) {
@@ -153,14 +187,16 @@ public class DayView extends CalendarView {
     public void setHeight(String height) {
 
         super.setHeight(height);
-        dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() + "px");
+        doComponentLayout();
+        //System.out.println(getOffsetHeight() + " - 2 - " + dayViewHeader.getOffsetHeight() + " - " +  multiViewBody.getOffsetHeight() + "px");
+        //dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
     }
 
     @Override
     public void setSize(String width, String height) {
 
         super.setSize(width, height);
-        dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() + "px");
+        doComponentLayout();
     }
 
     @Override
