@@ -162,8 +162,8 @@
 
 .gwt-appointment .header {
 	white-space: nowrap;
-	overflow: hidden;
-	color: #000;
+	/*overflow: hidden;*/
+	color: #FFF;
 	padding: 1px;
 	padding-left: 8px;
 	-webkit-border-top-left-radius: 5px;
@@ -177,11 +177,12 @@
 }
 
 .gwt-appointment .footer {
+	/*border-bottom: 3px double #FFF;*/
 	position: absolute;
 	bottom: 2px;
-	left: 4%;
+	left: 48%;
 	height: 4px;
-	width: 92%;
+	width: 8px;
 }
 
 .gwt-appointment .icons {
@@ -233,7 +234,8 @@
 }
 
 .gwt-appointment-selected .footer {
-	/*cursor: s-resize;*/        
+	/*cursor: s-resize;*/       
+     
 }
 
 .gwt-appointment-selected .header {
@@ -241,7 +243,7 @@
 }
 
 /* Appointment panel styles by color theme (Secondary styles) */
-	/* Green */
+/* Green */
 .gwt-appointment-green {
 	border: 1px solid #12A300;
 	background: #8EED7F;
@@ -252,13 +254,9 @@
     background:#8EED7F url(green-appt-gradient.gif) repeat-y; 
 }
 
-.gwt-appointment-selected.gwt-appointment-green .header {
+.gwt-appointment-green .header {
 	background: #12A300;
 	color: #FFF;
-}
-
-.gwt-appointment-selected.gwt-appointment-green .footer {
-	
 }
 
 /* Blue */
@@ -267,15 +265,60 @@
 	background: #8DAFEA;
 	color: #0D50D5;
 }
-
-.gwt-appointment-selected.gwt-appointment-blue .header {
+.gwt-appointment-selected.gwt-appointment-blue {
+	background: #8DAFEA url(blue-appt-gradient.gif) repeat-y;
+}
+.gwt-appointment-blue .header {
 	background: #0D50D5;
 	color: #FFF;
 }
 
-.gwt-appointment-selected.gwt-appointment-blue .footer {
-	
+/* Orange */
+.gwt-appointment-orange {
+	border: 1px solid #f37b14;
+	background: #fca550 url(orange-appt-gradient.gif) repeat-y;;
+	color: #f37b14;
 }
 
-/* An html element can have 1 or many styles, separated by spaces. */
-/* example: class="gwt-appointment gwt-appointment-green" has properties of both styles, the second takes precedence */
+.gwt-appointment-orange .header {
+	background: #f37b14;
+	color: #FFF;
+}
+
+/* Red */
+.gwt-appointment-red {
+	border: 1px solid #e3231f;
+	background: #f76260 url(red-appt-gradient.gif) repeat-y;;
+	color: #e3231f;
+}
+
+.gwt-appointment-red .header {
+	background: #e3231f;
+	color: #FFF;
+}
+
+
+
+/* Purple */
+.gwt-appointment-purple {
+	border: 1px solid #4b2ca0;
+	background: #aa92ea url(purple-appt-gradient.gif) repeat-y;;
+	color: #4b2ca0;
+}
+
+.gwt-appointment-purple .header {
+	background: #4b2ca0;
+	color: #FFF;
+}
+
+/* Fushia */
+.gwt-appointment-fuschia {
+	border: 1px solid #b02cae;
+	background: #c45cc3 url(fuschia-appt-gradient.gif) repeat-y;;
+	color: #b02cae;
+}
+
+.gwt-appointment-fuschia .header {
+	background: #b02cae;
+	color: #FFF;
+}
