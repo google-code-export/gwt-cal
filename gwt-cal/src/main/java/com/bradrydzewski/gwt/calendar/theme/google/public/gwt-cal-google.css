@@ -252,33 +252,31 @@
     -moz-opacity:1;
 }
 
-/* Appointment panel styles by color theme (Secondary styles) */
-/* Green -- This is commented out because it conflicted w/ "lightgreen"
-.gwt-cal .gwt-appointment-green {
-	border: 1px solid rgb(82, 136, 0);
-	background-color: rgb(140, 191, 64);
-	color: #FFF;
+
+
+.gwt-cal .multiDayBody {
+    width:100%;
+    background:#E8EEF7;
 }
-.gwt-cal .gwt-appointment-green .header {
-	background: #528800;
-	color: #FFF;
-	font-weight:normal;
+/* Multi-day appointment section */
+.gwt-cal .multiDayBody .splitter {
+	height: 5px;
+	_height: 5px;
+	border-top: 0px solid #C3D9FF;
+	background: #C3D9FF;
+	border-bottom: 0px solid #C3D9FF;
 }
 
-.gwt-cal .gwt-appointment-selected.gwt-appointment-green .header {
-	background: #528800;
-	color: #FFF;
-	font-weight:normal;
+.gwt-cal .leftEmptyCell {
+    background: #C3D9FF;
+    width:50px;
+}
+.gwt-cal .rightEmptyCell {
+    background: #C3D9FF;
 }
 
-.gwt-cal .gwt-appointment-selected.gwt-appointment-green .footer {
-	border-bottom: 3px double white;
-}
 
-.gwt-cal .gwt-appointment-green .timeline-fill {
-	background-color: rgb(140, 191, 64);
-}
-*/
+
 
 /* Blue */
 .gwt-cal .gwt-appointment-blue {
