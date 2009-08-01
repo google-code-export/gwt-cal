@@ -15,6 +15,103 @@ import java.util.List;
 public class AppointmentUtil {
 
     
+    public static List<Date> findDatesOccupied(Date from, Date to, Date in) {
+        
+        return null;
+    }
+    
+    public static boolean isWithinRange(Date from, Date to, Date in) {
+        
+        Long apptStartLong = in.getTime();
+        
+        Long rangeStartLong = from.getTime();
+        Long rangeEndLong = to.getTime();
+        
+        if(apptStartLong >= rangeStartLong) {
+            if(apptStartLong <= rangeEndLong) {
+                return true;
+            }
+        }
+        
+        if(apptStartLong <= rangeStartLong) {
+            if(apptStartLong >= rangeStartLong) {
+                return true;
+            } 
+        }
+        
+        return false;
+    }
+    
+    public static boolean isMultiDay(Appointment appt) {
+        
+        if(appt.getStart().getDate() == appt.getEnd().getDay()) {
+            if(appt.getStart().getMonth() == appt.getEnd().getMonth()){
+                if(appt.getStart().getYear() == appt.getEnd().getYear()){
+                    return false;
+                }
+            }
+        }
+        
+        return false;
+    }
+    
+    public static ArrayList filterListByDateRange(ArrayList fullList, Date startDate, int days) {
+        
+        ArrayList<AppointmentInterface> group = new ArrayList<AppointmentInterface>();
+        startDate = new Date(startDate.getYear(), startDate.getMonth(),
+                startDate.getDate(), 0, 0, 0);
+        Date endDate = new Date(startDate.getYear(), startDate.getMonth(),
+                startDate.getDate(), 0, 0, 0);
+        endDate.setDate(endDate.getDate() + days + 1);
+        
+        for (int i = 0; i < fullList.size(); i++) {
+
+            AppointmentInterface tmpAppt = (AppointmentInterface) fullList.get(i);
+            if(tmpAppt.isMultiDay() && rangeContains(tmpAppt,startDate,endDate)) {
+                group.add(tmpAppt);
+            }
+        }
+        
+        return group;
+    }
+    
+    public static boolean rangeContains(AppointmentInterface appt, Date date) {
+        Date rangeStart = date;
+        Date rangeEnd = (Date)date.clone();
+        rangeEnd.setDate(rangeStart.getDate()+1);
+        return rangeContains(appt, rangeStart, rangeEnd);
+    }
+    
+    /**
+     * Determines if the given appointment intersects with the provided
+     * date range.
+     * @param appt
+     * @param rangeStart
+     * @param rangeEnd
+     * @return true false indicating appointment intersects with date range
+     */
+    public static boolean rangeContains(AppointmentInterface appt, Date rangeStart, Date rangeEnd) {
+        
+        Long apptStartLong = appt.getStart().getTime();
+        Long apptEndLong = appt.getEnd().getTime();
+        Long rangeStartLong = rangeStart.getTime();
+        Long rangeEndLong = rangeEnd.getTime();
+        
+        if(apptStartLong >= rangeStartLong) {
+            if(apptStartLong <= rangeEndLong) {
+                return true;
+            }
+        }
+        
+        if(apptStartLong <= rangeStartLong) {
+            if(apptEndLong >= rangeStartLong) {
+                return true;
+            } 
+        }
+        
+        return false;
+    }
+    
 
     /**
      * filters a list of appointments and returns only appointments with a start
@@ -39,7 +136,7 @@ public class AppointmentUtil {
 
             AppointmentInterface tmpAppt = (AppointmentInterface) fullList.get(i);
 
-            if (tmpAppt.getEnd().before(endDate)) {
+            if (tmpAppt.isMultiDay()==false && tmpAppt.getEnd().before(endDate)) {
 
                 //TODO: probably can shorten this by using the compareTo method
                 
