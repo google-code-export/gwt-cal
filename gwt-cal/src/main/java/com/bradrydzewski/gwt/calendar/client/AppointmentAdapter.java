@@ -5,7 +5,13 @@ import java.util.Date;
 import java.util.List;
 
 /**
+ * The Appointment Adapter is used to track the layout of an
+ * AppointmentInterface. It adds additional fields required to
+ * calculate layout that are used by the Layout Strategy classes.
  * 
+ * This adapter allows us to keep these fields outside of the
+ * main AppointmentInterface and implementations hiding
+ * the layout complexity from the user.
  * @author Brad Rydzewski
  */
 public class AppointmentAdapter {

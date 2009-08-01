@@ -16,7 +16,7 @@ import java.util.Date;
 public class DayViewMultiDayBody extends Composite {
 
     private FlexTable header = new FlexTable();
-    private AbsolutePanel grid = new AbsolutePanel();
+    protected AbsolutePanel grid = new AbsolutePanel();
     private AbsolutePanel splitter = new AbsolutePanel();
     private HasSettings settings = null;
     private static final String TIMELINE_EMPTY_CELL_STYLE = "leftEmptyCell";

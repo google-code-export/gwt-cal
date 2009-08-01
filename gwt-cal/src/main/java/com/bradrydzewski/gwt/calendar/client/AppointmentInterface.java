@@ -19,6 +19,8 @@ public interface AppointmentInterface extends Comparable<AppointmentInterface> {
 	public boolean isSelected();
 	public void setSelected(boolean isSelected);
 	public void formatTimeline(float top, float height);
+        public boolean isMultiDay();
+	public void setMultiDay(boolean isMultiDay);
 
     float getTop();
     float getLeft();

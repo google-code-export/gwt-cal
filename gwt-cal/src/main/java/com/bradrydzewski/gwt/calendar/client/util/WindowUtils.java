@@ -22,7 +22,17 @@ public class WindowUtils {
 			return scrollBarWidth;
 		}
 		
-		scrollBarWidth = getScrollBarWidth();
+                /* sometimes getScrollBarWidth() temporarily returns a negative
+                 * number. So when this happens we will return "17"
+                 * which seems to be default on many systems...
+                 * but we won't save it as a cached value.
+                 */
+                int tmpScrollBarWidth =  getScrollBarWidth();
+                if(tmpScrollBarWidth<0)
+                    return 17; 
+                
+		scrollBarWidth = tmpScrollBarWidth;
+
 		return scrollBarWidth;
 	}
 	

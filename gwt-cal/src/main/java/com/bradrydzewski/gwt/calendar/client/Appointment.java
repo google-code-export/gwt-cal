@@ -1,6 +1,5 @@
 package com.bradrydzewski.gwt.calendar.client;
 
-import com.google.gwt.dom.client.Element;
 import java.util.Date;
 
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
@@ -26,222 +25,225 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class Appointment extends Composite implements AppointmentInterface {
 
-	class Div extends ComplexPanel implements HasAllMouseHandlers {
-		
-		public Div() {
-			
-			setElement(DOM.createDiv());
-		}
+    class Div extends ComplexPanel implements HasAllMouseHandlers {
 
-		@Override
-		public void add(Widget w) {
-			super.add(w, getElement());
-		}
+        public Div() {
 
-		@Override
-		public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-			return addDomHandler(handler, MouseDownEvent.getType());
-		}
+            setElement(DOM.createDiv());
+        }
 
-		@Override
-		public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-			return addDomHandler(handler, MouseUpEvent.getType());
-		}
+        @Override
+        public void add(Widget w) {
+            super.add(w, getElement());
+        }
 
-		@Override
-		public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-			return addDomHandler(handler, MouseOutEvent.getType());
-		}
+        @Override
+        public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
+            return addDomHandler(handler, MouseDownEvent.getType());
+        }
 
-		@Override
-		public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-			return addDomHandler(handler, MouseOverEvent.getType());
-		}
+        @Override
+        public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+            return addDomHandler(handler, MouseUpEvent.getType());
+        }
 
-		@Override
-		public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-			return addDomHandler(handler, MouseMoveEvent.getType());
-		}
+        @Override
+        public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+            return addDomHandler(handler, MouseOutEvent.getType());
+        }
 
-		@Override
-		public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-			return addDomHandler(handler, MouseWheelEvent.getType());
-		}
-	}
+        @Override
+        public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+            return addDomHandler(handler, MouseOverEvent.getType());
+        }
 
-	private String title;
-	private String description;
-	private Date start;
-	private Date end;
-	private boolean selected;
-	private float top;
-	private float left;
-	private float width;
-	private float height;
-	private AbsolutePanel mainPanel = new AbsolutePanel();
-	private Panel headerPanel = new Div();
-	private Panel bodyPanel = new Div();
-	private Panel footerPanel = new Div();
-	private Panel timelinePanel = new Div();
-	private Panel timelineFillPanel = new Div();
+        @Override
+        public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+            return addDomHandler(handler, MouseMoveEvent.getType());
+        }
 
-	public Appointment() {
+        @Override
+        public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+            return addDomHandler(handler, MouseWheelEvent.getType());
+        }
+    }
+    private String title;
+    private String description;
+    private Date start;
+    private Date end;
+    private boolean selected;
+    private float top;
+    private float left;
+    private float width;
+    private float height;
+    private AbsolutePanel mainPanel = new AbsolutePanel();
+    private Panel headerPanel = new Div();
+    private Panel bodyPanel = new Div();
+    private Panel footerPanel = new Div();
+    private Panel timelinePanel = new Div();
+    private Panel timelineFillPanel = new Div();
+    private boolean multiDay = false;
 
-		initWidget(mainPanel);
+    public Appointment() {
 
-		mainPanel.setStylePrimaryName("gwt-appointment");
-		headerPanel.setStylePrimaryName("header");
-		bodyPanel.setStylePrimaryName("body");
-		footerPanel.setStylePrimaryName("footer");
-		timelinePanel.setStylePrimaryName("timeline");
-		timelineFillPanel.setStylePrimaryName("timeline-fill");
+        initWidget(mainPanel);
 
-		mainPanel.add(headerPanel);
-		mainPanel.add(bodyPanel);
-		mainPanel.add(footerPanel);
-		mainPanel.add(timelinePanel);
-		timelinePanel.add(timelineFillPanel);
-		// DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
-		// DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
-		// "hidden");
-		DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
-	}
+        mainPanel.setStylePrimaryName("gwt-appointment");
+        headerPanel.setStylePrimaryName("header");
+        bodyPanel.setStylePrimaryName("body");
+        footerPanel.setStylePrimaryName("footer");
+        timelinePanel.setStylePrimaryName("timeline");
+        timelineFillPanel.setStylePrimaryName("timeline-fill");
 
-	@Override
-	public Date getStart() {
-		return start;
-	}
+        mainPanel.add(headerPanel);
+        mainPanel.add(bodyPanel);
+        mainPanel.add(footerPanel);
+        mainPanel.add(timelinePanel);
+        timelinePanel.add(timelineFillPanel);
+        // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
+        // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
+        // "hidden");
+        DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
+    }
 
-	@Override
-	public void setStart(Date start) {
-		this.start = start;
-	}
+    @Override
+    public Date getStart() {
+        return start;
+    }
 
-	@Override
-	public Date getEnd() {
-		return end;
-	}
+    @Override
+    public void setStart(Date start) {
+        this.start = start;
+    }
 
-	@Override
-	public void setEnd(Date end) {
-		this.end = end;
-	}
+    @Override
+    public Date getEnd() {
+        return end;
+    }
 
-	@Override
-	public boolean isSelected() {
-		return selected;
-	}
+    @Override
+    public void setEnd(Date end) {
+        this.end = end;
+    }
 
-	@Override
-	public void setSelected(boolean selected) {
+    @Override
+    public boolean isSelected() {
+        return selected;
+    }
 
-		// set selected
-		this.selected = selected;
+    @Override
+    public void setSelected(boolean selected) {
 
-		// remove selected style (if exists)
-		this.removeStyleName("gwt-appointment-selected");
+        // set selected
+        this.selected = selected;
 
-		// if selected, add the selected style
-		if (selected) {
-			this.addStyleName("gwt-appointment-selected");
-		}
-	}
+        // remove selected style (if exists)
+        this.removeStyleName("gwt-appointment-selected");
 
-	@Override
-	public float getTop() {
-		return top;
-	}
+        // if selected, add the selected style
+        if (selected) {
+            this.addStyleName("gwt-appointment-selected");
+        }
+    }
 
-	@Override
-	public void setTop(float top) {
-		this.top = top;
-		DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
-	}
+    @Override
+    public float getTop() {
+        return top;
+    }
 
-	@Override
-	public float getLeft() {
-		return left;
-	}
+    @Override
+    public void setTop(float top) {
+        this.top = top;
+        DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
+    }
 
-	@Override
-	public void setLeft(float left) {
-		this.left = left;
-		DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
-	}
+    @Override
+    public float getLeft() {
+        return left;
+    }
 
-	@Override
-	public float getWidth() {
-		return width;
-	}
+    @Override
+    public void setLeft(float left) {
+        this.left = left;
+        DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
+    }
 
-	@Override
-	public void setWidth(float width) {
-		this.width = width;
-		DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
-	}
+    @Override
+    public float getWidth() {
+        return width;
+    }
 
-	@Override
-	public float getHeight() {
-		return height;
-	}
+    @Override
+    public void setWidth(float width) {
+        this.width = width;
+        DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
+    }
 
-	@Override
-	public void setHeight(float height) {
-		this.height = height;
-		DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
-	}
+    @Override
+    public float getHeight() {
+        return height;
+    }
 
-	@Override
-	public String getTitle() {
-		return title;
-	}
+    @Override
+    public void setHeight(float height) {
+        this.height = height;
+        DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
+    }
 
-	@Override
-	public void setTitle(String title) {
-		this.title = title;
-		DOM.setInnerText(headerPanel.getElement(), title);
-	}
+    @Override
+    public String getTitle() {
+        return title;
+    }
 
-	@Override
-	public String getDescription() {
-		return description;
-	}
+    @Override
+    public void setTitle(String title) {
+        this.title = title;
+        DOM.setInnerText(headerPanel.getElement(), title);
+    }
 
-	@Override
-	public void setDescription(String description) {
-		this.description = description;
-		DOM.setInnerHTML(bodyPanel.getElement(), description);
-	}
+    @Override
+    public String getDescription() {
+        return description;
+    }
 
-	@Override
-	public void formatTimeline(float top, float height) {
-		timelineFillPanel.setHeight(height + "%");
-		DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
-	}
+    @Override
+    public void setDescription(String description) {
+        this.description = description;
+        DOM.setInnerHTML(bodyPanel.getElement(), description);
+    }
 
-	@Override
-	public int compareTo(AppointmentInterface appt) {
-		// -1 0 1
-		// less, equal, greater
-		int compare = this.getStart().compareTo(appt.getStart());
+    @Override
+    public void formatTimeline(float top, float height) {
+        timelineFillPanel.setHeight(height + "%");
+        DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
+    }
 
-		if (compare == 0) {
-			compare = appt.getEnd().compareTo(this.getEnd());
-		}
+    @Override
+    public int compareTo(AppointmentInterface appt) {
+        // -1 0 1
+        // less, equal, greater
+        int compare = this.getStart().compareTo(appt.getStart());
 
-		return compare;
-	}
+        if (compare == 0) {
+            compare = appt.getEnd().compareTo(this.getEnd());
+        }
 
-	public Widget getMoveHandle() {
-		return headerPanel;
-	}
+        return compare;
+    }
 
-	public Widget getResizeHandle() {
-		return footerPanel;
-	}
-        
-//        @Override
-//        public Element getElement() {
-//            return mainPanel.getElement();
-//        }
+    public Widget getMoveHandle() {
+        return headerPanel;
+    }
+
+    public Widget getResizeHandle() {
+        return footerPanel;
+    }
+
+    public boolean isMultiDay() {
+        return multiDay;
+    }
+
+    public void setMultiDay(boolean isMultiDay) {
+        this.multiDay = isMultiDay;
+    }
 }

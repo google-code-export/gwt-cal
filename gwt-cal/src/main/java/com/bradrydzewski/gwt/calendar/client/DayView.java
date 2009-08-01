@@ -99,32 +99,31 @@ public class DayView extends CalendarView {
 
 
 
-        DeferredCommand.addCommand(new Command(){
-			@Override
-			public void execute() {
-                if(GWT.isScript()) {
+        DeferredCommand.addCommand(new Command() {
+
+            @Override
+            public void execute() {
+                if (GWT.isScript()) {
                     doComponentLayout();
                 }
-				//doLayout();
-			}
-		});
+            }
+        });
     }
+    
 
     public void doComponentLayout() {
 
         //System.out.println(getOffsetHeight() + " - 2 - " + dayViewHeader.getOffsetHeight() + " - " +  multiViewBody.getOffsetHeight() + "px");
-        if(getOffsetHeight()>0) {
+        if (getOffsetHeight() > 0) {
             dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
-            //System.out.println("doComponentLayout called");
+        //System.out.println("doComponentLayout called");
         }
     }
 
     public void onLoad() {
         doComponentLayout();
-        //System.out.println("onLoad()");
     }
-
-
+    
     // </editor-fold>
     // <editor-fold desc="Public Methods" defaultState="collapse">
     @Override
@@ -145,6 +144,7 @@ public class DayView extends CalendarView {
         // so we only sort if some action has triggered a new sort
         if (sortPending) {
             Collections.sort(appointments);
+            Collections.sort(multiDayAppointments);
             sortPending = false;
         }
 
@@ -173,6 +173,13 @@ public class DayView extends CalendarView {
 
             tmpDate.setDate(tmpDate.getDate() + 1);
         }
+        
+        ArrayList<AppointmentInterface> filteredList =
+            AppointmentUtil.filterListByDateRange(appointments, getDate(), getDays());
+        layoutStrategy.doMultiDayLayout(filteredList, getDate(), getDays());
+        for(AppointmentInterface appt : filteredList) {
+            this.multiViewBody.grid.add((Appointment)appt);
+        }
 
         //as part of layout set height
         doComponentLayout();
@@ -188,8 +195,8 @@ public class DayView extends CalendarView {
 
         super.setHeight(height);
         doComponentLayout();
-        //System.out.println(getOffsetHeight() + " - 2 - " + dayViewHeader.getOffsetHeight() + " - " +  multiViewBody.getOffsetHeight() + "px");
-        //dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
+    //System.out.println(getOffsetHeight() + " - 2 - " + dayViewHeader.getOffsetHeight() + " - " +  multiViewBody.getOffsetHeight() + "px");
+    //dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
     }
 
     @Override

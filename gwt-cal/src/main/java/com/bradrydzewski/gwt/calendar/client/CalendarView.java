@@ -7,6 +7,7 @@ import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -41,6 +42,7 @@ public abstract class CalendarView extends Composite implements
     private Date date = new Date();
     private int days = 3;
     protected ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+    protected ArrayList<Appointment> multiDayAppointments = new ArrayList<Appointment>();
     protected Appointment selectedAppointment = null;
     private CalendarSettings settings = null;
 
@@ -165,8 +167,20 @@ public abstract class CalendarView extends Composite implements
 
     public void updateAppointment(Appointment appointment) {
 
+        if(AppointmentUtil.isMultiDay(appointment)) {
+            appointment.setMultiDay(true);
+        }
+        
         if (!appointments.contains(appointment)) {
             appointments.add(appointment);
+        }
+        
+        //if it is a multi day appointment make sure it is on the list
+        if(appointment.isMultiDay() && !multiDayAppointments.contains(appointment)) {
+            multiDayAppointments.add(appointment);
+        //if not, make sure it IS NOT on the list
+        } else if(multiDayAppointments.contains(appointment)) {
+            multiDayAppointments.remove(appointment);
         }
 
         sortPending = true;
@@ -175,6 +189,7 @@ public abstract class CalendarView extends Composite implements
 
     public void clearAppointments() {
         appointments.clear();
+        multiDayAppointments.clear();
         doLayout();
     }
 
@@ -187,6 +202,7 @@ public abstract class CalendarView extends Composite implements
         }
         if (commitChange) {
             appointments.remove(appointment);
+            multiDayAppointments.remove(appointment);
             selectedAppointment = null;
             sortPending = true;
             doLayout();
@@ -198,7 +214,17 @@ public abstract class CalendarView extends Composite implements
     }
 
     public void addAppointment(Appointment appointment) {
-        this.appointments.add(appointment);
+        appointments.add(appointment);
+        
+        /* this is what i need to do, but calcuation doens't work yet */
+        /* so for now developer will need to manually set flag */
+//        if(AppointmentUtil.isMultiDay(appointment)) {
+//            appointment.setMultiDay(true);
+//            multiDayAppointments.add(appointment);
+//        }
+        if(appointment.isMultiDay())
+            multiDayAppointments.add(appointment);
+        
         this.sortPending = true;
 
         doLayout();
