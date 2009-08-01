@@ -176,11 +176,12 @@ public class DayView extends CalendarView {
         
         ArrayList<AppointmentInterface> filteredList =
             AppointmentUtil.filterListByDateRange(appointments, getDate(), getDays());
-        layoutStrategy.doMultiDayLayout(filteredList, getDate(), getDays());
+        int desiredHeight = layoutStrategy.doMultiDayLayout(filteredList, getDate(), getDays());
+        
         for(AppointmentInterface appt : filteredList) {
             this.multiViewBody.grid.add((Appointment)appt);
         }
-
+        multiViewBody.grid.setHeight(desiredHeight + "px");
         //as part of layout set height
         doComponentLayout();
     }
