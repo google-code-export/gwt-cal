@@ -292,7 +292,7 @@ public class DayViewLayoutStrategy {
         return appointmentCells;
     }
 
-    public void doMultiDayLayout(ArrayList<AppointmentInterface> appointments, Date start, int days) {
+    public int doMultiDayLayout(ArrayList<AppointmentInterface> appointments, Date start, int days) {
 
 
         //create array to hold all appointments for a particular day
@@ -301,6 +301,9 @@ public class DayViewLayoutStrategy {
 
         //for a particular day need to track all used rows
         HashMap<Integer, HashMap<Integer, Integer>> daySlotMap = new HashMap<Integer, HashMap<Integer, Integer>>();
+
+        int minHeight = 30;
+        int maxRow = 0;
 
         //list of appointment adapters
         ArrayList<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
@@ -375,6 +378,9 @@ public class DayViewLayoutStrategy {
                     for (int y = adapter.getColumnStart(); y <= adapter.getColumnStart() + adapter.getColumnSpan(); y++) {
                         HashMap<Integer, Integer> rowMap = daySlotMap.get(y);
                         rowMap.put(x, x);
+                        if (x > maxRow) {
+                            maxRow = x;
+                        }
                     //System.out.println("    > added "+ x + " to row list for column " + y);
                     }
                     //set the row (also named cell)
@@ -384,7 +390,7 @@ public class DayViewLayoutStrategy {
 
                     //now we set the appointment's location
                     AppointmentInterface appt = adapter.getAppointment();
-                    float top = adapter.getCellStart() * 30f + 5f;
+                    float top = adapter.getCellStart() * 25f + 5f;
                     float width = ((float) adapter.getColumnSpan() + 1f) / days * 100f - 1f;//10f=padding
                     float left = ((float) adapter.getColumnStart()) / days * 100f + .5f;//10f=padding
                     //float left = (float) adapter.getColumnStart() / (float) apptCell.getIntersectingBlocks().get(0).getTotalColumns() * 100;
@@ -400,12 +406,9 @@ public class DayViewLayoutStrategy {
         //System.out.println("multi-day layout -- title: \"" + adapter.getAppointment().getTitle() + "\" | col start: " + adapter.getColumnStart() + " | colspan: " + adapter.getColumnSpan() + " | row: " + adapter.getCellStart() + " | start date: " + adapter.getAppointment().getStart() + " | end date: " + adapter.getAppointment().getEnd());
 
 
-
         }
 
-
-
-
-
+        int height = (maxRow+1) * 25 + 5;
+        return Math.max(height, minHeight);
     }
 }
