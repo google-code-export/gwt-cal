@@ -19,7 +19,7 @@ The gwt-library includes a set of themes to style the calendar widget. The desir
 *Preview examples of each theme:*
  * [http://google.latest.gwt-web-calendar.appspot.com/ Google theme]
  * [http://outlook.latest.gwt-web-calendar.appspot.com/ Outlook theme]
- * [http://gwt-web-calendar.appspot.com/ iCal(ish) theme]
+ * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme]
 
 === iCal Hour Labels ===
 
