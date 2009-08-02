@@ -7,6 +7,7 @@
 	width: 100%;
 	overflow: hidden;
 	border: 1px solid #C1C1C1;
+        background:#FFF;
 }
 
 .gwt-cal .major-time-interval {
@@ -145,6 +146,36 @@
 	border-bottom: 3px solid #D9D9D9;
 }
 
+
+/* Multi-day appointment section */
+.gwt-cal .multiDayBody {
+    width:100%;
+    background:#FFF;
+}
+
+.gwt-cal .multiDayBody .splitter {
+	height: 3px;
+	_height: 5px;
+	border-top: 1px solid #BEBEBE;
+	background: #E8E8E8;
+	border-bottom: 3px solid #D9D9D9;
+}
+
+.gwt-cal .leftEmptyCell {
+    background: #FFF;
+    width:50px;
+}
+.gwt-cal .rightEmptyCell {
+    background: #FFF;
+}
+
+
+
+
+
+
+
+
 /* Appointment panels, that get rendered to the screen as Div's (Primary Style) */
 .gwt-appointment {
 	position: absolute;
@@ -152,10 +183,10 @@
 	font-family: arial;
 	border: 1px solid #666;
 	overflow: hidden;
-	filter: alpha(opacity = 50);
-	opacity: 0.5;
-        -moz-opacity: 0.5;
-        -webkit-opacity: 0.5;
+	filter: alpha(opacity = 75);
+	opacity: 0.75;
+        -moz-opacity: 0.75;
+        -webkit-opacity: 0.75;
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 }
@@ -197,30 +228,12 @@
 }
 
 .gwt-appointment .timeline {
-	position: absolute;
-	top: 0px;
-	left: 0px;
-	height: 100%;
-	background: #FFF;
-	border-right: 1px solid #000;
-	width: 5px;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-	-moz-border-radius-bottomleft: 5px;
+
         display:none;
 }
 
 .gwt-appointment .timeline-fill {
-	background: #8EED7F url(line-pattern-template-inverse.gif);
-	position: absolute;
-	width: 100%;
-	height: 100%;
-	left: 0px;
-	-webkit-border-top-left-radius: 5px;
-	-webkit-border-bottom-left-radius: 5px;
-	-moz-border-radius-topleft: 5px;
-	-moz-border-radius-bottomleft: 5px;
+	display:none;
 }
 
 /* Appointment panel style when selected (Secondary Style) */
@@ -288,8 +301,11 @@
 /* Red */
 .gwt-appointment-red {
 	border: 1px solid #e3231f;
-	background: #f76260 url(red-appt-gradient.gif) repeat-y;;
+	background: #f76260;
 	color: #e3231f;
+}
+.gwt-appointment-selected.gwt-appointment-red {
+  background: #f76260 url(red-appt-gradient.gif) repeat-y;;
 }
 
 .gwt-appointment-red .header {
