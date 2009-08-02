@@ -21,6 +21,7 @@ public class DayViewMultiDayBody extends Composite {
     private HasSettings settings = null;
     private static final String TIMELINE_EMPTY_CELL_STYLE = "leftEmptyCell";
     private static final String SCROLLBAR_EMPTY_CELL_STYLE = "rightEmptyCell";
+    private static final String DAY_CONTAINER_CELL_STYLE = "centerDayContainerCell";
     private static final String SPLITTER_STYLE = "splitter";
     protected SimplePanel gridOverlay = new SimplePanel();
 
@@ -48,8 +49,9 @@ public class DayViewMultiDayBody extends Composite {
         //add panel to hold appointments
         header.setWidget(0, 1, grid);
 
-        //set empty cell styles
+        //set cell styles
         header.getCellFormatter().setStyleName(0, 0, TIMELINE_EMPTY_CELL_STYLE);
+        header.getCellFormatter().setStyleName(0, 1, DAY_CONTAINER_CELL_STYLE);
         header.getCellFormatter().setStyleName(0, 2, SCROLLBAR_EMPTY_CELL_STYLE);
         header.getCellFormatter().setWidth(0, 2,
                 WindowUtils.getScrollBarWidth(true) + "px");
