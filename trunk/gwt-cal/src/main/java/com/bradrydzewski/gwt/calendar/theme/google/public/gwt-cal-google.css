@@ -253,12 +253,12 @@
 }
 
 
-
+/* Multi-day appointment section */
 .gwt-cal .multiDayBody {
     width:100%;
     background:#E8EEF7;
 }
-/* Multi-day appointment section */
+
 .gwt-cal .multiDayBody .splitter {
 	height: 5px;
 	_height: 5px;
