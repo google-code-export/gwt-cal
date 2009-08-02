@@ -7,4 +7,4 @@
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
    * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
-   * [http://gwt-web-calendar.appspot.com iCal(ish) theme]
+   * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme]
