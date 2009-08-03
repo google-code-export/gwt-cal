@@ -119,7 +119,7 @@ public class DayView extends CalendarView {
 
         DeferredCommand.addCommand(new Command() {
 
-            @Override
+            //@Override
             public void execute() {
                 if (GWT.isScript()) {
                     doComponentLayout();

@@ -236,17 +236,17 @@ public abstract class CalendarView extends Composite implements
         }
     }
 
-    @Override
+
     public Appointment getValue() {
         return selectedAppointment;
     }
 
-    @Override
+    //@Override
     public void setValue(Appointment value) {
         setValue(value, true);
     }
 
-    @Override
+    //@Override
     public void setValue(Appointment value, boolean fireEvents) {
 
         Appointment oldValue = selectedAppointment;
@@ -271,31 +271,31 @@ public abstract class CalendarView extends Composite implements
 
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addDeleteHandler(
             DeleteHandler<AppointmentInterface> handler) {
         return addHandler(handler, DeleteEvent.getType());
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addTimeBlockClickHandler(
             TimeBlockClickHandler<Date> handler) {
         return addHandler(handler, TimeBlockClickEvent.getType());
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addValueChangeHandler(
             ValueChangeHandler<Appointment> handler) {
 
         return addHandler(handler, ValueChangeEvent.getType());
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addSelectionHandler(SelectionHandler<AppointmentInterface> handler) {
         return addHandler(handler, SelectionEvent.getType());
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addOpenHandler(OpenHandler<AppointmentInterface> handler) {
         return addHandler(handler, OpenEvent.getType());
     }

@@ -32,37 +32,30 @@ public class Appointment extends Composite implements AppointmentInterface {
             setElement(DOM.createDiv());
         }
 
-        @Override
         public void add(Widget w) {
             super.add(w, getElement());
         }
 
-        @Override
         public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
             return addDomHandler(handler, MouseDownEvent.getType());
         }
 
-        @Override
         public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
             return addDomHandler(handler, MouseUpEvent.getType());
         }
 
-        @Override
         public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
             return addDomHandler(handler, MouseOutEvent.getType());
         }
 
-        @Override
         public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
             return addDomHandler(handler, MouseOverEvent.getType());
         }
 
-        @Override
         public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
             return addDomHandler(handler, MouseMoveEvent.getType());
         }
 
-        @Override
         public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
             return addDomHandler(handler, MouseWheelEvent.getType());
         }
@@ -106,32 +99,26 @@ public class Appointment extends Composite implements AppointmentInterface {
         DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
     }
 
-    @Override
     public Date getStart() {
         return start;
     }
 
-    @Override
     public void setStart(Date start) {
         this.start = start;
     }
 
-    @Override
     public Date getEnd() {
         return end;
     }
 
-    @Override
     public void setEnd(Date end) {
         this.end = end;
     }
 
-    @Override
     public boolean isSelected() {
         return selected;
     }
 
-    @Override
     public void setSelected(boolean selected) {
 
         // set selected
@@ -146,79 +133,65 @@ public class Appointment extends Composite implements AppointmentInterface {
         }
     }
 
-    @Override
     public float getTop() {
         return top;
     }
 
-    @Override
     public void setTop(float top) {
         this.top = top;
         DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
     }
 
-    @Override
     public float getLeft() {
         return left;
     }
 
-    @Override
     public void setLeft(float left) {
         this.left = left;
         DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
     }
 
-    @Override
     public float getWidth() {
         return width;
     }
 
-    @Override
     public void setWidth(float width) {
         this.width = width;
         DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
     }
 
-    @Override
     public float getHeight() {
         return height;
     }
 
-    @Override
     public void setHeight(float height) {
         this.height = height;
         DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
     }
 
-    @Override
     public String getTitle() {
         return title;
     }
 
-    @Override
     public void setTitle(String title) {
         this.title = title;
         DOM.setInnerText(headerPanel.getElement(), title);
     }
 
-    @Override
     public String getDescription() {
         return description;
     }
 
-    @Override
     public void setDescription(String description) {
         this.description = description;
         DOM.setInnerHTML(bodyPanel.getElement(), description);
     }
 
-    @Override
     public void formatTimeline(float top, float height) {
         timelineFillPanel.setHeight(height + "%");
         DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
     }
 
-    @Override
     public int compareTo(AppointmentInterface appt) {
         // -1 0 1
         // less, equal, greater

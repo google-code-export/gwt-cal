@@ -216,22 +216,22 @@ public class Calendar extends Composite implements HasValue<Appointment> {
         currentView.addAppointments(appointments);
     }
 
-    @Override
+    //@Override
     public Appointment getValue() {
         return currentView.getValue();
     }
 
-    @Override
+    //@Override
     public void setValue(Appointment value) {
         currentView.setValue(value, true);
     }
 
-    @Override
+    //@Override
     public void setValue(Appointment value, boolean fireEvents) {
         currentView.setValue(value, fireEvents);
     }
 
-    @Override
+    //@Override
     public HandlerRegistration addValueChangeHandler(
             ValueChangeHandler<Appointment> handler) {
         
