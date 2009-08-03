@@ -3,9 +3,16 @@ package com.bradrydzewski.gwt.calendar.demo.client;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.Calendar;
+import com.bradrydzewski.gwt.calendar.client.AppointmentInterface;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.DayView;
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -47,17 +54,40 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 		
 		//change hour offset to false to facilitate google style
 		settings.setOffsetHourLabels(false);
+		settings.setTimeBlockClickNumber(Click.Double);
 		//create day view
-		dayView = new DayView();
+		dayView = new DayView(settings);
 		//set style as google-cal
 		dayView.setWidth("100%");
 		//set today as default date
 		datePicker.setValue(new Date());
+		
 		datePicker.addValueChangeHandler(new ValueChangeHandler<Date>(){
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				dayView.setDate(event.getValue());
 			}
+		});
+		dayView.addDeleteHandler(new DeleteHandler<AppointmentInterface>(){
+
+			@Override
+			public void onDelete(DeleteEvent<AppointmentInterface> event) {
+				boolean commit = Window.confirm("Are you sure you want to delete appointment \"" + event.getTarget().getTitle() + "\"");
+				if(commit==false) {
+					event.setCancelled(true);
+					System.out.println("cancelled appointment deletion");
+				}
+			
+			}
+			
+		});
+		dayView.addOpenHandler(new OpenHandler<AppointmentInterface>(){
+
+			@Override
+			public void onOpen(OpenEvent<AppointmentInterface> event) {
+				Window.alert("You double-clicked appointment \"" + event.getTarget().getTitle() + "\"");
+			}
+			
 		});
 		
 		dayView.addValueChangeHandler(new ValueChangeHandler<Appointment>(){
@@ -70,6 +100,14 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 			
 		});
 		
+		dayView.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
+
+			@Override
+			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
+				Window.alert("you clicked time block " + event.getTarget());
+			}
+			
+		});
 		
 		daysTabBar.addTab("1 Day");
 		daysTabBar.addTab("3 Day");
@@ -130,9 +168,12 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 			@Override
 			public void execute() {
 				dayView.setHeight(Window.getClientHeight()-85+"px");
+				//dayView.scrollToHour(6);
 			}
 		});
 		DOM.setStyleAttribute(getElement(), "padding", "10px");
+		
+		
 	}
 	
 
@@ -144,7 +185,7 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 		Integer[] hours = new Integer[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24};
 		Integer[] minutes = new Integer[] {0,15,30,45};
 		Integer[] durations = new Integer[] {15,30,45,60,90,120,180,240};
-		
+		String[] styles = new String[] {"gwt-appointment-green","gwt-appointment-blue","gwt-appointment-lightgreen","gwt-appointment-yellow"};
 		
 		Date tempDate = new Date();
 		tempDate.setHours(0);
@@ -168,9 +209,9 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 				Date end = (Date)start.clone();
 				end.setMinutes(start.getMinutes() + dur);
 				
-				//System.out.println("appt start: " + start + "  end: " + end);
+				System.out.println("appt start: " + start + "  end: " + end);
 				
-				String style = (a%3==0)?"gwt-appointment-blue":"gwt-appointment-green";
+				String style = styles[Random.nextInt(4)];
 				Appointment appt = new Appointment();
 				appt.setStart(start);
 				appt.setEnd(end);
@@ -184,6 +225,40 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 			tempDate.setDate(tempDate.getDate()+1);
 		}
 		
+		
+		//add my first multi-day appt
+		Appointment appt1 = new Appointment();
+		appt1.setStart(new Date());
+		appt1.setEnd(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+3));
+		appt1.setTitle("all day 1");
+		appt1.addStyleName("gwt-appointment-green");
+		appt1.setMultiDay(true);
+		dayView.addAppointment(appt1);
+		
+		Appointment appt2 = new Appointment();
+		appt2.setStart(new Date());
+		appt2.setEnd(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+3));
+		appt2.setTitle("all day 2");
+		appt2.addStyleName("gwt-appointment-green");
+		appt2.setMultiDay(true);
+		dayView.addAppointment(appt2);
+		
+		Appointment appt3 = new Appointment();
+		appt3.setStart(new Date());
+		appt3.setEnd(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+1));
+		appt3.setTitle("all day 3");
+		appt3.addStyleName("gwt-appointment-green");
+		appt3.setMultiDay(true);
+		dayView.addAppointment(appt3);
+		
+		
+		Appointment appt4 = new Appointment();
+		appt4.setStart(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+2));
+		appt4.setEnd(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+7));
+		appt4.setTitle("all day 4");
+		appt4.addStyleName("gwt-appointment-green");
+		appt4.setMultiDay(true);
+		dayView.addAppointment(appt4);
 		dayView.resumeLayout();
 		
 
