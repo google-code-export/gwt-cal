@@ -1,3 +1,21 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2009  Brad Rydzewski
+ * 
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
+
 package com.bradrydzewski.gwt.calendar.client;
 
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
@@ -109,7 +127,6 @@ public class DayView extends CalendarView {
             }
         });
     }
-    
 
     public void doComponentLayout() {
 
@@ -123,7 +140,6 @@ public class DayView extends CalendarView {
     public void onLoad() {
         doComponentLayout();
     }
-    
     // </editor-fold>
     // <editor-fold desc="Public Methods" defaultState="collapse">
     @Override
@@ -173,13 +189,13 @@ public class DayView extends CalendarView {
 
             tmpDate.setDate(tmpDate.getDate() + 1);
         }
-        
+
         ArrayList<AppointmentInterface> filteredList =
-            AppointmentUtil.filterListByDateRange(appointments, getDate(), getDays());
+                AppointmentUtil.filterListByDateRange(appointments, getDate(), getDays());
         int desiredHeight = layoutStrategy.doMultiDayLayout(filteredList, getDate(), getDays());
-        
-        for(AppointmentInterface appt : filteredList) {
-            this.multiViewBody.grid.add((Appointment)appt);
+
+        for (AppointmentInterface appt : filteredList) {
+            this.multiViewBody.grid.add((Appointment) appt);
         }
         multiViewBody.grid.setHeight(desiredHeight + "px");
         //as part of layout set height
