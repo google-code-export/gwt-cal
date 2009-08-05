@@ -98,7 +98,7 @@ public class AppointmentUtil {
         Long rangeEndLong = rangeEnd.getTime();
         
         if(apptStartLong >= rangeStartLong) {
-            if(apptStartLong <= rangeEndLong) {
+            if(apptStartLong < rangeEndLong) {
                 return true;
             }
         }
