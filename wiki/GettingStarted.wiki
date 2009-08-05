@@ -49,30 +49,35 @@ dayView.add(appt);
 
 == appointment style ==
 
-When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Available color styles are: `gwt-appointment-blue`, `gwt-appointment-green`
+When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Examples are: `gwt-appointment-blue`, `gwt-appointment-green`
 
-*Update*: As of build r58 (thanks to [http://code.google.com/u/SpaceRoosters/ SpaceRoosters]) the Google theme supports all appointment colors: 
- * gwt-appointment-red
- * gwt-appointment-green
- * gwt-appointment-blue
- * gwt-appointment-pink
- * gwt-appointment-purple
- * gwt-appointment-darkpurple
- * gwt-appointment-steelblue
- * gwt-appointment-lightblue
- * gwt-appointment-teal
- * gwt-appointment-lightgreen
- * gwt-appointment-yellowgreen
- * gwt-appointment-yellow
- * gwt-appointment-orange
- * gwt-appointment-redorange
- * gwt-appointment-lightbrown
- * gwt-appointment-lightpurple
- * gwt-appointment-grey
- * gwt-appointment-bluegrey
- * gwt-appointment-lightteal
- * gwt-appointment-yellowgrey
- * gwt-appointment-brown
+*Update*: Support for all Google Calendar colors As of build r58 (thanks to [http://code.google.com/u/SpaceRoosters/ SpaceRoosters])<br/>
+Support for all iCal colors as of build r68 (thanks to me)
+
+Here is a table of appointment styles and the themes that support them:
+|| Style Name                  || Google Calendar || iCal ||
+|| gwt-appointment-red         || X               || X  ||
+|| gwt-appointment-green       || X               || X  ||
+|| gwt-appointment-blue        || X               || X  ||
+|| gwt-appointment-pink        || X               || -  ||
+|| gwt-appointment-purple      || X               || X  ||
+|| gwt-appointment-fushia      || -               || X  ||
+|| gwt-appointment-darkpurple  || X               || X  ||
+|| gwt-appointment-steelblue   || X               || -  ||
+|| gwt-appointment-lightblue   || X               || -  ||
+|| gwt-appointment-teal        || X               || -  ||
+|| gwt-appointment-lightgreen  || X               || -  ||
+|| gwt-appointment-yellowgreen || X               || -  ||
+|| gwt-appointment-yellow      || X               || -  ||
+|| gwt-appointment-orange      || X               || X  ||
+|| gwt-appointment-redorange   || X               || -  ||
+|| gwt-appointment-lightbrown  || X               || -  ||
+|| gwt-appointment-lightpurple || X               || -  ||
+|| gwt-appointment-grey        || X               || -  ||
+|| gwt-appointment-bluegrey    || X               || -  ||
+|| gwt-appointment-lightteal   || X               || -  ||
+|| gwt-appointment-yellowgrey  || X               || -  ||
+|| gwt-appointment-brown       || X               || -  ||
 
 == appointments in batch ==
 
