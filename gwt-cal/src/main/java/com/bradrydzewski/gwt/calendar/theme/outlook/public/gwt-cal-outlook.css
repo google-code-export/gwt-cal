@@ -141,14 +141,13 @@
 }
 
 .gwt-cal .gwt-calendar-header .splitter {
-    height: 3px;
-    _height: 5px;
-    border-top: 1px solid #BEBEBE;
-    background: #E8E8E8;
-    border-bottom: 3px solid #D9D9D9;
+    height: 1px;
+    background: #000000;
 }
 
-
+.gwt-cal .gwt-calendar-header .day-separator {
+	border-left: 1px solid #000;
+}
 
 
 
@@ -276,4 +275,27 @@
 .gwt-cal .gwt-appointment.gwt-appointment-green.gwt-appointment-selected {
     border-top:4px solid blue;
     border-bottom:4px solid blue;
+}
+
+
+
+
+
+/* Multi-day appointment section */
+.gwt-cal .multiDayBody {
+    width:100%;
+    background: rgb(128,128,128);
+}
+
+.gwt-cal .multiDayBody .splitter {
+    height: 1px;
+    background: #000000;
+}
+
+.gwt-cal .leftEmptyCell {
+    background: #EAEAEA;
+    width:50px;
+}
+.gwt-cal .rightEmptyCell {
+    background: #EAEAEA;
 }
