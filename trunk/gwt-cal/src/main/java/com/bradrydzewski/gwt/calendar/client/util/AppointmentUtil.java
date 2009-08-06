@@ -55,14 +55,14 @@ public class AppointmentUtil {
         return false;
     }
     
-    public static ArrayList filterListByDateRange(ArrayList fullList, Date startDate, int days) {
+    public static ArrayList filterListByDateRange(ArrayList fullList, Date date, int days) {
         
         ArrayList<AppointmentInterface> group = new ArrayList<AppointmentInterface>();
-        startDate = new Date(startDate.getYear(), startDate.getMonth(),
-                startDate.getDate(), 0, 0, 0);
-        Date endDate = new Date(startDate.getYear(), startDate.getMonth(),
-                startDate.getDate(), 0, 0, 0);
-        endDate.setDate(endDate.getDate() + days + 1);
+        Date startDate = (Date)date.clone();
+        resetTime(startDate);
+        Date endDate = (Date)date.clone();
+        resetTime(endDate);
+        endDate.setDate(endDate.getDate() + days);
         
         for (int i = 0; i < fullList.size(); i++) {
 
@@ -78,7 +78,8 @@ public class AppointmentUtil {
     public static boolean rangeContains(AppointmentInterface appt, Date date) {
         Date rangeStart = date;
         Date rangeEnd = (Date)date.clone();
-        rangeEnd.setDate(rangeStart.getDate()+1);
+        rangeEnd.setDate(rangeEnd.getDate()+1);
+        resetTime(rangeEnd);
         return rangeContains(appt, rangeStart, rangeEnd);
     }
     
@@ -165,4 +166,22 @@ public class AppointmentUtil {
         
         return null;
     }
+    
+    
+    /**
+     * Resets the date to have no time modifiers.
+     * 
+     * @param date the date
+     */
+    public static void resetTime(Date date) {
+    	
+      long msec = date.getTime();
+      msec = (msec / 1000) * 1000;
+      date.setTime(msec);
+
+      date.setHours(0);
+      date.setMinutes(0);
+      date.setSeconds(0);
+    }
 }
+
