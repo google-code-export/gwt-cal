@@ -315,12 +315,14 @@ public class DayViewLayoutStrategy {
 
         //create array of dates
         ArrayList<Date> dateList = new ArrayList<Date>();
-        Date tempStartDate = (Date) start.clone();
-        tempStartDate.setHours(0);
-        tempStartDate.setMinutes(0);
-        tempStartDate.setSeconds(0);
+        Date tempStartDate = (Date)start.clone();
+        
+//        tempStartDate.setHours(0);
+//        tempStartDate.setMinutes(0);
+//        tempStartDate.setSeconds(0);
         for (int i = 0; i < days; i++) {
             Date d = (Date) tempStartDate.clone();
+            AppointmentUtil.resetTime(d);
             //appointmentDayMap.put(d, new ArrayList<AppointmentAdapter>());
             daySlotMap.put(i, new HashMap<Integer, Integer>());
             dateList.add(d);
@@ -363,13 +365,17 @@ public class DayViewLayoutStrategy {
 
                 boolean isRowOccupied = false;
                 for (int y = adapter.getColumnStart(); y <= adapter.getColumnStart() + adapter.getColumnSpan(); y++) {
-                    HashMap<Integer, Integer> rowMap = daySlotMap.get(y);
+                    try{
+                	HashMap<Integer, Integer> rowMap = daySlotMap.get(y);
                     if (rowMap.containsKey(x) == true) {
                         isRowOccupied = true;
                     //System.out.println("    row [" + x+"] is occupied for day [" + y+"]");
                     } else {
                         //isRowOccupied = false;
                         break; //break out of loop, nothing found in row slot
+                    }
+                    }catch(Exception ex) {
+                    	System.out.println("Exception: y=" + y + " x=" + x + " adapters.size=" + adapters.size() + " start="+adapter.getAppointment().getStart() + " end="+adapter.getAppointment().getEnd().toString());
                     }
                 }
 
@@ -411,4 +417,7 @@ public class DayViewLayoutStrategy {
         int height = (maxRow+1) * 25 + 5;
         return Math.max(height, minHeight);
     }
+    
+
+    
 }
