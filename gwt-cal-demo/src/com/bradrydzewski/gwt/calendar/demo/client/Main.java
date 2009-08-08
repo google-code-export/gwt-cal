@@ -10,6 +10,10 @@ public class Main implements EntryPoint {
 	
 	
 	public void onModuleLoad() {
-		RootPanel.get().add(new iCalCalendarPanel());
+		/* Un-comment for iCal version of demo */
+		//RootPanel.get().add(new iCalCalendarPanel());
+		
+		/* Un-comment for Google version of demo */
+		RootPanel.get().add(new GoogleCalendarPanel());
 	}
 }

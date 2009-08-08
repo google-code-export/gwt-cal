@@ -255,13 +255,48 @@ public class GoogleCalendarPanel extends AbsolutePanel {
 		Appointment appt4 = new Appointment();
 		appt4.setStart(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+2));
 		appt4.setEnd(new Date(new Date().getYear(),new Date().getMonth(),new Date().getDate()+7));
-		appt4.setTitle("all day 4");
+		appt4.setTitle("all day 4 " + appt4.getStart() + " "  + appt4.getEnd());
 		appt4.addStyleName("gwt-appointment-green");
 		appt4.setMultiDay(true);
 		dayView.addAppointment(appt4);
-		dayView.resumeLayout();
+		
 		
 
+		
+		
+		
+		
+		Appointment appt5 = new Appointment();
+		appt5.setStart(new Date(new Date().getYear(),11,23,10,0));
+		appt5.setEnd(new Date(new Date().getYear(),11,24,13,30));
+		appt5.setTitle("Multi Day event");
+		appt5.setDescription("From Dec 23 10am to Dec 24 1:30pm");
+		appt5.addStyleName("gwt-appointment-green");
+		appt5.setMultiDay(true);
+		dayView.addAppointment(appt5);
+		
+
+		Appointment appt6 = new Appointment();
+		appt6.setStart(new Date(new Date().getYear(),11,25,0,0));
+		appt6.setEnd(new Date(new Date().getYear(),11,26,0,0));
+		appt6.setTitle("All Day event");
+		appt6.setDescription("From Dec 25 to Dec 26");
+		appt6.addStyleName("gwt-appointment-blue");
+		appt6.setMultiDay(true);
+		dayView.addAppointment(appt6);
+		
+		
+		Appointment appt7 = new Appointment();
+		appt7.setStart(new Date(new Date().getYear(),11,25,0,0));
+		appt7.setEnd(new Date(new Date().getYear(),11,25,0,0));
+		appt7.setTitle("All Day");
+		appt7.setDescription("Dec 25 12am to Midnight (12am Dec 26)");
+		appt7.addStyleName("gwt-appointment-red");
+		appt7.setMultiDay(true);
+		dayView.addAppointment(appt7);
+		
+		
+		dayView.resumeLayout();
 	}
 
 	
