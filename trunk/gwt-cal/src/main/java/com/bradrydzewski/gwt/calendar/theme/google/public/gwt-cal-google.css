@@ -257,6 +257,7 @@
 .gwt-cal .multiDayBody {
     width:100%;
     background:#E8EEF7;
+    table-layout: fixed;
 }
 
 .gwt-cal .multiDayBody .splitter {
@@ -300,6 +301,7 @@
 .gwt-cal .gwt-appointment-blue .timeline-fill {
 	background-color: #668CD9;
 }
+
 
 /* RED */
 .gwt-cal .gwt-appointment-red {
@@ -770,5 +772,20 @@
 	background-color: #C4A883;
 }
 
+
+
+
+/* multi-day appointments have no footer */
+.gwt-cal .multiDayBody .gwt-appointment .footer,
+.gwt-cal .multiDayBody .gwt-appointment-selected .footer {
+	display:none;
+}
+/* and header fills the entire appointment body */
+.gwt-cal .multiDayBody .gwt-appointment .header,
+.gwt-cal .multiDayBody .gwt-appointment-selected .header {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	height:100%;
+}
 
 

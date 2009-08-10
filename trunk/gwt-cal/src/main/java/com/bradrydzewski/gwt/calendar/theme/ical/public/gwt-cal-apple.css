@@ -91,7 +91,7 @@
 .gwt-cal .gwt-calendar-header {
 	background: #FFF;
 	width: 100%;
-	border-bottom: 1px solid #BEBEBE;
+	border-bottom: 0px solid #BEBEBE;
 	width: 100%;
 	table-layout: fixed;
 	border-collapse: collapse;
@@ -151,6 +151,7 @@
 .gwt-cal .multiDayBody {
     width:100%;
     background:#FFF;
+    table-layout: fixed;
 }
 
 .gwt-cal .multiDayBody .splitter {
@@ -337,4 +338,20 @@
 .gwt-appointment-fuschia .header {
 	background: #b02cae;
 	color: #FFF;
+}
+
+
+
+
+/* multi-day appointments have no footer */
+.gwt-cal .multiDayBody .gwt-appointment .footer,
+.gwt-cal .multiDayBody .gwt-appointment-selected .footer {
+	display:none;
+}
+/* and header fills the entire appointment body */
+.gwt-cal .multiDayBody .gwt-appointment .header,
+.gwt-cal .multiDayBody .gwt-appointment-selected .header {
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
+	height:100%;
 }
