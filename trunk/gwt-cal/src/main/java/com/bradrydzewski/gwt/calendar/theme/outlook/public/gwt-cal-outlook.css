@@ -285,6 +285,7 @@
 .gwt-cal .multiDayBody {
     width:100%;
     background: rgb(128,128,128);
+    table-layout: fixed;
 }
 
 .gwt-cal .multiDayBody .splitter {
@@ -298,4 +299,13 @@
 }
 .gwt-cal .rightEmptyCell {
     background: #EAEAEA;
+}
+
+
+
+
+/* multi-day appointments have no footer */
+.gwt-cal .multiDayBody .gwt-appointment .footer,
+.gwt-cal .multiDayBody .gwt-appointment-selected .footer {
+	display:none;
 }
