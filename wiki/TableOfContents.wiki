@@ -1,7 +1,7 @@
  * [Introduction Introduction]
  * [GettingStarted Getting Started]
- * [Themes Themes]
  * [MultiDayAppointments Multi-day Appointments]
+ * [Themes Themes]
  * [Settings Settings]
  * [BrowserCompatibility Browser Compatibility]
  * [ReleaseNotes Release Notes]
