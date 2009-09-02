@@ -44,7 +44,7 @@ appt.setStart(...);
 appt.setEnd(...);
 appt.setTitle(...);
 appt.addStyleName("gwt-appointment-blue");
-dayView.add(appt);
+dayView.addAppointment(appt);
 }}}
 
 == appointment style ==
@@ -90,7 +90,7 @@ dayView.suspendLayout();
 for(int i=0;i<1000;i++) {
 	Appointment appt = new Appointment();
 	...
-	dayView.add(appt);
+	dayView.addAppointment(appt);
 }
 
 dayView.resumeLayout();
