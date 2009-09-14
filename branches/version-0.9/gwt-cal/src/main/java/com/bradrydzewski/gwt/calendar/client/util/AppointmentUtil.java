@@ -1,12 +1,13 @@
 package com.bradrydzewski.gwt.calendar.client.util;
 
-import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentInterface;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentWidget;
+import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.Element;
 
 /**
  *
@@ -57,7 +58,7 @@ public class AppointmentUtil {
     
     public static ArrayList filterListByDateRange(ArrayList fullList, Date date, int days) {
         
-        ArrayList<AppointmentInterface> group = new ArrayList<AppointmentInterface>();
+        ArrayList<Appointment> group = new ArrayList<Appointment>();
         Date startDate = (Date)date.clone();
         resetTime(startDate);
         Date endDate = (Date)date.clone();
@@ -66,7 +67,7 @@ public class AppointmentUtil {
         
         for (int i = 0; i < fullList.size(); i++) {
 
-            AppointmentInterface tmpAppt = (AppointmentInterface) fullList.get(i);
+            Appointment tmpAppt = (Appointment) fullList.get(i);
             if(tmpAppt.isMultiDay() && rangeContains(tmpAppt,startDate,endDate)) {
                 group.add(tmpAppt);
             }
@@ -75,7 +76,7 @@ public class AppointmentUtil {
         return group;
     }
     
-    public static boolean rangeContains(AppointmentInterface appt, Date date) {
+    public static boolean rangeContains(Appointment appt, Date date) {
         Date rangeStart = date;
         Date rangeEnd = (Date)date.clone();
         rangeEnd.setDate(rangeEnd.getDate()+1);
@@ -91,7 +92,7 @@ public class AppointmentUtil {
      * @param rangeEnd
      * @return true false indicating appointment intersects with date range
      */
-    public static boolean rangeContains(AppointmentInterface appt, Date rangeStart, Date rangeEnd) {
+    public static boolean rangeContains(Appointment appt, Date rangeStart, Date rangeEnd) {
         
         Long apptStartLong = appt.getStart().getTime();
         Long apptEndLong = appt.getEnd().getTime();
@@ -124,9 +125,9 @@ public class AppointmentUtil {
      * @param startDate
      * @return
      */
-    public static ArrayList filterListByDate(ArrayList fullList, Date startDate) {
+    public static ArrayList filterListByDate(List fullList, Date startDate) {
 
-        ArrayList<AppointmentInterface> group = new ArrayList<AppointmentInterface>();
+        ArrayList<Appointment> group = new ArrayList<Appointment>();
         startDate = new Date(startDate.getYear(), startDate.getMonth(),
                 startDate.getDate(), 0, 0, 0);
         Date endDate = new Date(startDate.getYear(), startDate.getMonth(),
@@ -135,7 +136,7 @@ public class AppointmentUtil {
 
         for (int i = 0; i < fullList.size(); i++) {
 
-            AppointmentInterface tmpAppt = (AppointmentInterface) fullList.get(i);
+            Appointment tmpAppt = (Appointment) fullList.get(i);
 
             if (tmpAppt.isMultiDay()==false && tmpAppt.getEnd().before(endDate)) {
 
@@ -155,8 +156,9 @@ public class AppointmentUtil {
         return group;
     }
 
-    public static Appointment checkAppointmentElementClicked(Element element,List<Appointment> appointments) {
-        for (Appointment appt : appointments) {
+    public static AppointmentWidget checkAppointmentElementClicked(Element element,List<AppointmentWidget> appointments) {
+        for (AppointmentWidget appt : appointments) {
+            //throw new RuntimeException("checkAppointmentElementClicked is not implemented");
             
             if ( DOM.isOrHasChild(appt.getElement(), element) ) {
                 
