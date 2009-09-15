@@ -789,3 +789,25 @@
 }
 
 
+
+
+/* List View here */
+.gwt-cal-ListView { font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold; }
+
+.gwt-cal-ListView .dateCell { white-space:nowrap; padding-right:30px; color:#112ABB; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
+.gwt-cal-ListView .timeCell { white-space:nowrap; padding-left:30px; padding-right:30px; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
+.gwt-cal-ListView .titleCell { width:99%; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
+
+.gwt-cal-ListView .row { background: #E8EEF7; }
+.gwt-cal-ListView .row-alt { background: #FFF; }
+.gwt-cal-ListView .row-today,
+  .gwt-cal-ListView .row-alt-today { background: #FFFFCC; }
+
+.gwt-cal-ListView .row-today .dateCell,
+  .gwt-cal-ListView .row-alt-today .dateCell { background:#BBCCDD; border-color:#8899AA #DDEEFF #DDEEFF #8899AA; border-style:solid; border-width:1px 1px 0 0; color:#112ABB; }
+
+.gwt-cal-ListView .descriptionLabel { color: #333333; font-weight:normal; font-size:11px; }
+.gwt-cal-ListView .detailDecorator { border-left:2px solid #BBCCDC;margin:3px 0 5px 20px;padding:0 8px 4px 10px;}
+.gwt-cal-ListView .detailContainer { }
+
+.gwt-cal-ListView .moreDetailsButton { border-top:1px solid #2952A3;padding-top:0.25em;margin-top:0.5em; font-weight:normal; font-color:#112ABB; text-decoration:underline; }
