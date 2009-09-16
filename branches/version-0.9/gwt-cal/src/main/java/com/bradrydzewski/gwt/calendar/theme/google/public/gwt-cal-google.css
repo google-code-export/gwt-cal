@@ -792,7 +792,7 @@
 
 
 /* List View here */
-.gwt-cal-ListView { border:3px solid #000;font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold; }
+.gwt-cal-ListView { font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold; }
 
 .gwt-cal-ListView .dateCell { white-space:nowrap; padding-right:30px; color:#112ABB; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
 .gwt-cal-ListView .timeCell { white-space:nowrap; padding-left:30px; padding-right:30px; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
