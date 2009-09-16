@@ -2,10 +2,14 @@ package com.bradrydzewski.gwt.calendar.client.listview;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.Attendee;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
@@ -16,10 +20,13 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.Widget;
 
 public class ListView extends CalendarWidget {
 
 	private FlexTable appointmentGrid = new FlexTable();
+	private HashMap<Widget,Widget> appointmentLabelToDetailMap = new HashMap<Widget,Widget>();
+	private HashMap<Widget,Widget> timelineLabelToDetailMap = new HashMap<Widget,Widget>();
 	
 	public ListView() {
 		setStyleName("gwt-cal-ListView");
@@ -34,6 +41,8 @@ public class ListView extends CalendarWidget {
 	@Override
 	public void doLayout() {
 
+		appointmentLabelToDetailMap.clear();
+		timelineLabelToDetailMap.clear();
 		appointmentGrid.clear();
 
         //HERE IS WHERE WE DO THE LAYOUT
@@ -70,36 +79,70 @@ public class ListView extends CalendarWidget {
             	String timeSpanString = 
             		DateTimeFormat.getShortTimeFormat().format(appt.getStart()) + " - " + 
             		DateTimeFormat.getShortTimeFormat().format(appt.getEnd());
-            	appointmentGrid.setWidget(row, startingCell, new Label(timeSpanString.toLowerCase()));
+            	Label timeSpanLabel = new Label(timeSpanString.toLowerCase());
+            	appointmentGrid.setWidget(row, startingCell, timeSpanLabel);
+            	
+            	timeSpanLabel.addClickHandler(appointmentTimeSpanClickHandler);
+            	
             	
             	//add the title and description
             	AbsolutePanel titleContainer = new AbsolutePanel();
-            	titleContainer.add(new InlineLabel(appt.getTitle()));
+            	InlineLabel titleLabel = new InlineLabel(appt.getTitle());
+            	titleContainer.add(titleLabel);
             	InlineLabel descLabel = new InlineLabel(" - "+appt.getDescription());
             	descLabel.setStyleName("descriptionLabel");
             	titleContainer.add(descLabel);
             	appointmentGrid.setWidget(row, startingCell+1, titleContainer);
             	
+            	titleLabel.addClickHandler(appointmentTitleClickHandler);
+            	
             	//add the detail widget
-            	//HARD CODED FOR NOW, NEED TO REMOVE
             	SimplePanel detailContainer = new SimplePanel();
             	detailContainer.setStyleName("detailContainer");
             	AbsolutePanel detailDecorator = new AbsolutePanel();
             	detailDecorator.setStyleName("detailDecorator");
             	titleContainer.add(detailContainer);
+            	detailContainer.setVisible(false);
             	detailContainer.add(detailDecorator);
-            	AbsolutePanel whereRow = new AbsolutePanel();
-            	whereRow.add(new InlineLabel("Where: "));
-            	whereRow.add(new InlineLabel("~ conference room 118"));
-            	detailDecorator.add(whereRow);
-            	AbsolutePanel creatorRow = new AbsolutePanel();
-            	creatorRow.add(new InlineLabel("Creator: "));
-            	creatorRow.add(new InlineLabel("john.smith@gmail.com"));
-            	detailDecorator.add(creatorRow);
-            	AbsolutePanel whoRow = new AbsolutePanel();
-            	whoRow.add(new InlineLabel("Who: "));
-            	whoRow.add(new InlineLabel("bob.smith@gmail.com, bill.evans@gmail.com"));
-            	detailDecorator.add(whoRow);
+            	
+            	if(appt.getLocation()!=null && 
+            			!appt.getLocation().isEmpty()) {
+	            	AbsolutePanel whereRow = new AbsolutePanel();
+	            	InlineLabel whereHeader = new InlineLabel("Where: ");
+	            	whereHeader.setStyleName("detailHeader");
+	            	whereRow.add(whereHeader);
+	            	whereRow.add(new InlineLabel("~ conference room 118"));
+	            	detailDecorator.add(whereRow);
+            	}
+            	if(appt.getCreatedBy()!=null && 
+            			!appt.getCreatedBy().isEmpty()) {
+	            	AbsolutePanel creatorRow = new AbsolutePanel();
+	            	InlineLabel creatorHeader = new InlineLabel("Creator: ");
+	            	creatorHeader.setStyleName("detailHeader");
+	            	creatorRow.add(creatorHeader);
+	            	creatorRow.add(new InlineLabel("john.smith@gmail.com"));
+	            	detailDecorator.add(creatorRow);
+            	}
+            	if(appt.getAttendees()!=null && !appt.getAttendees().isEmpty()) {
+	            	AbsolutePanel whoRow = new AbsolutePanel();
+	            	InlineLabel whoHeader = new InlineLabel("Who: ");
+	            	whoHeader.setStyleName("detailHeader");
+	            	whoRow.add(whoHeader);
+	            	for(int a=0;a<appt.getAttendees().size();a++) {
+	            		Attendee attendee = appt.getAttendees().get(a);
+	            		String comma = (a<appt.getAttendees().size()-1)?", ":"";
+	            		String labelText = attendee.getEmail() + comma;
+	            		whoRow.add(new InlineLabel(labelText));
+	            	}
+	            	detailDecorator.add(whoRow);
+            	}
+            	
+            	
+            	timelineLabelToDetailMap.put(timeSpanLabel, detailContainer);
+            	appointmentLabelToDetailMap.put(titleLabel, detailContainer);
+            	
+            	
+            	
             	HTMLPanel moreDetailsRow =
             		new HTMLPanel("more details&#0187;");
             	moreDetailsRow.setStyleName("moreDetailsButton");
@@ -123,11 +166,30 @@ public class ListView extends CalendarWidget {
         }
 	}
 
+	
+	private ClickHandler appointmentTitleClickHandler = new ClickHandler(){
+
+		public void onClick(ClickEvent event) {
+			Widget w = appointmentLabelToDetailMap.get(event.getSource());
+			w.setVisible(!w.isVisible());
+		}
+	};
+	private ClickHandler appointmentTimeSpanClickHandler = new ClickHandler(){
+
+		public void onClick(ClickEvent event) {
+			Widget w = timelineLabelToDetailMap.get(event.getSource());
+			w.setVisible(!w.isVisible());
+		}
+	};
+	
+	
 	@Override
 	public int getDays() {
 		return 7;
 	}
-	public void setDays() {
+
+	@Override
+	public void setDays(int days) {
 		super.setDays(7);
 	}
 	

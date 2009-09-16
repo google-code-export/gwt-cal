@@ -28,9 +28,9 @@ import com.google.gwt.event.dom.client.KeyUpHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -49,7 +49,7 @@ public abstract class InteractiveWidget extends Composite {
 	/**
 	 * Main panel to which all other components are added.
 	 */
-	protected AbsolutePanel rootPanel = new AbsolutePanel();
+	protected FlowPanel rootPanel = new FlowPanel();
 
 	/**
 	 * Used by focus widget to make sure a key stroke is only

@@ -18,7 +18,9 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Appointment implements Comparable<Appointment> {
 
@@ -27,6 +29,9 @@ public class Appointment implements Comparable<Appointment> {
     private String description;
     private Date start;
     private Date end;
+    private String location;
+    private String createdBy;
+    private List<Attendee> attendees = new ArrayList<Attendee>();
     private boolean selected;
     private boolean multiDay = false;
 
@@ -73,8 +78,33 @@ public class Appointment implements Comparable<Appointment> {
         this.description = description;
     }
 
+    
 
-    public int compareTo(Appointment appt) {
+    public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getCreatedBy() {
+		return createdBy;
+	}
+
+	public void setCreatedBy(String createdBy) {
+		this.createdBy = createdBy;
+	}
+
+	public List<Attendee> getAttendees() {
+		return attendees;
+	}
+
+	public void setAttendees(List<Attendee> attendees) {
+		this.attendees = attendees;
+	}
+
+	public int compareTo(Appointment appt) {
         // -1 0 1
         // less, equal, greater
         int compare = this.getStart().compareTo(appt.getStart());

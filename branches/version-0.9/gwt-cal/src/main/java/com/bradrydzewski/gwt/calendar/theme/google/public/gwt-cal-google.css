@@ -792,7 +792,7 @@
 
 
 /* List View here */
-.gwt-cal-ListView { font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold; }
+.gwt-cal-ListView { border:3px solid #000;font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold; }
 
 .gwt-cal-ListView .dateCell { white-space:nowrap; padding-right:30px; color:#112ABB; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
 .gwt-cal-ListView .timeCell { white-space:nowrap; padding-left:30px; padding-right:30px; color: #3366CC; font-family:Verdana,Sans-serif; font-size:11px; font-weight:bold;}
@@ -808,6 +808,6 @@
 
 .gwt-cal-ListView .descriptionLabel { color: #333333; font-weight:normal; font-size:11px; }
 .gwt-cal-ListView .detailDecorator { border-left:2px solid #BBCCDC;margin:3px 0 5px 20px;padding:0 8px 4px 10px;}
-.gwt-cal-ListView .detailContainer { }
-
+.gwt-cal-ListView .detailContainer { font-weight:normal;color:#333; }
+.gwt-cal-ListView .detailHeader { font-weight:bold;}
 .gwt-cal-ListView .moreDetailsButton { border-top:1px solid #2952A3;padding-top:0.25em;margin-top:0.5em; font-weight:normal; font-color:#112ABB; text-decoration:underline; }
