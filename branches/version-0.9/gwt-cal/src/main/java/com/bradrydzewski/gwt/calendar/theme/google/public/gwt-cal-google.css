@@ -810,4 +810,4 @@
 .gwt-cal-ListView .detailDecorator { border-left:2px solid #BBCCDC;margin:3px 0 5px 20px;padding:0 8px 4px 10px;}
 .gwt-cal-ListView .detailContainer { font-weight:normal;color:#333; }
 .gwt-cal-ListView .detailHeader { font-weight:bold;}
-.gwt-cal-ListView .moreDetailsButton { border-top:1px solid #2952A3;padding-top:0.25em;margin-top:0.5em; font-weight:normal; font-color:#112ABB; text-decoration:underline; }
+.gwt-cal-ListView .moreDetailsButton {  border-top:1px solid #2952A3;padding-top:0.25em;margin-top:0.5em; font-weight:normal; font-color:#112ABB; text-decoration:underline;  }

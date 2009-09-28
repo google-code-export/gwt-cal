@@ -1,6 +1,6 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Brad Rydzewski
+ * Copyright (C) 2009  Scottsdale Software LLC
  * 
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -49,21 +49,33 @@ import com.google.gwt.user.client.ui.HasValue;
  * properties.
  * @author Brad Rydzewski
  */
-public interface CalendarView {
+public abstract class CalendarView {
 
-	public void setWidget(CalendarWidget widget);
-	public String getStyleName();
-	public void doSizing();
-	public void doLayout();
+	protected CalendarWidget calendarWidget = null;
 	
-	public void onDoubleClick(Element element);
-	public void onMouseDown(Element element);
-	public void onDeleteKeyPressed();
-	public void onUpArrowKeyPressed();
-	public void onDownArrowKeyPressed();
-	public void onLeftArrowKeyPressed();
-	public void onRightArrowKeyPressed();
+	public void setWidget(CalendarWidget calendarWidget) {
+		this.calendarWidget = calendarWidget;
+	}
+	public void detatch() {
+		calendarWidget = null;
+	}
 	
-	public Appointment getSelectedAppointment();
-	public void setSelectedAppointment(Appointment appointment);
+	public abstract String getStyleName();
+	public abstract void doSizing();
+	public abstract void doLayout();
+	
+	public abstract void onDoubleClick(Element element);
+	public abstract void onMouseDown(Element element);
+	public abstract void onDeleteKeyPressed();
+	public abstract void onUpArrowKeyPressed();
+	public abstract void onDownArrowKeyPressed();
+	public abstract void onLeftArrowKeyPressed();
+	public abstract void onRightArrowKeyPressed();
+	
+	
+	public void setSelectedAppointment(Appointment appointment) {
+		calendarWidget.selectedAppointment = appointment;
+		//calendarWidget.
+	}
+	public abstract void setDays();
 }

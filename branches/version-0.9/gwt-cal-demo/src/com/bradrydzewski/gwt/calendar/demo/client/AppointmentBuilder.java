@@ -19,8 +19,9 @@ public class AppointmentBuilder {
 	protected static final String[] LOCATIONS = new String[] { "Conference Room A","Conference Room B","Antarctica","Scottsdale"};
 	protected static final String[] EMAIL = new String[]{ "john.smith@gmail.com","mike.anderson@gmail.com","jane.doe@gmail.com"};
 	protected static final Attending[] ATTENDING = new Attending[]{Attending.Yes,Attending.No,Attending.Maybe};
-	
-	
+	protected static final String[] TITLES = new String[]{"Walk the Dog","Watch Matlock","Visit the Doctor","In-laws coming to visit...run!","Dinner party at Carol's","Meal at Planet Pizza","Takeout from Kit's Thai Kitchen","Office Happy Hour","Bowling Night!","Jimbob's birthday","Mow the lawn","Vacation in Erie, PA","Happy Hour at Sapporos","Get oil changed"};
+	protected static final String[] DESCRIPTIONS = new String[]{"at the dog park, fetch ball","best show on TV","Need to examen that rash...","tell wife I need to 'work late'","bring famous spicy nacho dip","best pizza in fairfield county","perhaps some drunken noodles?","more non-alcoholic beer... come on!","five dollar pitchers and disco music, watch out","don't forget a card","","","watch all the cougars at work","also ask to check breaks and tires"};
+
 	public static ArrayList<Appointment> build() {
 		return build(GOOGLE_STYLES);
 	}
@@ -61,8 +62,10 @@ public class AppointmentBuilder {
 				appt.setStart(start);
 				appt.setEnd(end);
 				appt.setCreatedBy((EMAIL[Random.nextInt(EMAIL.length)]));
-				appt.setTitle("day: " + day + " appt: " + a);
-				appt.setDescription("Call: (555) 555-0441/(888) 555-7093, Passcode: 87987898 & WebEx");
+				int titleId=Random.nextInt(TITLES.length);
+				int descId = titleId;
+				appt.setTitle(TITLES[titleId]);//("day: " + day + " appt: " + a);
+				appt.setDescription(DESCRIPTIONS[descId]);//("Call: (555) 555-0441/(888) 555-7093, Passcode: 87987898 & WebEx");
 //				appt.addStyleName(style);
 				appt.setLocation(LOCATIONS[Random.nextInt(LOCATIONS.length)]);
 				int attendees = Random.nextInt(EMAIL.length)+1;

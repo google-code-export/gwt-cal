@@ -18,14 +18,15 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Appointment implements Comparable<Appointment> {
+@SuppressWarnings("serial")
+public class Appointment implements Comparable<Appointment>, Serializable {
 
-    
-    private String title;
+	private String title;
     private String description;
     private Date start;
     private Date end;
@@ -34,6 +35,7 @@ public class Appointment implements Comparable<Appointment> {
     private List<Attendee> attendees = new ArrayList<Attendee>();
     private boolean selected;
     private boolean multiDay = false;
+    private boolean allDay = false;
 
     public Appointment() {
    }

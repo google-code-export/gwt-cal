@@ -1,6 +1,9 @@
 package com.bradrydzewski.gwt.calendar.client;
 
-public class Attendee {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Attendee implements Serializable {
 
 	private String name;
 	private String email;

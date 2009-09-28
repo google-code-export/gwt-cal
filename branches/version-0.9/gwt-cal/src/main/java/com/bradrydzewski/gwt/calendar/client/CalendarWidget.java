@@ -45,7 +45,7 @@ public abstract class CalendarWidget extends InteractiveWidget {
 	 * Represents the currently selected appointment. Is set to null when no
 	 * appointment is selected.
 	 */
-	private Appointment selectedAppointment = null;
+	protected Appointment selectedAppointment = null;
 	
 	/**
 	 * List of appointments.
@@ -87,11 +87,12 @@ public abstract class CalendarWidget extends InteractiveWidget {
      */
     private CalendarSettings settings = CalendarSettings.DEFAULT_SETTINGS;
 
+    protected CalendarView view = null;
     
 
     public CalendarWidget() {
     	super();
-    	setStyleName("gwt-cal");
+    	//setStyleName("gwt-cal");
     }
 
     public Date getDate() {
@@ -233,8 +234,12 @@ public abstract class CalendarWidget extends InteractiveWidget {
 
     }
     
-    public abstract void doLayout();
-    public abstract void doSizing();
+    public void doLayout() {
+    	view.doLayout();
+    }
+    public void doSizing() {
+    	view.doSizing();
+    }
     
     public void onLoad() {
         DeferredCommand.addCommand(new Command() {

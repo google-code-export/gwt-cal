@@ -1,11 +1,29 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2009  Scottsdale Software LLC
+ * 
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
+
 package com.bradrydzewski.gwt.calendar.client.listview;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
+import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -14,203 +32,374 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.InlineLabel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class ListView extends CalendarWidget {
+public class ListView extends CalendarView {
 
+	/**
+	 * Adapter class that maps an Appointment to the widgets (DIV's, etc) that represent
+	 * it on the screen. This is necessary because a single appointment is represented by
+	 * many widgets. For example, an appointment is represented by a title widget,
+	 * a description widget, and has a "get more details" label.
+	 * 
+	 * By mapping an appointment to these widgets we can easily figure out which
+	 * appointment the user is interacting with as they click around the ListView.
+	 * @author Brad Rydzewski
+	 * @version 1.0
+	 * @since 0.9.0
+	 */
+	class ListViewAppointmentAdapter {
+		private Widget titleLabel;
+		private Widget dateLabel;
+		private Widget detailsLabel;
+		private Appointment appointment;
+		private Widget detailsPanel;
+
+		public ListViewAppointmentAdapter(Widget titleLabel, Widget dateLabel,
+				Widget detailsPanel, Widget detailsLabel, Appointment appointment) {
+			super();
+			this.titleLabel = titleLabel;
+			this.dateLabel = dateLabel;
+			this.detailsLabel = detailsLabel;
+			this.detailsPanel = detailsPanel;
+			this.appointment = appointment;
+		}
+		public Widget getTitleLabel() {
+			return titleLabel;
+		}
+		public Widget getDateLabel() {
+			return dateLabel;
+		}
+		public Widget getDetailsLabel() {
+			return detailsLabel;
+		}
+		public Appointment getAppointment() {
+			return appointment;
+		}
+		public Widget getDetailsPanel() {
+			return detailsPanel;
+		}
+	}
+
+	class AppointmentDetailPanel extends Composite {
+		//private SimplePanel detailContainer = new SimplePanel();
+		private Label moreDetailsRow = new Label();
+		
+		public AppointmentDetailPanel(SimplePanel detailContainer, Appointment appt) {
+			initWidget(detailContainer);
+
+			// add the detail widget
+			//SimplePanel detailContainer = new SimplePanel();
+			detailContainer.setStyleName("detailContainer");
+			AbsolutePanel detailDecorator = new AbsolutePanel();
+			detailDecorator.setStyleName("detailDecorator");
+			detailContainer.setVisible(false);
+			detailContainer.add(detailDecorator);
+
+			if (appt.getLocation() != null
+					&& !appt.getLocation().isEmpty()) {
+				AbsolutePanel whereRow = new AbsolutePanel();
+				InlineLabel whereHeader = new InlineLabel("Where: ");
+				whereHeader.setStyleName("detailHeader");
+				whereRow.add(whereHeader);
+				whereRow.add(new InlineLabel(appt.getLocation()));
+				detailDecorator.add(whereRow);
+			}
+			if (appt.getCreatedBy() != null
+					&& !appt.getCreatedBy().isEmpty()) {
+				AbsolutePanel creatorRow = new AbsolutePanel();
+				InlineLabel creatorHeader = new InlineLabel("Creator: ");
+				creatorHeader.setStyleName("detailHeader");
+				creatorRow.add(creatorHeader);
+				creatorRow.add(new InlineLabel(appt.getCreatedBy()));
+				detailDecorator.add(creatorRow);
+			}
+			if (appt.getAttendees() != null
+					&& !appt.getAttendees().isEmpty()) {
+				AbsolutePanel whoRow = new AbsolutePanel();
+				InlineLabel whoHeader = new InlineLabel("Who: ");
+				whoHeader.setStyleName("detailHeader");
+				whoRow.add(whoHeader);
+				for (int a = 0; a < appt.getAttendees().size(); a++) {
+					Attendee attendee = appt.getAttendees().get(a);
+					String comma = (a < appt.getAttendees().size() - 1) ? ", "
+							: "";
+					String labelText = attendee.getEmail() + comma;
+					whoRow.add(new InlineLabel(labelText));
+				}
+				detailDecorator.add(whoRow);
+			}
+
+
+			
+			
+			DOM.setInnerHTML(moreDetailsRow.getElement(), 
+					"more details&#0187;");
+			
+			moreDetailsRow.setStyleName("moreDetailsButton");
+			//moreDetailsRow.addClickHandler(appointmentClickHandler);
+			detailDecorator.add(moreDetailsRow);
+		}
+		public Label getMoreDetailsLabel() {
+			return moreDetailsRow;
+		}
+	}
+
+	/**
+	 * FlexTable used to display a list of appointments.
+	 */
 	private FlexTable appointmentGrid = new FlexTable();
-	private HashMap<Widget,Widget> appointmentLabelToDetailMap = new HashMap<Widget,Widget>();
-	private HashMap<Widget,Widget> timelineLabelToDetailMap = new HashMap<Widget,Widget>();
+
+	/**
+	 * List of appointment adapters, used to map widgets to the appointments
+	 * they represent.
+	 */
+	private ArrayList<ListViewAppointmentAdapter> appointmentAdapterList = 
+		new ArrayList<ListViewAppointmentAdapter>();
+
+	/**
+	 * DateTime format used to represent a day.
+	 */
+	private static final DateTimeFormat DEFAULT_DATE_FORMAT =
+		DateTimeFormat.getFormat("EEE MMM d");
+
+	/**
+	 * DateTime format used when displaying an appointments start and end time.
+	 */
+	private static final DateTimeFormat DEFAULT_TIME_FORMAT =
+		DateTimeFormat.getShortTimeFormat();
 	
-	public ListView() {
-		setStyleName("gwt-cal-ListView");
+	/**
+	 * Style used to format this view.
+	 */
+	private String styleName = "gwt-cal-ListView";
+
+	/**
+	 * Adds the calendar view to the calendar widget and performs required formatting.
+	 */
+	public void setWidget(CalendarWidget widget) {
+		super.setWidget(widget);
+
 		appointmentGrid.setCellPadding(5);
 		appointmentGrid.setCellSpacing(0);
 		appointmentGrid.setBorderWidth(0);
 		appointmentGrid.setWidth("100%");
-		rootPanel.add(appointmentGrid);
-		DOM.setStyleAttribute(getElement(), "overflowY", "scroll");
+		calendarWidget.getRootPanel().add(appointmentGrid);
+		//TODO: ListView OverflowY property should be set in the style sheet, not in java code
+		DOM.setStyleAttribute(calendarWidget.getElement(), "overflowY",
+				"scroll");
+		calendarWidget.getRootPanel().add(appointmentGrid);
 	}
-	
+
+	/**
+	 * Gets the style name associated with this particular view
+	 * @return Style name.
+	 */
+	public String getStyleName() {
+		return styleName;
+	}
+
 	@Override
 	public void doLayout() {
 
-		appointmentLabelToDetailMap.clear();
-		timelineLabelToDetailMap.clear();
+		appointmentAdapterList.clear();
 		appointmentGrid.clear();
 
-        //HERE IS WHERE WE DO THE LAYOUT
-        Date tmpDate = (Date) getDate().clone();
-        Date today = new Date();
-        AppointmentUtil.resetTime(today);
-        AppointmentUtil.resetTime(tmpDate);
-        int row=0;
-        
-        for (int i = 0; i < getDays(); i++) {
+		//Get the start date, make sure time is 0:00:00 AM
+		Date tmpDate = (Date) calendarWidget.getDate().clone();
+		Date today = new Date();
+		AppointmentUtil.resetTime(today);
+		AppointmentUtil.resetTime(tmpDate);
+		
+		
+		int row = 0;
 
-        	//Filter the list by date
-            ArrayList<Appointment> filteredList =
-                    AppointmentUtil.filterListByDate(
-                    		getAppointments(), tmpDate);
+		for (int i = 0; i < calendarWidget.getDays(); i++) {
+
+			// Filter the list by date
+			ArrayList<Appointment> filteredList = AppointmentUtil
+					.filterListByDate(calendarWidget.getAppointments(), tmpDate);
+
+			if (filteredList != null && filteredList.size() > 0) {
+
+				appointmentGrid.setText(row, 0, DEFAULT_DATE_FORMAT.format(tmpDate));
+
+				appointmentGrid.getCellFormatter().setVerticalAlignment(row, 0,
+						HasVerticalAlignment.ALIGN_TOP);
+				appointmentGrid.getFlexCellFormatter().setRowSpan(row, 0,
+						filteredList.size());
+				appointmentGrid.getFlexCellFormatter().setStyleName(row, 0,
+						"dateCell");
+				int startingCell = 1;
+
+				//Row styles will alternate, so we set the style accordingly
+				String rowStyle = (i % 2 == 0) ? "row" : "row-alt";
+
+				//If a Row represents the current date (Today) then we style it differently
+				if (tmpDate.equals(today))
+					rowStyle += "-today";
 
 
-            appointmentGrid.setText(row, 0, 
-            		DateTimeFormat.getFormat("EEE MMM d").format(tmpDate));
-            
-            appointmentGrid.getCellFormatter().setVerticalAlignment(row, 0, HasVerticalAlignment.ALIGN_TOP);
-            appointmentGrid.getFlexCellFormatter().setRowSpan(row, 0, filteredList.size());
-            appointmentGrid.getFlexCellFormatter().setStyleName(row, 0, "dateCell");
-            int startingCell = 1;
-            
-            String rowStyle = (i%2==0)?"row":"row-alt";
-            if(tmpDate.equals(today))
-            	rowStyle+="-today";
-            //appointmentGrid.getRowFormatter().setStyleName(row, rowStyle);
-            
-            for (Appointment appt : filteredList) {
-            	
-            	//add the time range
-            	String timeSpanString = 
-            		DateTimeFormat.getShortTimeFormat().format(appt.getStart()) + " - " + 
-            		DateTimeFormat.getShortTimeFormat().format(appt.getEnd());
-            	Label timeSpanLabel = new Label(timeSpanString.toLowerCase());
-            	appointmentGrid.setWidget(row, startingCell, timeSpanLabel);
-            	
-            	timeSpanLabel.addClickHandler(appointmentTimeSpanClickHandler);
-            	
-            	
-            	//add the title and description
-            	AbsolutePanel titleContainer = new AbsolutePanel();
-            	InlineLabel titleLabel = new InlineLabel(appt.getTitle());
-            	titleContainer.add(titleLabel);
-            	InlineLabel descLabel = new InlineLabel(" - "+appt.getDescription());
-            	descLabel.setStyleName("descriptionLabel");
-            	titleContainer.add(descLabel);
-            	appointmentGrid.setWidget(row, startingCell+1, titleContainer);
-            	
-            	titleLabel.addClickHandler(appointmentTitleClickHandler);
-            	
-            	//add the detail widget
-            	SimplePanel detailContainer = new SimplePanel();
-            	detailContainer.setStyleName("detailContainer");
-            	AbsolutePanel detailDecorator = new AbsolutePanel();
-            	detailDecorator.setStyleName("detailDecorator");
-            	titleContainer.add(detailContainer);
-            	detailContainer.setVisible(false);
-            	detailContainer.add(detailDecorator);
-            	
-            	if(appt.getLocation()!=null && 
-            			!appt.getLocation().isEmpty()) {
-	            	AbsolutePanel whereRow = new AbsolutePanel();
-	            	InlineLabel whereHeader = new InlineLabel("Where: ");
-	            	whereHeader.setStyleName("detailHeader");
-	            	whereRow.add(whereHeader);
-	            	whereRow.add(new InlineLabel("~ conference room 118"));
-	            	detailDecorator.add(whereRow);
-            	}
-            	if(appt.getCreatedBy()!=null && 
-            			!appt.getCreatedBy().isEmpty()) {
-	            	AbsolutePanel creatorRow = new AbsolutePanel();
-	            	InlineLabel creatorHeader = new InlineLabel("Creator: ");
-	            	creatorHeader.setStyleName("detailHeader");
-	            	creatorRow.add(creatorHeader);
-	            	creatorRow.add(new InlineLabel("john.smith@gmail.com"));
-	            	detailDecorator.add(creatorRow);
-            	}
-            	if(appt.getAttendees()!=null && !appt.getAttendees().isEmpty()) {
-	            	AbsolutePanel whoRow = new AbsolutePanel();
-	            	InlineLabel whoHeader = new InlineLabel("Who: ");
-	            	whoHeader.setStyleName("detailHeader");
-	            	whoRow.add(whoHeader);
-	            	for(int a=0;a<appt.getAttendees().size();a++) {
-	            		Attendee attendee = appt.getAttendees().get(a);
-	            		String comma = (a<appt.getAttendees().size()-1)?", ":"";
-	            		String labelText = attendee.getEmail() + comma;
-	            		whoRow.add(new InlineLabel(labelText));
-	            	}
-	            	detailDecorator.add(whoRow);
-            	}
-            	
-            	
-            	timelineLabelToDetailMap.put(timeSpanLabel, detailContainer);
-            	appointmentLabelToDetailMap.put(titleLabel, detailContainer);
-            	
-            	
-            	
-            	HTMLPanel moreDetailsRow =
-            		new HTMLPanel("more details&#0187;");
-            	moreDetailsRow.setStyleName("moreDetailsButton");
-            	detailDecorator.add(moreDetailsRow);
-            	
-            	//Format the Cells
-            	appointmentGrid.getCellFormatter().setVerticalAlignment(row, startingCell, HasVerticalAlignment.ALIGN_TOP);
-            	appointmentGrid.getCellFormatter().setVerticalAlignment(row, startingCell+1, HasVerticalAlignment.ALIGN_TOP);
-            	appointmentGrid.getCellFormatter().setStyleName(row, startingCell, "timeCell");
-            	appointmentGrid.getCellFormatter().setStyleName(row, startingCell+1, "titleCell");
-            	appointmentGrid.getRowFormatter().setStyleName(row, rowStyle);
-            	
-            	//increment the row
-            	//make sure the starting column is reset to 0
-            	startingCell = 0;
-            	row++;
-            }
-            
-            //increment the date
-            tmpDate.setDate(tmpDate.getDate() + 1);
-        }
+				for (Appointment appt : filteredList) {
+
+					// add the time range
+					String timeSpanString = DEFAULT_TIME_FORMAT.format(appt.getStart())
+							+ " - "
+							+ DEFAULT_TIME_FORMAT.format(appt.getEnd());
+					Label timeSpanLabel = new Label(timeSpanString
+							.toLowerCase());
+					appointmentGrid.setWidget(row, startingCell, timeSpanLabel);
+
+					
+
+					// add the title and description
+					FlowPanel titleContainer = new FlowPanel();
+					InlineLabel titleLabel = new InlineLabel(appt.getTitle());
+					titleContainer.add(titleLabel);
+					InlineLabel descLabel = new InlineLabel(" - "
+							+ appt.getDescription());
+					descLabel.setStyleName("descriptionLabel");
+					titleContainer.add(descLabel);
+					appointmentGrid.setWidget(row, startingCell + 1,
+							titleContainer);
+
+
+
+					SimplePanel detailContainerPanel = new SimplePanel();
+					AppointmentDetailPanel detailContainer= new AppointmentDetailPanel(detailContainerPanel, appt);
+					
+					appointmentAdapterList.add(new ListViewAppointmentAdapter(
+							titleLabel, timeSpanLabel, detailContainerPanel, 
+							detailContainer.getMoreDetailsLabel(), appt));
+
+					//add the detail container
+					titleContainer.add(detailContainer);
+
+					//add click handlers to title, date and details link
+					timeSpanLabel.addClickHandler(appointmentClickHandler);
+					titleLabel.addClickHandler(appointmentClickHandler);
+					detailContainer.getMoreDetailsLabel().addClickHandler(
+							appointmentClickHandler);
+					
+
+
+
+					// Format the Cells
+					appointmentGrid.getCellFormatter().setVerticalAlignment(
+							row, startingCell, HasVerticalAlignment.ALIGN_TOP);
+					appointmentGrid.getCellFormatter().setVerticalAlignment(
+							row, startingCell + 1,
+							HasVerticalAlignment.ALIGN_TOP);
+					appointmentGrid.getCellFormatter().setStyleName(row,
+							startingCell, "timeCell");
+					appointmentGrid.getCellFormatter().setStyleName(row,
+							startingCell + 1, "titleCell");
+					appointmentGrid.getRowFormatter().setStyleName(row,
+							rowStyle);
+
+					// increment the row
+					// make sure the starting column is reset to 0
+					startingCell = 0;
+					row++;
+				}
+			}
+
+			// increment the date
+			tmpDate.setDate(tmpDate.getDate() + 1);
+		}
+	}
+	
+	protected FlowPanel buildTitlePanel(Appointment appt) {
+		FlowPanel titleContainer = new FlowPanel();
+		InlineLabel titleLabel = new InlineLabel(appt.getTitle());
+		titleContainer.add(titleLabel);
+		InlineLabel descLabel = new InlineLabel(" - "
+				+ appt.getDescription());
+		descLabel.setStyleName("descriptionLabel");
+		titleContainer.add(descLabel);
+
+		return titleContainer;
+	}
+	protected Label buildTimeSpanLabel() {
+		return null;
+	}
+	protected Label buildDateLabel() {
+		return null;
 	}
 
-	
-	private ClickHandler appointmentTitleClickHandler = new ClickHandler(){
+
+	/**
+	 * Handles appointments being clicked. Based on the clicked widget will determine
+	 * exactly which appointment was clicked and may 1) expand / collaps the appointment
+	 * details 2) set the selected appointment or 3) trigger an appointment clicked
+	 * event.
+	 */
+	private ClickHandler appointmentClickHandler = new ClickHandler() {
 
 		public void onClick(ClickEvent event) {
-			Widget w = appointmentLabelToDetailMap.get(event.getSource());
-			w.setVisible(!w.isVisible());
+
+			//get the appoinmtnet adapter based on the clicked widget
+			ListViewAppointmentAdapter adapter =
+				getAppointmentFromClickedWidget((Widget)event.getSource());
+			
+			if(adapter!=null) {
+				if(event.getSource().equals(adapter.getDetailsLabel())) {
+					//set the selected appointment
+					setSelectedAppointment(adapter.getAppointment());
+					//TODO: when appointment's "get details" label is clicked need to fire an event.
+				} else {
+					//expand the panel if it is not yet expended
+					adapter.getDetailsPanel().setVisible(
+							!adapter.getDetailsPanel().isVisible());
+				}
+			}
 		}
 	};
-	private ClickHandler appointmentTimeSpanClickHandler = new ClickHandler(){
 
-		public void onClick(ClickEvent event) {
-			Widget w = timelineLabelToDetailMap.get(event.getSource());
-			w.setVisible(!w.isVisible());
+	/**
+	 * Given Widget w determine which appointment was clicked. This is necessary because
+	 * each appointment has 3 widgets that can be clicked - the title, date range and
+	 * description.
+	 * @param w Widget that was clicked.
+	 * @return Appointment mapped to that widget.
+	 */
+	protected ListViewAppointmentAdapter getAppointmentFromClickedWidget(Widget w) {
+		for(ListViewAppointmentAdapter a : appointmentAdapterList) {
+			if(w.equals(a.dateLabel) || w.equals(a.detailsLabel) || 
+					w.equals(a.titleLabel) || w.equals(a.getDetailsPanel())) {
+				return a;
+			}
 		}
-	};
-	
-	
-	@Override
-	public int getDays() {
-		return 7;
+		return null;
 	}
 
-	@Override
-	public void setDays(int days) {
-		super.setDays(7);
-	}
-	
+
+
 	@Override
 	public void doSizing() {
-
+		//No sizing calculations required
 	}
 
 	@Override
 	public void onDeleteKeyPressed() {
-
+		//Feature not supported
 	}
 
 	@Override
 	public void onDoubleClick(Element element) {
-
+		//Feature not supported
 	}
 
 	@Override
 	public void onDownArrowKeyPressed() {
-
+		//Feature not supported
 	}
 
 	@Override
@@ -221,21 +410,25 @@ public class ListView extends CalendarWidget {
 	@Override
 	public void onMouseDown(Element element) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onRightArrowKeyPressed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void onUpArrowKeyPressed() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-	
-	
+	@Override
+	public void setDays() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
