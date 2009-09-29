@@ -72,10 +72,14 @@ public abstract class CalendarView {
 	public abstract void onLeftArrowKeyPressed();
 	public abstract void onRightArrowKeyPressed();
 	
-	
-	public void setSelectedAppointment(Appointment appointment) {
+	public void setSelectedAppointment(Appointment appointment, boolean fireEvent) {
 		calendarWidget.selectedAppointment = appointment;
-		//calendarWidget.
+		if(fireEvent) {
+			calendarWidget.fireSelectionEvent(appointment);
+		}
+	}
+	public void setSelectedAppointment(Appointment appointment) {
+		setSelectedAppointment(appointment, true);
 	}
 	public abstract void setDays();
 }

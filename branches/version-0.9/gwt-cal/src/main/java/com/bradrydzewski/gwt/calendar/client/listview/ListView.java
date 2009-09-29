@@ -193,8 +193,8 @@ public class ListView extends CalendarView {
 		appointmentGrid.setWidth("100%");
 		calendarWidget.getRootPanel().add(appointmentGrid);
 		//TODO: ListView OverflowY property should be set in the style sheet, not in java code
-		DOM.setStyleAttribute(calendarWidget.getElement(), "overflowY",
-				"scroll");
+//		DOM.setStyleAttribute(calendarWidget.getElement(), "overflowY",
+//				"scroll");
 		calendarWidget.getRootPanel().add(appointmentGrid);
 	}
 
@@ -345,15 +345,15 @@ public class ListView extends CalendarView {
 
 		public void onClick(ClickEvent event) {
 
-			//get the appoinmtnet adapter based on the clicked widget
+			//get the appointment adapter based on the clicked widget
 			ListViewAppointmentAdapter adapter =
 				getAppointmentFromClickedWidget((Widget)event.getSource());
-			
+
 			if(adapter!=null) {
 				if(event.getSource().equals(adapter.getDetailsLabel())) {
 					//set the selected appointment
-					setSelectedAppointment(adapter.getAppointment());
-					//TODO: when appointment's "get details" label is clicked need to fire an event.
+					setSelectedAppointment(adapter.getAppointment(),false);
+					calendarWidget.fireOpenEvent(adapter.getAppointment());
 				} else {
 					//expand the panel if it is not yet expended
 					adapter.getDetailsPanel().setVisible(

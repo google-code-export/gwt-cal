@@ -8,6 +8,8 @@ import java.util.Map;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.AppointmentWidget;
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
+import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
@@ -16,7 +18,7 @@ import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Widget;
 
-public class DayView extends CalendarWidget implements HasSettings {
+public class DayView extends CalendarView implements HasSettings {
 
     private DayViewHeader dayViewHeader = null;
     private DayViewBody dayViewBody = null;
@@ -34,11 +36,7 @@ public class DayView extends CalendarWidget implements HasSettings {
         dayViewHeader = new DayViewHeader(this);
         layoutStrategy = new DayViewLayoutStrategy(this);
         multiViewBody = new DayViewMultiDayBody(this);
-        setStyleName("gwt-cal");
-		getRootPanel().clear();
-		getRootPanel().add(dayViewHeader);
-		getRootPanel().add(multiViewBody);
-		getRootPanel().add(dayViewBody);
+
 	}
 
 	public void doLayout() {
@@ -46,12 +44,12 @@ public class DayView extends CalendarWidget implements HasSettings {
 		
         
         //PERFORM APPOINTMENT LAYOUT NOW
-		Date d = (Date) getDate().clone();
+		Date d = (Date) calendarWidget.getDate().clone();
 		
-        multiViewBody.setDays((Date) d.clone(), getDays());
-        dayViewHeader.setDays((Date) d.clone(), getDays());
+        multiViewBody.setDays((Date) d.clone(), calendarWidget.getDays());
+        dayViewHeader.setDays((Date) d.clone(), calendarWidget.getDays());
         dayViewHeader.setYear((Date) d.clone());
-        dayViewBody.setDays((Date) d.clone(), getDays());
+        dayViewBody.setDays((Date) d.clone(), calendarWidget.getDays());
         dayViewBody.getTimeline().prepare();
         
         //LAYOUT THE VIEW NOW
@@ -78,16 +76,16 @@ public class DayView extends CalendarWidget implements HasSettings {
         //         the calendar??
         
         //HERE IS WHERE WE DO THE LAYOUT
-        Date tmpDate = (Date) getDate().clone();
+        Date tmpDate = (Date) calendarWidget.getDate().clone();
         
-        for (int i = 0; i < getDays(); i++) {
+        for (int i = 0; i < calendarWidget.getDays(); i++) {
 
             ArrayList<Appointment> filteredList =
-                    AppointmentUtil.filterListByDate(getAppointments(), tmpDate);
+                    AppointmentUtil.filterListByDate(calendarWidget.getAppointments(), tmpDate);
 
             // perform layout
             ArrayList<AppointmentAdapter> appointmentAdapters =
-            	layoutStrategy.doLayout(filteredList, i, getDays());
+            	layoutStrategy.doLayout(filteredList, i, calendarWidget.getDays());
 
             // add all appointments back to the grid
             //CHANGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -107,8 +105,8 @@ public class DayView extends CalendarWidget implements HasSettings {
 	
 	public void doSizing() {
 		
-        if (getOffsetHeight() > 0) {
-            dayViewBody.setHeight(getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
+        if (calendarWidget.getOffsetHeight() > 0) {
+            dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2 - dayViewHeader.getOffsetHeight() - multiViewBody.getOffsetHeight() + "px");
         //System.out.println("doComponentLayout called");
         }
 		
@@ -116,11 +114,24 @@ public class DayView extends CalendarWidget implements HasSettings {
 	}
 
 	public void onDeleteKeyPressed() {
-		Window.alert("DELETING!!!");
+		if(calendarWidget.getSelectedAppointment()!=null)
+			calendarWidget.removeAppointment(calendarWidget.getSelectedAppointment());
 	}
 	public void onDoubleClick(Element element) {
-		// TODO Auto-generated method stub
+		AppointmentWidget widget = 
+			AppointmentUtil.checkAppointmentElementClicked(
+				element, appointmentWidgets);
 		
+		if(widget == null)
+			return;
+		
+		Appointment appointment = widgetAppointmentIndex.get(widget);
+		
+		if(appointment == null)
+			return;
+		
+		if(appointment == calendarWidget.getSelectedAppointment())
+			calendarWidget.fireOpenEvent(appointment);
 	}
 	public void onMouseDown(Element element) {
 		
@@ -144,22 +155,22 @@ public class DayView extends CalendarWidget implements HasSettings {
 		
 	}
 	public void onRightArrowKeyPressed() {
-		selectNextAppointment();
+		calendarWidget.selectNextAppointment();
 	}
 	public void onUpArrowKeyPressed() {
-		selectPreviousAppointment();
+		calendarWidget.selectPreviousAppointment();
 	}
 	public void onDownArrowKeyPressed() {
-		selectNextAppointment();
+		calendarWidget.selectNextAppointment();
 	}
 	public void onLeftArrowKeyPressed() {
-		selectPreviousAppointment();
+		calendarWidget.selectPreviousAppointment();
 	}
 
 	@Override
 	public void setSelectedAppointment(Appointment appointment) {
 
-		Appointment selectedAppointment = getSelectedAppointment();
+		Appointment selectedAppointment = calendarWidget.getSelectedAppointment();
 		
 		if(appointment.equals(selectedAppointment))
 			return;
@@ -172,7 +183,7 @@ public class DayView extends CalendarWidget implements HasSettings {
 		
 		//Get the previously selected Widget
 		Appointment previouslySelectedAppointment =
-			getSelectedAppointment();
+			calendarWidget.getSelectedAppointment();
 		
 		//Set the appointment as selected
 		//selectedAppointment = appointment;
@@ -198,13 +209,32 @@ public class DayView extends CalendarWidget implements HasSettings {
 		
 	}
 
-//	public void setWidget(CalendarWidget widget) {
-//	
-//	widget.getRootPanel().clear();
-//	
-//	widget.getRootPanel().add(dayViewHeader);
-//	widget.getRootPanel().add(multiViewBody);
-//	widget.getRootPanel().add(dayViewBody);
-//
-//}
+	public CalendarSettings getSettings() {
+		// TODO Auto-generated method stub
+		return CalendarSettings.DEFAULT_SETTINGS;
+	}
+
+	public void setSettings(CalendarSettings settings) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getStyleName() {
+		return "gwt-cal";
+	}
+
+	@Override
+	public void setDays() {
+
+	}
+
+	@Override
+	public void setWidget(CalendarWidget widget) {
+		super.setWidget(widget);
+
+		calendarWidget.getRootPanel().add(dayViewHeader);
+		calendarWidget.getRootPanel().add(multiViewBody);
+		calendarWidget.getRootPanel().add(dayViewBody);
+	}
 }

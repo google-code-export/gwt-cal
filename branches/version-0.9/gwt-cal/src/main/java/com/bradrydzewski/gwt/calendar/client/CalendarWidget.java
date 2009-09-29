@@ -23,11 +23,19 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
+import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
+import com.google.gwt.event.logical.shared.HasOpenHandlers;
+import com.google.gwt.event.logical.shared.HasSelectionHandlers;
+import com.google.gwt.event.logical.shared.OpenEvent;
+import com.google.gwt.event.logical.shared.OpenHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * TODO: Need Calendar "View" - CHECK
@@ -39,7 +47,9 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Brad Rydzewski
  *
  */
-public abstract class CalendarWidget extends InteractiveWidget {
+public class CalendarWidget extends InteractiveWidget implements
+	HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
+	HasOpenHandlers<Appointment> {
 
 	/**
 	 * Represents the currently selected appointment. Is set to null when no
@@ -141,7 +151,7 @@ public abstract class CalendarWidget extends InteractiveWidget {
         boolean commitChange = true;
 
         if (fireEvents) {
-            //commitChange = DeleteEvent.fire(this, getSelectedAppointment());
+            commitChange = DeleteEvent.fire(this, getSelectedAppointment());
         }
         if (commitChange) {
             appointments.remove(appointment);
@@ -198,7 +208,8 @@ public abstract class CalendarWidget extends InteractiveWidget {
      * 			or <code>null</code> to de-select all items.
      */
     public void setSelectedAppointment(Appointment appointment) {
-    	selectedAppointment = appointment;
+    	view.setSelectedAppointment(appointment);
+    	//selectedAppointment = appointment;
     }
 
     /**
@@ -207,7 +218,6 @@ public abstract class CalendarWidget extends InteractiveWidget {
      */
     public Appointment getSelectedAppointment() {
     	return selectedAppointment;
-    	//return view.getSelectedAppointment();
     }
 
     /**
@@ -327,4 +337,70 @@ public abstract class CalendarWidget extends InteractiveWidget {
         
         return true;
     }
+
+	@Override
+	public void onDeleteKeyPressed() {
+		view.onDeleteKeyPressed();		
+	}
+
+	@Override
+	public void onDoubleClick(Element element) {
+		view.onDoubleClick(element);
+	}
+
+	@Override
+	public void onDownArrowKeyPressed() {
+		view.onDownArrowKeyPressed();
+	}
+
+	@Override
+	public void onLeftArrowKeyPressed() {
+		view.onLeftArrowKeyPressed();
+	}
+
+	@Override
+	public void onMouseDown(Element element) {
+		System.out.println("mouse down");
+		view.onMouseDown(element);
+	}
+
+	@Override
+	public void onRightArrowKeyPressed() {
+		view.onRightArrowKeyPressed();
+	}
+
+	@Override
+	public void onUpArrowKeyPressed() {
+		view.onUpArrowKeyPressed();
+	}
+
+	public void fireOpenEvent(Appointment appointment) {
+		OpenEvent.fire(this, appointment);
+	}
+
+	public void fireDeleteEvent(Appointment appointment) {
+		DeleteEvent.fire(this, appointment);
+	}
+
+	public void fireSelectionEvent(Appointment appointment) {
+		SelectionEvent.fire(this, appointment);
+	}
+
+	public HandlerRegistration addSelectionHandler(
+			SelectionHandler<Appointment> handler) {
+
+		return addHandler(handler, SelectionEvent.getType());
+	}
+
+	public HandlerRegistration addDeleteHandler(
+			DeleteHandler<Appointment> handler) {
+		
+		return addHandler(handler, DeleteEvent.getType());
+	}
+
+	public HandlerRegistration addOpenHandler(
+			OpenHandler<Appointment> handler) {
+		
+		return addHandler(handler, OpenEvent.getType());
+	}
 }
