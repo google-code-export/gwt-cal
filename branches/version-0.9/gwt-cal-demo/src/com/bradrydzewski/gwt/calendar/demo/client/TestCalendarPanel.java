@@ -13,11 +13,11 @@ import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DecoratorPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 
-public class TestCalendarPanel extends AbsolutePanel {
+public class TestCalendarPanel extends FlowPanel {
 
 	Calendar w = null;
 	
@@ -56,7 +56,7 @@ public class TestCalendarPanel extends AbsolutePanel {
 
 			@Override
 			public void onSelection(SelectionEvent<Appointment> event) {
-				Window.alert("Selected: " + event.getSelectedItem().getTitle());
+				//Window.alert("Selected: " + event.getSelectedItem().getTitle());
 			}
         });
         
@@ -88,7 +88,18 @@ public class TestCalendarPanel extends AbsolutePanel {
         	
         });
         
+        Button monthView = new Button("MonthView");
+        monthView.addClickHandler(new ClickHandler(){
+
+			@Override
+			public void onClick(ClickEvent event) {
+				w.setView(2);
+			}
+        	
+        });
+        
         add(dayView);
         add(agendaView);
+        add(monthView);
 	}
 }

@@ -14,8 +14,8 @@ public class Main implements EntryPoint {
 		//RootPanel.get().add(new iCalCalendarPanel());
 		
 		/* Un-comment for Google version of demo */
-		//RootPanel.get().add(new GoogleCalendarPanel());
+		RootPanel.get().add(new GoogleCalendarPanel());
 		
-		RootPanel.get().add(new TestCalendarPanel());
+		//RootPanel.get().add(new TestCalendarPanel());
 	}
 }
