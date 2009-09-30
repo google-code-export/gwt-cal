@@ -88,11 +88,6 @@ public class CalendarWidget extends InteractiveWidget implements
     private Date date = new Date();
 
     /**
-     * Number of days the calendar should display at a given time.
-     */
-    private int days = 3;
-
-    /**
      * Calendar settings, set to default.
      */
     private CalendarSettings settings = CalendarSettings.DEFAULT_SETTINGS;
@@ -111,7 +106,7 @@ public class CalendarWidget extends InteractiveWidget implements
 
     public void setDate(Date date, int days) {
         this.date = date;
-        this.days = days;
+        view.setDays(days);
         refresh();
     }
 
@@ -121,11 +116,11 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public int getDays() {
-        return days;
+        return view==null?3:view.getDays();
     }
 
     public void setDays(int days) {
-        this.days = days;
+        view.setDays(days);
         refresh();
     }
     
@@ -287,7 +282,6 @@ public class CalendarWidget extends InteractiveWidget implements
 
 
 	public CalendarSettings getSettings() {
-		// TODO Auto-generated method stub
 		return this.settings;
 	}
 
@@ -360,7 +354,6 @@ public class CalendarWidget extends InteractiveWidget implements
 
 	@Override
 	public void onMouseDown(Element element) {
-		System.out.println("mouse down");
 		view.onMouseDown(element);
 	}
 

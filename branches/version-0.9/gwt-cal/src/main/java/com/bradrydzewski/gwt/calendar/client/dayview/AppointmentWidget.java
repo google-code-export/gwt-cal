@@ -1,4 +1,4 @@
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.Date;
 

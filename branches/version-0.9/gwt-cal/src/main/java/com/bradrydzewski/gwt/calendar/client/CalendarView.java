@@ -51,11 +51,28 @@ import com.google.gwt.user.client.ui.HasValue;
  */
 public abstract class CalendarView {
 
+	/**
+	 * Calendar widget bound to the view.
+	 */
 	protected CalendarWidget calendarWidget = null;
-	
-	public void setWidget(CalendarWidget calendarWidget) {
+
+    /**
+     * Number of days the calendar should display at a given time.
+     */
+    protected int days = 3;
+
+    /**
+     * Attaches the view to the provided calendar widget.
+     * @param calendarWidget
+     */
+	public void attach(CalendarWidget calendarWidget) {
 		this.calendarWidget = calendarWidget;
 	}
+
+	/**
+	 * This method is invoked when the view is detached from the
+	 * calendar widget to which it is bound.
+	 */
 	public void detatch() {
 		calendarWidget = null;
 	}
@@ -71,7 +88,7 @@ public abstract class CalendarView {
 	public abstract void onDownArrowKeyPressed();
 	public abstract void onLeftArrowKeyPressed();
 	public abstract void onRightArrowKeyPressed();
-	
+
 	public void setSelectedAppointment(Appointment appointment, boolean fireEvent) {
 		calendarWidget.selectedAppointment = appointment;
 		if(fireEvent) {
@@ -81,5 +98,10 @@ public abstract class CalendarView {
 	public void setSelectedAppointment(Appointment appointment) {
 		setSelectedAppointment(appointment, true);
 	}
-	public abstract void setDays();
+	public int getDays() {
+		return this.days;
+	}
+	public void setDays(int days) {
+		this.days = days;
+	}
 }

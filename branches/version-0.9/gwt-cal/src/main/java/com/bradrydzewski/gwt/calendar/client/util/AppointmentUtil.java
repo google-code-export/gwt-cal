@@ -5,7 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentWidget;
+import com.bradrydzewski.gwt.calendar.client.dayview.AppointmentWidget;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 

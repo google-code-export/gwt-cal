@@ -3,7 +3,6 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentWidget;
 
 public class AppointmentBuilder {
 

@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentWidget;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
@@ -224,14 +223,10 @@ public class DayView extends CalendarView implements HasSettings {
 		return "gwt-cal";
 	}
 
-	@Override
-	public void setDays() {
-
-	}
 
 	@Override
-	public void setWidget(CalendarWidget widget) {
-		super.setWidget(widget);
+	public void attach(CalendarWidget widget) {
+		super.attach(widget);
 
 		calendarWidget.getRootPanel().add(dayViewHeader);
 		calendarWidget.getRootPanel().add(multiViewBody);
