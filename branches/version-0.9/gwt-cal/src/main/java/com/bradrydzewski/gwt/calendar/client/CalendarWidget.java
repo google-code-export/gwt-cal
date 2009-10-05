@@ -26,6 +26,7 @@ import java.util.List;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
+import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -85,7 +86,7 @@ public class CalendarWidget extends InteractiveWidget implements
 	 * The date currently displayed by the calendar.
 	 * Set to Today by default.
 	 */
-    private Date date = new Date();
+    private Date date;
 
     /**
      * Calendar settings, set to default.
@@ -97,6 +98,8 @@ public class CalendarWidget extends InteractiveWidget implements
 
     public CalendarWidget() {
     	super();
+    	date = new Date();
+    	AppointmentUtil.resetTime(date);
     	//setStyleName("gwt-cal");
     }
 
@@ -105,14 +108,15 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public void setDate(Date date, int days) {
+        
+        AppointmentUtil.resetTime(date);
         this.date = date;
         view.setDays(days);
         refresh();
     }
 
     public void setDate(Date date) {
-        this.date = date;
-        refresh();
+        setDate(date, getDays());
     }
 
     public int getDays() {

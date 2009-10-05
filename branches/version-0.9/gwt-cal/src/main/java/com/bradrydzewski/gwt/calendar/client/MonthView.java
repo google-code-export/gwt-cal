@@ -1,16 +1,18 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.Date;
+import java.util.List;
 
-import com.bradrydzewski.gwt.calendar.client.dayview.DayViewBody;
+import com.bradrydzewski.gwt.calendar.client.MonthViewLayout.AppointmentAdapter;
+import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 
 public class MonthView extends CalendarView {
 
@@ -20,12 +22,15 @@ public class MonthView extends CalendarView {
 
     private final static String MONTH_VIEW = "gwt-cal-MonthView";
     private final static String MONTH_GRID_STYLE = "calendar-month-grid";
-    private final static String MONTH_DAY_HEADER_STYLE = "calendar-month-day-header";
-    private final static String MONTH_DAY_CELL_STYLE = "calendar-month-cell";
-    private final static String MONTH_DAY_CELL_HEADER_STYLE = "calendar-month-header";
-    private final static String MONTH_DAY_CELL_HEADER_INACTIVE_STYLE = "calendar-month-header-disabled";
+    private final static String MONTH_DAY_CELL_STYLE = "dayCell";
+    private final static String MONTH_DAY_CELL_HEADER_STYLE = "dayCellLabel";
     private final static String MONTH_APPT_CONTAINER = "calendar-month-appt-continer";
-
+    private final static String MONTH_WEEKDAY_LABELS = "weekDayLabel";
+    private final static String[] WEEKDAY_LABELS = new String[] {"Sun","Mon","Tue","Wed","Thurs","Fri","Sat"};
+    
+    private Date firstDateDisplayed;
+    private Date lastDateDisplayed;
+    
     class test implements HasSettings {
 
 		public CalendarSettings getSettings() {
@@ -60,26 +65,59 @@ public class MonthView extends CalendarView {
 
         //add the calendar appt container
         calendarWidget.getRootPanel().add(appointmentContainer);
-        appointmentContainer.add(new Label("asdf"));
         appointmentContainer.setStyleName(MONTH_APPT_CONTAINER);
 
     }
     
 	@Override
 	public void doLayout() {
-		//appointmentContainer.clear();
+		appointmentContainer.clear();
 		monthCalendarGrid.clear();
 		while(monthCalendarGrid.getRowCount()>0) {
 			monthCalendarGrid.removeRow(0);
 		}
-//		for(int i=monthCalendarGrid.getRowCount()-1;i>=0;i--){
-//			monthCalendarGrid.removeRow(i);
-//		}
 		
 		//build the grid
 		buildCalendarDays();
 		
+		//Step 1) sort the appointments
 		
+		//Step 2) get list of appointments in calendar range
+		
+		//Step 3) begin layout (gonna suck!)
+		//     3.a) for each day get appointments
+		//     3.b) do i layout each appointment
+		//     3.b.1) for multi day may need to loop, multiple panels
+		//     3.c)
+		
+		MonthViewLayout mvl = new MonthViewLayout();
+		List<AppointmentAdapter> adapterList = mvl.doLayout(calendarWidget.getAppointments(), firstDateDisplayed, lastDateDisplayed);
+		
+		int height = calendarWidget.getOffsetHeight();
+		int cellHeight = height / 5;
+		
+		int offset = 25;
+
+		for(AppointmentAdapter adapter : adapterList) {
+		
+			SimplePanel panel = new SimplePanel();
+			panel.add(new Label(adapter.getAppointment().getTitle()));
+
+			String left = ((float)adapter.getColumnStart() / 7f)*100f+.5f + "%";
+			String width = ((adapter.getColumnStop()-adapter.getColumnStart()+1) / 7f )*100f-1f + "%";
+			String top = ((adapter.getOrder()*20f+offset+3f)+((float)adapter.getRow()*(float)cellHeight))+(3f*adapter.getOrder())+"px";
+
+			DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
+			DOM.setStyleAttribute(panel.getElement(), "top", top );
+			DOM.setStyleAttribute(panel.getElement(), "left", left );
+			DOM.setStyleAttribute(panel.getElement(), "width", width );
+			DOM.setStyleAttribute(panel.getElement(), "height","20px");
+			DOM.setStyleAttribute(panel.getElement(), "overflow","hidden");
+			DOM.setStyleAttribute(panel.getElement(), "border","1px solid #000");
+			DOM.setStyleAttribute(panel.getElement(), "backgroundColor","#FFF");
+			if(adapter.getOrder()<3)	
+				appointmentContainer.add(panel);
+		}
 	}
 
 	@Override
@@ -153,6 +191,23 @@ public class MonthView extends CalendarView {
         //sunday prior to this date
         tmpDate.setDate(tmpDate.getDate() - tmpDate.getDay());
         
+        //store the first date displayed by the calendar for later use
+        firstDateDisplayed = (Date)tmpDate.clone();
+        
+        //today's date
+        Date today = new Date();
+        AppointmentUtil.resetTime(today);
+        
+        for(int i=0;i<7;i++) {
+            monthCalendarGrid.setText(0, i, WEEKDAY_LABELS[i]);
+
+            //style the cell
+            monthCalendarGrid.getCellFormatter()
+                .setVerticalAlignment(0, i, HasVerticalAlignment.ALIGN_TOP);
+            monthCalendarGrid.getCellFormatter()
+                .setStyleName(0, i, MONTH_WEEKDAY_LABELS);
+        }
+        
         //add all days to the grid
         //there are 5 rows
         for(int i=1;i<6;i++){
@@ -170,11 +225,23 @@ public class MonthView extends CalendarView {
                 
                 //set the label style
                 //use different styles if the date is not in the current month
-                if(tmpDate.getMonth()==origDate.getMonth()){
-                    l.setStyleName(MONTH_DAY_CELL_HEADER_STYLE);
-                }else{
-                    l.setStyleName(MONTH_DAY_CELL_HEADER_INACTIVE_STYLE);
+                String headerStyle = MONTH_DAY_CELL_HEADER_STYLE;
+                String cellStyle = MONTH_DAY_CELL_STYLE;
+                if(tmpDate.equals(today)) {
+                	headerStyle+="-today";
+                	cellStyle+="-today";
+                	System.out.println("TODAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                	
+                }else {
+                	System.out.println("NOT TODAY - " + today.toString() + " > " + tmpDate);
                 }
+                
+                if(tmpDate.getMonth()!=origDate.getMonth()){
+                	headerStyle+="-disabled";
+                }
+                
+                
+                l.setStyleName(headerStyle);
                 
                 //if anything exists in the cell, let's clear
                 //if(monthCalendarGrid.getWidget(i, x)!=null){
@@ -182,18 +249,23 @@ public class MonthView extends CalendarView {
                 //}
                 
                 //add the label to the cell
-                monthCalendarGrid.setWidget(i-1, x, l);
+                monthCalendarGrid.setWidget(i, x, l);
+                
                 
 
+                
                 
                 //style the cell
                 monthCalendarGrid.getCellFormatter()
-                    .setVerticalAlignment(i-1, x, HasVerticalAlignment.ALIGN_TOP);
+                    .setVerticalAlignment(i, x, HasVerticalAlignment.ALIGN_TOP);
                 monthCalendarGrid.getCellFormatter()
-                    .setStyleName(i-1, x, MONTH_DAY_CELL_STYLE);
+                    .setStyleName(i, x, cellStyle);
                 
 
             }
+            
+            //store the last date displayed for later use
+            lastDateDisplayed = (Date)tmpDate.clone();
         }  
     }
 }

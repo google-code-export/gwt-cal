@@ -204,6 +204,15 @@ public class GoogleCalendarPanel extends FlowPanel {
         ArrayList<Appointment> appts = AppointmentBuilder.build();
         dayView.suspendLayout();
         dayView.addAppointments(appts);
+        
+		Appointment appt2 = new Appointment();
+		appt2.setStart(new Date());
+		appt2.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
+				new Date().getDate() + 8));
+		appt2.setTitle("all day 2");
+		appt2.setMultiDay(true);
+		dayView.addAppointment(appt2);
+        
         dayView.resumeLayout();
 
 		// window events to handle resizing
