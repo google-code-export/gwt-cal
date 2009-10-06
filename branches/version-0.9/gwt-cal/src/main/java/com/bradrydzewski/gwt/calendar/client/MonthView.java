@@ -1,10 +1,12 @@
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.MonthViewLayout.AppointmentAdapter;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -27,6 +29,9 @@ public class MonthView extends CalendarView {
     private final static String MONTH_APPT_CONTAINER = "calendar-month-appt-continer";
     private final static String MONTH_WEEKDAY_LABELS = "weekDayLabel";
     private final static String[] WEEKDAY_LABELS = new String[] {"Sun","Mon","Tue","Wed","Thurs","Fri","Sat"};
+    
+    private ArrayList<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
+    private ArrayList<AppointmentAdapter> selectedAppointments = new ArrayList<AppointmentAdapter>(); 
     
     private Date firstDateDisplayed;
     private Date lastDateDisplayed;
@@ -73,6 +78,7 @@ public class MonthView extends CalendarView {
 	public void doLayout() {
 		appointmentContainer.clear();
 		monthCalendarGrid.clear();
+		adapters.clear();
 		while(monthCalendarGrid.getRowCount()>0) {
 			monthCalendarGrid.removeRow(0);
 		}
@@ -90,11 +96,12 @@ public class MonthView extends CalendarView {
 		//     3.b.1) for multi day may need to loop, multiple panels
 		//     3.c)
 		
+		
 		MonthViewLayout mvl = new MonthViewLayout();
 		List<AppointmentAdapter> adapterList = mvl.doLayout(calendarWidget.getAppointments(), firstDateDisplayed, lastDateDisplayed);
 		
-		int height = calendarWidget.getOffsetHeight();
-		int cellHeight = height / 5;
+		int height = monthCalendarGrid.getOffsetHeight() - 20;
+		float cellHeight = (float)height / 5f;
 		
 		int offset = 25;
 
@@ -105,18 +112,28 @@ public class MonthView extends CalendarView {
 
 			String left = ((float)adapter.getColumnStart() / 7f)*100f+.5f + "%";
 			String width = ((adapter.getColumnStop()-adapter.getColumnStart()+1) / 7f )*100f-1f + "%";
-			String top = ((adapter.getOrder()*20f+offset+3f)+((float)adapter.getRow()*(float)cellHeight))+(3f*adapter.getOrder())+"px";
+			String top = (35+(adapter.getRow()*cellHeight)+(Math.abs(FormattingUtil.getBorderOffset())*2) +((22f+Math.abs(FormattingUtil.getBorderOffset())*2)*adapter.getOrder()))+"px";
 
 			DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
 			DOM.setStyleAttribute(panel.getElement(), "top", top );
 			DOM.setStyleAttribute(panel.getElement(), "left", left );
 			DOM.setStyleAttribute(panel.getElement(), "width", width );
-			DOM.setStyleAttribute(panel.getElement(), "height","20px");
-			DOM.setStyleAttribute(panel.getElement(), "overflow","hidden");
-			DOM.setStyleAttribute(panel.getElement(), "border","1px solid #000");
-			DOM.setStyleAttribute(panel.getElement(), "backgroundColor","#FFF");
-			if(adapter.getOrder()<3)	
+			if(adapter.getAppointment().isMultiDay())
+				panel.setStyleName("multiDayAppointment");
+			else
+				panel.setStyleName("appointment");
+			
+			panel.addStyleName(adapter.getAppointment().getStyle());
+			
+			if(adapter.getAppointment().isSelected())
+				panel.addStyleName("selected");
+			
+			adapter.setAppointmentPanel(panel);
+			
+			if(adapter.getOrder()<3) {
 				appointmentContainer.add(panel);
+				adapters.add(adapter);
+			}
 		}
 	}
 
@@ -157,8 +174,58 @@ public class MonthView extends CalendarView {
 
 	@Override
 	public void onMouseDown(Element element) {
-		// TODO Auto-generated method stub
 		
+		//if the appointment container is clicked we can exit out
+		if(element.equals(appointmentContainer.getElement()))
+			return;
+		
+		//make sure we aren't selected something that is already selected
+		for(AppointmentAdapter selected : selectedAppointments) {
+			if(DOM.isOrHasChild(selected.getAppointmentPanel().getElement(), element)) {
+				return;
+			}
+		}
+		
+		//Appointment selectedAppointment = null;
+		AppointmentAdapter newSelectedAdapter = null;
+		
+		for(AppointmentAdapter adapter : adapters) {
+			if(newSelectedAdapter==null && DOM.isOrHasChild(
+					adapter.getAppointmentPanel().getElement(), element)) {
+				
+				if(calendarWidget.getSelectedAppointment()!=null) {
+					calendarWidget.getSelectedAppointment().setSelected(false);
+					for(AppointmentAdapter selected : selectedAppointments) {
+						selected.getAppointmentPanel().removeStyleName("selected");
+					}
+				}
+				
+				selectedAppointments.clear();
+				newSelectedAdapter = adapter;
+
+			}
+			
+			if(newSelectedAdapter!=null && 
+					newSelectedAdapter.getAppointment() == adapter.getAppointment()) {
+				
+				selectedAppointments.add(adapter);
+				adapter.getAppointmentPanel().addStyleName("selected");
+				
+			}
+
+		}
+		
+		
+		//adapter.getAppointmentPanel().addStyleName("gwt-appointment-selected");
+		if(newSelectedAdapter!=null) {
+			newSelectedAdapter.getAppointment().setSelected(true);
+			super.setSelectedAppointment(newSelectedAdapter.getAppointment(), true);
+		}
+		
+		//DOM.isOrHasChild(parent, child)
+		
+		//1) Loop through list of appointments
+		//2) Check if appointment is / has the clicked element
 	}
 
 	@Override
@@ -230,10 +297,7 @@ public class MonthView extends CalendarView {
                 if(tmpDate.equals(today)) {
                 	headerStyle+="-today";
                 	cellStyle+="-today";
-                	System.out.println("TODAY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 	
-                }else {
-                	System.out.println("NOT TODAY - " + today.toString() + " > " + tmpDate);
                 }
                 
                 if(tmpDate.getMonth()!=origDate.getMonth()){

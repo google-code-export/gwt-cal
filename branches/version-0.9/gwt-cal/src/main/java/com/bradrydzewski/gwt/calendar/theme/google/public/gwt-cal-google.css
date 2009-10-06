@@ -841,3 +841,17 @@
 .gwt-Cal-MonthView .dayCellLabel-today-disabled { background-color: rgb(187, 204, 221); }
 .gwt-cal-MonthView .dayCell-today {   background-color: rgb(255, 255, 204);}
 
+/* Month View Appointment Styles */
+.gwt-cal-MonthView .appointment { position:absolute;height:20px; overflow:hidden;text-decoration:none; }
+.gwt-cal-MonthView .multiDayAppointment { 	-webkit-border-radius: 6px; -moz-border-radius: 6px;position:absolute;height:20px; color:#FFF;overflow:hidden; }
+.gwt-cal-MonthView .appointment.selected{ text-decoration:underline;border:0px;}
+.gwt-cal-MonthView .selected.multiDayAppointment  { -webkit-box-shadow: 3px 3px 5px #B7B7B7; -moz-box-shadow: 3px 3px 5px #B7B7B7; text-decoration:none;}
+
+.gwt-cal-MonthView .multiDayAppointment.gwt-appointment-blue {  border: 1px solid transparent; background: #668CD9; }
+.gwt-cal-MonthView .multiDayAppointment.gwt-appointment-blue.selected { border: 1px solid rgb(41, 82, 163);}
+.gwt-cal-MonthView .gwt-appointment-blue.appointment { background:transparent; color: #668CD9; border:0px;}
+
+.gwt-cal-MonthView .multiDayAppointment.gwt-appointment-red {  border: 1px solid transparent; background: #D96666; }
+.gwt-cal-MonthView .multiDayAppointment.gwt-appointment-red.selected { border: 1px solid #A32929;}
+.gwt-cal-MonthView .gwt-appointment-red.appointment { background:transparent; color: #D96666; border:0px;}
+

@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.user.client.ui.Panel;
+
 public class MonthViewLayout {
 
     class Coordinate {
@@ -41,6 +43,7 @@ public class MonthViewLayout {
         private int columnStop;
         private int order;
         private Appointment appointment;
+        private Panel appointmentPanel;
 
         public AppointmentAdapter(Appointment appointment) {
             this.appointment = appointment;
@@ -81,7 +84,15 @@ public class MonthViewLayout {
         	return this.appointment;
         }
 
-        public String toString() {
+        public Panel getAppointmentPanel() {
+			return appointmentPanel;
+		}
+
+		public void setAppointmentPanel(Panel appointmentPanel) {
+			this.appointmentPanel = appointmentPanel;
+		}
+
+		public String toString() {
             return "row: " + row + ", col start: " + columnStart + ", col stop: " + columnStop + ", order: " + order;
         }
     }

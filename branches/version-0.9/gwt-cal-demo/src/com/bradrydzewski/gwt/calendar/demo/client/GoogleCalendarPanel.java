@@ -10,7 +10,6 @@ import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -25,6 +24,7 @@ import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Random;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Button;
@@ -106,29 +106,6 @@ public class GoogleCalendarPanel extends FlowPanel {
 
 		});
 
-//		dayView.addValueChangeHandler(new ValueChangeHandler<Appointment>() {
-//
-//			@Override
-//			public void onValueChange(ValueChangeEvent<Appointment> event) {
-//				// TODO Auto-generated method stub
-//				System.out.println("selected " + event.getValue().getTitle());
-//			}
-//
-//		});
-
-//		dayView.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>() {
-//
-//			@Override
-//			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
-//				// add a panel that can change the values
-//				final DialogBox dialogBox = createCalendaryEventDialogBox(event);
-//				dialogBox.center();
-//				dialogBox.show();
-//				System.out.println("New time clicked " + event.getTarget());
-//
-//			}
-//
-//		});
 
 		daysTabBar.addTab("1 Day");
 		daysTabBar.addTab("3 Day");
@@ -206,12 +183,23 @@ public class GoogleCalendarPanel extends FlowPanel {
         dayView.addAppointments(appts);
         
 		Appointment appt2 = new Appointment();
-		appt2.setStart(new Date());
+		appt2.setStart(new Date(new Date().getYear(), new Date().getMonth(),
+				new Date().getDate(),0,0,0));
 		appt2.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 8));
-		appt2.setTitle("all day 2");
+				new Date().getDate() + 14));
+		appt2.setTitle("all day 1");
 		appt2.setMultiDay(true);
 		dayView.addAppointment(appt2);
+		
+		Appointment appt3 = new Appointment();
+		appt3.setStart(new Date(new Date().getYear(), new Date().getMonth(),
+				new Date().getDate()+3,0,0,0));
+		appt3.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
+				new Date().getDate() + 6));
+		appt3.setTitle("all day 2");
+		appt3.setStyle(Appointment.RED);
+		appt3.setMultiDay(true);
+		dayView.addAppointment(appt3);
         
         dayView.resumeLayout();
 
@@ -220,8 +208,9 @@ public class GoogleCalendarPanel extends FlowPanel {
 		Window.addResizeHandler(new ResizeHandler() {
 			@Override
 			public void onResize(ResizeEvent event) {
+				resizeTimer.schedule(500);
 				int h = event.getHeight();
-				dayView.setHeight(h - 85 + "px");
+//				dayView.setHeight(h - 85 + "px");
 
 			}
 		});
@@ -324,132 +313,25 @@ public class GoogleCalendarPanel extends FlowPanel {
 			dayView.setDate(new Date());
 		} else {
 			Date tempDate = dayView.getDate();
-			// Calendar cal = Calendar.getInstance();
-			// cal.setTime(dateBefore);
-			// add one week (seven days)
-			// cal.add(Calendar.DATE, numOfDays);
-			// dayView.setDate(cal.getTime());
 			tempDate.setDate(tempDate.getDate() + numOfDays);
 			dayView.setDate(tempDate);
 		}
 	}
 
-	/**
-	 * Generate random appoinmentents.
-	 */
-	public void generateRandomAppointments() {
 
-		Integer[] hours = new Integer[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11,
-				12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24 };
-		Integer[] minutes = new Integer[] { 0, 15, 30, 45 };
-		Integer[] durations = new Integer[] { 15, 30, 45, 60, 90, 120, 180, 240 };
-		String[] styles = new String[] { "gwt-appointment-green",
-				"gwt-appointment-blue", "gwt-appointment-lightgreen",
-				"gwt-appointment-yellow" };
 
-		Date tempDate = new Date();
-		tempDate.setHours(0);
-		tempDate.setMinutes(0);
-		tempDate.setSeconds(0);
-		tempDate.setDate(tempDate.getDate() - 5);
-
-		dayView.suspendLayout();
-		for (int day = 0; day < 14; day++) {
-
-			for (int a = 0; a < 8; a++) {
-
-				Date start = (Date) tempDate.clone();
-				int hour = hours[Random.nextInt(23)];
-				int min = minutes[Random.nextInt(3)];
-				int dur = durations[Random.nextInt(7)];
-				start.setHours(hour);
-				start.setMinutes(min);
-
-				Date end = (Date) start.clone();
-				end.setMinutes(start.getMinutes() + dur);
-
-				System.out.println("appt start: " + start + "  end: " + end);
-
-				String style = styles[Random.nextInt(4)];
-				Appointment appt = new Appointment();
-				appt.setStart(start);
-				appt.setEnd(end);
-				appt.setTitle("day: " + day + " appt: " + a);
-//				appt.addStyleName(style);
-				dayView.addAppointment(appt);
-
-			}
-
-			// increment date by +1
-			tempDate.setDate(tempDate.getDate() + 1);
-		}
-
-		// add my first multi-day appt
-		Appointment appt1 = new Appointment();
-		appt1.setStart(new Date());
-		appt1.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 3));
-		appt1.setTitle("all day 1");
-//		appt1.addStyleName("gwt-appointment-green");
-		appt1.setMultiDay(true);
-		dayView.addAppointment(appt1);
-
-		Appointment appt2 = new Appointment();
-		appt2.setStart(new Date());
-		appt2.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 3));
-		appt2.setTitle("all day 2");
-//		appt2.addStyleName("gwt-appointment-green");
-		appt2.setMultiDay(true);
-		dayView.addAppointment(appt2);
-
-		Appointment appt3 = new Appointment();
-		appt3.setStart(new Date());
-		appt3.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 1));
-		appt3.setTitle("all day 3");
-//		appt3.addStyleName("gwt-appointment-green");
-		appt3.setMultiDay(true);
-		dayView.addAppointment(appt3);
-
-		Appointment appt4 = new Appointment();
-		appt4.setStart(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 2));
-		appt4.setEnd(new Date(new Date().getYear(), new Date().getMonth(),
-				new Date().getDate() + 7));
-		appt4.setTitle("all day 4 " + appt4.getStart() + " " + appt4.getEnd());
-//		appt4.addStyleName("gwt-appointment-green");
-		appt4.setMultiDay(true);
-		dayView.addAppointment(appt4);
-
-		Appointment appt5 = new Appointment();
-		appt5.setStart(new Date(new Date().getYear(), 11, 23, 10, 0));
-		appt5.setEnd(new Date(new Date().getYear(), 11, 24, 13, 30));
-		appt5.setTitle("Multi Day event");
-		appt5.setDescription("From Dec 23 10am to Dec 24 1:30pm");
-//		appt5.addStyleName("gwt-appointment-green");
-		appt5.setMultiDay(true);
-		dayView.addAppointment(appt5);
-
-		Appointment appt6 = new Appointment();
-		appt6.setStart(new Date(new Date().getYear(), 11, 25, 0, 0));
-		appt6.setEnd(new Date(new Date().getYear(), 11, 26, 0, 0));
-		appt6.setTitle("All Day event");
-		appt6.setDescription("From Dec 25 to Dec 26");
-//		appt6.addStyleName("gwt-appointment-blue");
-		appt6.setMultiDay(true);
-		dayView.addAppointment(appt6);
-
-		Appointment appt7 = new Appointment();
-		appt7.setStart(new Date(new Date().getYear(), 11, 25, 0, 0));
-		appt7.setEnd(new Date(new Date().getYear(), 11, 25, 0, 0));
-		appt7.setTitle("All Day");
-		appt7.setDescription("Dec 25 12am to Midnight (12am Dec 26)");
-//		appt7.addStyleName("gwt-appointment-red");
-		appt7.setMultiDay(true);
-		dayView.addAppointment(appt7);
-
-		dayView.resumeLayout();
-	}
+	private int height = -1;
+	private Timer resizeTimer = new Timer() {
+	      @Override
+	      public void run() {
+	    	  int newHeight = Window.getClientHeight();
+	    	  if(newHeight!=height) {
+	    		height=newHeight;
+	    		dayView.setHeight(height - 85 + "px");
+	    		dayView.doSizing();
+	  		  	dayView.doLayout();
+	    	  }
+	      }
+	    };
 
 }

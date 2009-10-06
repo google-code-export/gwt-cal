@@ -91,6 +91,7 @@ public class DayView extends CalendarView implements HasSettings {
             for (AppointmentAdapter appt : appointmentAdapters) {
             	
             	AppointmentWidget apptWidget = AppointmentBuilder.getAppointmentWidget(appt);
+            	//apptWidget.setStyleName(appt.getAppointment().getStyle());
             	widgetAppointmentIndex.put(apptWidget, appt.getAppointment());
             	appointmentWidgetIndex.put(appt.getAppointment(), new AppointmentWidget[]{apptWidget});
             	appointmentWidgets.add(apptWidget);
