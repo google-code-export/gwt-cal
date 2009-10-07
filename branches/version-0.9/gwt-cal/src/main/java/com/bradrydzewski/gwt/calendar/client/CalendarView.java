@@ -78,16 +78,27 @@ public abstract class CalendarView {
 	}
 	
 	public abstract String getStyleName();
-	public abstract void doSizing();
+	public void doSizing() {
+	}
 	public abstract void doLayout();
 	
 	public abstract void onDoubleClick(Element element);
 	public abstract void onMouseDown(Element element);
-	public abstract void onDeleteKeyPressed();
-	public abstract void onUpArrowKeyPressed();
-	public abstract void onDownArrowKeyPressed();
-	public abstract void onLeftArrowKeyPressed();
-	public abstract void onRightArrowKeyPressed();
+	public void onDeleteKeyPressed() {
+		
+	}
+	public void onUpArrowKeyPressed() {
+		
+	}
+	public void onDownArrowKeyPressed() {
+		
+	}
+	public void onLeftArrowKeyPressed() {
+		
+	}
+	public void onRightArrowKeyPressed() {
+		
+	}
 
 	public void setSelectedAppointment(Appointment appointment, boolean fireEvent) {
 		calendarWidget.selectedAppointment = appointment;

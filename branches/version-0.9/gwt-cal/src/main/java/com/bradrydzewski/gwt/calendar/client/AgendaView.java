@@ -186,6 +186,7 @@ public class AgendaView extends CalendarView {
 		appointmentGrid.setCellSpacing(0);
 		appointmentGrid.setBorderWidth(0);
 		appointmentGrid.setWidth("100%");
+		//DOM.setStyleAttribute(appointmentGrid.getElement(), "tableLayout", "fixed");
 		calendarWidget.getRootPanel().add(appointmentGrid);
 		calendarWidget.getRootPanel().add(appointmentGrid);
 	}
@@ -357,47 +358,14 @@ public class AgendaView extends CalendarView {
 	}
 
 	@Override
-	public void doSizing() {
-		//No sizing calculations required
-	}
-
-	@Override
-	public void onDeleteKeyPressed() {
-		//Feature not supported
-	}
-
-	@Override
 	public void onDoubleClick(Element element) {
-		//Feature not supported
-	}
-
-	@Override
-	public void onDownArrowKeyPressed() {
-		//Feature not supported
-	}
-
-	@Override
-	public void onLeftArrowKeyPressed() {
-		//Feature not supported
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override
 	public void onMouseDown(Element element) {
-		//Feature not supported
-	}
-
-	@Override
-	public void onRightArrowKeyPressed() {
-		//Feature not supported
-	}
-
-	@Override
-	public void onUpArrowKeyPressed() {
-		//Feature not supported
-	}
-
-	@Override
-	public void setDays(int days) {
-		//Feature not supported
+		// TODO Auto-generated method stub
+		
 	}
 }

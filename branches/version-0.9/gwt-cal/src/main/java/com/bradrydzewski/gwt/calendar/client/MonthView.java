@@ -1,3 +1,21 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2009  Scottsdale Software LLC
+ * 
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
+
 package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.ArrayList;
@@ -13,70 +31,114 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 
+/**
+ * A CalendarView that displays appointments for a given month. The Month
+ * is displayed in a grid-style view where cells represents days, columns
+ * represents days of the week (i.e. Monday, Tuesday, etc.) and rows
+ * represent a full week (Sunday through Saturday).
+ * 
+ * <h3>CSS Style Rules</h3>
+ * <ul class='css'>
+ * <li>.gwt-cal-MonthView { }</li>
+ * <li>.dayCell { cell that represents a day }</li>
+ * <li>.dayCell-today { cell that represents today }</li>
+ * <li>.dayCell-disabled { cell's day falls outside the month }</li>
+ * <li>.dayCell-today-disabled { cell represents today, falls outside the month }</li>
+ * <li>.dayCellLabel { header for the cell } </li>
+ * <li>.dayCellLabel-today { cell represents today } </li>
+ * <li>.dayCellLabel-disabled { cell's day falls outside the month } </li>
+ * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the month } </li>
+ * <li>.weekDayLabel { label for the days of the week } </li>
+ * </ul>
+ * 
+ * @author Brad Rydzewski
+ * @since 0.9.0
+ */
 public class MonthView extends CalendarView {
 
-    private FlexTable monthCalendarGrid = new FlexTable();
-    private FlowPanel appointmentContainer = new FlowPanel();
-    private ScrollPanel scrollPanel = new ScrollPanel();
-
-    private final static String MONTH_VIEW = "gwt-cal-MonthView";
-    private final static String MONTH_GRID_STYLE = "calendar-month-grid";
-    private final static String MONTH_DAY_CELL_STYLE = "dayCell";
-    private final static String MONTH_DAY_CELL_HEADER_STYLE = "dayCellLabel";
-    private final static String MONTH_APPT_CONTAINER = "calendar-month-appt-continer";
-    private final static String MONTH_WEEKDAY_LABELS = "weekDayLabel";
+	private final static String MONTH_VIEW = "gwt-cal-MonthView";
+	private final static String CANVAS_STYLE = "canvas";
+	private final static String GRID_STYLE = "grid";
+	private final static String CELL_STYLE = "dayCell";
+	private final static String MORE_LABEL_STYLE = "moreAppointments";
+	private final static String CELL_HEADER_STYLE = "dayCellLabel";
+    private final static String WEEKDAY_LABEL_STYLE = "weekDayLabel";
     private final static String[] WEEKDAY_LABELS = new String[] {"Sun","Mon","Tue","Wed","Thurs","Fri","Sat"};
-    
-    private ArrayList<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
-    private ArrayList<AppointmentAdapter> selectedAppointments = new ArrayList<AppointmentAdapter>(); 
-    
+
+
+    /**
+     * List of adapters that map an appointment to the panels that represent
+     * it on the screen.
+     */
+    private ArrayList<AppointmentAdapter> adapters =
+    	new ArrayList<AppointmentAdapter>();
+
+    /**
+     * All appointments are placed on the canvas and arranged.
+     */
+    private FlowPanel appointmentCanvas = new FlowPanel();
+
+    /**
+     * The first date displayed on the MonthView (1st cell).
+     */
     private Date firstDateDisplayed;
+
+    /**
+     * The last date displayed on the MonthView (last cell)
+     */
     private Date lastDateDisplayed;
-    
-    class test implements HasSettings {
 
-		public CalendarSettings getSettings() {
-			// TODO Auto-generated method stub
-			return CalendarSettings.DEFAULT_SETTINGS;
-		}
+    /**
+     * Layout manager use to arrange the appointments on the canvas.
+     */
+    private MonthViewLayout layoutManager = new MonthViewLayout();
 
-		public void setSettings(CalendarSettings settings) {
-			// TODO Auto-generated method stub
-			
-		}
-    	
-    }
-    
+    /**
+     * Grid that makes up the days and weeks of the MonthView.
+     */
+    private FlexTable monthCalendarGrid = new FlexTable();
+
+    /**
+     * List of AppointmentAdapter objects that represent the currently
+     * selected appointment.
+     */
+    private ArrayList<AppointmentAdapter> selectedAppointments =
+    	new ArrayList<AppointmentAdapter>();
+
+
+    /**
+     * This method is called when the MonthView is attached to the
+     * Calendar and displayed. This is where all components are configured
+     * and added to the RootPanel.
+     */
     public void attach(CalendarWidget widget) {
     	
     	super.attach(widget);
     	
-        //add the month calendar to the grid
-//    	DayViewBody dvb = new DayViewBody(new test());
-//    	dvb.setDays(new Date(), 3);
+    	//add the month grid
     	calendarWidget.getRootPanel().add(monthCalendarGrid);
-    	//calendarWidget.getRootPanel().add(scrollPanel);
-    	//scrollPanel.add(new HTML("<table style='table-layout: fixed;' border='1' cellpadding='0' cellspacing='0'><tr><td style='vertical-align:top;' width='50px'><div style='position:relative;width:100%;'>1234</div></td><td style='vertical-align:top;'><div style='position:relative;height:1440px;'><div style='width:100%;'>abcd<div></div></td></tr></table>"));
-
 		monthCalendarGrid.setCellPadding(0);
 		monthCalendarGrid.setBorderWidth(0);
 		monthCalendarGrid.setCellSpacing(0);
+        monthCalendarGrid.setStyleName(GRID_STYLE);
 
-        //set the main style
-        monthCalendarGrid.setStyleName(MONTH_GRID_STYLE);
+        //add the appointment canvas
+        calendarWidget.getRootPanel().add(appointmentCanvas);
+        appointmentCanvas.setStyleName(CANVAS_STYLE);
 
-        //add the calendar appt container
-        calendarWidget.getRootPanel().add(appointmentContainer);
-        appointmentContainer.setStyleName(MONTH_APPT_CONTAINER);
-
+        //clears the list of selected appointment adapters
+        selectedAppointments.clear();
     }
-    
+
+    /**
+     * Performs a Layout and arranges all appointments on the MonthView's
+     * appointment canvas.
+     */
 	@Override
 	public void doLayout() {
-		appointmentContainer.clear();
+		appointmentCanvas.clear();
 		monthCalendarGrid.clear();
 		adapters.clear();
 		while(monthCalendarGrid.getRowCount()>0) {
@@ -84,38 +146,35 @@ public class MonthView extends CalendarView {
 		}
 		
 		//build the grid
-		buildCalendarDays();
+		buildCalendarGrid();
 		
-		//Step 1) sort the appointments
+		//AppointmentUtil.filterListByDateRange(fullList, date, days)
 		
-		//Step 2) get list of appointments in calendar range
+		List<AppointmentAdapter> adapterList =
+			layoutManager.doLayout(calendarWidget.getAppointments(), 
+					firstDateDisplayed, lastDateDisplayed);
 		
-		//Step 3) begin layout (gonna suck!)
-		//     3.a) for each day get appointments
-		//     3.b) do i layout each appointment
-		//     3.b.1) for multi day may need to loop, multiple panels
-		//     3.c)
-		
-		
-		MonthViewLayout mvl = new MonthViewLayout();
-		List<AppointmentAdapter> adapterList = mvl.doLayout(calendarWidget.getAppointments(), firstDateDisplayed, lastDateDisplayed);
-		
-		int height = monthCalendarGrid.getOffsetHeight() - 20;
-		float cellHeight = (float)height / 5f;
-		
-		int offset = 25;
+		int h = monthCalendarGrid.getOffsetHeight() - 20;
+		int w = monthCalendarGrid.getOffsetWidth();
+		float cellHeight = (float)h / 5f;
+		float cellWidth = 1 / 7f * 100f;
+		int apptsPerCell = (int)Math.ceil( (cellHeight-40)/30 );
 
-		for(AppointmentAdapter adapter : adapterList) {
 		
+
+		//for(AppointmentAdapter adapter : adapterList) {
+		for(int i=0;i<adapterList.size();i++) {
+			AppointmentAdapter adapter = adapterList.get(i);
+			
 			SimplePanel panel = new SimplePanel();
 			panel.add(new Label(adapter.getAppointment().getTitle()));
 
 			String left = ((float)adapter.getColumnStart() / 7f)*100f+.5f + "%";
 			String width = ((adapter.getColumnStop()-adapter.getColumnStart()+1) / 7f )*100f-1f + "%";
-			String top = (35+(adapter.getRow()*cellHeight)+(Math.abs(FormattingUtil.getBorderOffset())*2) +((22f+Math.abs(FormattingUtil.getBorderOffset())*2)*adapter.getOrder()))+"px";
+			float top = (35+(adapter.getRow()*cellHeight)+(Math.abs(FormattingUtil.getBorderOffset())*2) +((22f+Math.abs(FormattingUtil.getBorderOffset())*2)*adapter.getOrder()));//+"px";
 
 			DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
-			DOM.setStyleAttribute(panel.getElement(), "top", top );
+			DOM.setStyleAttribute(panel.getElement(), "top", top+"px" );
 			DOM.setStyleAttribute(panel.getElement(), "left", left );
 			DOM.setStyleAttribute(panel.getElement(), "width", width );
 			if(adapter.getAppointment().isMultiDay())
@@ -130,141 +189,147 @@ public class MonthView extends CalendarView {
 			
 			adapter.setAppointmentPanel(panel);
 			
-			if(adapter.getOrder()<3) {
-				appointmentContainer.add(panel);
+			
+
+			
+			if(adapter.getOrder()<apptsPerCell) {
+				appointmentCanvas.add(panel);
 				adapters.add(adapter);
+			} else {
+				
+				
+				int row = adapter.getRow();
+				int cell = adapter.getColumnStart();
+				int count = 0;
+				while(adapter.getRow()==row && adapter.getColumnStart()==cell) {
+					count++;
+					i++;
+					if(i==adapterList.size())
+						break;
+					
+					adapter = adapterList.get(i);
+				}
+				
+				Label more = new Label("+"+count+" more");
+				more.setWidth((cellWidth)+"%");
+				more.setStyleName(MORE_LABEL_STYLE);
+				DOM.setStyleAttribute(more.getElement(), "top", (top)+"px");
+				DOM.setStyleAttribute(more.getElement(), "left", left);
+				
+				appointmentCanvas.add(more);
+				//left;
+				//w
+				
+				if(i!=adapterList.size())
+					i--;
 			}
 		}
 	}
 
-	@Override
-	public void doSizing() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	/**
+	 * Gets the Month View's primary style name.
+	 */
 	public String getStyleName() {
 		return MONTH_VIEW;
 	}
 
-	@Override
-	public void onDeleteKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
+	/**
+	 * Handles the DoubleClick event to determine if an Appointment
+	 * has been selected. If an appointment has been double clicked
+	 * the OpenEvent will get fired for that appointment.
+	 */
 	public void onDoubleClick(Element element) {
-		// TODO Auto-generated method stub
 		
+		ArrayList<AppointmentAdapter> list =
+			findRelatedAdapters(findAppointmentByElement(element));
+
+		if(list.isEmpty())
+			return;
+
+		Appointment appt = list.get(0).getAppointment();
+		if(appt.equals(calendarWidget.getSelectedAppointment()))
+			calendarWidget.fireOpenEvent(appt);
 	}
 
-	@Override
-	public void onDownArrowKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void onLeftArrowKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
-
+	/**
+	 * Handles the a single click to determine if an appointment has
+	 * been selected. If an appointment is clicked it's selected status
+	 * will be set to true and a SelectionEvent will be fired.
+	 */
 	@Override
 	public void onMouseDown(Element element) {
 		
 		//if the appointment container is clicked we can exit out
-		if(element.equals(appointmentContainer.getElement()))
+		if(element.equals(appointmentCanvas.getElement()))
 			return;
 		
-		//make sure we aren't selected something that is already selected
-		for(AppointmentAdapter selected : selectedAppointments) {
-			if(DOM.isOrHasChild(selected.getAppointmentPanel().getElement(), element)) {
-				return;
+		//check to see if element maps to an appointment adapter
+		ArrayList<AppointmentAdapter> list =
+			findRelatedAdapters(findAppointmentByElement(element));
+
+		//if no, then exit
+		if(list.isEmpty())
+			return;
+		
+		//extract the appointment object
+		Appointment appt = list.get(0).getAppointment();
+		
+		//if the adapters match the selected appointent, exit
+		if(calendarWidget.getSelectedAppointment()!=null && 
+				calendarWidget.getSelectedAppointment().equals(appt))
+			return;
+		
+		//de-select any previously selected appointments
+		if(calendarWidget.getSelectedAppointment()!=null) {
+			calendarWidget.getSelectedAppointment().setSelected(false);
+			for(AppointmentAdapter selected : selectedAppointments) {
+				selected.getAppointmentPanel().removeStyleName("selected");
 			}
 		}
 		
-		//Appointment selectedAppointment = null;
-		AppointmentAdapter newSelectedAdapter = null;
+		//set list of selected appointments
+		selectedAppointments.clear();
+		selectedAppointments = list;
 		
-		for(AppointmentAdapter adapter : adapters) {
-			if(newSelectedAdapter==null && DOM.isOrHasChild(
-					adapter.getAppointmentPanel().getElement(), element)) {
-				
-				if(calendarWidget.getSelectedAppointment()!=null) {
-					calendarWidget.getSelectedAppointment().setSelected(false);
-					for(AppointmentAdapter selected : selectedAppointments) {
-						selected.getAppointmentPanel().removeStyleName("selected");
-					}
-				}
-				
-				selectedAppointments.clear();
-				newSelectedAdapter = adapter;
-
-			}
-			
-			if(newSelectedAdapter!=null && 
-					newSelectedAdapter.getAppointment() == adapter.getAppointment()) {
-				
-				selectedAppointments.add(adapter);
-				adapter.getAppointmentPanel().addStyleName("selected");
-				
-			}
-
+		//change style of each adapter to selected
+		for(AppointmentAdapter adapter : selectedAppointments) {
+			adapter.getAppointmentPanel().addStyleName("selected");
 		}
 		
-		
-		//adapter.getAppointmentPanel().addStyleName("gwt-appointment-selected");
-		if(newSelectedAdapter!=null) {
-			newSelectedAdapter.getAppointment().setSelected(true);
-			super.setSelectedAppointment(newSelectedAdapter.getAppointment(), true);
-		}
-		
-		//DOM.isOrHasChild(parent, child)
-		
-		//1) Loop through list of appointments
-		//2) Check if appointment is / has the clicked element
+		//set selected appointment
+		appt.setSelected(true);
+		super.setSelectedAppointment(appt, true);
+
 	}
 
-	@Override
-	public void onRightArrowKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
 
-	@Override
-	public void onUpArrowKeyPressed() {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	
-	
+	/**
+	 * Builds and formats the Calendar Grid.
+	 */
 	
 	
 
-    public void buildCalendarDays(){
+    @SuppressWarnings("deprecation")
+	void buildCalendarGrid(){
         
         //get the date, set to the first date of the month
         Date tmpDate = calendarWidget.getDate();
         tmpDate.setDate(1);
         
-        //clone the date, to be used later on
-        Date origDate = (Date)tmpDate.clone();
+        //keep track of the current month being displayed
+        int month = tmpDate.getMonth();
         
-        //if the temp date is not a sunday, need to find the first
-        //sunday prior to this date
+        //if the 1st of the month is not a Sunday we need to find the prior Sunday
         tmpDate.setDate(tmpDate.getDate() - tmpDate.getDay());
         
-        //store the first date displayed by the calendar for later use
+        //Store the first date displayed by the calendar for later use
         firstDateDisplayed = (Date)tmpDate.clone();
         
-        //today's date
+        //Store todays date for later use
         Date today = new Date();
         AppointmentUtil.resetTime(today);
         
+        //Add the calendar weekday heading
         for(int i=0;i<7;i++) {
             monthCalendarGrid.setText(0, i, WEEKDAY_LABELS[i]);
 
@@ -272,7 +337,7 @@ public class MonthView extends CalendarView {
             monthCalendarGrid.getCellFormatter()
                 .setVerticalAlignment(0, i, HasVerticalAlignment.ALIGN_TOP);
             monthCalendarGrid.getCellFormatter()
-                .setStyleName(0, i, MONTH_WEEKDAY_LABELS);
+                .setStyleName(0, i, WEEKDAY_LABEL_STYLE);
         }
         
         //add all days to the grid
@@ -292,44 +357,77 @@ public class MonthView extends CalendarView {
                 
                 //set the label style
                 //use different styles if the date is not in the current month
-                String headerStyle = MONTH_DAY_CELL_HEADER_STYLE;
-                String cellStyle = MONTH_DAY_CELL_STYLE;
+                String headerStyle = CELL_HEADER_STYLE;
+                String cellStyle = CELL_STYLE;
                 if(tmpDate.equals(today)) {
                 	headerStyle+="-today";
                 	cellStyle+="-today";
                 	
                 }
                 
-                if(tmpDate.getMonth()!=origDate.getMonth()){
+                if(tmpDate.getMonth()!=month){
                 	headerStyle+="-disabled";
                 }
                 
-                
                 l.setStyleName(headerStyle);
-                
-                //if anything exists in the cell, let's clear
-                //if(monthCalendarGrid.getWidget(i, x)!=null){
-                   // monthCalendarGrid.clearCell(i,x);
-                //}
                 
                 //add the label to the cell
                 monthCalendarGrid.setWidget(i, x, l);
-                
-                
 
-                
-                
                 //style the cell
                 monthCalendarGrid.getCellFormatter()
                     .setVerticalAlignment(i, x, HasVerticalAlignment.ALIGN_TOP);
                 monthCalendarGrid.getCellFormatter()
                     .setStyleName(i, x, cellStyle);
-                
-
             }
             
             //store the last date displayed for later use
             lastDateDisplayed = (Date)tmpDate.clone();
         }  
     }
+
+	/**
+	 * Each Appointment drawn on the CalendarView maps to a Widget and
+	 * therefore an Element. This method attempts to find an Appointment
+	 * based on the provided Element. If no match is found a null value
+	 * is returned.
+	 * @param element Element to look up.
+	 * @return Appointment matching the element.
+	 */
+	Appointment findAppointmentByElement(Element element) {
+
+		//iterate through list of adapters
+		for(AppointmentAdapter adapter : adapters) {
+			//if adapter's appointment panel matches element, return appointment
+			if(DOM.isOrHasChild(adapter.getAppointmentPanel()
+					.getElement(), element)) {
+				return adapter.getAppointment();
+			}
+		}
+		//if no matches return null
+		return null;
+	}
+
+	/**
+	 * Finds any related adapters that match the given Appointment.
+	 * @param appt Appointment to match.
+	 * @return List of related AppointmentAdapter objects.
+	 */
+	ArrayList<AppointmentAdapter> findRelatedAdapters(Appointment appt) {
+		
+		//create list for all adapters related to a particular appointment
+		ArrayList<AppointmentAdapter> list = new ArrayList<AppointmentAdapter>();
+		
+		//if the appointment is null return an empty list
+		if(appt==null)
+			return list;
+		
+		for(AppointmentAdapter adapter : adapters) {
+			if(adapter.getAppointment().equals(appt)) {
+				list.add(adapter);
+			}
+		}
+		
+		return list;
+	}
 }
