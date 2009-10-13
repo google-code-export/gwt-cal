@@ -19,6 +19,8 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -55,8 +57,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * 
  * <h3>Things to fix:</h3>
  * <ol>
- * <li> Fix the sorting. Sort by Multi-day, then by Date/Time
- * <li> Hook up the double click function
+ * <li> Fix the sorting. Sort by Multi-day, then by Date/Time -- COMPLETE
+ * <li> Hook up the double click function -- COMPLETE
  * <li> Doesn't correctly toggle style for selected appointment after doLayout() is called
  * <li> Slightly incorrect calculation of "+X more" appointments, Maybe sort adapters??
  * <li> "+X more" doesn't calculate for last day w/ appointments in the view
@@ -71,6 +73,26 @@ import com.google.gwt.user.client.ui.SimplePanel;
  */
 public class MonthView extends CalendarView {
 
+	protected static final Comparator<Appointment> APPOINTMENT_COMPARATOR =
+		new Comparator<Appointment>() { //implements Comparator<Appointment>{
+
+	    public int compare(Appointment a1, Appointment a2) {
+	        int compare = Boolean.valueOf(a2.isMultiDay()).compareTo(
+	        		Boolean.valueOf(a1.isMultiDay()));
+	        
+	        if(compare==0) {
+	        	compare = a1.getStart().compareTo(a2.getStart());
+	        }
+
+	        if (compare == 0) {
+	            compare = a2.getEnd().compareTo(a1.getEnd());
+	        }
+	        
+	        return compare;
+	    }
+	};
+	
+	
 	private final static String MONTH_VIEW = "gwt-cal-MonthView";
 	private final static String CANVAS_STYLE = "canvas";
 	private final static String GRID_STYLE = "grid";
@@ -162,6 +184,9 @@ public class MonthView extends CalendarView {
 		buildCalendarGrid();
 		
 		//AppointmentUtil.filterListByDateRange(fullList, date, days)
+		
+		Collections.sort(
+				calendarWidget.getAppointments(),APPOINTMENT_COMPARATOR);
 		
 		List<AppointmentAdapter> adapterList =
 			layoutManager.doLayout(calendarWidget.getAppointments(), 
