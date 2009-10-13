@@ -115,7 +115,7 @@ public class MonthViewLayout {
         }
     }
     private Map<Integer, Integer> cellsAppointmentCount = new HashMap<Integer, Integer>();
-    private Map<Integer, List<AppointmentAdapter>> cellsAppointments = new HashMap<Integer, List<AppointmentAdapter>>();
+    //private Map<Integer, List<AppointmentAdapter>> cellsAppointments = new HashMap<Integer, List<AppointmentAdapter>>();
     private Map<Integer, Map<Integer,Integer>> cellsSlots = new HashMap<Integer, Map<Integer,Integer>>();
     
     public List<AppointmentAdapter> doLayout(List<Appointment> appointments,

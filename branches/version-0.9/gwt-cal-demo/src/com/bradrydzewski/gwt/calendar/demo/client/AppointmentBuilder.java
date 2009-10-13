@@ -75,6 +75,11 @@ public class AppointmentBuilder {
 					attendee.setAttending(ATTENDING[Random.nextInt(ATTENDING.length)]);
 					appt.getAttendees().add(attendee);
 				}
+				
+				if(appt.getStart().getDate()!=appt.getEnd().getDate())
+					appt.setMultiDay(true);
+					
+				
 				list.add(appt);
 				
 			}

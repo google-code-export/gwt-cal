@@ -53,6 +53,19 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * <li>.weekDayLabel { label for the days of the week } </li>
  * </ul>
  * 
+ * <h3>Things to fix:</h3>
+ * <ol>
+ * <li> Fix the sorting. Sort by Multi-day, then by Date/Time
+ * <li> Hook up the double click function
+ * <li> Doesn't correctly toggle style for selected appointment after doLayout() is called
+ * <li> Slightly incorrect calculation of "+X more" appointments, Maybe sort adapters??
+ * <li> "+X more" doesn't calculate for last day w/ appointments in the view
+ * <li> Need method to filter correct list of appointments to display
+ * <li> Styles in IE still screwed up... DAMN IE6/7!!!!
+ * <li> Some months span 6 weeks, not 5. Need to account for this. See google Calendar
+ * <li> Some unit tests would be nice
+ * </ol>
+ * 
  * @author Brad Rydzewski
  * @since 0.9.0
  */
@@ -155,10 +168,10 @@ public class MonthView extends CalendarView {
 					firstDateDisplayed, lastDateDisplayed);
 		
 		int h = monthCalendarGrid.getOffsetHeight() - 20;
-		int w = monthCalendarGrid.getOffsetWidth();
+		//int w = monthCalendarGrid.getOffsetWidth();
 		float cellHeight = (float)h / 5f;
 		float cellWidth = 1 / 7f * 100f;
-		int apptsPerCell = (int)Math.ceil( (cellHeight-40)/30 );
+		int apptsPerCell = (int)Math.ceil( (cellHeight-45)/30 );
 
 		
 
@@ -201,16 +214,25 @@ public class MonthView extends CalendarView {
 				int row = adapter.getRow();
 				int cell = adapter.getColumnStart();
 				int count = 0;
-				while(adapter.getRow()==row && adapter.getColumnStart()==cell) {
-					count++;
-					i++;
+				while(true) {
+
 					if(i==adapterList.size())
 						break;
 					
-					adapter = adapterList.get(i);
+					if(count>0) {
+						i++;
+						adapter = adapterList.get(i);
+					}
+					
+					if(adapter.getRow()==row && adapter.getColumnStart()==cell) {
+						count++;
+					} else {
+						i--;
+						break;
+					}
 				}
 				
-				Label more = new Label("+"+count+" more");
+				Label more = new Label("+"+count+" more " + row + ", " + cell);
 				more.setWidth((cellWidth)+"%");
 				more.setStyleName(MORE_LABEL_STYLE);
 				DOM.setStyleAttribute(more.getElement(), "top", (top)+"px");
@@ -220,8 +242,8 @@ public class MonthView extends CalendarView {
 				//left;
 				//w
 				
-				if(i!=adapterList.size())
-					i--;
+				//if(i!=adapterList.size())
+				//	i--;
 			}
 		}
 	}
@@ -426,8 +448,14 @@ public class MonthView extends CalendarView {
 			if(adapter.getAppointment().equals(appt)) {
 				list.add(adapter);
 			}
-		}
-		
+		}	
 		return list;
 	}
+	
+	public void onDeleteKeyPressed() {
+		if(calendarWidget.getSelectedAppointment()!=null)
+			calendarWidget.removeAppointment(calendarWidget.getSelectedAppointment());
+	}
+	
+	
 }
