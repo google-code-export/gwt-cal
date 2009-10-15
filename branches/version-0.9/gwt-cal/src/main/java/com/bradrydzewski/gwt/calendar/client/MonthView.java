@@ -57,15 +57,15 @@ import com.google.gwt.user.client.ui.SimplePanel;
  * 
  * <h3>Things to fix:</h3>
  * <ol>
- * <li> Fix the sorting. Sort by Multi-day, then by Date/Time -- COMPLETE
- * <li> Hook up the double click function -- COMPLETE
- * <li> Doesn't correctly toggle style for selected appointment after doLayout() is called
- * <li> Slightly incorrect calculation of "+X more" appointments, Maybe sort adapters??
+ * <li> COMPLETE: Fix the sorting. Sort by Multi-day, then by Date/Time
+ * <li> COMPLETE: Hook up the double click function
+ * <li> COMPLETE: Doesn't correctly toggle style for selected appointment after doLayout() is called
+ * <li> Slightly incorrect calculation of "+X more" appointments, especially when there are all day appts
  * <li> "+X more" doesn't calculate for last day w/ appointments in the view
- * <li> Need method to filter correct list of appointments to display
+ * <li> Need method to filter correct list of appointments to display, right now it renders all appointments in the list
  * <li> Styles in IE still screwed up... DAMN IE6/7!!!!
- * <li> Some months span 6 weeks, not 5. Need to account for this. See google Calendar
- * <li> Some unit tests would be nice
+ * <li> Some months span 6 weeks, not 5. Need to account for this
+ * <li> Some unit tests would be nice :)
  * </ol>
  * 
  * @author Brad Rydzewski
@@ -222,8 +222,10 @@ public class MonthView extends CalendarView {
 			
 			panel.addStyleName(adapter.getAppointment().getStyle());
 			
-			if(adapter.getAppointment().isSelected())
+			if(adapter.getAppointment().isSelected()) {
 				panel.addStyleName("selected");
+				selectedAppointments.add(adapter);
+			}
 			
 			adapter.setAppointmentPanel(panel);
 			
