@@ -24,16 +24,17 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
+import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.bradrydzewski.gwt.calendar.client.MonthViewLayout.AppointmentAdapter;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
  * A CalendarView that displays appointments for a given month. The Month
@@ -113,7 +114,7 @@ public class MonthView extends CalendarView {
     /**
      * All appointments are placed on the canvas and arranged.
      */
-    private FlowPanel appointmentCanvas = new FlowPanel();
+    private AbsolutePanel appointmentCanvas = new AbsolutePanel();
 
     /**
      * The first date displayed on the MonthView (1st cell).
@@ -142,6 +143,7 @@ public class MonthView extends CalendarView {
     private ArrayList<AppointmentAdapter> selectedAppointments =
     	new ArrayList<AppointmentAdapter>();
 
+    private PickupDragController dragController = null;
 
     /**
      * This method is called when the MonthView is attached to the
@@ -165,6 +167,18 @@ public class MonthView extends CalendarView {
 
         //clears the list of selected appointment adapters
         selectedAppointments.clear();
+
+        if(dragController==null)
+        	dragController = new PickupDragController(appointmentCanvas, true);
+    
+        //Need to re-set appointmentCanvas to position:absolute
+        // because gwt-dnd will set it to relative, but then
+        // the layout gets f***ed up
+        DOM.setStyleAttribute(appointmentCanvas.getElement(), "position", "absolute");
+    
+    
+        dragController.setBehaviorDragStartSensitivity(5);
+        dragController.setBehaviorDragProxy(true);
     }
 
     /**
@@ -204,7 +218,7 @@ public class MonthView extends CalendarView {
 		for(int i=0;i<adapterList.size();i++) {
 			AppointmentAdapter adapter = adapterList.get(i);
 			
-			SimplePanel panel = new SimplePanel();
+			FocusPanel panel = new FocusPanel();
 			panel.add(new Label(adapter.getAppointment().getTitle()));
 
 			String left = ((float)adapter.getColumnStart() / 7f)*100f+.5f + "%";
@@ -235,6 +249,8 @@ public class MonthView extends CalendarView {
 			if(adapter.getOrder()<apptsPerCell) {
 				appointmentCanvas.add(panel);
 				adapters.add(adapter);
+				dragController.makeDraggable(panel);
+				
 			} else {
 				
 				
@@ -243,7 +259,7 @@ public class MonthView extends CalendarView {
 				int count = 0;
 				while(true) {
 
-					if(i==adapterList.size())
+					if(i==adapterList.size()-1)
 						break;
 					
 					if(count>0) {
