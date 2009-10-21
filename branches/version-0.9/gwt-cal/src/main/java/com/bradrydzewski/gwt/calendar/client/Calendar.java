@@ -19,69 +19,61 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
-import com.google.gwt.user.client.Element;
 
 public class Calendar extends CalendarWidget {
 
-	
-	private DayView dayView = null;
-	private AgendaView agendaView = null;
-	
-	public static final int DAY_VIEW = 0;
-	public static final int AGENDA_VIEW = 1;
-	public static final int MONTH_VIEW = 2;
+    private DayView dayView = null;
+    private AgendaView agendaView = null;
 
+    public static final int DAY_VIEW = 0;
+    public static final int AGENDA_VIEW = 1;
+    public static final int MONTH_VIEW = 2;
 
-	public Calendar() {
-		this(DAY_VIEW);
-	}
-	
-	public Calendar(int view) {
-		//super(new DayView());
-		super();
-		//setView(view);
-	}
-	
-	public void setView(int view) {
-		setView(view, getDays());
-	}
-	
-	public void setView(int view, int days) {
-		
-		switch(view) {
-			
-			case 0 : {
-				if(dayView==null)
-					dayView = new DayView();
-					dayView.setDays(days);
-				this.view = dayView;
-				break;
-			}
-			case 1 : {
-				//if(agendaView==null)
-				//TODO: need to cache agendaView, but there is a layout bug after a calendar item is deleted.
-					agendaView = new AgendaView();
-				this.view = agendaView;
-				break;
-			}
-			case 2 : {
-				this.view = new MonthView();
-			}
-			
-		}
-		
-		//clear currently displayed items
-		getRootPanel().clear();
-		
-		//set the style for the calendar, based on the selected view
-		setStyleName(this.view.getStyleName());
-		
-		//attach view to the Calendar
-		this.view.attach(this);
-		//do required sizing and layout
-		this.refresh();
-	}
+    public Calendar() {
+        this(DAY_VIEW);
+    }
 
+    public Calendar(int view) {
+        //super(new DayView());
+        super();
+        //setView(view);
+    }
 
+    public void setView(int view) {
+        setView(view, getDays());
+    }
+
+    public void setView(int view, int days) {
+        switch (view) {
+            case 0: {
+                if (dayView == null)
+                    dayView = new DayView();
+                dayView.setDays(days);
+                this.view = dayView;
+                break;
+            }
+            case 1: {
+                //if(agendaView==null)
+                //TODO: need to cache agendaView, but there is a layout bug after a calendar item is deleted.
+                agendaView = new AgendaView();
+                this.view = agendaView;
+                break;
+            }
+            case 2: {
+                this.view = new MonthView();
+            }
+        }
+
+        //clear currently displayed items
+        getRootPanel().clear();
+
+        //set the style for the calendar, based on the selected view
+        setStyleName(this.view.getStyleName());
+
+        //attach view to the Calendar
+        this.view.attach(this);
+        //do required sizing and layout
+        this.refresh();
+    }
 }
  
