@@ -3,45 +3,48 @@ package com.bradrydzewski.gwt.calendar.client.util;
 /**
  * Provides a set of re-usable methods related to the client's
  * browser window.
+ *
  * @author Brad Rydzewski
  */
 public class WindowUtils {
 
-	/**
-	 * Width in pixels of Client's scroll bar.
-	 */
-	private static int scrollBarWidth;
+    /**
+     * Width in pixels of Client's scroll bar.
+     */
+    private static int scrollBarWidth;
 
-	/**
-	 * Gets the width of the client's scroll bar.
-	 * @param useCachedValue Indicates if cached value should be used, or refreshed.
-	 * @return Width, in pixels, of Client's scroll bar
-	 */
-	public static int getScrollBarWidth(boolean useCachedValue) {
-		if(useCachedValue && scrollBarWidth>0) {
-			return scrollBarWidth;
-		}
-		
-                /* sometimes getScrollBarWidth() temporarily returns a negative
-                 * number. So when this happens we will return "17"
-                 * which seems to be default on many systems...
-                 * but we won't save it as a cached value.
-                 */
-                int tmpScrollBarWidth =  getScrollBarWidth();
-                if(tmpScrollBarWidth<0)
-                    return 17; 
-                
-		scrollBarWidth = tmpScrollBarWidth;
+    /**
+     * Gets the width of the client's scroll bar.
+     *
+     * @param useCachedValue Indicates if cached value should be used, or refreshed.
+     * @return Width, in pixels, of Client's scroll bar
+     */
+    public static int getScrollBarWidth(boolean useCachedValue) {
+        if (useCachedValue && scrollBarWidth > 0) {
+            return scrollBarWidth;
+        }
 
-		return scrollBarWidth;
-	}
-	
-	/** 
-	 * Calculates the width of the clients scroll bar, which can vary among operations systems,
-	 * browsers and themes. Based on code from: http://www.alexandre-gomes.com/?p=115
-	 * @return
-	 */
-	private static native int getScrollBarWidth() /*-{
+        /* sometimes getScrollBarWidth() temporarily returns a negative
+        * number. So when this happens we will return "17"
+        * which seems to be default on many systems...
+        * but we won't save it as a cached value.
+        */
+        int tmpScrollBarWidth = getScrollBarWidth();
+        if (tmpScrollBarWidth < 0)
+            return 17;
+
+        scrollBarWidth = tmpScrollBarWidth;
+
+        return scrollBarWidth;
+    }
+
+    /**
+     * Calculates the width of the clients scroll bar, which can vary among operating systems,
+     * browsers and themes. Based on code from: http://www.alexandre-gomes.com/?p=115
+     *
+     * @return The width of the browser scrollbar in pixels
+     */
+    private static native int getScrollBarWidth() /*-{
 	
 		var inner = document.createElement("p");
 		inner.style.width = "100%";
