@@ -16,10 +16,8 @@ import com.google.gwt.user.client.Element;
  * @author Brad Rydzewski
  * @author Carlos D. Morales
  */
-public class AppointmentUtil
-{
-    public static List<Date> findDatesOccupied(Date from, Date to, Date in)
-    {
+public class AppointmentUtil {
+    public static List<Date> findDatesOccupied(Date from, Date to, Date in) {
         return null;
     }
 
@@ -31,52 +29,12 @@ public class AppointmentUtil
      * @return The number of milliseconds in <code>date</code>, <code>0</code>
      *         (zero) if <code>date</code> is <code>null</code>.
      */
-    private static long safeInMillis(Date date)
-    {
+    private static long safeInMillis(Date date) {
         return date != null ? date.getTime() : 0;
     }
 
-    /**
-     * Tells whether the passed <code>testDate</code> falls within the time
-     * range defined by <code>rangeStart</code> and <code>rangeFrom</code>.
-     *
-     * @param rangeStart The range lower limit
-     * @param rangeEnd   The range upper limit
-     * @param testDate   The date to test
-     * @return <code>true</code> if <code>testDate</code> falls within the time
-     *         range defined by <code>rangeStart</code> and
-     *         <code>rangeEnd</code>
-     */
-    public static boolean isWithinRange(Date rangeStart, Date rangeEnd,
-       Date testDate)
-    {
-        Long testDateMillis = safeInMillis(testDate);
-        Long rangeStartMillis = safeInMillis(rangeStart);
-        Long rangeEndMillis = safeInMillis(rangeEnd);
-
-        return (testDateMillis >= rangeStartMillis
-           && testDateMillis <= rangeEndMillis);
-    }
-
-    public static boolean isMultiDay(Appointment appt)
-    {
-        if (appt.getStart().getDate() == appt.getEnd().getDay())
-        {
-            if (appt.getStart().getMonth() == appt.getEnd().getMonth())
-            {
-                if (appt.getStart().getYear() == appt.getEnd().getYear())
-                {
-                    return false;
-                }
-            }
-        }
-
-        return false;
-    }
-
-    public static ArrayList filterListByDateRange(ArrayList fullList, Date date,
-       int days)
-    {
+    public static ArrayList filterListByDateRange(ArrayList<Appointment> fullList, Date date,
+                                                  int days) {
         ArrayList<Appointment> group = new ArrayList<Appointment>();
         Date startDate = (Date) date.clone();
         resetTime(startDate);
@@ -84,13 +42,9 @@ public class AppointmentUtil
         resetTime(endDate);
         endDate.setDate(endDate.getDate() + days);
 
-        for (int i = 0; i < fullList.size(); i++)
-        {
-            Appointment appointment = (Appointment) fullList.get(i);
+        for (Appointment appointment : fullList) {
             if (appointment.isMultiDay() && rangeContains(appointment,
-               startDate,
-               endDate))
-            {
+                    startDate, endDate)) {
                 group.add(appointment);
             }
         }
@@ -98,8 +52,7 @@ public class AppointmentUtil
         return group;
     }
 
-    public static boolean rangeContains(Appointment appt, Date date)
-    {
+    public static boolean rangeContains(Appointment appt, Date date) {
         Date rangeEnd = (Date) date.clone();
         rangeEnd.setDate(rangeEnd.getDate() + 1);
         resetTime(rangeEnd);
@@ -117,19 +70,17 @@ public class AppointmentUtil
      *         range, <code>false</code> otherwise.
      */
     public static boolean rangeContains(Appointment appointment,
-       Date rangeStart, Date rangeEnd)
-    {
+                                        Date rangeStart, Date rangeEnd) {
         Long apptStartMillis = appointment.getStart().getTime();
         Long apptEndMillis = appointment.getEnd().getTime();
         Long rangeStartMillis = rangeStart.getTime();
         Long rangeEndMillis = rangeEnd.getTime();
 
         return apptStartMillis >= rangeStartMillis
-           && apptStartMillis < rangeEndMillis
-           || apptStartMillis <= rangeStartMillis
-           && apptEndMillis >= rangeStartMillis;
+                && apptStartMillis < rangeEndMillis
+                || apptStartMillis <= rangeStartMillis
+                && apptEndMillis >= rangeStartMillis;
     }
-
 
     /**
      * filters a list of appointments and returns only appointments with a start
@@ -141,31 +92,25 @@ public class AppointmentUtil
      * @param startDate
      * @return
      */
-    public static ArrayList filterListByDate(List fullList, Date startDate)
-    {
+    public static List<Appointment> filterListByDate(List<Appointment> fullList, Date startDate) {
 
         ArrayList<Appointment> group = new ArrayList<Appointment>();
         startDate = new Date(startDate.getYear(), startDate.getMonth(),
-           startDate.getDate(), 0, 0, 0);
+                startDate.getDate(), 0, 0, 0);
         Date endDate = new Date(startDate.getYear(), startDate.getMonth(),
-           startDate.getDate(), 0, 0, 0);
+                startDate.getDate(), 0, 0, 0);
         endDate.setDate(endDate.getDate() + 1);
 
-        for (int i = 0; i < fullList.size(); i++)
-        {
-            Appointment tmpAppt = (Appointment) fullList.get(i);
+        for (Appointment aFullList : fullList) {
+            Appointment tmpAppt = (Appointment) aFullList;
 
             if (tmpAppt.isMultiDay() == false && tmpAppt.getEnd()
-               .before(endDate))
-            {
+                    .before(endDate)) {
                 //TODO: probably can shorten this by using the compareTo method
                 if (tmpAppt.getStart().after(startDate) || tmpAppt.getStart()
-                   .equals(startDate))
-                {
+                        .equals(startDate)) {
                     group.add(tmpAppt);
-                }
-                else
-                {
+                } else {
                     // System.out.println(" exiting filter at index " +i+ " ,"
                     // +group.size()+ " found");
                     // return group;
@@ -177,27 +122,22 @@ public class AppointmentUtil
     }
 
     public static AppointmentWidget checkAppointmentElementClicked(
-       Element element, List<AppointmentWidget> appointments)
-    {
-        for (AppointmentWidget appt : appointments)
-        {
+            Element element, List<AppointmentWidget> appointments) {
+        for (AppointmentWidget appt : appointments) {
             //throw new RuntimeException("checkAppointmentElementClicked is not implemented");
-            if (DOM.isOrHasChild(appt.getElement(), element))
-            {
+            if (DOM.isOrHasChild(appt.getElement(), element)) {
                 return appt;
             }
         }
         return null;
     }
 
-
     /**
      * Resets the date to have no time modifiers (hours, minutes, seconds.)
      *
      * @param date The date to reset
      */
-    public static void resetTime(Date date)
-    {
+    public static void resetTime(Date date) {
         long msec = safeInMillis(date);
         msec = (msec / 1000) * 1000;
         date.setTime(msec);
