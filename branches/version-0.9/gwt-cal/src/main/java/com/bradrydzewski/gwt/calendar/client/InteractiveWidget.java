@@ -35,156 +35,188 @@ import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
 /**
- * This is a base UIObject that handles user interaction,
- * Focus, mouse clicks and keyboard commands (arrow, delete, etc).
+ * Abstract class for widgets that react to keystrokes and mouse gestures
+ * providing a centralized place for the association between user inputs and the
+ * logic to perform. Subclasses will implement the <code>onXXXKeyPressed</code>,
+ * <code>onMouseDown</code> and <code>onDoubleClick</code> methods to provide
+ * the custom event processing logic.
+ *
  * @author Brad Rydzewski
  */
 public abstract class InteractiveWidget extends Composite {
 
-	/**
-	 * Focus widget used to add keyboard and mouse focus to a calendar.
-	 */
-	private FocusPanel focusPanel = new FocusPanel();
+    /**
+     * Focus widget used to add keyboard and mouse focus to a calendar.
+     */
+    private FocusPanel focusPanel = new FocusPanel();
 
-	/**
-	 * Main panel to which all other components are added.
-	 */
-	protected FlowPanel rootPanel = new FlowPanel();
+    /**
+     * Main panel hold all other components.
+     */
+    protected FlowPanel rootPanel = new FlowPanel();
 
-	/**
-	 * Used by focus widget to make sure a key stroke is only
-	 * handled once by the calendar.
-	 */
-	private boolean lastWasKeyDown = false;
+    /**
+     * Used by focus widget to make sure a key stroke is only handled once by
+     * the calendar.
+     */
+    private boolean lastWasKeyDown = false;
 
-	public InteractiveWidget() {
-		
-		initWidget(rootPanel);
-		
-		//Sink events, mouse and keyboard for now
-		sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS);
+    public InteractiveWidget() {
 
-		//Ensure the focus panel is invisible
-		RootPanel.get().add(focusPanel);
-		DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
-        DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
-        DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
-        DOM.setStyleAttribute(focusPanel.getElement(), "height", "0px");
-        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0px");
+        initWidget(rootPanel);
+
+        //Sink events, mouse and keyboard for now
+        sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS);
+
+        hideFocusPanel();
+
         //Add key handler events to the focus panel
         focusPanel.addKeyPressHandler(new KeyPressHandler() {
-
             public void onKeyPress(KeyPressEvent event) {
-
                 if (!lastWasKeyDown) {
                     keyboardNavigation(event.getNativeEvent().getKeyCode());
                 }
                 lastWasKeyDown = false;
             }
         });
+
         focusPanel.addKeyUpHandler(new KeyUpHandler() {
-
             public void onKeyUp(KeyUpEvent event) {
-
                 lastWasKeyDown = false;
             }
         });
         focusPanel.addKeyDownHandler(new KeyDownHandler() {
-
             public void onKeyDown(KeyDownEvent event) {
                 keyboardNavigation(event.getNativeEvent().getKeyCode());
                 lastWasKeyDown = true;
             }
         });
-	}
+    }
 
-	/**
-	 * Sets whether this object has focus.
-	 * @param focused <code>true</code> to give this object focus,
-	 * 			<code>false</code> to take it away.
-	 */
-	public void setFocus(boolean focused) {
-		focusPanel.setFocus(focused);
-	}
+    /**
+     * Makes the widget's focus panel invisible.
+     */
+    private void hideFocusPanel() {
+        RootPanel.get().add(focusPanel);
+        DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
+        DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "height", "0px");
+        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0px");
+    }
 
-	public ComplexPanel getRootPanel() {
-		return rootPanel;
-	}
-	
-	public abstract void onDoubleClick(Element element);
+    public ComplexPanel getRootPanel() {
+        return rootPanel;
+    }
 
-	public abstract void onMouseDown(Element element);
+    /**
+     * Processes mouse double-click events. Concrete interactive widgets should
+     * provide the component's specific logic.
+     *
+     * @param element The HTML DOM element that originated the event
+     */
+    public abstract void onDoubleClick(Element element);
 
-	public abstract void onDeleteKeyPressed();
+    /**
+     * Processes mouse button pressing events. Concrete interactive widgets
+     * should provide the component's specific logic.
+     *
+     * @param element The HTML DOM element that originated the event
+     */
+    public abstract void onMouseDown(Element element);
 
-	public abstract void onUpArrowKeyPressed();
+    /**
+     * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * keystrokes. Concrete interactive widgets should provide the component's
+     * specific logic.
+     */
+    public abstract void onDeleteKeyPressed();
 
-	public abstract void onDownArrowKeyPressed();
+    /**
+     * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_UP}
+     * keystrokes. Concrete interactive widgets should provide the component's
+     * specific logic.
+     */
+    public abstract void onUpArrowKeyPressed();
 
-	public abstract void onLeftArrowKeyPressed();
-	
-	public abstract void onRightArrowKeyPressed();
+    /**
+     * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
+     * keystrokes. Concrete interactive widgets should provide the component's
+     * specific logic.
+     */
+    public abstract void onDownArrowKeyPressed();
 
-	@Override
-	public void onBrowserEvent(Event event) {
-		int eventType = DOM.eventGetType(event);
-		Element element = DOM.eventGetTarget(event);
+    /**
+     * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
+     * keystrokes. Concrete interactive widgets should provide the component's
+     * specific logic.
+     */
+    public abstract void onLeftArrowKeyPressed();
 
-		switch (eventType) {
-			case Event.ONDBLCLICK: {
-				onDoubleClick(element);
-				focusPanel.setFocus(true);
-				break;
-			}
-			case Event.ONMOUSEDOWN: {
-				if (DOM.eventGetCurrentTarget(event)
-						== getElement()) {
-	
-					onMouseDown(element);
-					focusPanel.setFocus(true);
-					//Cancel events so Firefox / Chrome don't
-					//give child widgets with scrollbars focus.
-					//TODO: Should not cancel onMouseDown events in the event an appointment would have a child widget with a scrollbar (if this would ever even happen).
-					DOM.eventCancelBubble(event, true);
-					DOM.eventPreventDefault(event);
-					return;
-				}
-			}
-		}
+    /**
+     * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
+     * keystrokes. Concrete interactive widgets should provide the component's
+     * specific logic.
+     */
+    public abstract void onRightArrowKeyPressed();
 
-		super.onBrowserEvent(event);
-	}
+    @Override
+    public void onBrowserEvent(Event event) {
+        int eventType = DOM.eventGetType(event);
+        Element element = DOM.eventGetTarget(event);
 
-	
+        switch (eventType) {
+            case Event.ONDBLCLICK: {
+                onDoubleClick(element);
+                focusPanel.setFocus(true);
+                break;
+            }
+            case Event.ONMOUSEDOWN: {
+                if (DOM.eventGetCurrentTarget(event) == getElement()) {
+
+                    onMouseDown(element);
+                    focusPanel.setFocus(true);
+                    //Cancel events so Firefox / Chrome don't
+                    //give child widgets with scrollbars focus.
+                    //TODO: Should not cancel onMouseDown events in the event an appointment would have a child widget with a scrollbar (if this would ever even happen).
+                    DOM.eventCancelBubble(event, true);
+                    DOM.eventPreventDefault(event);
+                    return;
+                }
+            }
+        }
+
+        super.onBrowserEvent(event);
+    }
+
+    /**
+     * Dispatches the processing of a key being pressed to the this widget
+     * <code>onXXXXKeyPressed</code> methods.
+     *
+     * @param key Pressed key code
+     */
     protected void keyboardNavigation(int key) {
         switch (key) {
             case KeyCodes.KEY_DELETE: {
-            	onDeleteKeyPressed();
-                //removeAppointment((Appointment) getSelectedAppointment(), true);
+                onDeleteKeyPressed();
                 break;
             }
             case KeyCodes.KEY_LEFT: {
-            	onLeftArrowKeyPressed();
-            	break;
+                onLeftArrowKeyPressed();
+                break;
             }
             case KeyCodes.KEY_UP: {
-            	onUpArrowKeyPressed();
-                //selectPreviousAppointment();
-                //dayViewBody.getScrollPanel().ensureVisible((UIObject) getSelectedAppointment());
+                onUpArrowKeyPressed();
                 break;
             }
             case KeyCodes.KEY_RIGHT: {
-            	onRightArrowKeyPressed();
-            	break;
+                onRightArrowKeyPressed();
+                break;
             }
             case KeyCodes.KEY_DOWN: {
-
-            	onDownArrowKeyPressed();
-                //selectNextAppointment();
-                //dayViewBody.getScrollPanel().ensureVisible((UIObject) getSelectedAppointment());
+                onDownArrowKeyPressed();
                 break;
             }
         }
     }
-
 }
