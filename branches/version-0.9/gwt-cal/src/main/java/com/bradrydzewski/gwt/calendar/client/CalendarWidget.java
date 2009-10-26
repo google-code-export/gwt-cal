@@ -19,9 +19,7 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
@@ -37,55 +35,41 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
- * TODO: Need Calendar "View" - CHECK
- * TODO: Need CalendarSettings
- * TODO: Need LayoutStrategy - CHECK
- * TODO: Need DragDropStrategy
- * TODO: Need ResizeStrategy ??? or is this same as DragDrop
- * TODO: Add AppointmentBuilder ??? downside is that if the Appointment object is updated, need to refersh widget
- * @author Brad Rydzewski
+ * <code>CalendarWidget</code> is an {@link com.bradrydzewski.gwt.calendar.client.InteractiveWidget}
+ * that maintains a calendar model (a set of {@link Appointment} objects)
+ * managed through an {@link AppointmentManager}.
+ * <p/>
+ * TODO: Need Calendar "View" - CHECK TODO: Need CalendarSettings TODO: Need
+ * LayoutStrategy - CHECK TODO: Need DragDropStrategy TODO: Need ResizeStrategy
+ * ??? or is this same as DragDrop TODO: Add AppointmentBuilder ??? downside is
+ * that if the Appointment object is updated, need to refersh widget
  *
+ * @author Brad Rydzewski
+ * @see com.bradrydzewski.gwt.calendar.client.InteractiveWidget
  */
 public class CalendarWidget extends InteractiveWidget implements
-	HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
-	HasOpenHandlers<Appointment> {
+        HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
+        HasOpenHandlers<Appointment> {
 
-	/**
-	 * Represents the currently selected appointment. Is set to null when no
-	 * appointment is selected.
-	 */
-	protected Appointment selectedAppointment = null;
-	
-	/**
-	 * List of appointments.
-	 */
-	private ArrayList<Appointment> appointments 
-					= new ArrayList<Appointment>();
-	
-	/**
-	 * Set to <code>true</code> if the calendar layout is suspended
-	 * and cannot be triggered.
-	 */
-	private boolean layoutSuspended = false;
+    /**
+     * Set to <code>true</code> if the calendar layout is suspended and cannot
+     * be triggered.
+     */
+    private boolean layoutSuspended = false;
 
-	/**
-	 * Set to <code>true</code> if the calendar is pending the layout
-	 * of its appointments.
-	 */
-	private boolean layoutPending = false;
+    /**
+     * Set to <code>true</code> if the calendar is pending the layout of its
+     * appointments.
+     */
+    private boolean layoutPending = false;
 
-	/**
-	 * Set to <code>true</code> if the list of appointments needs to
-	 * be sorted.
-	 */
-	private boolean sortPending = true;
-
-	/**
-	 * The date currently displayed by the calendar.
-	 * Set to Today by default.
-	 */
+    /**
+     * The date currently displayed by the calendar. Set to current system date
+     * by default.
+     */
     private Date date;
 
     /**
@@ -93,25 +77,34 @@ public class CalendarWidget extends InteractiveWidget implements
      */
     private CalendarSettings settings = CalendarSettings.DEFAULT_SETTINGS;
 
-    protected CalendarView view = null;
-    
+    /**
+     * The component to manage the set of appointments displayed by this
+     * <code>CalendarWidget</code>.
+     */
+    private AppointmentManager appointmentManager = null;
 
+    protected CalendarView view = null;
+
+    /**
+     * Creates a <code>CalendarWidget</code> with an empty set of appointments
+     * and the current system date as the date currently displayed by the
+     * calendar.
+     */
     public CalendarWidget() {
-    	super();
-    	date = new Date();
-    	AppointmentUtil.resetTime(date);
-    	//setStyleName("gwt-cal");
+        super();
+        appointmentManager = new AppointmentManager();
+        date = new Date();
+        AppointmentUtil.resetTime(date);
     }
 
     public Date getDate() {
-        return (Date)date.clone();
+        return (Date) date.clone();
     }
 
     public void setDate(Date date, int days) {
-        
         AppointmentUtil.resetTime(date);
         this.date = date;
-        view.setDays(days);
+        view.setDisplayedDays(days);
         refresh();
     }
 
@@ -120,20 +113,30 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public int getDays() {
-        return view==null?3:view.getDays();
+        return view == null ? 3 : view.getDisplayedDays();
     }
 
     public void setDays(int days) {
-        view.setDays(days);
+        view.setDisplayedDays(days);
         refresh();
     }
-    
-    public List<Appointment> getAppointments() {
-    	return appointments;
+
+    /**
+     * Returns the collection of appointments in the underlying in-memory model
+     * of this calendar widget. <strong>Warning</strong>: the returned
+     * collection of apointments can be modified by client code, possibly
+     * breaking the system model invariants.
+     *
+     * @return The set of appointments to be displayed by this calendar widget
+     * @see AppointmentManager#getAppointments()
+     */
+    public ArrayList<Appointment> getAppointments() {
+        return appointmentManager.getAppointments();
     }
 
     /**
      * Removes an appointment from the calendar.
+     *
      * @param appointment the item to be removed.
      */
     public void removeAppointment(Appointment appointment) {
@@ -141,141 +144,164 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     /**
+     * Removes the currently selected appointment from the model, if such
+     * appointment is set.
+     */
+    public void removeCurrentlySelectedAppointment() {
+        appointmentManager.removeCurrentlySelectedAppointment();
+    }
+
+    /**
      * Removes an appointment from the calendar.
+     *
      * @param appointment the item to be removed.
-     * @param fireEvents <code>true</code> to allow deletion events to be fired
+     * @param fireEvents  <code>true</code> to allow deletion events to be
+     *                    fired
      */
     public void removeAppointment(Appointment appointment, boolean fireEvents) {
-
         boolean commitChange = true;
 
         if (fireEvents) {
             commitChange = DeleteEvent.fire(this, getSelectedAppointment());
         }
+
         if (commitChange) {
-            appointments.remove(appointment);
-            //multiDayAppointments.remove(appointment);
-            selectedAppointment = null;
-            sortPending = true;
+            appointmentManager.removeAppointment(appointment);
             refresh();
         }
     }
 
     /**
+     * Resets the &quot;currently selected&quot; appointment of this calendar.
+     *
+     * @see com.bradrydzewski.gwt.calendar.client.AppointmentManager
+     */
+    public void resetSelectedAppointment() {
+        appointmentManager.resetSelectedAppointment();
+    }
+
+    /**
      * Adds an appointment to the calendar.
+     *
      * @param appointment item to be added
      */
     public void addAppointment(Appointment appointment) {
-        appointments.add(appointment);
-        
-        /* this is what i need to do, but calcuation doens't work yet */
-        /* so for now developer will need to manually set flag */
-//        if(AppointmentUtil.isMultiDay(appointment)) {
-//            appointment.setMultiDay(true);
-//            multiDayAppointments.add(appointment);
-//        }
-//        if(appointment.isMultiDay())
-//            multiDayAppointments.add(appointment);
-
-        sortPending = true;
-
+        appointmentManager.addAppointment(appointment);
         refresh();
     }
 
     /**
      * Adds each appointment in the list to the calendar.
+     *
      * @param appointments items to be added.
      */
     public void addAppointments(ArrayList<Appointment> appointments) {
-        for (Appointment appointment : appointments) {
-            addAppointment(appointment);
-        }
+        appointmentManager.addAppointments(appointments);
     }
 
     /**
      * Clears all appointment items.
      */
     public void clearAppointments() {
-        appointments.clear();
-        //multiDayAppointments.clear();
+        appointmentManager.clearAppointments();
         refresh();
     }
 
     /**
      * Sets the currently selected item.
-     * @param appointment the item to be selected,
-     * 			or <code>null</code> to de-select all items.
+     *
+     * @param appointment the item to be selected, or <code>null</code> to
+     *                    de-select all items.
      */
     public void setSelectedAppointment(Appointment appointment) {
-    	view.setSelectedAppointment(appointment);
-    	//selectedAppointment = appointment;
+        setSelectedAppointment(appointment, false);
+    }
+
+    public void setSelectedAppointment(Appointment appointment,
+                                       boolean notifyView) {
+        appointmentManager.setSelectedAppointment(appointment);
+        if (notifyView) {
+            view.setSelectedAppointment(appointment);
+        }
+    }
+
+    /**
+     * Indicates whether there is a &quot;currently selected&quot; appointment
+     * at the moment.
+     *
+     * @return <code>true</code> if there is an appointment currently selected,
+     *         <code>false</code> if it is <code>null</code>.
+     * @see com.bradrydzewski.gwt.calendar.client.AppointmentManager#hasAppointmentSelected()
+     */
+    public boolean hasAppointmentSelected() {
+        return appointmentManager.hasAppointmentSelected();
     }
 
     /**
      * Gets the currently selected item.
+     *
      * @return the selected item.
      */
     public Appointment getSelectedAppointment() {
-    	return selectedAppointment;
+        return appointmentManager.getSelectedAppointment();
     }
 
     /**
-     * Performs all layout calculations for the list of
-     * appointments and resizes the Calendar View appropriately.
+     * Tells whether the passed <code>appointment</code> is the currently
+     * selected appointment.
+     *
+     * @param appointment The appointment to test to be the currently selected
+     * @return <code>true</code> if there is a currently selected appointment
+     *         and happens to be equal to the passed <code>appointment</code>
+     * @see com.bradrydzewski.gwt.calendar.client.AppointmentManager#isTheSelectedAppointment(Appointment)
+     */
+    public boolean isTheSelectedAppointment(Appointment appointment) {
+        return appointmentManager.isTheSelectedAppointment(appointment);
+    }
+
+    /**
+     * Performs all layout calculations for the list of appointments and resizes
+     * the Calendar View appropriately.
      */
     protected void refresh() {
         if (layoutSuspended) {
             layoutPending = true;
             return;
         }
-        
-        if (sortPending) {
-            Collections.sort(appointments);
-            //Collections.sort(multiDayAppointments);
-            sortPending = false;
-        }
-        
-        //PERFORM APPOINTMENT LAYOUT NOW
-        //view.setDateAndDays(date, days);
+        appointmentManager.sortAppointments();
         doSizing();
         doLayout();
-        
+    }
 
-    }
-    
     public void doLayout() {
-    	view.doLayout();
+        view.doLayout();
     }
+
     public void doSizing() {
-    	view.doSizing();
+        view.doSizing();
     }
-    
+
     public void onLoad() {
         DeferredCommand.addCommand(new Command() {
-
-            //@Override
             public void execute() {
-                //if (GWT.isScript()) {
-            	doSizing();
-                //}
+                doSizing();
             }
         });
-    	
     }
 
     /**
-     * Suspends the calendar from performing a layout. This can be
-     * useful when adding a large number of appointments at a time,
-     * since a layout is performed each time an appointment is added.
+     * Suspends the calendar from performing a layout. This can be useful when
+     * adding a large number of appointments at a time, since a layout is
+     * performed each time an appointment is added.
      */
     public void suspendLayout() {
         layoutSuspended = true;
     }
 
     /**
-     * Allows the calendar to perform a layout, sizing the component
-     * and placing all appointments. If a layout is pending it will
-     * get executed when this method is called.
+     * Allows the calendar to perform a layout, sizing the component and placing
+     * all appointments. If a layout is pending it will get executed when this
+     * method is called.
      */
     public void resumeLayout() {
         layoutSuspended = false;
@@ -284,120 +310,85 @@ public class CalendarWidget extends InteractiveWidget implements
         }
     }
 
-
-	public CalendarSettings getSettings() {
-		return this.settings;
-	}
-
-	public void setSettings(CalendarSettings settings) {
-		this.settings = settings;
-	}
-
-
-	public boolean selectPreviousAppointment() {
-	      if (getSelectedAppointment() == null) {
-	            return false;
-	        }
-	        int index = getAppointments().indexOf(getSelectedAppointment());
-	        if (index <= 0) {
-	            return false;
-	        }
-	        Appointment appt = getAppointments().get(index - 1);
-
-	        if(appt==null) {
-	        	return false;
-	        }
-	        
-	        setSelectedAppointment(appt);
-	        return true;
-	}
-	
-    public boolean selectNextAppointment() {
-
-        if (getSelectedAppointment() == null) {
-            return false;
-        }
-
-        int index = getAppointments().indexOf(
-        		getSelectedAppointment());
-
-        if (index >= getAppointments().size()) {
-            return false;
-        }
-        
-        Appointment appt = getAppointments().get(index + 1);
-        
-        if(appt==null) {
-        	return false;
-        }
-        
-        setSelectedAppointment(appt);
-        
-        return true;
+    public CalendarSettings getSettings() {
+        return this.settings;
     }
 
-	@Override
-	public void onDeleteKeyPressed() {
-		view.onDeleteKeyPressed();		
-	}
+    public void setSettings(CalendarSettings settings) {
+        this.settings = settings;
+    }
 
-	@Override
-	public void onDoubleClick(Element element) {
-		view.onDoubleClick(element);
-	}
+    public boolean selectPreviousAppointment() {
+        return appointmentManager.selectPreviousAppointment();
+    }
 
-	@Override
-	public void onDownArrowKeyPressed() {
-		view.onDownArrowKeyPressed();
-	}
+    public boolean selectNextAppointment() {
+        return appointmentManager.selectNextAppointment();
+    }
 
-	@Override
-	public void onLeftArrowKeyPressed() {
-		view.onLeftArrowKeyPressed();
-	}
+    @Override
+    public void onDeleteKeyPressed() {
+        view.onDeleteKeyPressed();
+    }
 
-	@Override
-	public void onMouseDown(Element element) {
-		view.onMouseDown(element);
-	}
+    @Override
+    public void onDoubleClick(Element element) {
+        view.onDoubleClick(element);
+    }
 
-	@Override
-	public void onRightArrowKeyPressed() {
-		view.onRightArrowKeyPressed();
-	}
+    @Override
+    public void onDownArrowKeyPressed() {
+        view.onDownArrowKeyPressed();
+    }
 
-	@Override
-	public void onUpArrowKeyPressed() {
-		view.onUpArrowKeyPressed();
-	}
+    @Override
+    public void onLeftArrowKeyPressed() {
+        view.onLeftArrowKeyPressed();
+    }
 
-	public void fireOpenEvent(Appointment appointment) {
-		OpenEvent.fire(this, appointment);
-	}
+    @Override
+    public void onMouseDown(Element element) {
+        view.onMouseDown(element);
+    }
 
-	public void fireDeleteEvent(Appointment appointment) {
-		DeleteEvent.fire(this, appointment);
-	}
+    @Override
+    public void onRightArrowKeyPressed() {
+        view.onRightArrowKeyPressed();
+    }
 
-	public void fireSelectionEvent(Appointment appointment) {
-		SelectionEvent.fire(this, appointment);
-	}
+    @Override
+    public void onUpArrowKeyPressed() {
+        view.onUpArrowKeyPressed();
+    }
 
-	public HandlerRegistration addSelectionHandler(
-			SelectionHandler<Appointment> handler) {
+    public void fireOpenEvent(Appointment appointment) {
+        OpenEvent.fire(this, appointment);
+    }
 
-		return addHandler(handler, SelectionEvent.getType());
-	}
+    public void fireDeleteEvent(Appointment appointment) {
+        DeleteEvent.fire(this, appointment);
+    }
 
-	public HandlerRegistration addDeleteHandler(
-			DeleteHandler<Appointment> handler) {
-		
-		return addHandler(handler, DeleteEvent.getType());
-	}
+    public void fireSelectionEvent(Appointment appointment) {
+        SelectionEvent.fire(this, appointment);
+    }
 
-	public HandlerRegistration addOpenHandler(
-			OpenHandler<Appointment> handler) {
-		
-		return addHandler(handler, OpenEvent.getType());
-	}
+    public HandlerRegistration addSelectionHandler(
+            SelectionHandler<Appointment> handler) {
+        return addHandler(handler, SelectionEvent.getType());
+    }
+
+    public HandlerRegistration addDeleteHandler(
+            DeleteHandler<Appointment> handler) {
+        return addHandler(handler, DeleteEvent.getType());
+    }
+
+    public HandlerRegistration addOpenHandler(
+            OpenHandler<Appointment> handler) {
+        return addHandler(handler, OpenEvent.getType());
+    }
+
+    public void addToRootPanel(Widget widget) {
+        getRootPanel().add(widget);
+    }
 }
