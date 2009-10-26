@@ -37,7 +37,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     private String style = BLUE;
     private boolean selected;
     private boolean multiDay = false;
-    private boolean allDay = false;
     
     protected static final String STYLE_PREFIX = "gwt-appointment-";
     public static final String BLUE = STYLE_PREFIX+"blue";
@@ -62,10 +61,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     public static final String YELLOW_GREY = STYLE_PREFIX+"yellowgrey";
     public static final String BROWN = STYLE_PREFIX+"brown";
     
-
-    public Appointment() {
-   }
-
     public Date getStart() {
         return start;
     }
@@ -106,8 +101,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
         this.description = description;
     }
 
-    
-
     public String getLocation() {
 		return location;
 	}
@@ -133,8 +126,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	}
 
 	public int compareTo(Appointment appt) {
-        // -1 0 1
-        // less, equal, greater
         int compare = this.getStart().compareTo(appt.getStart());
 
         if (compare == 0) {
@@ -160,6 +151,4 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	public void setStyle(String style) {
 		this.style = style;
 	}
-
-    
 }
