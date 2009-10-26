@@ -92,7 +92,7 @@ public class AppointmentUtil {
      * @param startDate
      * @return
      */
-    public static List<Appointment> filterListByDate(List<Appointment> fullList, Date startDate) {
+    public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate) {
 
         ArrayList<Appointment> group = new ArrayList<Appointment>();
         startDate = new Date(startDate.getYear(), startDate.getMonth(),
@@ -144,6 +144,10 @@ public class AppointmentUtil {
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
+    }
+
+    public static int differenceInDays(Date endDate, Date startDate) {
+        return (int) Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
     }
 }
 
