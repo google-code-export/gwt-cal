@@ -18,101 +18,169 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-
-import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
-import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
-import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
-import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
-import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
-import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
-import com.google.gwt.event.logical.shared.HasOpenHandlers;
-import com.google.gwt.event.logical.shared.HasSelectionHandlers;
-import com.google.gwt.event.logical.shared.OpenEvent;
-import com.google.gwt.event.logical.shared.OpenHandler;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.HasValue;
 
 /**
- * This is a base class all Calendar Views (i.e. Day view, month view, list view)
- * should build upon. It defines and or implements all required methods and
- * properties.
+ * Abstract base class defining the operations to render a calendar and
+ * user-input dispatching methods. <p/> <p></p>Subclasses will provide the
+ * details of rendering the calendar to visualize by day (Day View), monthly
+ * (month view), agenda (list view) and the logic implementing the user-input
+ * event processing.
+ *
  * @author Brad Rydzewski
  */
 public abstract class CalendarView {
 
-	/**
-	 * Calendar widget bound to the view.
-	 */
-	protected CalendarWidget calendarWidget = null;
+    /**
+     * Calendar widget bound to the view.
+     *
+     * @see CalendarWidget
+     */
+    protected CalendarWidget calendarWidget = null;
 
     /**
-     * Number of days the calendar should display at a given time.
+     * Number of days the calendar should display at a given time, 3 by
+     * default.
      */
-    protected int days = 3;
+    private int displayedDays = 3;
 
     /**
-     * Attaches the view to the provided calendar widget.
-     * @param calendarWidget
+     * Attaches this view to the provided {@link CalendarWidget}.
+     *
+     * @param calendarWidget The interactive widget containing the calendar
      */
-	public void attach(CalendarWidget calendarWidget) {
-		this.calendarWidget = calendarWidget;
-	}
+    public void attach(CalendarWidget calendarWidget) {
+        this.calendarWidget = calendarWidget;
+    }
 
-	/**
-	 * This method is invoked when the view is detached from the
-	 * calendar widget to which it is bound.
-	 */
-	public void detatch() {
-		calendarWidget = null;
-	}
-	
-	public abstract String getStyleName();
-	public void doSizing() {
-	}
-	public abstract void doLayout();
-	
-	public abstract void onDoubleClick(Element element);
-	public abstract void onMouseDown(Element element);
-	public void onDeleteKeyPressed() {
-		
-	}
-	public void onUpArrowKeyPressed() {
-		
-	}
-	public void onDownArrowKeyPressed() {
-		
-	}
-	public void onLeftArrowKeyPressed() {
-		
-	}
-	public void onRightArrowKeyPressed() {
-		
-	}
+    /**
+     * Detaches this view from the currently associated {@link CalendarWidget}.
+     * TODO: The CalendarWidget might still have a reference to this
+     * CalendarView, is that correct??
+     */
+    public void detatch() {
+        calendarWidget = null;
+    }
 
-	public void setSelectedAppointment(Appointment appointment, boolean fireEvent) {
-		calendarWidget.selectedAppointment = appointment;
-		if(fireEvent) {
-			calendarWidget.fireSelectionEvent(appointment);
-		}
-	}
-	public void setSelectedAppointment(Appointment appointment) {
-		setSelectedAppointment(appointment, true);
-	}
-	public int getDays() {
-		return this.days;
-	}
-	public void setDays(int days) {
-		this.days = days;
-	}
+    /**
+     * Returns the CSS style name of this calendar view.
+     *
+     * @return The CSS style that should be used when rendering this calendar
+     *         view
+     */
+    public abstract String getStyleName();
+
+    public void doSizing() {
+    }
+
+    public abstract void doLayout();
+
+    public abstract void onDoubleClick(Element element);
+
+    public abstract void onMouseDown(Element element);
+
+    /**
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * keystrokes. The <code>CalendarView</code> implementation is empty so that
+     * subclasses are not forced to implement it if no specific logic is needed
+     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * keystrokes.
+     */
+    public void onDeleteKeyPressed() {
+    }
+
+    /**
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_UP}
+     * keystrokes. The <code>CalendarView</code> implementation is empty so that
+     * subclasses are not forced to implement it if no specific logic is needed
+     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_UP} keystrokes.
+     */
+    public void onUpArrowKeyPressed() {
+    }
+
+    /**
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
+     * keystrokes. The <code>CalendarView</code> implementation is empty so that
+     * subclasses are not forced to implement it if no specific logic is needed
+     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
+     * keystrokes.
+     */
+
+    public void onDownArrowKeyPressed() {
+    }
+
+    /**
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
+     * keystrokes. The <code>CalendarView</code> implementation is empty so that
+     * subclasses are not forced to implement it if no specific logic is needed
+     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
+     * keystrokes.
+     */
+
+    public void onLeftArrowKeyPressed() {
+    }
+
+    /**
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
+     * keystrokes. The <code>CalendarView</code> implementation is empty so that
+     * subclasses are not forced to implement it if no specific logic is needed
+     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
+     * keystrokes.
+     */
+
+    public void onRightArrowKeyPressed() {
+    }
+
+    /**
+     * Configures this view component's  currently selected
+     * <code>appointment</code>. Notification to the calendar widget associated
+     * is optional and controlled with the <code>fireEvent</code> flag.
+     *
+     * @param appointment The appointment in the calendar in-memory model to be
+     *                    configured as the currently selected
+     * @param fireEvent   Indicates whether a selection event should be
+     *                    triggered by the parent widget so that it informs its
+     *                    set of registered listeners about the change
+     */
+    public void setSelectedAppointment(Appointment appointment,
+                                       boolean fireEvent) {
+        calendarWidget.setSelectedAppointment(appointment);
+        if (fireEvent) {
+            calendarWidget.fireSelectionEvent(appointment);
+        }
+    }
+
+    /**
+     * Configures this view component's currently selected
+     * <code>appointment</code> and notifies widget about the change in the
+     * model state.
+     *
+     * @param appointment The appointment in the calendar in-memory model to be
+     *                    configured as the currently selected
+     */
+    public void setSelectedAppointment(Appointment appointment) {
+        setSelectedAppointment(appointment, true);
+    }
+
+    /**
+     * Returns the configured number of days the calendar should display at a
+     * given time.
+     *
+     * @return The number of days this calendar view should display at a given
+     *         time
+     */
+    public int getDisplayedDays() {
+        return displayedDays;
+    }
+
+    /**
+     * Sets the configured number of days the calendar should display at a given
+     * time.
+     *
+     * @param displayedDays The number of days this calendar view should display
+     *                      at a given time
+     */
+    public void setDisplayedDays(int displayedDays) {
+        this.displayedDays = displayedDays;
+    }
 }
