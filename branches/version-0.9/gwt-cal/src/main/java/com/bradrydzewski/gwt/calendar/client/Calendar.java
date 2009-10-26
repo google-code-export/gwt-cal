@@ -48,7 +48,7 @@ public class Calendar extends CalendarWidget {
             case 0: {
                 if (dayView == null)
                     dayView = new DayView();
-                dayView.setDays(days);
+                dayView.setDisplayedDays(days);
                 this.view = dayView;
                 break;
             }
