@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+  <ModulePrefs title="Go to Photo Album" height="250" scaling="false" />
+  <Content type="html">
+  <![CDATA[ 
+
+<form action="https://checkout.google.com/api/checkout/v2/checkoutForm/Merchant/372482647000954" id="BB_BuyButtonForm" method="post" name="BB_BuyButtonForm">
+    <table cellpadding="5" cellspacing="0" width="1%">
+        <tr>
+            <td align="right" width="1%">
+                <select name="item_selection_1">
+                    <option value="1">$750.00 - Single Developer License</option>
+                    <option value="2">$1,500.00 - Team License (5 Developers)</option>
+                    <option value="3">$3,000.00 - Workgroup License (25 Developers)</option>
+                    <option value="4">$6,000.00 - Enterprise License (100 Developers)</option>
+                </select>
+                <input name="item_option_name_1" type="hidden" value="Single Developer License"/>
+                <input name="item_option_price_1" type="hidden" value="750.0"/>
+                <input name="item_option_description_1" type="hidden" value="gwt-cal commercial license for use by a single developer."/>
+                <input name="item_option_quantity_1" type="hidden" value="1"/>
+                <input name="item_option_currency_1" type="hidden" value="USD"/>
+                <input name="shopping-cart.item-options.items.item-1.digital-content.url" type="hidden" value="http://code.google.com/p/gwt-cal/downloads/list"/>
+                <input name="item_option_name_2" type="hidden" value="Team License (5 Developers)"/>
+                <input name="item_option_price_2" type="hidden" value="1500.0"/>
+                <input name="item_option_description_2" type="hidden" value="gwt-cal commercial license for use by a team of 5 developers"/>
+                <input name="item_option_quantity_2" type="hidden" value="1"/>
+                <input name="item_option_currency_2" type="hidden" value="USD"/>
+                <input name="shopping-cart.item-options.items.item-2.digital-content.url" type="hidden" value="http://code.google.com/p/gwt-cal/downloads/list"/>
+                <input name="item_option_name_3" type="hidden" value="Workgroup License (25 Developers)"/>
+                <input name="item_option_price_3" type="hidden" value="3000.0"/>
+                <input name="item_option_description_3" type="hidden" value="gwt-cal commercial license for use by a group of 25 developers"/>
+                <input name="item_option_quantity_3" type="hidden" value="1"/>
+                <input name="item_option_currency_3" type="hidden" value="USD"/>
+                <input name="shopping-cart.item-options.items.item-3.digital-content.url" type="hidden" value="http://code.google.com/p/gwt-cal/downloads/list"/>
+                <input name="item_option_name_4" type="hidden" value="Enterprise License (100 Developers)"/>
+                <input name="item_option_price_4" type="hidden" value="6000.0"/>
+                <input name="item_option_description_4" type="hidden" value="gwt-cal commercial license for use by an enterprise organization of 100 developers"/>
+                <input name="item_option_quantity_4" type="hidden" value="1"/>
+                <input name="item_option_currency_4" type="hidden" value="USD"/>
+                <input name="shopping-cart.item-options.items.item-4.digital-content.url" type="hidden" value="http://code.google.com/p/gwt-cal/downloads/list"/>
+            </td>
+            <td align="left" width="1%">
+                <input alt="" src="https://checkout.google.com/buttons/buy.gif?merchant_id=372482647000954&amp;w=117&amp;h=48&amp;style=white&amp;variant=text&amp;loc=en_US" type="image"/>
+            </td>
+        </tr>
+    </table>
+</form>
+  
+  
+  ]]> 
+  </Content>
+</Module>
