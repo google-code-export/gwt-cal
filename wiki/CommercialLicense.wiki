@@ -14,7 +14,7 @@ Commercial Licenses:
   * Are royalty-free.
   * Remove any obligations to release any source code under GPL.
 
-View the Commercial License: [http://docs.google.com/View?id=ddbrvgw7_6f4zdp3pg html] | [http://docs.google.com/View?id=ddbrvgw7_6f4zdp3pg pdf]
+View the Commercial License: [http://docs.google.com/View?id=ddbrvgw7_6f4zdp3pg html version]
 
 = Pricing =
 
