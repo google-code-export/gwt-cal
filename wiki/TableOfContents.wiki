@@ -5,6 +5,7 @@
  * [Settings Settings]
  * [BrowserCompatibility Browser Compatibility]
  * [ReleaseNotes Release Notes]
+ * [CommercialLicense Commercial Use]
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
    * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
