@@ -10,7 +10,7 @@ The intent of the commercial license is to fund the development of the project, 
 
 Commercial Licenses:
   * Are on a per developer basis. Each person who directly or indirectly creates an application or user interface containing gwt-cal is considered a developer.
-  * Are perpetual and include upgrades to all major and minor revisions.
+  * Are perpetual and *include upgrades* to all major and minor revisions.
   * Are royalty-free.
   * Remove any obligations to release any source code under GPL.
 
