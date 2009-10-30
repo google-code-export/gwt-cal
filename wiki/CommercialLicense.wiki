@@ -1,4 +1,5 @@
 #summary Using gwt-cal in commercial software
+#labels Featured
 
 = Introduction =
 
