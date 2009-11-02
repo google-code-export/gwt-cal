@@ -204,7 +204,7 @@ public class MonthView extends CalendarView {
                         firstDateDisplayed, lastDateDisplayed);
 
         final int h = monthCalendarGrid.getOffsetHeight() - 20;
-        final float cellHeight = (float) h / (float)monthViewGridRequiredRows();
+        final float cellHeight = (float) h / (float)MonthViewHelper.monthViewRequiredRows(calendarWidget.getDate());
         final float cellWidth = 1 / ((float) DAYS_IN_A_WEEK) * 100f;
         final int apptsPerCell = (int) Math.ceil((cellHeight - 45) / 30);
 
@@ -350,10 +350,6 @@ public class MonthView extends CalendarView {
         return findAppointmentAdapters(findAppointmentByElement(element));
     }
 
-    private int monthViewGridRequiredRows() {
-        return 5;//Later to invoke MonthViewHelper method....
-    }
-
     /**
      * Builds and formats the Calendar Grid. No appointments are included when
      * building the grid.
@@ -382,7 +378,7 @@ public class MonthView extends CalendarView {
                     .setStyleName(0, i, WEEKDAY_LABEL_STYLE);
         }
 
-        int monthViewRequiredRows = monthViewGridRequiredRows();
+        int monthViewRequiredRows = MonthViewHelper.monthViewRequiredRows(date);
         for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows;
              monthGridRowIndex++) {
             for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK;
