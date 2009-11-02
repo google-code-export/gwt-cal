@@ -94,16 +94,23 @@ public class CalendarWidget extends InteractiveWidget implements
         this(new Date());
     }
 
-    public CalendarWidget(Date date)
-    {
+    public CalendarWidget(Date date) {
         super();
         appointmentManager = new AppointmentManager();
         this.date = date;
         AppointmentUtil.resetTime(this.date);
     }
 
-    protected final void setView(CalendarView view)
-    {
+    /**
+     * Changes the current view of this calendar widget to the specified
+     * <code>view</code>. By setting this widget's current view the whole widget
+     * panel is cleared.
+     *
+     * @param view The {@link CalendarView} implementation to render this
+     *             widget's underlying calendar
+     */
+    protected final void setView(CalendarView view) {
+        this.getRootPanel().clear();
         this.view = view;
         this.view.attach(this);
         this.setStyleName(this.view.getStyleName());

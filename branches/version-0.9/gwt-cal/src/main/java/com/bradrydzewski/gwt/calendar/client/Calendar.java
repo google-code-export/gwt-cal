@@ -65,11 +65,6 @@ public class Calendar extends CalendarWidget {
                 setView(new MonthView());
             }
         }
-
-        //clear currently displayed items
-        getRootPanel().clear();
-
-        //do required sizing and layout
         this.refresh();
     }
 }
