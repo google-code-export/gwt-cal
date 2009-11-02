@@ -83,7 +83,7 @@ public class CalendarWidget extends InteractiveWidget implements
      */
     private AppointmentManager appointmentManager = null;
 
-    protected CalendarView view = null;
+    private CalendarView view = null;
 
     /**
      * Creates a <code>CalendarWidget</code> with an empty set of appointments
@@ -91,10 +91,22 @@ public class CalendarWidget extends InteractiveWidget implements
      * calendar.
      */
     public CalendarWidget() {
+        this(new Date());
+    }
+
+    public CalendarWidget(Date date)
+    {
         super();
         appointmentManager = new AppointmentManager();
-        date = new Date();
-        AppointmentUtil.resetTime(date);
+        this.date = date;
+        AppointmentUtil.resetTime(this.date);
+    }
+
+    protected final void setView(CalendarView view)
+    {
+        this.view = view;
+        this.view.attach(this);
+        this.setStyleName(this.view.getStyleName());
     }
 
     public Date getDate() {
