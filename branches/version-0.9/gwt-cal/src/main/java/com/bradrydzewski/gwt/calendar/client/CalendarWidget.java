@@ -131,6 +131,17 @@ public class CalendarWidget extends InteractiveWidget implements
         setDate(date, getDays());
     }
 
+    /**
+     * Moves this calendar widget current <code>date</code> as many days as
+     * specified by the <code>numOfDays</code> parameter.
+     *
+     * @param numOfDays The number of days to change the calendar date forward
+     *                  (positive number) or backwards.
+     */
+    public void addDaysToDate(int numOfDays) {
+        this.date.setDate(this.date.getDate() + numOfDays);
+    }
+
     public int getDays() {
         return view == null ? 3 : view.getDisplayedDays();
     }
