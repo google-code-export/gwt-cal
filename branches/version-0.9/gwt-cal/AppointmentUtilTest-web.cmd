@@ -1,1 +1,0 @@
-@java -Dgwt.args="-web -out www-test" -Xmx256M -cp "%~dp0\src;%~dp0\test;%~dp0\war\WEB-INF\classes;C:\eclipse\plugins\org.junit4_4.5.0.v20090824\junit.jar;C:/tools/gwt-windows-1.7.1/gwt-user.jar;C:/tools/gwt-windows-1.7.1/gwt-dev-windows.jar" junit.textui.TestRunner com.bradrydzewski.gwt.calendar.client.util.AppointmentUtilTest %*
