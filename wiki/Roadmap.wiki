@@ -6,7 +6,7 @@
   * Add drag drop support in the `MonthView`
   * Create `Calendar` facade class to easily switch between views
   * Support html in an `Appointment`'s description property
-  * Improve `Calendar` and `Appointment` domain model
+  * Improve `Calendar` and `Appointment` domain model. Remove all gwt dependencies from the `Appointment` class.
   * Unit tests to support the new Views and the new domain Model
 
 = Version 0.9.1 =
@@ -16,8 +16,8 @@
 
 = Version 0.9.2 =
 
-  * Add support for Recurring Appointments
   * Add support for Gwt 2.0
+  * Add support for Recurring Appointments
 
 = Version 1.0.x =
 
