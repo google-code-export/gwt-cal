@@ -69,7 +69,7 @@ import com.google.gwt.user.client.ui.Label;
  */
 public class MonthView extends CalendarView {
 
-    protected static final Comparator<Appointment> APPOINTMENT_COMPARATOR =
+    public static final Comparator<Appointment> APPOINTMENT_COMPARATOR =
             new Comparator<Appointment>() {
 
                 public int compare(Appointment a1, Appointment a2) {

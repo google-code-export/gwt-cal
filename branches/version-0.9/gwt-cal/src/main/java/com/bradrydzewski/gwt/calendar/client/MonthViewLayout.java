@@ -25,7 +25,6 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.user.client.ui.Panel;
-import static com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil.differenceInDays;
 
 public class MonthViewLayout {
 
@@ -117,7 +116,6 @@ public class MonthViewLayout {
             return "row: " + row + ", col start: " + columnStart + ", col stop: " + columnStop + ", order: " + order;
         }
     }
-    private HashMap<Integer, Integer> cellsAppointmentCount = new HashMap<Integer, Integer>();
 
     private HashMap<Integer, Map<Integer,Integer>> cellsSlots = new HashMap<Integer, Map<Integer,Integer>>();
     
@@ -125,14 +123,13 @@ public class MonthViewLayout {
             Date startDate, Date endDate) {
         
         cellsSlots.clear();
-        cellsAppointmentCount.clear();
 
         //list of adapters that take an appointment and map its coordinates
         List<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
 
         //go through each appointment to place it on the screen
         for (Appointment appt : appointments) {
-                List<AppointmentAdapter> tmpAdapterList = getAppointmentAdapter(appt,startDate);
+                List<AppointmentAdapter> tmpAdapterList = getAppointmentAdapters(appt,startDate);
                 
                 for(AppointmentAdapter adapter : tmpAdapterList) {
                     int order = calculateOrder(adapter);
@@ -177,14 +174,14 @@ public class MonthViewLayout {
         return optimalSlot;
     }
     
-    List<AppointmentAdapter> getAppointmentAdapter(Appointment appt, Date startDate) {
+    List<AppointmentAdapter> getAppointmentAdapters(Appointment appt, Date startDate) {
         List<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
 
         //get the x,y coordinates for the cell the appointment will
         // start and end inside
         Coordinate startCoordinate = getGridCoordinate(appt.getStart(), startDate);
         Coordinate endCoordinate = getGridCoordinate(appt.getEnd(), startDate);
-        boolean isMultiRow = startCoordinate.getX() != endCoordinate.getX();
+        boolean spansMultipleRows = startCoordinate.getX() != endCoordinate.getX();
 
         //an appointment may appear on multiple rows. for each row, 
         // a panel (gwt panel) must be created to represent the appointment.
@@ -196,7 +193,7 @@ public class MonthViewLayout {
             //first row
             if (i == startCoordinate.getX()) {
                 startCell = startCoordinate.getY();
-                endCell = (isMultiRow) ? 6 : endCoordinate.getY();
+                endCell = (spansMultipleRows) ? 6 : endCoordinate.getY();
             //last row
             } else if (i == endCoordinate.getX()) {
                 startCell = 0;
@@ -218,7 +215,7 @@ public class MonthViewLayout {
 
     Coordinate getGridCoordinate(Date evalDate, Date startDate) {
         Coordinate c = new Coordinate();
-        double cellNumber = differenceInDays(evalDate, startDate);
+        double cellNumber = DateUtils.differenceInDays(evalDate, startDate);
 
         double row = Math.floor(cellNumber / 7d);
         double col = Math.floor(cellNumber % 7d); //7 days (columns) per row

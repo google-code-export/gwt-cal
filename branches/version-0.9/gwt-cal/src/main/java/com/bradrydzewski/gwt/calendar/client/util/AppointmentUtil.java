@@ -145,9 +145,5 @@ public class AppointmentUtil {
         date.setMinutes(0);
         date.setSeconds(0);
     }
-
-    public static int differenceInDays(Date endDate, Date startDate) {
-        return (int) Math.floor((endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24));
-    }
 }
 
