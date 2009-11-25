@@ -33,17 +33,27 @@ public class MonthLayoutDescription {
 
     private void placeAppointments(ArrayList<Appointment> appointments) {
         for (Appointment appointment : appointments) {
-            int startWeek =
+            
+        	int startWeek =
                     calculateWeekFor(appointment.getStart(), calendarFirstDay);
-            initWeek(startWeek);
-            System.out.println(appointment.getTitle() + " ---  multi " + appointment.isMultiDayAppointment());
-            System.out.println(appointment.getTitle() + " ---  allday " + appointment.isAllDay());
-            if (appointment.isMultiDayAppointment() || appointment.isAllDay()) {                
-                positionMultidayAppointment(startWeek, appointment);
-            } else {
-                weeks[startWeek].addAppointment(appointment);
-            }
-
+            
+        	//needed to put this in because if appointment appears
+        	// in prior month, we get a negative number, which
+        	// causes an index out of bounds exception
+        	if(startWeek>=0) {
+        	
+//	            System.out.println(appointment.getTitle() + " ---  multi " + appointment.isMultiDayAppointment());
+//	            System.out.println(appointment.getTitle() + " ---  allday " + appointment.isAllDay());
+//	            System.out.println(appointment.getTitle() + " ---  start " + appointment.getStart());
+//	            System.out.println(appointment.getTitle() + " ---  startweek " + startWeek);
+	            initWeek(startWeek);
+	            
+	            if (appointment.isMultiDayAppointment() || appointment.isAllDay()) {                
+	                positionMultidayAppointment(startWeek, appointment);
+	            } else {
+	                weeks[startWeek].addAppointment(appointment);
+	            }
+        	}
         }
     }
 
