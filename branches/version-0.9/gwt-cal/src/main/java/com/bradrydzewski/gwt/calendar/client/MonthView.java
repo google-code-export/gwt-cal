@@ -40,6 +40,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.Widget;
 
 /**
  * A CalendarView that displays appointments for a given month. The Month is
@@ -204,6 +205,8 @@ public class MonthView extends CalendarView {
 	 */
 	@Override
 	public void doLayout() {
+		
+		//Clear all existing appointments
 		appointmentCanvas.clear();
 		monthCalendarGrid.clear();
 		appointmentsAdapters.clear();
@@ -211,13 +214,15 @@ public class MonthView extends CalendarView {
 			monthCalendarGrid.removeRow(0);
 		}
 
+		//Rebuild the month grid
 		buildCalendarGrid();
+		
+		//(Re)calculate some variables
+		calculateCellHeight();
+		calculateCellAppointments();
 
-		final int h = monthCalendarGrid.getOffsetHeight() - 20;
-		final float cellHeight = (float) h / monthViewRequiredRows;
-		final float cellWidth = 1 / ((float) DAYS_IN_A_WEEK) * 100f;
-		final int apptsPerCell = (int) Math.ceil((cellHeight - 45) / 30);
-
+		//Sort the appointments
+		//TODO: don't re-sort the appointment unless necessary
 		Collections.sort(calendarWidget.getAppointments(),
 				APPOINTMENT_COMPARATOR);
 
@@ -229,7 +234,7 @@ public class MonthView extends CalendarView {
 		WeekLayoutDescription[] weeks = monthLayoutDescription
 				.getWeekDescriptions();
 
-		for (int weekOfMonth = 0; weekOfMonth < weeks.length; weekOfMonth++) {
+		for (int weekOfMonth = 0; weekOfMonth < weeks.length && weekOfMonth<monthViewRequiredRows; weekOfMonth++) {
 
 			WeekLayoutDescription week = weeks[weekOfMonth];
 
@@ -244,52 +249,35 @@ public class MonthView extends CalendarView {
 					List<WeekTopStackableDescription> layerDescriptions = topAppointmentManager
 							.getDescriptionsInLayer(layer);
 
+					//avoid null pointer
 					if (layerDescriptions == null)
 						break;
 
+					// can't exceed max # of appointments per cell
+					if (layer >= calculatedCellAppointments)
+						break;
+					
 					for (int i = 0; i < layerDescriptions.size(); i++) {
 
-						WeekTopStackableDescription apptDesc = layerDescriptions
-								.get(i);
+						WeekTopStackableDescription apptDesc = layerDescriptions.get(i);
 						Appointment appt = apptDesc.getAppointment();
 
 						FocusPanel panel = new FocusPanel();
 						panel.add(new Label(appt.getTitle()));
-
-						String left = ((float) apptDesc.getWeekStartDay() / ((float) DAYS_IN_A_WEEK))
-								* 100f + .5f + "%";
-						String width = ((apptDesc.getWeekEndDay()
-								- apptDesc.getWeekStartDay() + 1) / ((float) DAYS_IN_A_WEEK))
-								* 100f - 1f + "%";
-
-						float top = (35
-								+ (weekOfMonth * cellHeight)
-								+ (Math.abs(FormattingUtil.getBorderOffset()) * 2) + ((22f + Math
-								.abs(FormattingUtil.getBorderOffset()) * 2) * layer));
-
-						DOM.setStyleAttribute(panel.getElement(), "position",
-								"absolute");
-						DOM.setStyleAttribute(panel.getElement(), "top", top
-								+ "px");
-						DOM.setStyleAttribute(panel.getElement(), "left", left);
-						DOM.setStyleAttribute(panel.getElement(), "width",
-								width);
+						placeItemInGrid(
+								panel,apptDesc.getWeekStartDay(),
+								apptDesc.getWeekEndDay(),weekOfMonth,layer);
+						
 						if (appt.isMultiDay())
 							panel.setStyleName("multiDayAppointment");
 						else
 							panel.setStyleName("appointment");
 						panel.addStyleName(appt.getStyle());
-
+						dragController.makeDraggable(panel);
 						appointmentCanvas.add(panel);
 					}
 
 					layer++;
-
-					// can't exceed max # of appointments per cell
-					if (layer >= apptsPerCell) {
-						// add x more appointments
-						break;
-					}
 				}
 
 				// get appointments for each day of the week
@@ -297,7 +285,6 @@ public class MonthView extends CalendarView {
 
 					int maxMultiDay = topAppointmentManager
 							.singleDayLowestOrder(dayOfWeek);
-					//int currLayer = 0;
 
 					// get the layout data for the specified day of the week
 					DayLayoutDescription dayLayoutDescription = week
@@ -305,143 +292,48 @@ public class MonthView extends CalendarView {
 
 					if (dayLayoutDescription != null) {
 
+						int count = dayLayoutDescription.getAppointments().size();
+						
 						// for each appointment that falls on the given day,
-						// need to
-						// paint to the panel
-						for (int i = 0; i < dayLayoutDescription
-								.getAppointments().size(); i++) {
+						// need to paint to the panel
+						for (int i = 0; i < count; i++) {
 
 							Appointment appt = dayLayoutDescription
 									.getAppointments().get(i);
 
-							//need to assign cell
-							//topAppointmentManager.
-							
-							if (maxMultiDay + i >= apptsPerCell) {
-								// + X Number days left
+							//check if we exceeded max # appts per cell
+							//if yes, add label "+ X more"
+							if (maxMultiDay + i >= calculatedCellAppointments) {
+
+								Label more = new Label("+" + (count-i) + " more");
+								more.setStyleName(MORE_LABEL_STYLE);
+								placeItemInGrid(
+										more,dayOfWeek,
+										dayOfWeek,weekOfMonth,calculatedCellAppointments);
+								appointmentCanvas.add(more);
 								break;
 							}
 
 							FocusPanel panel = new FocusPanel();
 							panel.add(new Label(appt.getTitle()));
 
-							String left = ((float) dayOfWeek / ((float) DAYS_IN_A_WEEK))
-									* 100f + .5f + "%";
-							String width = ((dayOfWeek - dayOfWeek + 1) / ((float) DAYS_IN_A_WEEK))
-									* 100f - 1f + "%";
-
-							float top = (35
-									+ (weekOfMonth * cellHeight)
-									+ (Math.abs(FormattingUtil
-											.getBorderOffset()) * 2) + ((22f + Math
-									.abs(FormattingUtil.getBorderOffset()) * 2) * (i + maxMultiDay)));
-
-							DOM.setStyleAttribute(panel.getElement(),
-									"position", "absolute");
-							DOM.setStyleAttribute(panel.getElement(), "top",
-									top + "px");
-							DOM.setStyleAttribute(panel.getElement(), "left",
-									left);
-							DOM.setStyleAttribute(panel.getElement(), "width",
-									width);
+							placeItemInGrid(
+									panel,dayOfWeek,
+									dayOfWeek,weekOfMonth,i + maxMultiDay);
+							
 							if (appt.isMultiDay())
 								panel.setStyleName("multiDayAppointment");
 							else
 								panel.setStyleName("appointment");
 							panel.addStyleName(appt.getStyle());
+							dragController.makeDraggable(panel);
 
 							appointmentCanvas.add(panel);
 						}
 					}
-
 				}
 			}
-
 		}
-
-		// List<AppointmentAdapter> adapterList =
-		// layoutManager.doLayout(calendarWidget.getAppointments(),
-		// firstDateDisplayed, lastDateDisplayed);
-		//
-		// final int h = monthCalendarGrid.getOffsetHeight() - 20;
-		// final float cellHeight = (float) h /
-		// (float)MonthViewHelper.monthViewRequiredRows(calendarWidget.getDate());
-		// final float cellWidth = 1 / ((float) DAYS_IN_A_WEEK) * 100f;
-		// final int apptsPerCell = (int) Math.ceil((cellHeight - 45) / 30);
-		//
-		// for (int i = 0; i < adapterList.size(); i++) {
-		// AppointmentAdapter adapter = adapterList.get(i);
-		//
-		// FocusPanel panel = new FocusPanel();
-		// panel.add(new Label(adapter.getAppointment().getTitle()));
-		//
-		// String left =
-		// ((float) adapter.getColumnStart() /
-		// ((float) DAYS_IN_A_WEEK)) * 100f + .5f + "%";
-		// String width =
-		// ((adapter.getColumnStop() - adapter.getColumnStart() + 1) /
-		// ((float) DAYS_IN_A_WEEK)) * 100f - 1f + "%";
-		//
-		// float top = (35 + (adapter.getRow() * cellHeight) +
-		// (Math.abs(FormattingUtil.getBorderOffset()) * 2) +
-		// ((22f + Math.abs(FormattingUtil.getBorderOffset()) * 2) *
-		// adapter.getOrder()));
-		//
-		// DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
-		// DOM.setStyleAttribute(panel.getElement(), "top", top + "px");
-		// DOM.setStyleAttribute(panel.getElement(), "left", left);
-		// DOM.setStyleAttribute(panel.getElement(), "width", width);
-		// if (adapter.getAppointment().isMultiDay())
-		// panel.setStyleName("multiDayAppointment");
-		// else
-		// panel.setStyleName("appointment");
-		//
-		// panel.addStyleName(adapter.getAppointment().getStyle());
-		//
-		// if (adapter.getAppointment().isSelected()) {
-		// panel.addStyleName("selected");
-		// selectedAppointmentAdapters.add(adapter);
-		// }
-		//
-		// adapter.setAppointmentPanel(panel);
-		//
-		// if (adapter.getOrder() < apptsPerCell) {
-		// appointmentCanvas.add(panel);
-		// appointmentsAdapters.add(adapter);
-		// dragController.makeDraggable(panel);
-		//
-		// } else {
-		// int row = adapter.getRow();
-		// int cell = adapter.getColumnStart();
-		// int count = 0;
-		// while (true) {
-		// if (i == (adapterList.size() - 1))
-		// break;
-		//
-		// if (count > 0) {
-		// i++;
-		// adapter = adapterList.get(i);
-		// }
-		//
-		// if (adapter.getRow() == row &&
-		// adapter.getColumnStart() == cell) {
-		// count++;
-		// } else {
-		// i--;
-		// break;
-		// }
-		// }
-		//
-		// Label more = new Label(
-		// "+" + count + " more " + row + ", " + cell);
-		// more.setWidth((cellWidth) + "%");
-		// more.setStyleName(MORE_LABEL_STYLE);
-		// DOM.setStyleAttribute(more.getElement(), "top", (top) + "px");
-		// DOM.setStyleAttribute(more.getElement(), "left", left);
-		//
-		// appointmentCanvas.add(more);
-		// }
-		// }
 	}
 
 	/**
@@ -641,5 +533,88 @@ public class MonthView extends CalendarView {
 
 	public void onDeleteKeyPressed() {
 		calendarWidget.removeCurrentlySelectedAppointment();
+	}
+
+
+
+	//HERE ARE A BUNCH OF CALCULATED VALUES THAT ARE USED DURING LAYOUT
+	// NOT SURE IF THE VARIABLES SHOULD BE KEPT AT THE CLASS LEVEL
+	// OR AT THE METHOD LEVEL
+	
+	private int calculatedWeekDayHeaderHeight;
+	private int calculatedDayHeaderHeight;
+
+	/**
+	 * Maximum appointments per cell (day).
+	 */
+	private int calculatedCellAppointments;
+	
+	/**
+	 * Height of each Cell (day), including
+	 * the day's header.
+	 */
+	private float calculatedCellOffsetHeight;
+
+	/**
+	 * Height of each Cell (day), excluding
+	 * the day's header.
+	 */
+	private float calculatedCellHeight;
+
+	/**
+	 * Calculates the height of each day cell in the Month grid.
+	 * It excludes the height of each day's header, as well
+	 * as the overall header that shows the weekday labels.
+	 * @return
+	 */
+	private void calculateCellHeight() {
+		
+		int gridHeight = monthCalendarGrid.getOffsetHeight();
+		int weekdayRowHeight = monthCalendarGrid.getRowFormatter().getElement(0).getOffsetHeight();
+		int dayHeaderHeight = monthCalendarGrid.getFlexCellFormatter().getElement(1, 0).getFirstChildElement().getOffsetHeight();
+		
+		calculatedCellOffsetHeight = (float)(gridHeight-weekdayRowHeight) / monthViewRequiredRows;
+		calculatedCellHeight = calculatedCellOffsetHeight - dayHeaderHeight;
+		calculatedWeekDayHeaderHeight = weekdayRowHeight;
+		calculatedDayHeaderHeight = dayHeaderHeight;
+	}
+
+	/**
+	 * Calculates the maximum number of appointments that can be displayed
+	 * in a given "day cell".
+	 */
+	private void calculateCellAppointments() {
+		
+		int apptPaddingTop = 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
+		int apptPaddingBottom = 0;
+		int apptHeight = 20; //TODO: calculate appointment height dynamically
+		
+		calculatedCellAppointments = (int)Math.floor(
+				(float)(calculatedCellHeight-apptPaddingTop)/(float)(apptHeight + apptPaddingTop))-1;
+	}
+
+	private void placeItemInGrid(
+			Widget panel, int colStart, int colEnd, int row, int cellPosition) {
+		
+		int apptPaddingTop = 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
+		int apptHeight = 20; //TODO: calculate appointment height dynamically
+		
+		float left = (float)colStart / (float)DAYS_IN_A_WEEK * 100f + .5f;
+		
+		
+		float width = ((float)(colEnd - colStart + 1) / (float)DAYS_IN_A_WEEK) * 100f - 1f;
+
+		float top = calculatedWeekDayHeaderHeight + 
+					(row * calculatedCellOffsetHeight) +
+					calculatedDayHeaderHeight +
+					apptPaddingTop +
+					(cellPosition*(apptHeight+apptPaddingTop));
+		
+		//System.out.println(calculatedWeekDayHeaderHeight + " + (" + row + " * " + calculatedCellOffsetHeight + ") + " + calculatedDayHeaderHeight + " + " + apptPaddingTop + " + (" + cellPosition+"*("+apptHeight+"+"+apptPaddingTop + "));");
+		
+		DOM.setStyleAttribute(panel.getElement(),"position", "absolute");
+		DOM.setStyleAttribute(panel.getElement(), "top",top + "px");
+		DOM.setStyleAttribute(panel.getElement(), "left",left + "%");
+		DOM.setStyleAttribute(panel.getElement(), "width",width + "%");
 	}
 }
