@@ -40,7 +40,7 @@ public class MonthLayoutDescription {
         	//needed to put this in because if appointment appears
         	// in prior month, we get a negative number, which
         	// causes an index out of bounds exception
-        	if(startWeek>=0) {
+        	if(startWeek>=0 && startWeek < weeks.length) {
         	
 //	            System.out.println(appointment.getTitle() + " ---  multi " + appointment.isMultiDayAppointment());
 //	            System.out.println(appointment.getTitle() + " ---  allday " + appointment.isAllDay());
@@ -64,6 +64,12 @@ public class MonthLayoutDescription {
     private void positionMultidayAppointment(int startWeek,
                                              Appointment appointment) {
         int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
+        
+        //need to account for an appointment that spans
+        // multiple months
+        if(endWeek >= weeks.length)
+        	endWeek = weeks.length-1;
+        
         initWeek(endWeek);
         if (isMultiWeekAppointment(startWeek, endWeek)) {
             distributeOverWeeks(startWeek, endWeek, appointment);
