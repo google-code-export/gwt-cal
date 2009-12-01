@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.allen_sauer.gwt.dnd.client.drop.GridConstrainedDropController;
+import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
 import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentStackingManager;
 import com.bradrydzewski.gwt.calendar.client.monthview.DayLayoutDescription;
 import com.bradrydzewski.gwt.calendar.client.monthview.MonthLayoutDescription;
@@ -218,8 +218,8 @@ public class MonthView extends CalendarView {
 		dragController.setBehaviorDragProxy(true);
 		
 	    // instantiate our drop controller
-		GridConstrainedDropController gridConstrainedDropController =
-			new GridConstrainedDropController(appointmentCanvas,500,500);
+		MonthViewDropController gridConstrainedDropController =
+			new MonthViewDropController(appointmentCanvas,monthCalendarGrid);
 	    dragController.registerDropController(gridConstrainedDropController);
 
 	}
