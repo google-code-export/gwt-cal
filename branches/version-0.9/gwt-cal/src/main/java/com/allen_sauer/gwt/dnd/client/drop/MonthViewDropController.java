@@ -5,7 +5,6 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.Widget;
 
 public class MonthViewDropController extends AbsolutePositionDropController {
 
@@ -51,21 +50,29 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 			return;
 		
 		//get the mouse/drag coordinates
-		int x = draggable.desiredX;
-		int y = draggable.desiredY;
+		int x = context.desiredDraggableX - dropTargetOffsetX + draggable.relativeX;
+		int y = context.desiredDraggableY - dropTargetOffsetY + draggable.relativeY;
 		
 		//Now we need to figure out which cell to highlight based
 		// on the X,Y coordinates
+		int col = (int)Math.floor( x / (monthGrid.getOffsetWidth() / daysPerWeek) );
+		int row = (int)Math.floor( y / (monthGrid.getOffsetHeight() / weeksPerMonth) )+1;
+		
+		
+		//Get element for cell
 		Element currHoveredCell =
-			monthGrid.getFlexCellFormatter().getElement(2, 0);
+			monthGrid.getFlexCellFormatter().getElement(row, col);
 		
 		//If this cell isn't already highlighted, we need to highlight
 		if(!currHoveredCell.equals(highlightedCell)) {
 		
+			if(highlightedCell!=null)
+				DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#FFFFFF");
+
 			highlightedCell = currHoveredCell;
 			
 			//alter its style as "highlighted"
-			DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#000999");
+			DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#C3D9FF");
 		}
 	}
 
