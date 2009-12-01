@@ -56,7 +56,7 @@ public class MonthViewLayout {
         }
     }
 
-    public class AppointmentAdapter {
+    public class AppointmentAdapter2 {
 
         private int row;
         private int columnStart;
@@ -65,7 +65,7 @@ public class MonthViewLayout {
         private Appointment appointment;
         private Panel appointmentPanel;
 
-        public AppointmentAdapter(Appointment appointment) {
+        public AppointmentAdapter2(Appointment appointment) {
             this.appointment = appointment;
         }
 
@@ -119,19 +119,19 @@ public class MonthViewLayout {
 
     private HashMap<Integer, Map<Integer,Integer>> cellsSlots = new HashMap<Integer, Map<Integer,Integer>>();
     
-    public List<AppointmentAdapter> doLayout(List<Appointment> appointments,
+    public List<AppointmentAdapter2> doLayout(List<Appointment> appointments,
             Date startDate, Date endDate) {
         
         cellsSlots.clear();
 
         //list of adapters that take an appointment and map its coordinates
-        List<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
+        List<AppointmentAdapter2> adapters = new ArrayList<AppointmentAdapter2>();
 
         //go through each appointment to place it on the screen
         for (Appointment appt : appointments) {
-                List<AppointmentAdapter> tmpAdapterList = getAppointmentAdapters(appt,startDate);
+                List<AppointmentAdapter2> tmpAdapterList = getAppointmentAdapters(appt,startDate);
                 
-                for(AppointmentAdapter adapter : tmpAdapterList) {
+                for(AppointmentAdapter2 adapter : tmpAdapterList) {
                     int order = calculateOrder(adapter);
                     adapter.setOrder(order);
                 }
@@ -142,7 +142,7 @@ public class MonthViewLayout {
         return adapters;
     }
 
-    private int calculateOrder(AppointmentAdapter adapter) {
+    private int calculateOrder(AppointmentAdapter2 adapter) {
         //check each cell to get the max adapter, start w/ 0 and increment until available
         int offset = adapter.getRow() * HORIZONTAL_DAYS;
         int start = adapter.getColumnStart()+offset;
@@ -174,8 +174,8 @@ public class MonthViewLayout {
         return optimalSlot;
     }
     
-    List<AppointmentAdapter> getAppointmentAdapters(Appointment appt, Date startDate) {
-        List<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
+    List<AppointmentAdapter2> getAppointmentAdapters(Appointment appt, Date startDate) {
+        List<AppointmentAdapter2> adapters = new ArrayList<AppointmentAdapter2>();
 
         //get the x,y coordinates for the cell the appointment will
         // start and end inside
@@ -204,7 +204,7 @@ public class MonthViewLayout {
                 endCell = 6;
             }
 
-            AppointmentAdapter adapter = new AppointmentAdapter(appt);
+            AppointmentAdapter2 adapter = new AppointmentAdapter2(appt);
             adapter.setColumnStart(startCell);
             adapter.setColumnStop(endCell);
             adapter.setRow(i);

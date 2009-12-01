@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.bradrydzewski.gwt.calendar.client.MonthViewLayout.AppointmentAdapter;
+import com.allen_sauer.gwt.dnd.client.drop.GridConstrainedDropController;
 import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentStackingManager;
 import com.bradrydzewski.gwt.calendar.client.monthview.DayLayoutDescription;
 import com.bradrydzewski.gwt.calendar.client.monthview.MonthLayoutDescription;
@@ -82,6 +82,25 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 0.9.0
  */
 public class MonthView extends CalendarView {
+
+    public class AppointmentAdapter {
+    	
+    	private Appointment appointment;
+    	private Widget panel;
+    	
+    	public AppointmentAdapter(Appointment appointment, Widget panel) {
+    		this.appointment = appointment;
+    		this.panel = panel;
+    	}
+
+		public Appointment getAppointment() {
+			return appointment;
+		}
+
+		public Widget getPanel() {
+			return panel;
+		}
+    }
 
 	public static final Comparator<Appointment> APPOINTMENT_COMPARATOR = new Comparator<Appointment>() {
 
@@ -197,6 +216,12 @@ public class MonthView extends CalendarView {
 
 		dragController.setBehaviorDragStartSensitivity(5);
 		dragController.setBehaviorDragProxy(true);
+		
+	    // instantiate our drop controller
+		GridConstrainedDropController gridConstrainedDropController =
+			new GridConstrainedDropController(appointmentCanvas,500,500);
+	    dragController.registerDropController(gridConstrainedDropController);
+
 	}
 
 	/**
@@ -210,6 +235,7 @@ public class MonthView extends CalendarView {
 		appointmentCanvas.clear();
 		monthCalendarGrid.clear();
 		appointmentsAdapters.clear();
+		selectedAppointmentAdapters.clear();
 		while (monthCalendarGrid.getRowCount() > 0) {
 			monthCalendarGrid.removeRow(0);
 		}
@@ -262,18 +288,42 @@ public class MonthView extends CalendarView {
 						WeekTopStackableDescription apptDesc = layerDescriptions.get(i);
 						Appointment appt = apptDesc.getAppointment();
 
+						//Create the appointment panel
 						FocusPanel panel = new FocusPanel();
 						panel.add(new Label(appt.getTitle()));
+						
+						//set the appointments position
 						placeItemInGrid(
 								panel,apptDesc.getWeekStartDay(),
 								apptDesc.getWeekEndDay(),weekOfMonth,layer);
 						
+						//create an adapters to hold the appointment & panel
+						AppointmentAdapter adapter =
+							new AppointmentAdapter(appt,panel);
+						
+						//if a multi-day, set the appropriate style
 						if (appt.isMultiDay())
 							panel.setStyleName("multiDayAppointment");
 						else
 							panel.setStyleName("appointment");
+						
+						//add the appropriate style (blue, red, etc)
 						panel.addStyleName(appt.getStyle());
+						
+						//make draggable
 						dragController.makeDraggable(panel);
+						
+						//if selected, set the style & add the adapter
+						// to the list of selected appointments
+						if (appt.equals(calendarWidget.getSelectedAppointment())) {
+							adapter.getPanel().addStyleName("selected");
+							selectedAppointmentAdapters.add(adapter);
+						}
+						
+						//add the adapter to the list of adapters
+						appointmentsAdapters.add(adapter);
+						
+						//draw appointment to the canvas
 						appointmentCanvas.add(panel);
 					}
 
@@ -314,20 +364,39 @@ public class MonthView extends CalendarView {
 								break;
 							}
 
+							//Create the appointment panel
 							FocusPanel panel = new FocusPanel();
 							panel.add(new Label(appt.getTitle()));
-
+							
+							//set the appointments position
 							placeItemInGrid(
 									panel,dayOfWeek,
 									dayOfWeek,weekOfMonth,i + maxMultiDay);
 							
-							if (appt.isMultiDay())
-								panel.setStyleName("multiDayAppointment");
-							else
-								panel.setStyleName("appointment");
+							//create an adapters to hold the appointment & panel
+							AppointmentAdapter adapter =
+								new AppointmentAdapter(appt,panel);
+							
+							//set the panel style name
+							panel.setStyleName("appointment");
+							
+							//add the appropriate style (blue, red, etc)
 							panel.addStyleName(appt.getStyle());
+							
+							//make draggable
 							dragController.makeDraggable(panel);
-
+							
+							//if selected, set the style & add the adapter
+							// to the list of selected appointments
+							if (appt.equals(calendarWidget.getSelectedAppointment())) {
+								adapter.getPanel().addStyleName("selected");
+								selectedAppointmentAdapters.add(adapter);
+							}
+							
+							//add the adapter to the list of adapters
+							appointmentsAdapters.add(adapter);
+							
+							//draw appointment to the canvas
 							appointmentCanvas.add(panel);
 						}
 					}
@@ -366,7 +435,7 @@ public class MonthView extends CalendarView {
 	public void onMouseDown(Element clickedElement) {
 		if (clickedElement.equals(appointmentCanvas.getElement()))
 			return;
-
+		
 		ArrayList<AppointmentAdapter> clickedAppointmentAdapters = findAllAdaptersForAppointmentOnElement(clickedElement);
 
 		if (!clickedAppointmentAdapters.isEmpty()) {
@@ -378,13 +447,14 @@ public class MonthView extends CalendarView {
 				if (calendarWidget.hasAppointmentSelected()) {
 					calendarWidget.resetSelectedAppointment();
 					for (AppointmentAdapter adapter : selectedAppointmentAdapters) {
-						adapter.getAppointmentPanel().removeStyleName(
+						adapter.getPanel().removeStyleName(
 								"selected");
 					}
 				}
 
 				for (AppointmentAdapter adapter : clickedAppointmentAdapters) {
-					adapter.getAppointmentPanel().addStyleName("selected");
+					
+					adapter.getPanel().addStyleName("selected");
 				}
 
 				selectedAppointmentAdapters.clear();
@@ -502,7 +572,7 @@ public class MonthView extends CalendarView {
 	private Appointment findAppointmentByElement(Element element) {
 		Appointment appointmentAtElement = null;
 		for (AppointmentAdapter adapter : appointmentsAdapters) {
-			if (DOM.isOrHasChild(adapter.getAppointmentPanel().getElement(),
+			if (DOM.isOrHasChild(adapter.getPanel().getElement(),
 					element)) {
 				appointmentAtElement = adapter.getAppointment();
 				break;
