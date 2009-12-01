@@ -183,6 +183,8 @@ public class MonthView extends CalendarView {
 	private ArrayList<AppointmentAdapter> selectedAppointmentAdapters = new ArrayList<AppointmentAdapter>();
 
 	private PickupDragController dragController = null;
+	
+	private MonthViewDropController monthViewDropController = null;
 
 	/**
 	 * This method is called when the MonthView is attached to the Calendar and
@@ -218,9 +220,9 @@ public class MonthView extends CalendarView {
 		dragController.setBehaviorDragProxy(true);
 		
 	    // instantiate our drop controller
-		MonthViewDropController gridConstrainedDropController =
+		monthViewDropController =
 			new MonthViewDropController(appointmentCanvas,monthCalendarGrid);
-	    dragController.registerDropController(gridConstrainedDropController);
+	    dragController.registerDropController(monthViewDropController);
 
 	}
 
@@ -246,6 +248,12 @@ public class MonthView extends CalendarView {
 		//(Re)calculate some variables
 		calculateCellHeight();
 		calculateCellAppointments();
+		
+		//set variables needed by the drop controller
+		monthViewDropController.setDayHeaderHeight(calculatedDayHeaderHeight);
+		monthViewDropController.setDaysPerWeek(7);
+		monthViewDropController.setWeekdayHeaderHeight(calculatedWeekDayHeaderHeight);
+		monthViewDropController.setWeeksPerMonth(monthViewRequiredRows);
 
 		//Sort the appointments
 		//TODO: don't re-sort the appointment unless necessary
