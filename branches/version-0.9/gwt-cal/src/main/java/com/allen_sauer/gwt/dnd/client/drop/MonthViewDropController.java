@@ -1,11 +1,13 @@
 package com.allen_sauer.gwt.dnd.client.drop;
 
+import java.util.Date;
+
 import com.allen_sauer.gwt.dnd.client.DragContext;
+import com.bradrydzewski.gwt.calendar.client.MonthView.AppointmentWidget;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import java.util.Date;
 
 public class MonthViewDropController extends AbsolutePositionDropController {
 
@@ -63,7 +65,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 			monthGrid.getFlexCellFormatter().getElement(row, col);
 		
 		//If this cell isn't already highlighted, we need to highlight
-		if(highlightedCells==null || !currHoveredCell.equals(highlightedCells[0])) {
+		if(highlightedCells==null || highlightedCells.length<0 || !currHoveredCell.equals(highlightedCells[0])) {
 		
 			if(highlightedCells!=null) {
 				for(Element elem : highlightedCells) {
@@ -77,7 +79,12 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 			//Beware, we need to be very careful about memory here.
 			// I tried to do a date diff calculation and got 
 			// out of memory exceptions in the JVM AND in the chrome browser
-			highlightedCells = getCells(row, col, 5);
+			Date startDate = ((AppointmentWidget)draggable.widget).getAppointment().getStart();
+			Date endDate = ((AppointmentWidget)draggable.widget).getAppointment().getEnd();
+			
+			int dateDiff = getDateDiff(startDate, endDate);
+			dateDiff = (dateDiff <=0)?1:dateDiff;
+			highlightedCells = getCells(row, col, dateDiff);
 			
 			//alter its style as "highlighted"
 			//TODO: month view highlighted cell style be moved to the css style sheet
@@ -141,5 +148,23 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 		}
 		
 		return elems;
+	}
+	
+	/**
+	 * Gets the difference in days between two Dates.
+	 * TODO: not correctly calculating when end date's month != start date's month
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 */
+	public int getDateDiff(Date startDate, Date endDate) {
+		
+		if(startDate.getMonth()==endDate.getMonth()) {
+			return endDate.getDate() - startDate.getDate()+1;
+		}else
+			return 42;//CRAP!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		//return (int) Math.ceil(((endDate.getTime() - startDate.getTime())/(1000*60*60*24)))+1;
 	}
 }
