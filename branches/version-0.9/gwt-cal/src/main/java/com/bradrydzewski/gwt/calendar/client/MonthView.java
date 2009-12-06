@@ -250,9 +250,9 @@ public class MonthView extends CalendarView {
 		calculateCellAppointments();
 		
 		//set variables needed by the drop controller
-		monthViewDropController.setDayHeaderHeight(calculatedDayHeaderHeight);
-		monthViewDropController.setDaysPerWeek(7);
-		monthViewDropController.setWeekdayHeaderHeight(calculatedWeekDayHeaderHeight);
+		//monthViewDropController.setDayHeaderHeight(calculatedDayHeaderHeight);
+		monthViewDropController.setDaysPerWeek(DAYS_IN_A_WEEK);
+		//monthViewDropController.setWeekdayHeaderHeight(calculatedWeekDayHeaderHeight);
 		monthViewDropController.setWeeksPerMonth(monthViewRequiredRows);
 
 		//Sort the appointments

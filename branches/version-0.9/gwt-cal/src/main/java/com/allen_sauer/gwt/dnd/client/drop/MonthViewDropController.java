@@ -5,29 +5,28 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
+import java.util.Date;
 
 public class MonthViewDropController extends AbsolutePositionDropController {
 
-	private int weekdayHeaderHeight;
-	private int dayHeaderHeight;
 	private int daysPerWeek;
 	private int weeksPerMonth;
+
+	/**
+	 * Flextable that displays a Month in grid format.
+	 */
 	private FlexTable monthGrid;
 
-	private Element highlightedCell;
+	/**
+	 * List of all cells currently highlighted as an appointment
+	 * is being dragged.
+	 */
+	private Element[] highlightedCells;
 
 	public MonthViewDropController(AbsolutePanel dropTarget, FlexTable monthGrid) {
 
 		super(dropTarget);
 		this.monthGrid = monthGrid;
-	}
-
-	public void setWeekdayHeaderHeight(int weekdayHeaderHeight) {
-		this.weekdayHeaderHeight = weekdayHeaderHeight;
-	}
-
-	public void setDayHeaderHeight(int dayHeaderHeight) {
-		this.dayHeaderHeight = dayHeaderHeight;
 	}
 
 	public void setDaysPerWeek(int daysPerWeek) {
@@ -64,23 +63,83 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 			monthGrid.getFlexCellFormatter().getElement(row, col);
 		
 		//If this cell isn't already highlighted, we need to highlight
-		if(!currHoveredCell.equals(highlightedCell)) {
+		if(highlightedCells==null || !currHoveredCell.equals(highlightedCells[0])) {
 		
-			if(highlightedCell!=null)
-				DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#FFFFFF");
+			if(highlightedCells!=null) {
+				for(Element elem : highlightedCells) {
+					if(elem!=null)
+						DOM.setStyleAttribute(elem, "backgroundColor", "#FFFFFF");
+				}
+			}
 
-			highlightedCell = currHoveredCell;
+			//here I hard-code 5 as the number of cells an appointment
+			// should span. This, however, should be calculated.
+			//Beware, we need to be very careful about memory here.
+			// I tried to do a date diff calculation and got 
+			// out of memory exceptions in the JVM AND in the chrome browser
+			highlightedCells = getCells(row, col, 5);
 			
 			//alter its style as "highlighted"
-			DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#C3D9FF");
+			//TODO: month view highlighted cell style be moved to the css style sheet
+			for(Element elem : highlightedCells) {
+				if(elem!=null)
+					DOM.setStyleAttribute(elem, "backgroundColor", "#C3D9FF");
+			}
 		}
 	}
 
+	/**
+	 * Callback method executed once the drag has completed.
+	 * We need to reset the background color of all previously highlighted
+	 * cells. Also need to actually change the appointment's start / end date
+	 * here (code doesn't exist yet).
+	 */
 	@Override
 	public void onDrop(DragContext context) {
-		// TODO Auto-generated method stub
+
 		super.onDrop(context);
-		DOM.setStyleAttribute(highlightedCell, "backgroundColor", "#FFFFFF");
-		highlightedCell = null;
+		
+		for(Element elem : highlightedCells) {
+			if(elem!=null)
+				DOM.setStyleAttribute(elem, "backgroundColor", "#FFFFFF");
+		}
+
+		highlightedCells = null;
+	}
+	
+	/**
+	 * Gets all the cells (as DOM Elements) that an appointment spans.
+	 * Note: It only includes cells in the table. If an appointment
+	 * ends in the following month the last cell in the list will
+	 * be the last cell in the table.
+	 * @param row Appointment's starting row
+	 * @param col Appointment's starting column
+	 * @param days Number of days an appointment spans
+	 * @return Cell elements that an appointment spans
+	 */
+	protected Element[] getCells(int row, int col, int days) {
+		
+		Element[] elems = new Element[days];
+		
+		for(int i=0;i<days; i++) {
+			
+			if(col>daysPerWeek-1) {
+				col = 0;
+				row ++;
+			}
+			
+			//Cheap code here. If the row / cell throw an out of index exception
+			// we just break. THis kind of sucks because we have to 
+			// now account for null items in the Element[] array.
+			try {
+				elems[i] = monthGrid.getFlexCellFormatter().getElement(row, col);
+			}catch(Exception ex) {
+				break;
+			}
+			
+			col++;
+		}
+		
+		return elems;
 	}
 }
