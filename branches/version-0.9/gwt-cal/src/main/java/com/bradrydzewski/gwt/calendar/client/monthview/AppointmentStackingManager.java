@@ -103,4 +103,9 @@ public class AppointmentStackingManager {
         }
         return thereAre;
     }
+
+    public int getHighestLayer()
+    {
+        return highestLayer;
+    }
 }
