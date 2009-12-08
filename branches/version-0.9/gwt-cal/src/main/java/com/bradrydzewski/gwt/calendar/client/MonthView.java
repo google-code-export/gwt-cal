@@ -22,7 +22,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
@@ -253,7 +252,9 @@ public class MonthView extends CalendarView {
         MonthLayoutDescription monthLayoutDescription
                 = new MonthLayoutDescription(
                 firstDateDisplayed, calendarWidget.getAppointments());
-
+        for (Appointment appointment : calendarWidget.getAppointments()) {
+            System.out.println(appointment.getTitle());
+        }
         // Get the layouts for each week in the month
         WeekLayoutDescription[] weeks = monthLayoutDescription
                 .getWeekDescriptions();
@@ -261,7 +262,6 @@ public class MonthView extends CalendarView {
         for (int weekOfMonth = 0;
              weekOfMonth < weeks.length && weekOfMonth < monthViewRequiredRows;
              weekOfMonth++) {
-
             WeekLayoutDescription weekDescription = weeks[weekOfMonth];
 
             if (weekDescription != null) {
@@ -277,16 +277,20 @@ public class MonthView extends CalendarView {
     private void layOnTopOfTheWeekHangingAppointments(
             AppointmentStackingManager weekTopElements, int weekOfMonth) {
         for (int layer = 0;
-             layer < calculatedCellAppointments &&
-                     layer < weekTopElements.getHighestLayer(); layer++) {
+             layer < calculatedCellAppointments; layer++) {
+
             ArrayList<WeekTopStackableDescription> descriptionsInLayer
                     = weekTopElements.getDescriptionsInLayer(layer);
-            if (descriptionsInLayer != null) {
-                for (WeekTopStackableDescription weekTopElement : descriptionsInLayer) {
-                    layOnAppointment(weekTopElement.getAppointment(),
-                            weekTopElement.getWeekStartDay(),
-                            weekTopElement.getWeekEndDay(), weekOfMonth, layer);
-                }
+
+            if (descriptionsInLayer == null)
+            {
+                break;
+            }
+
+            for (WeekTopStackableDescription weekTopElement : descriptionsInLayer) {
+                layOnAppointment(weekTopElement.getAppointment(),
+                        weekTopElement.getWeekStartDay(),
+                        weekTopElement.getWeekEndDay(), weekOfMonth, layer);
             }
         }
     }
