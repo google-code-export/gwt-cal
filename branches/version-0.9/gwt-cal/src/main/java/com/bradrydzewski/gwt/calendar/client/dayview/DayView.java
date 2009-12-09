@@ -11,10 +11,12 @@ import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 public class DayView extends CalendarView implements HasSettings {
@@ -31,10 +33,7 @@ public class DayView extends CalendarView implements HasSettings {
     
 	public DayView() {
 		
-        dayViewBody = new DayViewBody(this);
-        dayViewHeader = new DayViewHeader(this);
-        layoutStrategy = new DayViewLayoutStrategy(this);
-        multiViewBody = new DayViewMultiDayBody(this);
+
 
 	}
 
@@ -117,39 +116,61 @@ public class DayView extends CalendarView implements HasSettings {
 		if(calendarWidget.getSelectedAppointment()!=null)
 			calendarWidget.removeAppointment(calendarWidget.getSelectedAppointment());
 	}
-	public void onDoubleClick(Element element) {
-		AppointmentWidget widget = 
-			AppointmentUtil.checkAppointmentElementClicked(
-				element, appointmentWidgets);
-		
-		if(widget == null)
-			return;
-		
-		Appointment appointment = widgetAppointmentIndex.get(widget);
-		
-		if(appointment == null)
-			return;
-		
-		if(appointment == calendarWidget.getSelectedAppointment())
-			calendarWidget.fireOpenEvent(appointment);
-	}
-	public void onMouseDown(Element element) {
-		
-		//Ignore the scoll panel
-		if(dayViewBody.getScrollPanel().getElement().equals(element))
-			return;
-		
+	public void onDoubleClick(Element element, Event event) {
+
+		Appointment appointment = null;
 		AppointmentWidget widget = 
 			AppointmentUtil.checkAppointmentElementClicked(
 				element, appointmentWidgets);
 		
 		//If an appointment was not clicked then exit
-		if(widget==null) return;
+		if(widget!=null) {
+			//Lookup the Appointment
+			appointment = widgetAppointmentIndex.get(widget);
+		}
 		
-		//Lookup the Appointment
-		Appointment appointment = widgetAppointmentIndex.get(widget);
+		if(widget==null || appointment==null) {
+
+			if (getSettings().getTimeBlockClickNumber() == Click.Single &&
+					element == dayViewBody.getGrid().gridOverlay.getElement()) {
+                int x = DOM.eventGetClientX(event);
+                int y = DOM.eventGetClientY(event);
+                timeBlockClick(x, y);
+			}
+			return;
+		}
 		
-		if(appointment==null) return;
+		if(appointment == calendarWidget.getSelectedAppointment())
+			calendarWidget.fireOpenEvent(appointment);
+	}
+	public void onMouseDown(Element element, Event event) {
+		
+		//Ignore the scoll panel
+		if(dayViewBody.getScrollPanel().getElement().equals(element)) {
+			return;
+		}
+		
+		Appointment appointment = null;
+		AppointmentWidget widget = 
+			AppointmentUtil.checkAppointmentElementClicked(
+				element, appointmentWidgets);
+		
+		//If an appointment was not clicked then exit
+		if(widget!=null) {
+			//Lookup the Appointment
+			appointment = widgetAppointmentIndex.get(widget);
+		}
+		
+		if(widget==null || appointment==null) {
+
+			if (getSettings().getTimeBlockClickNumber() == Click.Single &&
+					element == dayViewBody.getGrid().gridOverlay.getElement()) {
+                int x = DOM.eventGetClientX(event);
+                int y = DOM.eventGetClientY(event);
+                timeBlockClick(x, y);
+			}
+			return;
+		}
 		
 		setSelectedAppointment(appointment);
 		
@@ -210,13 +231,12 @@ public class DayView extends CalendarView implements HasSettings {
 	}
 
 	public CalendarSettings getSettings() {
-		// TODO Auto-generated method stub
-		return CalendarSettings.DEFAULT_SETTINGS;
+		// REMOVE THIS, this should not be here
+		return super.calendarWidget.getSettings();
 	}
 
 	public void setSettings(CalendarSettings settings) {
-		// TODO Auto-generated method stub
-		
+		// REMOVE THIS, this should not be here
 	}
 
 	@Override
@@ -229,8 +249,46 @@ public class DayView extends CalendarView implements HasSettings {
 	public void attach(CalendarWidget widget) {
 		super.attach(widget);
 
+		if(dayViewBody==null) {
+	        dayViewBody = new DayViewBody(this);
+	        dayViewHeader = new DayViewHeader(this);
+	        layoutStrategy = new DayViewLayoutStrategy(this);
+	        multiViewBody = new DayViewMultiDayBody(this);
+		}
+		
 		calendarWidget.getRootPanel().add(dayViewHeader);
 		calendarWidget.getRootPanel().add(multiViewBody);
 		calendarWidget.getRootPanel().add(dayViewBody);
 	}
+	
+	
+	
+	
+	
+	
+    void timeBlockClick(int x, int y) {
+
+        int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
+        int top = dayViewBody.getScrollPanel().getAbsoluteTop();
+        int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
+        int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
+
+        //x & y are based on screen position,need to get x/y relative to component
+        int relativeY = y - top + scrollOffset;
+        int relativeX = x - left;
+
+        //find the interval clicked and day clicked
+        double interval = Math.floor(relativeY / (double) getSettings().getPixelsPerInterval());
+        double day = Math.floor((double) relativeX / ((double) width / (double) calendarWidget.getDays()));
+
+        //create new appointment date based on click
+        Date newStartDate = calendarWidget.getDate();
+        newStartDate.setHours(0);
+        newStartDate.setMinutes(0);
+        newStartDate.setSeconds(0);
+        newStartDate.setMinutes((int) interval * (60 / getSettings().getIntervalsPerHour()));
+        newStartDate.setDate(newStartDate.getDate() + (int) day);
+
+        calendarWidget.fireTimeBlockClickEvent(newStartDate);
+    }
 }

@@ -27,6 +27,7 @@ import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
@@ -358,13 +359,13 @@ public class AgendaView extends CalendarView {
 	}
 
 	@Override
-	public void onDoubleClick(Element element) {
+	public void onDoubleClick(Element element, Event event) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void onMouseDown(Element element) {
+	public void onMouseDown(Element element, Event event) {
 		// TODO Auto-generated method stub
 		
 	}

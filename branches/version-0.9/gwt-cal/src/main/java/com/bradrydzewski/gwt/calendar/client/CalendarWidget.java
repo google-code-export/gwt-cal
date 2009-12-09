@@ -24,6 +24,9 @@ import java.util.Date;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
@@ -35,6 +38,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -52,7 +56,7 @@ import com.google.gwt.user.client.ui.Widget;
  */
 public class CalendarWidget extends InteractiveWidget implements
         HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
-        HasOpenHandlers<Appointment> {
+        HasOpenHandlers<Appointment>, HasTimeBlockClickHandlers<Date> {
 
     /**
      * Set to <code>true</code> if the calendar layout is suspended and cannot
@@ -362,8 +366,8 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     @Override
-    public void onDoubleClick(Element element) {
-        view.onDoubleClick(element);
+    public void onDoubleClick(Element element, Event event) {
+        view.onDoubleClick(element, event);
     }
 
     @Override
@@ -377,8 +381,8 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     @Override
-    public void onMouseDown(Element element) {
-        view.onMouseDown(element);
+    public void onMouseDown(Element element, Event event) {
+        view.onMouseDown(element, event);
     }
 
     @Override
@@ -402,6 +406,10 @@ public class CalendarWidget extends InteractiveWidget implements
     public void fireSelectionEvent(Appointment appointment) {
         SelectionEvent.fire(this, appointment);
     }
+    
+    public void fireTimeBlockClickEvent(Date date) {
+    	TimeBlockClickEvent.fire(this, date);
+    }
 
     public HandlerRegistration addSelectionHandler(
             SelectionHandler<Appointment> handler) {
@@ -412,6 +420,11 @@ public class CalendarWidget extends InteractiveWidget implements
             DeleteHandler<Appointment> handler) {
         return addHandler(handler, DeleteEvent.getType());
     }
+
+	public HandlerRegistration addTimeBlockClickHandler(
+			TimeBlockClickHandler<Date> handler) {
+		return addHandler(handler, TimeBlockClickEvent.getType());
+	}
 
     public HandlerRegistration addOpenHandler(
             OpenHandler<Appointment> handler) {

@@ -115,7 +115,7 @@ public abstract class InteractiveWidget extends Composite {
      *
      * @param element The HTML DOM element that originated the event
      */
-    public abstract void onDoubleClick(Element element);
+    public abstract void onDoubleClick(Element element, Event event);
 
     /**
      * Processes mouse button pressing events. Concrete interactive widgets
@@ -123,7 +123,7 @@ public abstract class InteractiveWidget extends Composite {
      *
      * @param element The HTML DOM element that originated the event
      */
-    public abstract void onMouseDown(Element element);
+    public abstract void onMouseDown(Element element, Event event);
 
     /**
      * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
@@ -167,14 +167,14 @@ public abstract class InteractiveWidget extends Composite {
 
         switch (eventType) {
             case Event.ONDBLCLICK: {
-                onDoubleClick(element);
+                onDoubleClick(element, event);
                 focusPanel.setFocus(true);
                 break;
             }
             case Event.ONMOUSEDOWN: {
                 if (DOM.eventGetCurrentTarget(event) == getElement()) {
 
-                    onMouseDown(element);
+                    onMouseDown(element, event);
                     focusPanel.setFocus(true);
                     //Cancel events so Firefox / Chrome don't
                     //give child widgets with scrollbars focus.

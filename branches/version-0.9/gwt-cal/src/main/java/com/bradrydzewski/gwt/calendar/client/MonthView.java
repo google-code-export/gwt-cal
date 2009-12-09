@@ -34,6 +34,7 @@ import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FocusPanel;
@@ -368,7 +369,7 @@ public class MonthView extends CalendarView {
      * selected. If an appointment has been double clicked the OpenEvent will
      * get fired for that appointment.
      */
-    public void onDoubleClick(Element clickedElement) {
+    public void onDoubleClick(Element clickedElement, Event event) {
         ArrayList<AppointmentWidget> list
                 = findAllAdaptersForAppointmentOnElement(clickedElement);
         if (!list.isEmpty()) {
@@ -384,7 +385,7 @@ public class MonthView extends CalendarView {
      * to true and a SelectionEvent will be fired.
      */
     @Override
-    public void onMouseDown(Element clickedElement) {
+    public void onMouseDown(Element clickedElement, Event event) {
         if (clickedElement.equals(appointmentCanvas.getElement()))
             return;
 

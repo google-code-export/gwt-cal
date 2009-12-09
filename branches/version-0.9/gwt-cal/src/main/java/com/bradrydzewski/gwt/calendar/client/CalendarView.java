@@ -19,6 +19,7 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
 
 /**
  * Abstract base class defining the operations to render a calendar and
@@ -75,9 +76,9 @@ public abstract class CalendarView {
 
     public abstract void doLayout();
 
-    public abstract void onDoubleClick(Element element);
+    public abstract void onDoubleClick(Element element, Event event);
 
-    public abstract void onMouseDown(Element element);
+    public abstract void onMouseDown(Element element, Event event);
 
     /**
      * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}

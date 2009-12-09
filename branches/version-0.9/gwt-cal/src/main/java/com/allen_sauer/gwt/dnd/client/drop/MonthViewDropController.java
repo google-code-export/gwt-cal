@@ -111,6 +111,17 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 				DOM.setStyleAttribute(elem, "backgroundColor", "#FFFFFF");
 		}
 
+		//Create memento
+		//appointment set start date of actual
+		//appointment set end date of actual
+		//doLayout()
+		//trigger event to user
+		// if user cancels (ie undo)
+		// replace appt w/ memento
+		// doLayout()
+		
+		
+		
 		highlightedCells = null;
 	}
 	
