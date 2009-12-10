@@ -10,6 +10,8 @@ import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
+import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
+import com.bradrydzewski.gwt.calendar.client.event.UpdateHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -160,6 +162,19 @@ public class GoogleCalendarPanel extends FlowPanel {
                 }
             }
         });
+        calendar.addUpdateHandler(new UpdateHandler<Appointment>() {
+            @Override
+            public void onUpdate(UpdateEvent<Appointment> event) {
+                boolean commit = Window
+                        .confirm(
+                                "Are you sure you want to update the appointment \""
+                                        + event.getTarget().getTitle() + "\"");
+                if (!commit) {
+                    event.setCancelled(true);
+                    System.out.println("Cancelled Appointment update");
+                }
+            }
+        });
         calendar.addOpenHandler(new OpenHandler<Appointment>() {
             @Override
             public void onOpen(OpenEvent<Appointment> event) {
@@ -188,6 +203,17 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayAppt.setTitle("All day 1");
         multiDayAppt.setMultiDay(true);
         calendar.addAppointment(multiDayAppt);
+        
+        Appointment multiDayApptA = new Appointment();
+        multiDayApptA.setStart(
+                new Date(today.getYear(), today.getMonth(), today.getDate(),
+                        0, 0, 0));
+        multiDayApptA.setEnd(new Date(today.getYear(), today.getMonth(),
+                today.getDate() + 14));
+        multiDayApptA.setTitle("All day A");
+        multiDayApptA.setStyle(Appointment.RED);
+        multiDayApptA.setMultiDay(true);
+        calendar.addAppointment(multiDayApptA);
 
         Appointment multiDayAppt2 = new Appointment();
         multiDayAppt2.setStart(
