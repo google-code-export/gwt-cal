@@ -74,7 +74,7 @@ public class MonthLayoutDescription {
         if (isMultiWeekAppointment(startWeek, endWeek)) {
             distributeOverWeeks(startWeek, endWeek, appointment);
         } else {
-            System.out.println("Se agrega como multiday " + appointment.getTitle());
+            //System.out.println("Se agrega como multiday " + appointment.getTitle());
             weeks[startWeek].addMultiDayAppointment(appointment);
         }
     }

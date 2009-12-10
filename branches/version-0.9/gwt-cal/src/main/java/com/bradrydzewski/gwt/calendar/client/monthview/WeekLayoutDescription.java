@@ -76,7 +76,7 @@ public class WeekLayoutDescription {
     public void addMultiDayAppointment(Appointment appointment) {
         int weekStartDay = dayInWeek(appointment.getStart());
         int weekEndDay = dayInWeek(appointment.getEnd());
-        System.out.println(appointment.getTitle() + " ----- " + weekStartDay + " to " + weekEndDay);
+        //System.out.println(appointment.getTitle() + " ----- " + weekStartDay + " to " + weekEndDay);
         topAppointmentsManager.assignLayer(
                 new MultiDayLayoutDescription(weekStartDay, weekEndDay,
                         appointment));

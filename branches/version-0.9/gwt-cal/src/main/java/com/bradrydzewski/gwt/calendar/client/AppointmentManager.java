@@ -26,6 +26,17 @@ public class AppointmentManager {
      * <code>null</code> when no currently selected appointment has been set.
      */
     private Appointment selectedAppointment = null;
+   
+    /**
+     * A copy of the last appointment that was updated,
+     * prior to the update taking place. 
+     */
+    private Appointment rollbackAppointment = null;
+    
+    /**
+     * A reference to the last appointment that was updated.
+     */
+    private Appointment committedAppointment = null;
 
     /**
      * The collection of appointments to be maintained by this
@@ -262,5 +273,46 @@ public class AppointmentManager {
     public boolean isTheSelectedAppointment(Appointment appointment) {
         return hasAppointmentSelected() && selectedAppointment.equals(
                 appointment);
+    }
+    
+    public void commit() {
+    	rollbackAppointment = null;
+    	committedAppointment = null;
+    }
+    
+    public void rollback() {
+    	
+    	//if the snapshot block is empty, we can do nothing
+    	if(rollbackAppointment==null && committedAppointment==null)
+    		return;
+    	
+    	//if there is no committed appointment, we assume
+    	// this was a delete operation. We re-add the appointment
+    	if(committedAppointment==null) {
+    		addAppointment(rollbackAppointment);
+    		
+        //if there is no rollback appointment, we assume
+        // this was an add or update operation. We remove the appointment
+    	} else if(rollbackAppointment==null){
+
+    		removeAppointment(committedAppointment);
+    		
+        //else, we assume this is an update
+    	} else {
+    		
+    		removeAppointment(committedAppointment);
+    		addAppointment(rollbackAppointment);
+    	}
+    	
+    	commit();
+    }
+    
+    public void setRollbackAppointment(Appointment appt) {
+    	commit();
+    	rollbackAppointment = appt;
+    }
+    
+    public void setCommittedAppointment(Appointment appt) {
+    	committedAppointment = appt;
     }
 }

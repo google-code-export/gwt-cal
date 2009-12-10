@@ -23,7 +23,11 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
+import com.allen_sauer.gwt.dnd.client.DragEndEvent;
+import com.allen_sauer.gwt.dnd.client.DragHandler;
+import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
+import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
 import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentStackingManager;
 import com.bradrydzewski.gwt.calendar.client.monthview.DayLayoutDescription;
@@ -195,6 +199,28 @@ public class MonthView extends CalendarView {
 
         if (dragController == null) {
             dragController = new PickupDragController(appointmentCanvas, true);
+            dragController.addDragHandler(new DragHandler() {
+
+				public void onDragEnd(DragEndEvent event) {
+
+					Appointment appt = ((AppointmentWidget)
+							event.getContext().draggable).getAppointment();
+					calendarWidget.setCommittedAppointment(appt);
+					calendarWidget.fireUpdateEvent(appt);
+				}
+				public void onDragStart(DragStartEvent event) { 
+					calendarWidget.setRollbackAppointment(
+							((AppointmentWidget)event.getContext().draggable).getAppointment().clone());
+				}
+				public void onPreviewDragEnd(DragEndEvent event)
+						throws VetoDragException { 
+					//do nothing
+				}
+				public void onPreviewDragStart(DragStartEvent event)
+						throws VetoDragException { 
+					//do nothing
+				}
+            });
         }
 
         /*
@@ -243,7 +269,8 @@ public class MonthView extends CalendarView {
         monthViewDropController.setDaysPerWeek(DAYS_IN_A_WEEK);
         //monthViewDropController.setWeekdayHeaderHeight(calculatedWeekDayHeaderHeight);
         monthViewDropController.setWeeksPerMonth(monthViewRequiredRows);
-
+        monthViewDropController.setFirstDateDisplayed(firstDateDisplayed);
+        
         //Sort the appointments
         //TODO: don't re-sort the appointment unless necessary
         Collections.sort(calendarWidget.getAppointments(),
@@ -253,9 +280,7 @@ public class MonthView extends CalendarView {
         MonthLayoutDescription monthLayoutDescription
                 = new MonthLayoutDescription(
                 firstDateDisplayed, calendarWidget.getAppointments());
-        for (Appointment appointment : calendarWidget.getAppointments()) {
-            System.out.println(appointment.getTitle());
-        }
+
         // Get the layouts for each week in the month
         WeekLayoutDescription[] weeks = monthLayoutDescription
                 .getWeekDescriptions();

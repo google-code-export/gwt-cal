@@ -166,4 +166,22 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     public void setAllDay(boolean allDay) {
         this.allDay = allDay;
     }
+    
+    protected Appointment clone() {
+    	
+    	Appointment clone = new Appointment();
+    	clone.setAllDay(this.allDay);
+    	clone.setAttendees(this.attendees);
+    	clone.setCreatedBy(this.createdBy);
+    	clone.setDescription(this.description);
+    	clone.setEnd(this.end);
+    	clone.setLocation(this.location);
+    	clone.setMultiDay(this.multiDay);
+    	clone.setSelected(this.selected);
+    	clone.setStart(this.start);
+    	clone.setStyle(this.style);
+    	clone.setTitle(this.title);
+    	
+    	return clone;
+    }
 }
