@@ -2,6 +2,7 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -77,6 +78,7 @@ public class AppointmentWidget extends Composite {
     private Panel timelinePanel = new Div();
     private Panel timelineFillPanel = new Div();
     private boolean multiDay = false;
+    private Appointment appointment;
 
     public AppointmentWidget() {
 
@@ -220,4 +222,12 @@ public class AppointmentWidget extends Composite {
     public void setMultiDay(boolean isMultiDay) {
         this.multiDay = isMultiDay;
     }
+
+	public Appointment getAppointment() {
+		return appointment;
+	}
+
+	public void setAppointment(Appointment appointment) {
+		this.appointment = appointment;
+	}
 }

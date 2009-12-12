@@ -357,7 +357,7 @@ public class MonthView extends CalendarView {
      */
     public void onDoubleClick(Element clickedElement, Event event) {
         ArrayList<AppointmentWidget> list
-                = findAllAdaptersForAppointmentOnElement(clickedElement);
+                = findAppointmentWidgetsByElement(clickedElement);
         if (!list.isEmpty()) {
             Appointment appt = list.get(0).getAppointment();
             if (appt.equals(calendarWidget.getSelectedAppointment()))
@@ -376,7 +376,7 @@ public class MonthView extends CalendarView {
             return;
 
         ArrayList<AppointmentWidget> clickedAppointmentAdapters
-                = findAllAdaptersForAppointmentOnElement(clickedElement);
+                = findAppointmentWidgetsByElement(clickedElement);
 
         if (!clickedAppointmentAdapters.isEmpty()) {
             Appointment clickedAppt = clickedAppointmentAdapters.get(0)
@@ -406,9 +406,9 @@ public class MonthView extends CalendarView {
         }
     }
 
-    private ArrayList<AppointmentWidget> findAllAdaptersForAppointmentOnElement(
+    private ArrayList<AppointmentWidget> findAppointmentWidgetsByElement(
             Element element) {
-        return findAppointmentAdapters(findAppointmentByElement(element));
+        return findAppointmentWidget(findAppointmentByElement(element));
     }
 
     /**
@@ -510,10 +510,10 @@ public class MonthView extends CalendarView {
      */
     private Appointment findAppointmentByElement(Element element) {
         Appointment appointmentAtElement = null;
-        for (AppointmentWidget adapter : appointmentsWidgets) {
-            if (DOM.isOrHasChild(adapter.getElement(),
+        for (AppointmentWidget widget : appointmentsWidgets) {
+            if (DOM.isOrHasChild(widget.getElement(),
                     element)) {
-                appointmentAtElement = adapter.getAppointment();
+                appointmentAtElement = widget.getAppointment();
                 break;
             }
         }
@@ -524,16 +524,16 @@ public class MonthView extends CalendarView {
      * Finds any related adapters that match the given Appointment.
      *
      * @param appt Appointment to match.
-     * @return List of related AppointmentAdapter objects.
+     * @return List of related AppointmentWidget objects.
      */
-    private ArrayList<AppointmentWidget> findAppointmentAdapters(
+    private ArrayList<AppointmentWidget> findAppointmentWidget(
             Appointment appt) {
         ArrayList<AppointmentWidget> appointmentAdapters
                 = new ArrayList<AppointmentWidget>();
         if (appt != null) {
-            for (AppointmentWidget adapter : appointmentsWidgets) {
-                if (adapter.getAppointment().equals(appt)) {
-                    appointmentAdapters.add(adapter);
+            for (AppointmentWidget widget : appointmentsWidgets) {
+                if (widget.getAppointment().equals(appt)) {
+                    appointmentAdapters.add(widget);
                 }
             }
         }
