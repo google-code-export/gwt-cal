@@ -131,7 +131,7 @@ public class DayView extends CalendarView implements HasSettings {
 		
 		if(widget==null || appointment==null) {
 
-			if (getSettings().getTimeBlockClickNumber() == Click.Single &&
+			if (getSettings().getTimeBlockClickNumber() == Click.Double &&
 					element == dayViewBody.getGrid().gridOverlay.getElement()) {
                 int x = DOM.eventGetClientX(event);
                 int y = DOM.eventGetClientY(event);

@@ -1,6 +1,9 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 import org.junit.Test;
+
+import com.bradrydzewski.gwt.calendar.client.monthview.MonthViewHelper;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
 

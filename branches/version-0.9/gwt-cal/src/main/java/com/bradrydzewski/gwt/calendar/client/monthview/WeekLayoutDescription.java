@@ -15,7 +15,7 @@ import java.util.Date;
  * distributing appointments over them.
  *
  * @author Carlos D. Morales
- * @see com.bradrydzewski.gwt.calendar.client.MonthView
+ * @see com.bradrydzewski.gwt.calendar.client.monthview.MonthView
  * @see com.bradrydzewski.gwt.calendar.client.monthview.MonthLayoutDescription
  */
 public class WeekLayoutDescription {
@@ -83,7 +83,7 @@ public class WeekLayoutDescription {
     }
 
     public void addMultiWeekAppointment(Appointment appointment,
-                                        AppointmentWeekPresenceInMonth presenceInMonth) {
+                                        AppointmentWidgetParts presenceInMonth) {
         switch (presenceInMonth) {
             case FIRST_WEEK:
                 int weekStartDay = dayInWeek(appointment.getStart());

@@ -4,8 +4,7 @@ import java.util.Date;
 
 import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
-import com.bradrydzewski.gwt.calendar.client.MonthView.AppointmentWidget;
+import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentWidget;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.AbsolutePanel;

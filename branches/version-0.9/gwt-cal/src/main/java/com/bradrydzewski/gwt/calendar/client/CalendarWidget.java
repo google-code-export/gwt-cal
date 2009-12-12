@@ -117,11 +117,12 @@ public class CalendarWidget extends InteractiveWidget implements
      * @param view The {@link CalendarView} implementation to render this
      *             widget's underlying calendar
      */
-    protected final void setView(CalendarView view) {
+    public final void setView(CalendarView view) {
         this.getRootPanel().clear();
         this.view = view;
         this.view.attach(this);
         this.setStyleName(this.view.getStyleName());
+        this.refresh();
     }
 
     public Date getDate() {
@@ -146,7 +147,8 @@ public class CalendarWidget extends InteractiveWidget implements
      * @param numOfDays The number of days to change the calendar date forward
      *                  (positive number) or backwards.
      */
-    public void addDaysToDate(int numOfDays) {
+    @SuppressWarnings("deprecation")
+	public void addDaysToDate(int numOfDays) {
         this.date.setDate(this.date.getDate() + numOfDays);
     }
 

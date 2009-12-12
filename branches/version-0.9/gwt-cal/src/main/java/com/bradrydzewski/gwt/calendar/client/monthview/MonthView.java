@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/
  */
 
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,68 +29,43 @@ import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
-import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentStackingManager;
-import com.bradrydzewski.gwt.calendar.client.monthview.DayLayoutDescription;
-import com.bradrydzewski.gwt.calendar.client.monthview.MonthLayoutDescription;
-import com.bradrydzewski.gwt.calendar.client.monthview.WeekLayoutDescription;
-import com.bradrydzewski.gwt.calendar.client.monthview.WeekTopStackableDescription;
-import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.CalendarView;
+import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.FocusPanel;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
- * A CalendarView that displays appointments for a given month. The Month is
+ * <p>A CalendarView that displays appointments for a given month. The Month is
  * displayed in a grid-style view where cells represents days, columns
  * represents days of the week (i.e. Monday, Tuesday, etc.) and rows represent a
- * full week (Sunday through Saturday).
- * <p/>
- * <h3>CSS Style Rules</h3> <ul class='css'> <li>.gwt-cal-MonthView { }</li>
- * <li>.dayCell { cell that represents a day }</li> <li>.dayCell-today { cell
- * that represents today }</li> <li>.dayCell-disabled { cell's day falls outside
- * the month }</li> <li>.dayCell-today-disabled { cell represents today, falls
- * outside the month }</li> <li>.dayCellLabel { header for the cell }</li>
+ * full week (Sunday through Saturday).<p/>
+ * 
+ * <h3>CSS Style Rules</h3> 
+ * <ul class='css'>
+ * <li>.gwt-cal-MonthView { }</li>
+ * <li>.dayCell { cell that represents a day }</li>
+ * <li>.dayCell-today { cell that represents today }</li>
+ * <li>.dayCell-disabled { cell's day falls outside the month }</li>
+ * <li>.dayCell-today-disabled { cell represents today, falls outside the month }</li> <li>.dayCellLabel { header for the cell }</li>
  * <li>.dayCellLabel-today { cell represents today }</li>
  * <li>.dayCellLabel-disabled { cell's day falls outside the month }</li>
- * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the
- * month }</li> <li>.weekDayLabel { label for the days of the week }</li> </ul>
- * <p/>
- * <h3>Things to fix:</h3> <ol> <li>COMPLETE: Fix the sorting. Sort by
- * Multi-day, then by Date/Time <li>COMPLETE: Hook up the double click function
- * <li>COMPLETE: Doesn't correctly toggle style for selected appointment after
- * doLayout() is called <li>Slightly incorrect calculation of "+X more"
- * appointments, especially when there are all day appts <li>"+X more" doesn't
- * calculate for last day w/ appointments in the view <li>Need method to filter
- * correct list of appointments to display, right now it renders all
- * appointments in the list <li>Styles in IE still screwed up... DAMN IE6/7!!!!
- * <li>Some months span 6 weeks, not 5. Need to account for this <li>Some unit
- * tests would be nice :) </ol>
+ * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the month }</li>
+ * <li>.weekDayLabel { label for the days of the week }</li>
+ * </ul>
  *
  * @author Brad Rydzewski
  * @since 0.9.0
  */
 public class MonthView extends CalendarView {
-
-    public class AppointmentWidget extends FocusPanel {
-
-        private Appointment appointment;
-
-        public AppointmentWidget(Appointment appointment) {
-            this.appointment = appointment;
-            this.add(new Label(this.appointment.getTitle()));
-        }
-
-        public Appointment getAppointment() {
-            return appointment;
-        }
-    }
 
     public static final Comparator<Appointment> APPOINTMENT_COMPARATOR
             = new Comparator<Appointment>() {
@@ -111,6 +86,7 @@ public class MonthView extends CalendarView {
         }
     };
 
+    private static final int DAYS_IN_A_WEEK = 7;
     private final static String MONTH_VIEW = "gwt-cal-MonthView";
     private final static String CANVAS_STYLE = "canvas";
     private final static String GRID_STYLE = "grid";
@@ -120,8 +96,6 @@ public class MonthView extends CalendarView {
     private final static String WEEKDAY_LABEL_STYLE = "weekDayLabel";
     private final static String[] WEEKDAY_LABELS = new String[]{"Sun", "Mon",
             "Tue", "Wed", "Thurs", "Fri", "Sat"};
-
-    private static final int DAYS_IN_A_WEEK = 7;
 
     /**
      * List of appointment panels drawn on the month view canvas.
@@ -141,19 +115,6 @@ public class MonthView extends CalendarView {
      * fitting in the visible grid.
      */
     private Date firstDateDisplayed;
-
-    /**
-     * The last date displayed on the MonthView (last cell.) This date is not
-     * necessarily the last date of the month as the month view will sometimes
-     * display days from the adjacent months because of the number of days
-     * fitting in the visible grid.
-     */
-    private Date lastDateDisplayed;
-
-    /**
-     * Layout manager use to arrange the appointments on the canvas.
-     */
-    private MonthViewLayout layoutManager = new MonthViewLayout();
 
     /**
      * Grid that makes up the days and weeks of the MonthView.
@@ -467,7 +428,7 @@ public class MonthView extends CalendarView {
         firstDateDisplayed = (Date) date.clone();
 
         Date today = new Date();
-        AppointmentUtil.resetTime(today);
+        DateUtils.resetTime(today);
 
         /* Add the calendar weekday heading */
         for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
@@ -492,8 +453,6 @@ public class MonthView extends CalendarView {
                         .valueOf(date.getDate()), date.equals(today), date
                         .getMonth() != month);
             }
-
-            lastDateDisplayed = (Date) date.clone();
         }
     }
 

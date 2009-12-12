@@ -19,24 +19,24 @@
 package com.bradrydzewski.gwt.calendar.client;
 
 /**
- * Indicates whether or not an Attendee will be attending an
- * {@link Appointment}.
- * 
+ * Enumeration that represents each standard {@link CalendarView}.
  * @author Brad Rydzewski
  * @since 0.9.0
  */
-public enum Attending {
+public enum CalendarViews {
 	/**
-	 * Indicates an Attendee will be attending.
+	 * Represents the {@link DayView}, which presents a set of
+	 * Appointments a single day at a time.
 	 */
-	Yes,
+	DAY,
 	/**
-	 * Indicates an Attendee will not be attending.
+	 * Represents the {@link MonthView}, which presents a set of
+	 * Appointments for a whole month.
 	 */
-	No,
+	MONTH,
 	/**
-	 * Indicates an Attendee has not yet made up their mind
-	 * whether or not they will be attending.
+	 * Represents the {@link AgendaView}, which presents a set of
+	 * Appointments as a list.
 	 */
-	Maybe
+	AGENDA
 }

@@ -167,7 +167,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
         this.allDay = allDay;
     }
     
-    protected Appointment clone() {
+    public Appointment clone() {
     	
     	Appointment clone = new Appointment();
     	clone.setAllDay(this.allDay);

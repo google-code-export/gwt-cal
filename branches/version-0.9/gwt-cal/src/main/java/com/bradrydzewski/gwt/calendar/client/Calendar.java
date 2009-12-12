@@ -18,55 +18,60 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import com.bradrydzewski.gwt.calendar.client.agenda.AgendaView;
 import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
+import com.bradrydzewski.gwt.calendar.client.monthview.MonthView;
 
 public class Calendar extends CalendarWidget {
-    /**
-     * The component to manage the presentation of appointments in a single day
-     * layout.
-     */
-    private DayView dayView = null;
 
     /**
      * The component to manage the presentation of appointments as a list.
      */
     private AgendaView agendaView = null;
 
-    /**
-     * The calendar view to display a single day.
+	/**
+     * The component to manage the presentation of appointments in a single day
+     * layout.
      */
-    public static final int DAY_VIEW = 0;
+    private DayView dayView = null;
 
     /**
-     * The calendar view to display appointments in a list.
+     * The component to manage the presentation of appointments in a month.
      */
-    public static final int AGENDA_VIEW = 1;
+    private MonthView monthView = null;
 
     /**
-     * The calendar view to display the month corresponding to this calendar's
-     * <code>date</code> property.
-     *
-     * @see #getDate()
-     */
-    public static final int MONTH_VIEW = 2;
-
-    /**
-     * Constructs a <code>Calendar</code> with the {@link #DAY_VIEW} currently
-     * selected.
+     * Constructs a <code>Calendar</code> with the DayView currently
+     * displayed.
      */
     public Calendar() {
-        this(DAY_VIEW);
+        this(CalendarViews.DAY);
     }
 
-    public Calendar(java.util.Date date) {
-        super(date);
-    }
-
-    public Calendar(int view) {
+    /**
+     * Constructs a <code>Calendar</code> with the given
+     * CalendarView displayed by default.
+     */
+    public Calendar(CalendarViews view) {
         super();
+        setView(view);
     }
 
-    public void setView(int view) {
+    /**
+     * Constructs a <code>Calendar</code> with the a user-defined
+     * CalendarView displayed by default.
+     */
+    public Calendar(CalendarView view) {
+        super();
+        setView(view);
+    }
+
+    /**
+     * Sets the CalendarView that should be used by the Calendar to display
+     * the list of appointments.
+     * @param view
+     */
+    public void setView(CalendarViews view) {
         setView(view, getDays());
     }
 
@@ -78,27 +83,28 @@ public class Calendar extends CalendarWidget {
      * @param days The number of days to display in the view, which can be
      *             ignored by some views.
      */
-    public void setView(int view, int days) {
+    public void setView(CalendarViews view, int days) {
         switch (view) {
-            case DAY_VIEW: {
+            case DAY: {
                 if (dayView == null)
                     dayView = new DayView();
                 dayView.setDisplayedDays(days);
                 setView(dayView);
                 break;
             }
-            case AGENDA_VIEW: {
-                //if(agendaView==null)
+            case AGENDA: {
                 //TODO: need to cache agendaView, but there is a layout bug after a calendar item is deleted.
                 agendaView = new AgendaView();
                 setView(agendaView);
                 break;
             }
-            case MONTH_VIEW: {
-                setView(new MonthView());
+            case MONTH: {
+            	if(monthView==null)
+            		monthView = new MonthView();
+                setView(monthView);
+                break;
             }
         }
-        this.refresh();
     }
 }
  

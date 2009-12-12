@@ -7,6 +7,6 @@ package com.bradrydzewski.gwt.calendar.client.monthview;
  *
  * @author Carlos D. Morales
  */
-public enum AppointmentWeekPresenceInMonth {
+public enum AppointmentWidgetParts {
     FIRST_WEEK, IN_BETWEEN, LAST_WEEK
 }

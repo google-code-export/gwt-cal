@@ -82,16 +82,16 @@ public class MonthLayoutDescription {
     private void distributeOverWeeks(int startWeek, int endWeek,
                                      Appointment appointment) {
         weeks[startWeek].addMultiWeekAppointment(appointment,
-                AppointmentWeekPresenceInMonth.FIRST_WEEK);
+                AppointmentWidgetParts.FIRST_WEEK);
         for (int week = startWeek + 1; week < endWeek; week++) {
             initWeek(week);
             weeks[week].addMultiWeekAppointment(appointment,
-                    AppointmentWeekPresenceInMonth.IN_BETWEEN);
+                    AppointmentWidgetParts.IN_BETWEEN);
         }
         if (startWeek < endWeek) {
             initWeek(endWeek);
             weeks[endWeek].addMultiWeekAppointment(appointment,
-                    AppointmentWeekPresenceInMonth.LAST_WEEK);
+                    AppointmentWidgetParts.LAST_WEEK);
         }
     }
 

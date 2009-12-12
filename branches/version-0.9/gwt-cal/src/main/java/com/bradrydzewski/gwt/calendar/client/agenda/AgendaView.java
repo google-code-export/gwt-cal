@@ -16,11 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/
  */
 
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.agenda;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.Attendee;
+import com.bradrydzewski.gwt.calendar.client.CalendarView;
+import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
