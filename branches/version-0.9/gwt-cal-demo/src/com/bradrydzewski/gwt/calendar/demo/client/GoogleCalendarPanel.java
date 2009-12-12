@@ -6,6 +6,7 @@ import java.util.Date;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
+import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
@@ -147,7 +148,7 @@ public class GoogleCalendarPanel extends FlowPanel {
      */
     private void configureCalendar() {
         calendar = new Calendar();
-        calendar.setView(Calendar.DAY_VIEW);
+        //calendar.setView(Calendar.DAY_VIEW);
         calendar.setWidth("100%");
         calendar.addDeleteHandler(new DeleteHandler<Appointment>() {
             @Override
@@ -247,17 +248,17 @@ public class GoogleCalendarPanel extends FlowPanel {
                     public void onSelection(SelectionEvent<Integer> event) {
                         int tabIndex = event.getSelectedItem();
                         if (tabIndex == 0) {
-                            calendar.setView(Calendar.DAY_VIEW, 1);
+                            calendar.setView(CalendarViews.DAY, 1);
                         } else if (tabIndex == 1) {
-                            calendar.setView(Calendar.DAY_VIEW, 3);
+                            calendar.setView(CalendarViews.DAY, 3);
                         } else if (tabIndex == 2)
-                            calendar.setView(Calendar.DAY_VIEW, 5);
+                            calendar.setView(CalendarViews.DAY, 5);
                         else if (tabIndex == 3)
-                            calendar.setView(Calendar.DAY_VIEW, 7);
+                            calendar.setView(CalendarViews.DAY, 7);
                         else if (tabIndex == 4)
-                            calendar.setView(Calendar.AGENDA_VIEW);
+                            calendar.setView(CalendarViews.AGENDA);
                         else if (tabIndex == 5)
-                            calendar.setView(Calendar.MONTH_VIEW);
+                            calendar.setView(CalendarViews.MONTH);
                     }
                 });
     }
