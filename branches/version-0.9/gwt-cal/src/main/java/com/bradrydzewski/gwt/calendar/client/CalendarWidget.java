@@ -406,7 +406,14 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public void fireDeleteEvent(Appointment appointment) {
-        DeleteEvent.fire(this, appointment);
+
+    	//fire the event to notify the client
+    	boolean allow = DeleteEvent.fire(this, appointment);
+    	
+    	if(allow) {
+    		appointmentManager.removeAppointment(appointment);
+    		refresh();
+    	}
     }
 
     public void fireSelectionEvent(Appointment appointment) {

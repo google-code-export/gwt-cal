@@ -540,9 +540,10 @@ public class MonthView extends CalendarView {
         return appointmentAdapters;
     }
 
-    public void onDeleteKeyPressed() {
-        calendarWidget.removeCurrentlySelectedAppointment();
-    }
+	public void onDeleteKeyPressed() {
+		if(calendarWidget.getSelectedAppointment()!=null)
+			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
+	}
 
     //HERE ARE A BUNCH OF CALCULATED VALUES THAT ARE USED DURING LAYOUT
     // NOT SURE IF THE VARIABLES SHOULD BE KEPT AT THE CLASS LEVEL

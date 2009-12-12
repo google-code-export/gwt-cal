@@ -114,8 +114,9 @@ public class DayView extends CalendarView implements HasSettings {
 
 	public void onDeleteKeyPressed() {
 		if(calendarWidget.getSelectedAppointment()!=null)
-			calendarWidget.removeAppointment(calendarWidget.getSelectedAppointment());
+			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
 	}
+
 	public void onDoubleClick(Element element, Event event) {
 
 		Appointment appointment = null;
