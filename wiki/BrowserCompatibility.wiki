@@ -2,7 +2,7 @@
 
 = Summary =
 
-the gwt-cal widget supports all major browsers from IE6 to Safari4 -
+the gwt-cal widget supports all major browsers from IE6 to Safari4
 
 [http://www.w3schools.com/images/compatible_firefox.gif]
 [http://www.w3schools.com/images/compatible_safari.gif]
@@ -10,7 +10,7 @@ the gwt-cal widget supports all major browsers from IE6 to Safari4 -
 [http://www.w3schools.com/images/compatible_chrome.gif]
 [http://www.w3schools.com/images/compatible_ie.gif]
 
-Note: older browsers (such as IE6, IE7 and Opera) do not provide full support for certain visual effects, specifically CSS3 rounded corners and box shadows.
+Note: older browsers (such as IE6, IE7, IE8 and Opera) do not provide full support for certain visual effects, specifically CSS3 rounded corners and box shadows.
 
 = Details =
 
@@ -21,8 +21,6 @@ Note: older browsers (such as IE6, IE7 and Opera) do not provide full support fo
 || Opera             || 9.6       || Partial || CSS3 rounded corners, box shadow not supported ||
 || Firefox           || 2.x       || Partial || CSS3 box shadow not supported ||
 || Firefox           || 3.x       || Partial || CSS3 box shadow not supported ||
-|| Firefox           || 3.5       || Full    || ||
-|| Chrome            || 1.x       || Full    || || 
-|| Chrome            || 2.x       || Full    || || 
-|| Safari            || 3.x       || Full    || || 
-|| Safari            || 4.x       || Full    || || 
+|| Firefox           || 3.5 and up || Full    || ||
+|| Chrome            || 1.x and up || Full    || || 
+|| Safari            || 3.x and up || Full    || || 
