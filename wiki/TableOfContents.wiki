@@ -1,17 +1,16 @@
  * [Introduction Introduction]
- * [GettingStarted Getting Started]
- * [MultiDayAppointments Multi-day Appointments]
- * [Themes Themes]
- * [Settings Settings]
- * [BrowserCompatibility Browser Compatibility]
- * [ReleaseNotes Release Notes]
- * [CommercialLicense Commercial Use]
- * Demos
-   * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
-   * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
-   * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme]
+ * Version 0.9.x
+   * COMING SOON!
  * Version 0.8.x
    * [GettingStarted Getting Started]
    * [MultiDayAppointments Multi-day Appointments]
    * [Themes Themes]
    * [Settings Settings]
+ * [Roadmap Roadmap]
+ * [ReleaseNotes Release Notes]
+ * [BrowserCompatibility Browser Compatibility]
+ * [CommercialLicense Commercial Use]
+ * Demos
+   * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
+   * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
+   * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme]
