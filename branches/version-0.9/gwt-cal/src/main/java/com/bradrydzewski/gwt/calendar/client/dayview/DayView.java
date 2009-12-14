@@ -33,6 +33,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 	}
 
+
 	public void doLayout() {
 
 		// PERFORM APPOINTMENT LAYOUT NOW
@@ -102,6 +103,38 @@ public class DayView extends CalendarView implements HasSettings {
 
 			tmpDate.setDate(tmpDate.getDate() + 1);
 		}
+		
+        ArrayList<Appointment> filteredList =
+            AppointmentUtil.filterListByDateRange(calendarWidget.getAppointments(),
+            		calendarWidget.getDate(), calendarWidget.getDays());
+        
+        ArrayList<AppointmentAdapter> adapterList = new ArrayList<AppointmentAdapter>();
+        int desiredHeight = layoutStrategy.doMultiDayLayout(filteredList,
+        		adapterList, calendarWidget.getDate(), calendarWidget.getDays());
+        
+        multiViewBody.grid.setHeight(desiredHeight + "px");
+        
+        for (AppointmentAdapter appt : adapterList) {
+        	
+	    	AppointmentWidget panel = new AppointmentWidget();
+	    	panel.addStyleName(appt.getAppointment().getStyle());
+	    	panel.setWidth(appt.getWidth());
+	    	panel.setHeight(appt.getHeight());
+	    	panel.setTitle(appt.getAppointment().getTitle());
+	    	panel.setTop(appt.getTop());
+	    	panel.setLeft(appt.getLeft());
+			panel.setAppointment(appt.getAppointment());
+			panel.setMultiDay(true);
+			dayViewBody.getGrid().grid.add(panel);
+
+			if (calendarWidget.isTheSelectedAppointment(panel
+					.getAppointment())) {
+				panel.addStyleName("gwt-appointment-selected");
+				selectedAppointmentWidgets.add(panel);
+			}
+			appointmentWidgets.add(panel);
+            this.multiViewBody.grid.add(panel);
+        }
 	}
 
 	public void doSizing() {

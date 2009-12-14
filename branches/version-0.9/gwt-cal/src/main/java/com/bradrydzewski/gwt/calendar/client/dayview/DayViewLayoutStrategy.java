@@ -295,7 +295,7 @@ public class DayViewLayoutStrategy {
         return appointmentCells;
     }
 
-    public int doMultiDayLayout(ArrayList<Appointment> appointments, Date start, int days) {
+    public int doMultiDayLayout(ArrayList<Appointment> appointments, ArrayList<AppointmentAdapter> adapters, Date start, int days) {
 
 
         //create array to hold all appointments for a particular day
@@ -308,8 +308,6 @@ public class DayViewLayoutStrategy {
         int minHeight = 30;
         int maxRow = 0;
 
-        //list of appointment adapters
-        ArrayList<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
 
         //convert appointment to adapter
         for (Appointment appointment : appointments) {

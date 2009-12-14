@@ -309,8 +309,9 @@ public class CalendarWidget extends InteractiveWidget implements
             return;
         }
         appointmentManager.sortAppointments();
-        doSizing();
+        //doSizing();
         doLayout();
+        doSizing();
     }
 
     public void doLayout() {
