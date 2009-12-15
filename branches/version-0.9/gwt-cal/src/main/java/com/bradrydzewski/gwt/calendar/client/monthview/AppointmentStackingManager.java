@@ -10,11 +10,11 @@ public class AppointmentStackingManager {
 
     private int highestLayer = 0;
 
-    private HashMap<Integer, ArrayList<WeekTopStackableDescription>>
+    private HashMap<Integer, ArrayList<AppointmentLayoutDescription>>
             layeredDescriptions =
-            new HashMap<Integer, ArrayList<WeekTopStackableDescription>>();
+            new HashMap<Integer, ArrayList<AppointmentLayoutDescription>>();
 
-    public void assignLayer(WeekTopStackableDescription description) {
+    public void assignLayer(AppointmentLayoutDescription description) {
         boolean layerAssigned;
         int currentlyInspectedLayer = 0;
         do {
@@ -46,16 +46,16 @@ public class AppointmentStackingManager {
         return currentlyInspectedLayer;
     }
 
-    public ArrayList<WeekTopStackableDescription> getDescriptionsInLayer(
+    public ArrayList<AppointmentLayoutDescription> getDescriptionsInLayer(
             int layer) {
         return layeredDescriptions.get(layer);
     }
 
     private boolean overlapsWithDescriptionInLayer(
-            ArrayList<WeekTopStackableDescription> layerDescriptions, int start,
+            ArrayList<AppointmentLayoutDescription> layerDescriptions, int start,
             int end) {
         if (layerDescriptions != null) {
-            for (WeekTopStackableDescription layerDescription : layerDescriptions) {
+            for (AppointmentLayoutDescription layerDescription : layerDescriptions) {
                 if (layerDescription
                         .overlapsWithRange(start, end)) {
                     return true;
@@ -66,8 +66,8 @@ public class AppointmentStackingManager {
     }
 
     private boolean assignLayer(int layer,
-                                WeekTopStackableDescription description) {
-        ArrayList<WeekTopStackableDescription> layerDescriptions =
+    		AppointmentLayoutDescription description) {
+        ArrayList<AppointmentLayoutDescription> layerDescriptions =
                 layeredDescriptions.get(layer);
 
         boolean assigned = false;
@@ -87,14 +87,14 @@ public class AppointmentStackingManager {
     private void initLayer(int layerNumber) {
         if (!isLayerAllocated(layerNumber)) {
             layeredDescriptions.put(layerNumber,
-                    new ArrayList<WeekTopStackableDescription>());
+                    new ArrayList<AppointmentLayoutDescription>());
         }
     }
 
     public boolean areThereAppointmentsOn(int day) {
         boolean thereAre = false;
         for (int layersIndex = 0; layersIndex <= highestLayer; layersIndex++) {
-            ArrayList<WeekTopStackableDescription> layerDescriptions =
+            ArrayList<AppointmentLayoutDescription> layerDescriptions =
                     layeredDescriptions.get(layersIndex);
             if (overlapsWithDescriptionInLayer(layerDescriptions, day, day)) {
                 thereAre = true;

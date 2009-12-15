@@ -63,7 +63,7 @@ public class WeekLayoutDescription {
     public void addAppointment(Appointment appointment) {
         int dayOfWeek = dayInWeek(appointment.getStart());
         if ( appointment.isAllDay() ) {
-            topAppointmentsManager.assignLayer(new AllDayLayoutDescription(dayOfWeek, appointment));
+            topAppointmentsManager.assignLayer(new AppointmentLayoutDescription(dayOfWeek, appointment));
         } else {
             initDay(dayOfWeek).addAppointment(appointment);
         }
@@ -78,7 +78,7 @@ public class WeekLayoutDescription {
         int weekEndDay = dayInWeek(appointment.getEnd());
         //System.out.println(appointment.getTitle() + " ----- " + weekStartDay + " to " + weekEndDay);
         topAppointmentsManager.assignLayer(
-                new MultiDayLayoutDescription(weekStartDay, weekEndDay,
+                new AppointmentLayoutDescription(weekStartDay, weekEndDay,
                         appointment));
     }
 
@@ -88,17 +88,17 @@ public class WeekLayoutDescription {
             case FIRST_WEEK:
                 int weekStartDay = dayInWeek(appointment.getStart());
                 topAppointmentsManager.assignLayer(
-                        new MultiDayLayoutDescription(weekStartDay, 6,
+                        new AppointmentLayoutDescription(weekStartDay, 6,
                                 appointment));
                 break;
             case IN_BETWEEN:
                 topAppointmentsManager.assignLayer(
-                        new MultiDayLayoutDescription(0, 6, appointment));
+                        new AppointmentLayoutDescription(0, 6, appointment));
                 break;
             case LAST_WEEK:
                 int weekEndDay = dayInWeek(appointment.getEnd());
                 topAppointmentsManager.assignLayer(
-                        new MultiDayLayoutDescription(0, weekEndDay,
+                        new AppointmentLayoutDescription(0, weekEndDay,
                                 appointment));
                 break;
         }

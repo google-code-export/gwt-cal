@@ -266,7 +266,7 @@ public class MonthView extends CalendarView {
         for (int layer = 0;
              layer < calculatedCellAppointments; layer++) {
 
-            ArrayList<WeekTopStackableDescription> descriptionsInLayer
+            ArrayList<AppointmentLayoutDescription> descriptionsInLayer
                     = weekTopElements.getDescriptionsInLayer(layer);
 
             if (descriptionsInLayer == null)
@@ -274,7 +274,7 @@ public class MonthView extends CalendarView {
                 break;
             }
 
-            for (WeekTopStackableDescription weekTopElement : descriptionsInLayer) {
+            for (AppointmentLayoutDescription weekTopElement : descriptionsInLayer) {
                 layOnAppointment(weekTopElement.getAppointment(),
                         weekTopElement.getWeekStartDay(),
                         weekTopElement.getWeekEndDay(), weekOfMonth, layer);
