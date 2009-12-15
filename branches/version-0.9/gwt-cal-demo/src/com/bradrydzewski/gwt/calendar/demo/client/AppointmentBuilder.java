@@ -21,7 +21,7 @@ public class AppointmentBuilder {
      */
     public static final String[] GOOGLE_STYLES =
             new String[]{"gwt-appointment-green", "gwt-appointment-blue",
-                    "gwt-appointment-lightgreen", "gwt-appointment-yellow"};
+                    "gwt-appointment-lightgreen", "gwt-appointment-bluegrey"};
 
     /**
      * The available styles that can be applied to appointments when using the
@@ -151,6 +151,7 @@ public class AppointmentBuilder {
                 int titleId = Random.nextInt(TITLES.length);
                 appt.setTitle(TITLES[titleId]);
                 appt.setDescription(DESCRIPTIONS[titleId]);
+                appt.setStyle(style);
 //				appt.addStyleName(style);
                 appt.setLocation(LOCATIONS[Random.nextInt(LOCATIONS.length)]);
                 int attendees = Random.nextInt(EMAIL.length) + 1;
