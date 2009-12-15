@@ -21,18 +21,18 @@ import com.bradrydzewski.gwt.calendar.client.Appointment;
  */
 public class MultiDayLayoutDescriptionTest {
 
-    private MultiDayLayoutDescription multidayDescription = null;
+    private AppointmentLayoutDescription multidayDescription = null;
 
     @Test
     public void singleDayDescriptionOverlap() {
-        multidayDescription = new MultiDayLayoutDescription(0, 0, null);
+        multidayDescription = new AppointmentLayoutDescription(0, 0, null);
         assertTrue("Overlap of single day expected to be true",
                 multidayDescription.overlapsWithRange(0, 0));
     }
 
     @Test
     public void singleDayDescriptionWithOverlappingTwoDays() {
-        multidayDescription = new MultiDayLayoutDescription(0, 0, null);
+        multidayDescription = new AppointmentLayoutDescription(0, 0, null);
         assertTrue(
                 "Overlap of description on index 0 with description 0-1 expected to be true",
                 multidayDescription.overlapsWithRange(0, 1));
@@ -40,7 +40,7 @@ public class MultiDayLayoutDescriptionTest {
 
     @Test
     public void singleDayDescriptionWithOverlappingEnclosingTotally() {
-        multidayDescription = new MultiDayLayoutDescription(1, 1, null);
+        multidayDescription = new AppointmentLayoutDescription(1, 1, null);
         assertTrue(
                 "Overlap of description on index 1 with description 0-2 expected to be true",
                 multidayDescription.overlapsWithRange(0, 2));
@@ -48,7 +48,7 @@ public class MultiDayLayoutDescriptionTest {
 
     @Test
     public void twoDayDescriptionCompleteOverlap() {
-        multidayDescription = new MultiDayLayoutDescription(1, 2, null);
+        multidayDescription = new AppointmentLayoutDescription(1, 2, null);
         assertTrue(
                 "Overlap of description on index 1-2 with description 1-2 expected to be true",
                 multidayDescription.overlapsWithRange(1, 2));
@@ -56,7 +56,7 @@ public class MultiDayLayoutDescriptionTest {
 
     @Test
     public void twoDayDescriptionOtherOverlappingOnLeft() {
-        multidayDescription = new MultiDayLayoutDescription(1, 2, null);
+        multidayDescription = new AppointmentLayoutDescription(1, 2, null);
         assertTrue(
                 "Overlap of description on index 1-2 with description 0-1 expected to be true",
                 multidayDescription.overlapsWithRange(0, 1));
@@ -64,7 +64,7 @@ public class MultiDayLayoutDescriptionTest {
 
     @Test
     public void twoDayDescriptionOtherOverlappingOnRight() {
-        multidayDescription = new MultiDayLayoutDescription(1, 2, null);
+        multidayDescription = new AppointmentLayoutDescription(1, 2, null);
         assertTrue(
                 "Overlap of description on index 1-2 with description 2-3 expected to be true",
                 multidayDescription.overlapsWithRange(2, 3));

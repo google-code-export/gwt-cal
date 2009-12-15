@@ -135,7 +135,7 @@ public class MonthLayoutDescriptionTest {
                 weekDescriptions[2]);
 
         System.out.println("==========================");
-        for (WeekTopStackableDescription weekTopStackableDescription : weekDescriptions[2]
+        for (AppointmentLayoutDescription weekTopStackableDescription : weekDescriptions[2]
                 .getTopAppointmentsManager().getDescriptionsInLayer(0)) {
             System.out.println(weekTopStackableDescription.getAppointment().getTitle());
         }
