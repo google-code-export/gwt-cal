@@ -254,14 +254,16 @@ public class CalendarWidget extends InteractiveWidget implements
      *                    de-select all items.
      */
     public void setSelectedAppointment(Appointment appointment) {
-        setSelectedAppointment(appointment, false);
+        setSelectedAppointment(appointment, true);
     }
 
     public void setSelectedAppointment(Appointment appointment,
-                                       boolean notifyView) {
-        appointmentManager.setSelectedAppointment(appointment);
-        if (notifyView) {
-            view.setSelectedAppointment(appointment);
+                                       boolean fireEvents) {
+    	appointmentManager.setSelectedAppointment(appointment);
+        //System.out.println("setSelectedAppointment: " + appointment.getTitle());
+        
+    	if (fireEvents) {
+        	fireSelectionEvent(appointment);
         }
     }
 
@@ -360,11 +362,22 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public boolean selectPreviousAppointment() {
-        return appointmentManager.selectPreviousAppointment();
+    	
+    	boolean selected = appointmentManager.selectPreviousAppointment();
+        if(selected) {
+        	fireSelectionEvent(getSelectedAppointment());
+        	System.out.println("selectPreviousAppointment");
+        } else {
+        	System.out.println("selectPreviousAppointment failed");
+        }
+        return selected;
     }
 
     public boolean selectNextAppointment() {
-        return appointmentManager.selectNextAppointment();
+        boolean selected = appointmentManager.selectNextAppointment();
+        if(selected)
+        	fireSelectionEvent(getSelectedAppointment());
+        return selected;
     }
 
     @Override
@@ -389,7 +402,7 @@ public class CalendarWidget extends InteractiveWidget implements
 
     @Override
     public void onMouseDown(Element element, Event event) {
-        view.onMouseDown(element, event);
+        view.onSingleClick(element, event);
     }
 
     @Override
@@ -418,7 +431,10 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public void fireSelectionEvent(Appointment appointment) {
-        SelectionEvent.fire(this, appointment);
+        //System.out.println("fireSelectionEvent: " + appointment.getTitle());
+        
+    	view.onAppointmentSelected(appointment);
+    	SelectionEvent.fire(this, appointment);
     }
     
     public void fireTimeBlockClickEvent(Date date) {

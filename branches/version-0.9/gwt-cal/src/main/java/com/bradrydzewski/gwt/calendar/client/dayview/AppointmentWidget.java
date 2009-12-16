@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
 public class AppointmentWidget extends Composite {
@@ -73,7 +74,7 @@ public class AppointmentWidget extends Composite {
     private float height;
     private AbsolutePanel mainPanel = new AbsolutePanel();
     private Panel headerPanel = new Div();
-    private Panel bodyPanel = new Div();
+    private Panel bodyPanel = new SimplePanel();
     private Panel footerPanel = new Div();
     private Panel timelinePanel = new Div();
     private Panel timelineFillPanel = new Div();
@@ -187,6 +188,7 @@ public class AppointmentWidget extends Composite {
 
     public void setDescription(String description) {
         this.description = description;
+        System.out.println("setting desc: "+ description);
         DOM.setInnerHTML(bodyPanel.getElement(), description);
     }
 

@@ -360,7 +360,7 @@ public class MonthView extends CalendarView {
                 = findAppointmentWidgetsByElement(clickedElement);
         if (!list.isEmpty()) {
             Appointment appt = list.get(0).getAppointment();
-            if (appt.equals(calendarWidget.getSelectedAppointment()))
+            //if (appt.equals(calendarWidget.getSelectedAppointment()))
                 calendarWidget.fireOpenEvent(appt);
         }
     }
@@ -371,44 +371,22 @@ public class MonthView extends CalendarView {
      * to true and a SelectionEvent will be fired.
      */
     @Override
-    public void onMouseDown(Element clickedElement, Event event) {
+    public void onSingleClick(Element clickedElement, Event event) {
         if (clickedElement.equals(appointmentCanvas.getElement()))
             return;
-
-        ArrayList<AppointmentWidget> clickedAppointmentAdapters
-                = findAppointmentWidgetsByElement(clickedElement);
-
-        if (!clickedAppointmentAdapters.isEmpty()) {
-            Appointment clickedAppt = clickedAppointmentAdapters.get(0)
-                    .getAppointment();
-
-            if (!calendarWidget.isTheSelectedAppointment(clickedAppt)) {
-
-                if (calendarWidget.hasAppointmentSelected()) {
-                    calendarWidget.resetSelectedAppointment();
-                    for (AppointmentWidget adapter : selectedAppointmentAdapters) {
-                        adapter.removeStyleName(
-                                "selected");
-                    }
-                }
-
-                for (AppointmentWidget adapter : clickedAppointmentAdapters) {
-
-                    adapter.addStyleName("selected");
-                }
-
-                selectedAppointmentAdapters.clear();
-                selectedAppointmentAdapters = clickedAppointmentAdapters;
-
-                clickedAppt.setSelected(true);
-                super.setSelectedAppointment(clickedAppt, true);
-            }
+        
+        Appointment appt =
+        	findAppointmentByElement(clickedElement);
+        System.out.println("onSingleClick: "+appt.getTitle());
+        if(appt!=null) {
+        	
+        	selectAppointment(appt);
         }
     }
 
     private ArrayList<AppointmentWidget> findAppointmentWidgetsByElement(
             Element element) {
-        return findAppointmentWidget(findAppointmentByElement(element));
+        return findAppointmentWidgets(findAppointmentByElement(element));
     }
 
     /**
@@ -526,7 +504,7 @@ public class MonthView extends CalendarView {
      * @param appt Appointment to match.
      * @return List of related AppointmentWidget objects.
      */
-    private ArrayList<AppointmentWidget> findAppointmentWidget(
+    private ArrayList<AppointmentWidget> findAppointmentWidgets(
             Appointment appt) {
         ArrayList<AppointmentWidget> appointmentAdapters
                 = new ArrayList<AppointmentWidget>();
@@ -543,6 +521,45 @@ public class MonthView extends CalendarView {
 	public void onDeleteKeyPressed() {
 		if(calendarWidget.getSelectedAppointment()!=null)
 			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
+	}
+	
+	@Override
+	public void onAppointmentSelected(Appointment appt) {
+
+        ArrayList<AppointmentWidget> clickedAppointmentAdapters
+                = findAppointmentWidgets(appt);
+
+
+        if (!clickedAppointmentAdapters.isEmpty()) {
+            
+        	Appointment clickedAppt = clickedAppointmentAdapters.get(0)
+                    .getAppointment();
+
+            //if (!calendarWidget.isTheSelectedAppointment(clickedAppt)) {
+
+                //if (calendarWidget.hasAppointmentSelected()) {
+                    //calendarWidget.resetSelectedAppointment();
+                    for (AppointmentWidget adapter : selectedAppointmentAdapters) {
+                        //if(adapter.getStyleName()!=null)
+	                    	adapter.removeStyleName(
+	                                "selected");
+                    }
+                //}
+
+                for (AppointmentWidget adapter : clickedAppointmentAdapters) {
+
+                    adapter.addStyleName("selected");
+                }
+
+                selectedAppointmentAdapters.clear();
+                selectedAppointmentAdapters = clickedAppointmentAdapters;
+
+                clickedAppt.setSelected(true);
+                //selectAppointment(clickedAppt);
+                //super.setSelectedAppointment(clickedAppt, true);
+            //}
+        }
+		
 	}
 
     //HERE ARE A BUNCH OF CALCULATED VALUES THAT ARE USED DURING LAYOUT
@@ -633,4 +650,6 @@ public class MonthView extends CalendarView {
         DOM.setStyleAttribute(panel.getElement(), "left", left + "%");
         DOM.setStyleAttribute(panel.getElement(), "width", width + "%");
     }
+
+
 }

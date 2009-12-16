@@ -18,6 +18,8 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.util.Date;
+
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 
@@ -76,9 +78,85 @@ public abstract class CalendarView {
 
     public abstract void doLayout();
 
-    public abstract void onDoubleClick(Element element, Event event);
 
-    public abstract void onMouseDown(Element element, Event event);
+
+
+    /**
+     * Configures this view component's  currently selected
+     * <code>appointment</code>. Notification to the calendar widget associated
+     * is optional and controlled with the <code>fireEvent</code> flag.
+     *
+     * @param appointment The appointment in the calendar in-memory model to be
+     *                    configured as the currently selected
+     * @param fireEvent   Indicates whether a selection event should be
+     *                    triggered by the parent widget so that it informs its
+     *                    set of registered listeners about the change
+     */
+//    public void setSelectedAppointment(Appointment appointment,
+//                                       boolean fireEvent) {
+//        calendarWidget.setSelectedAppointment(appointment);
+//        if (fireEvent) {
+//            calendarWidget.fireSelectionEvent(appointment);
+//        }
+//    }
+
+    /**
+     * Configures this view component's currently selected
+     * <code>appointment</code> and notifies widget about the change in the
+     * model state.
+     *
+     * @param appointment The appointment in the calendar in-memory model to be
+     *                    configured as the currently selected
+     */
+//    public void setSelectedAppointment(Appointment appointment) {
+//        setSelectedAppointment(appointment, true);
+//    }
+
+    /**
+     * Returns the configured number of days the calendar should display at a
+     * given time.
+     *
+     * @return The number of days this calendar view should display at a given
+     *         time
+     */
+    public int getDisplayedDays() {
+        return displayedDays;
+    }
+
+    /**
+     * Sets the configured number of days the calendar should display at a given
+     * time.
+     *
+     * @param displayedDays The number of days this calendar view should display
+     *                      at a given time
+     */
+    public void setDisplayedDays(int displayedDays) {
+        this.displayedDays = displayedDays;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /* on clicks */
+    public abstract void onDoubleClick(Element element, Event event);
+    
+    public abstract void onSingleClick(Element element, Event event);
 
     /**
      * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
@@ -106,7 +184,6 @@ public abstract class CalendarView {
      * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
      * keystrokes.
      */
-
     public void onDownArrowKeyPressed() {
     }
 
@@ -117,7 +194,6 @@ public abstract class CalendarView {
      * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
      * keystrokes.
      */
-
     public void onLeftArrowKeyPressed() {
     }
 
@@ -128,60 +204,77 @@ public abstract class CalendarView {
      * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
      * keystrokes.
      */
-
     public void onRightArrowKeyPressed() {
     }
 
-    /**
-     * Configures this view component's  currently selected
-     * <code>appointment</code>. Notification to the calendar widget associated
-     * is optional and controlled with the <code>fireEvent</code> flag.
-     *
-     * @param appointment The appointment in the calendar in-memory model to be
-     *                    configured as the currently selected
-     * @param fireEvent   Indicates whether a selection event should be
-     *                    triggered by the parent widget so that it informs its
-     *                    set of registered listeners about the change
-     */
-    public void setSelectedAppointment(Appointment appointment,
-                                       boolean fireEvent) {
-        calendarWidget.setSelectedAppointment(appointment);
-        if (fireEvent) {
-            calendarWidget.fireSelectionEvent(appointment);
-        }
+    /* appointment */
+    public abstract void onAppointmentSelected(Appointment appt);
+    
+    //public abstract void onAppointmentUpdated(Appointment oldAppt, Appointment newAppt);
+    
+    //public abstract void onAppointmentDeleted(Appointment appt);
+
+    
+    
+    
+    
+    public final void selectAppointment(Appointment appt) {
+        calendarWidget.setSelectedAppointment(appt, true);
     }
 
-    /**
-     * Configures this view component's currently selected
-     * <code>appointment</code> and notifies widget about the change in the
-     * model state.
-     *
-     * @param appointment The appointment in the calendar in-memory model to be
-     *                    configured as the currently selected
-     */
-    public void setSelectedAppointment(Appointment appointment) {
-        setSelectedAppointment(appointment, true);
+    public final void selectNextAppointment() {
+    	calendarWidget.selectNextAppointment();
+    }
+    
+    public final void selectPreviousAppointment() {
+    	calendarWidget.selectPreviousAppointment();
+    }
+    
+    public final void updateAppointment(Appointment toAppt) {
+    	calendarWidget.fireUpdateEvent(toAppt);
+    }
+    
+    public final void deleteAppointment(Appointment appt) {
+    	calendarWidget.fireDeleteEvent(appt);
+    }
+    
+    public final void openAppointment(Appointment appt) {
+    	calendarWidget.fireOpenEvent(appt);
+    }
+    
+    public final void createAppointment(Appointment appt) {
+    	createAppointment(appt.getStart(), appt.getEnd());
+    }
+    
+    public final void createAppointment(Date start, Date end) {
+    	calendarWidget.fireTimeBlockClickEvent(start);
     }
 
-    /**
-     * Returns the configured number of days the calendar should display at a
-     * given time.
-     *
-     * @return The number of days this calendar view should display at a given
-     *         time
-     */
-    public int getDisplayedDays() {
-        return displayedDays;
-    }
-
-    /**
-     * Sets the configured number of days the calendar should display at a given
-     * time.
-     *
-     * @param displayedDays The number of days this calendar view should display
-     *                      at a given time
-     */
-    public void setDisplayedDays(int displayedDays) {
-        this.displayedDays = displayedDays;
-    }
+//    /* loading and unloading of view */
+//    onLoad()
+//    onUnload()
+//
+//    /* size */
+//    onResize()
+//    onLayout()
+//
+//    /* widget */
+//    onParentSizeChanged()
+//    onParentWidthChanged()
+//    onParentHeightChanged()
+//
+//    getParent()
+//    getDate()
+//    getDays()
+    
+    
+    
+    
+//    public final void setRollbackAppointment(Appointment appt) {
+//    	calendarWidget.setRollbackAppointment(appt);
+//    }
+//
+//    public final void setCommittedAppointment(Appointment appt) {
+//    	calendarWidget.setCommittedAppointment(appt);
+//    }
 }

@@ -334,8 +334,9 @@ public class AgendaView extends CalendarView {
 			if(adapter!=null) {
 				if(event.getSource().equals(adapter.getDetailsLabel())) {
 					//set the selected appointment
-					setSelectedAppointment(adapter.getAppointment(),false);
-					calendarWidget.fireOpenEvent(adapter.getAppointment());
+					calendarWidget.setSelectedAppointment(adapter.getAppointment(), true);
+					//setSelectedAppointment(adapter.getAppointment(),false);
+					//calendarWidget.fireOpenEvent(adapter.getAppointment());
 				} else {
 					//expand the panel if it is not yet expended
 					adapter.getDetailsPanel().setVisible(
@@ -369,7 +370,13 @@ public class AgendaView extends CalendarView {
 	}
 
 	@Override
-	public void onMouseDown(Element element, Event event) {
+	public void onSingleClick(Element element, Event event) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onAppointmentSelected(Appointment appt) {
 		// TODO Auto-generated method stub
 		
 	}

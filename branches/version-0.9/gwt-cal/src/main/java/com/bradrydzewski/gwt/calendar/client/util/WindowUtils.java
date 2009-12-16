@@ -30,7 +30,7 @@ public class WindowUtils {
         * but we won't save it as a cached value.
         */
         int tmpScrollBarWidth = getScrollBarWidth();
-        if (tmpScrollBarWidth < 0)
+        if (tmpScrollBarWidth <= 0)
             return 17;
 
         scrollBarWidth = tmpScrollBarWidth;

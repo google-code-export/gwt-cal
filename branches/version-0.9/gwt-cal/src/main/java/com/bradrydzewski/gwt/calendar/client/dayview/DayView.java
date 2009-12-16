@@ -91,6 +91,7 @@ public class DayView extends CalendarView implements HasSettings {
 		    	panel.setTop(appt.getTop());
 		    	panel.setLeft(appt.getLeft());
 				panel.setAppointment(appt.getAppointment());
+				panel.setDescription(appt.getAppointment().getDescription());
 				dayViewBody.getGrid().grid.add(panel);
 
 				if (calendarWidget.isTheSelectedAppointment(panel
@@ -125,6 +126,7 @@ public class DayView extends CalendarView implements HasSettings {
 	    	panel.setLeft(appt.getLeft());
 			panel.setAppointment(appt.getAppointment());
 			panel.setMultiDay(true);
+
 			dayViewBody.getGrid().grid.add(panel);
 
 			if (calendarWidget.isTheSelectedAppointment(panel
@@ -150,9 +152,9 @@ public class DayView extends CalendarView implements HasSettings {
 	}
 
 	public void onDeleteKeyPressed() {
-		if (calendarWidget.getSelectedAppointment() != null)
-			calendarWidget.fireDeleteEvent(calendarWidget
-					.getSelectedAppointment());
+		System.out.println("onDeleteKeyPressed: "+calendarWidget.getSelectedAppointment());
+		if(calendarWidget.getSelectedAppointment()!=null)
+			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
 	}
 
 	public void onDoubleClick(Element element, Event event) {
@@ -160,7 +162,7 @@ public class DayView extends CalendarView implements HasSettings {
 		ArrayList<AppointmentWidget> list = findAppointmentWidgetsByElement(element);
 		if (!list.isEmpty()) {
 			Appointment appt = list.get(0).getAppointment();
-			if (appt.equals(calendarWidget.getSelectedAppointment()))
+			//if (appt.equals(calendarWidget.getSelectedAppointment()))
 				calendarWidget.fireOpenEvent(appt);
 			// exit out
 
@@ -173,28 +175,46 @@ public class DayView extends CalendarView implements HasSettings {
 
 	}
 
-	public void onMouseDown(Element element, Event event) {
+	public void onSingleClick(Element element, Event event) {
 
 		// Ignore the scoll panel
 		if (dayViewBody.getScrollPanel().getElement().equals(element)) {
 			return;
 		}
 
+        Appointment appt =
+        	findAppointmentByElement(element);
+        
+        if(appt!=null) {
+        	selectAppointment(appt);
+        } else if (getSettings().getTimeBlockClickNumber() == Click.Single
+				&& element == dayViewBody.getGrid().gridOverlay
+				.getElement()) {
+			int x = DOM.eventGetClientX(event);
+			int y = DOM.eventGetClientY(event);
+			timeBlockClick(x, y);
+		}
+	}
+	
+	
+	@Override
+	public void onAppointmentSelected(Appointment appt) {
+
 		ArrayList<AppointmentWidget> clickedAppointmentAdapters =
-			findAppointmentWidgetsByElement(element);
+			findAppointmentWidget(appt);
 
 		if (!clickedAppointmentAdapters.isEmpty()) {
 			Appointment clickedAppt = clickedAppointmentAdapters.get(0)
 					.getAppointment();
 
-			if (!calendarWidget.isTheSelectedAppointment(clickedAppt)) {
+			//if (!calendarWidget.isTheSelectedAppointment(clickedAppt)) {
 
-				if (calendarWidget.hasAppointmentSelected()) {
-					calendarWidget.resetSelectedAppointment();
+				//if (calendarWidget.hasAppointmentSelected()) {
+				//	calendarWidget.resetSelectedAppointment();
 					for (AppointmentWidget adapter : selectedAppointmentWidgets) {
 						adapter.removeStyleName("gwt-appointment-selected");
 					}
-				}
+				//}
 
 				for (AppointmentWidget adapter : clickedAppointmentAdapters) {
 
@@ -204,16 +224,10 @@ public class DayView extends CalendarView implements HasSettings {
 				selectedAppointmentWidgets.clear();
 				selectedAppointmentWidgets = clickedAppointmentAdapters;
 
-				DOM.scrollIntoView(element);
 				clickedAppt.setSelected(true);
-				super.setSelectedAppointment(clickedAppt, true);
-			}
-		} else if (getSettings().getTimeBlockClickNumber() == Click.Single
-				&& element == dayViewBody.getGrid().gridOverlay
-				.getElement()) {
-			int x = DOM.eventGetClientX(event);
-			int y = DOM.eventGetClientY(event);
-			timeBlockClick(x, y);
+				DOM.scrollIntoView(clickedAppointmentAdapters.get(0).getElement());
+				
+			//}
 		}
 	}
 
@@ -338,4 +352,7 @@ public class DayView extends CalendarView implements HasSettings {
 		}
 		return appointmentAdapters;
 	}
+
+
+
 }
