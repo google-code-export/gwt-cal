@@ -1,0 +1,16 @@
+#summary Handling different Calendar events
+
+= Appointment Selection =
+
+
+= Appointment Opened =
+
+
+= Appointment Update (DragDrop) =
+
+
+= Appointment Deletion =
+
+
+
+= TimeBlock Clicked =
