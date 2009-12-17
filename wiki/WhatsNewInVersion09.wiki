@@ -12,7 +12,7 @@ We also laid the ground work for *Drag and Drop* support, one of the most reques
 = 0.9 Beta Summary =
 
   * Added support for multiple views (`MonthView`, `DayView`, etc)
-    * `Calendar` widget created as a facade to easily switch between views
+    * `Calendar` facade class to easily switch between views
     * Ability to create and set custom views
 
   * `MonthView` includes `DragDrop` support using gwt-dnd
