@@ -12,7 +12,7 @@
    * [CreatingAppointments Creating Appointments]
    * Handling Events
    * [Themes Changing Themes]
-   * [Settings Settings]
+   * [Settings Changing Settings]
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
    * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
