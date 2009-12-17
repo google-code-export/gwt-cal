@@ -237,6 +237,7 @@ public class CalendarWidget extends InteractiveWidget implements
      */
     public void addAppointments(ArrayList<Appointment> appointments) {
         appointmentManager.addAppointments(appointments);
+        refresh();
     }
 
     /**
@@ -348,6 +349,7 @@ public class CalendarWidget extends InteractiveWidget implements
      */
     public void resumeLayout() {
         layoutSuspended = false;
+
         if (layoutPending) {
             refresh();
         }
@@ -359,6 +361,10 @@ public class CalendarWidget extends InteractiveWidget implements
 
     public void setSettings(CalendarSettings settings) {
         this.settings = settings;
+    }
+    
+    public void scrollToHour(int hour) {
+    	view.scrollToHour(hour);
     }
 
     public boolean selectPreviousAppointment() {

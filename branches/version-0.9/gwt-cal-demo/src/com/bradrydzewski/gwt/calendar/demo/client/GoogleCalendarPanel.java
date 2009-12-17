@@ -256,7 +256,8 @@ public class GoogleCalendarPanel extends FlowPanel {
                         else if (tabIndex == 3)
                             calendar.setView(CalendarViews.DAY, 7);
                         else if (tabIndex == 4)
-                            calendar.setView(CalendarViews.AGENDA);
+                            Window.alert("Agenda View will not be included in version 0.9.0");
+                        	//calendar.setView(CalendarViews.AGENDA);
                         else if (tabIndex == 5)
                             calendar.setView(CalendarViews.MONTH);
                     }

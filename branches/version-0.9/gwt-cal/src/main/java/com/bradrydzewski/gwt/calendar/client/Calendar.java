@@ -94,9 +94,10 @@ public class Calendar extends CalendarWidget {
             }
             case AGENDA: {
                 //TODO: need to cache agendaView, but there is a layout bug after a calendar item is deleted.
-                agendaView = new AgendaView();
-                setView(agendaView);
-                break;
+//                agendaView = new AgendaView();
+//                setView(agendaView);
+//            	break;
+                throw new RuntimeException("Agenda View is not yet supported");
             }
             case MONTH: {
             	if(monthView==null)

@@ -139,6 +139,13 @@ public class DayView extends CalendarView implements HasSettings {
         }
 	}
 
+	@Override
+    public void scrollToHour(int hour) {
+        dayViewBody.getScrollPanel().setScrollPosition(hour *
+                getSettings().getIntervalsPerHour() * getSettings().getPixelsPerInterval());
+    }	
+	
+	
 	public void doSizing() {
 
 		if (calendarWidget.getOffsetHeight() > 0) {

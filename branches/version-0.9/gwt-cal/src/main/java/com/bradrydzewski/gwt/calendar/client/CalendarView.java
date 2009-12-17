@@ -249,6 +249,10 @@ public abstract class CalendarView {
     public final void createAppointment(Date start, Date end) {
     	calendarWidget.fireTimeBlockClickEvent(start);
     }
+    
+    public void scrollToHour(int hour) {
+    	
+    }
 
 //    /* loading and unloading of view */
 //    onLoad()

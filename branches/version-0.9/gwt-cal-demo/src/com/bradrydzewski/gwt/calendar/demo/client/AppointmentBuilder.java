@@ -92,7 +92,7 @@ public class AppointmentBuilder {
      * this array corresponds with the title in the same position in the {@link
      * #TITLES} array.
      */
-    protected static final String[] DESCRIPTIONS =
+    protected static String[] DESCRIPTIONS =
             new String[]{"at the dog park, fetch ball", "best show on TV<br/><img src='http://t2.gstatic.com/images?q=tbn:iu9uOKIZkgnVxM:http://images.starpulse.com/Photos/Previews/Matlock-tv-01.jpg' />",
                     "Need to examen that rash...",
                     "tell wife I need to 'work late'",
