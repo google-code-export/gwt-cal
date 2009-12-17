@@ -10,7 +10,7 @@
  * Version 0.9 Beta
    * [GettingStarted Getting Started]
    * [CreatingAppointments Creating Appointments]
-   * Handling Events
+   * [HandlingEvents Handling Events]
    * [Themes Changing Themes]
    * [Settings Changing Settings]
  * Demos
