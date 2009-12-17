@@ -16,21 +16,21 @@
 
 Adding the calendar widget to a `Panel` just like any standard gwt widget. 
 {{{
-DayView dayView = new DayView();
-dayView.setDate(new Date()); //calendar date, not required
-dayView.setDays(3); //number of days displayed at a time, not required
-dayView.setWidth("500px");
-dayView.setHeight("400px");
+Calendar calendar = new Calendar();
+calendar.setDate(new Date()); //calendar date, not required
+calendar.setDays(3); //number of days displayed at a time, not required
+calendar.setWidth("500px");
+calendar.setHeight("400px");
 add(dayView);
 }}}
 
 You can then hook up an event listener to capture when an appointment is selected:
 {{{
-dayView.addValueChangeHandler(new ValueChangeHandler<Appointment>(){
-	@Override
-	public void onValueChange(ValueChangeEvent<Appointment> event) {
-		// TODO Auto-generated method stub			
-	}		
+calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
+  @Override
+  public void onSelection(SelectionEvent<Appointment> event) {
+    System.out.println("selected " + event.getSelectedItem().getTitle());
+  }
 });
 }}}
 
@@ -44,15 +44,12 @@ appt.setStart(...);
 appt.setEnd(...);
 appt.setTitle(...);
 appt.addStyleName("gwt-appointment-blue");
-dayView.addAppointment(appt);
+calendar.addAppointment(appt);
 }}}
 
 == appointment style ==
 
 When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Examples are: `gwt-appointment-blue`, `gwt-appointment-green`
-
-*Update*: Support for all Google Calendar colors As of build r58 (thanks to [http://code.google.com/u/SpaceRoosters/ SpaceRoosters])<br/>
-Support for all iCal colors as of build r68 (thanks to me)
 
 Here is a table of appointment styles and the themes that support them:
 || Style Name                  || Google Calendar || iCal ||
@@ -84,16 +81,16 @@ Here is a table of appointment styles and the themes that support them:
 As stated earlier, every time an appointment is added to the calendar widget the layout is re-calculated. If you plan to add many appointments at once you should suspend the layout and then resume it once you are complete:
 
 {{{
-dayView.suspendLayout();
+calendar.suspendLayout();
 
 //load 1,000 appointments into calendar
 for(int i=0;i<1000;i++) {
 	Appointment appt = new Appointment();
 	...
-	dayView.addAppointment(appt);
+	calendar.addAppointment(appt);
 }
 
-dayView.resumeLayout();
+calendar.resumeLayout();
 }}}
 
 = Layout =
