@@ -30,6 +30,13 @@ for(int i=0;i<1000;i++) {
 calendar.resumeLayout();
 }}}
 
+Or you can add an entire list of appointments with a single method call:
+{{{
+List<Appointment> appointmentList ...
+calendar.suspendLayout();
+calendar.addAppointments(appointmentList);
+calendar.resumeLayout();
+}}}
 
 == appointment style ==
 
