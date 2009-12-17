@@ -24,14 +24,18 @@ calendar.setHeight("400px");
 add(calendar);
 }}}
 
-You can then hook up an event listener to capture when an appointment is selected:
+= Changing Views =
+
+gwt-cal version 0.9 now supports multiple view. You can switch 
+
 {{{
-calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
-  @Override
-  public void onSelection(SelectionEvent<Appointment> event) {
-    System.out.println("selected " + event.getSelectedItem().getTitle());
-  }
-});
+//Displays the Day View
+calendar.setView(CalendarViews.DAY);
+//Displays the Day View with 3 days
+calendar.setView(CalendarViews.DAY, 3);
+
+//Displays the month View
+calendar.setView(CalendarViews.MONTH);
 }}}
 
 = Adding Appointments =
@@ -45,18 +49,4 @@ appt.setEnd(...);
 appt.setTitle(...);
 appt.addStyleName("gwt-appointment-blue");
 calendar.addAppointment(appt);
-}}}
-
-= Changing Views =
-
-gwt-cal version 0.9 now supports multiple view. You can switch 
-
-{{{
-//Displays the Day View
-calendar.setView(CalendarViews.DAY);
-//Displays the Day View with 3 days
-calendar.setView(CalendarViews.DAY, 3);
-
-//Displays the month View
-calendar.setView(CalendarViews.MONTH);
 }}}
