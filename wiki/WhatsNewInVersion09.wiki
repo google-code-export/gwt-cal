@@ -25,5 +25,5 @@ We also laid the ground work for *Drag and Drop* support, one of the most reques
 
 = Known Issues =
 
-  * `MonthView` styles don't work right in IE6 and IE7
-  * `MultiDay` appointments not calculated. User must set `appointment.setMultiDay(true)`
+  * `MonthView` Appointment styles don't display the correct colors in IE6 and IE7
+  * `MultiDay` appointments are not calculated. User must set `appointment.setMultiDay(true)`
