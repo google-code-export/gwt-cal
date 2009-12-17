@@ -78,9 +78,6 @@ public abstract class CalendarView {
 
     public abstract void doLayout();
 
-
-
-
     /**
      * Configures this view component's  currently selected
      * <code>appointment</code>. Notification to the calendar widget associated
@@ -133,26 +130,7 @@ public abstract class CalendarView {
     public void setDisplayedDays(int displayedDays) {
         this.displayedDays = displayedDays;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+
     /* on clicks */
     public abstract void onDoubleClick(Element element, Event event);
     
@@ -214,10 +192,6 @@ public abstract class CalendarView {
     
     //public abstract void onAppointmentDeleted(Appointment appt);
 
-    
-    
-    
-    
     public final void selectAppointment(Appointment appt) {
         calendarWidget.setSelectedAppointment(appt, true);
     }
@@ -270,9 +244,6 @@ public abstract class CalendarView {
 //    getParent()
 //    getDate()
 //    getDays()
-    
-    
-    
     
 //    public final void setRollbackAppointment(Appointment appt) {
 //    	calendarWidget.setRollbackAppointment(appt);
