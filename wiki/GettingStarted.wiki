@@ -34,7 +34,7 @@ calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
 });
 }}}
 
-= Adding Appointment =
+= Adding Appointments =
 
 The following code snippet demonstrates how to create and add an appointment to the calendar widget. Every time an appointment is added to the calendar widget the layout is re-calculated and performed.
 
@@ -45,41 +45,6 @@ appt.setEnd(...);
 appt.setTitle(...);
 appt.addStyleName("gwt-appointment-blue");
 calendar.addAppointment(appt);
-}}}
-
-#summary Getting started with the gwt-cal component library.
-
-= Setup =
-
- # Add the gwt-cal jar file to your project's build path. Right-click on the project node in the Package Explorer and select 'Build Path > Add External Archives...'. Specify the downloaded `gwt-cal-<version>.jar`
- # Modify `<Your Application>.gwt.xml` to inherit the gwt-cal module and theme:
-
-{{{
-  <inherits name='com.bradrydzewski.gwt.calendar.Calendar' />
-  <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
-}}}
-
-
-= Simple Example =
-
-Adding the calendar widget to a `Panel` just like any standard gwt widget. 
-{{{
-Calendar calendar = new Calendar();
-calendar.setDate(new Date()); //calendar date, not required
-calendar.setDays(3); //number of days displayed at a time, not required
-calendar.setWidth("500px");
-calendar.setHeight("400px");
-add(calendar);
-}}}
-
-You can then hook up an event listener to capture when an appointment is selected:
-{{{
-calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
-  @Override
-  public void onSelection(SelectionEvent<Appointment> event) {
-    System.out.println("selected " + event.getSelectedItem().getTitle());
-  }
-});
 }}}
 
 = Changing Views =
