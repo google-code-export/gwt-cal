@@ -1,0 +1,61 @@
+#summary Creating appointments and adding to the Calendar
+
+= Create an Appointment =
+
+The following code snippet demonstrates how to create and add an appointment to the calendar widget. Every time an appointment is added to the calendar widget the layout is re-calculated and performed.
+
+{{{
+Appointment appt = new Appointment();
+appt.setStart(...);
+appt.setEnd(...);
+appt.setTitle(...);
+appt.addStyleName("gwt-appointment-blue");
+calendar.addAppointment(appt);
+}}}
+
+== appointments in batch ==
+
+As stated earlier, every time an appointment is added to the calendar widget the layout is re-calculated. If you plan to add many appointments at once you should suspend the layout and then resume it once you are complete:
+
+{{{
+calendar.suspendLayout();
+
+//load 1,000 appointments into calendar
+for(int i=0;i<1000;i++) {
+	Appointment appt = new Appointment();
+	...
+	calendar.addAppointment(appt);
+}
+
+calendar.resumeLayout();
+}}}
+
+
+== appointment style ==
+
+When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Examples are: `gwt-appointment-blue`, `gwt-appointment-green`
+
+Here is a table of appointment styles and the themes that support them:
+|| Style Name                  || Google Calendar || iCal ||
+|| gwt-appointment-red         || X               || X  ||
+|| gwt-appointment-green       || X               || X  ||
+|| gwt-appointment-blue        || X               || X  ||
+|| gwt-appointment-pink        || X               || -  ||
+|| gwt-appointment-purple      || X               || X  ||
+|| gwt-appointment-fushia      || -               || X  ||
+|| gwt-appointment-darkpurple  || X               || X  ||
+|| gwt-appointment-steelblue   || X               || -  ||
+|| gwt-appointment-lightblue   || X               || -  ||
+|| gwt-appointment-teal        || X               || -  ||
+|| gwt-appointment-lightgreen  || X               || -  ||
+|| gwt-appointment-yellowgreen || X               || -  ||
+|| gwt-appointment-yellow      || X               || -  ||
+|| gwt-appointment-orange      || X               || X  ||
+|| gwt-appointment-redorange   || X               || -  ||
+|| gwt-appointment-lightbrown  || X               || -  ||
+|| gwt-appointment-lightpurple || X               || -  ||
+|| gwt-appointment-grey        || X               || -  ||
+|| gwt-appointment-bluegrey    || X               || -  ||
+|| gwt-appointment-lightteal   || X               || -  ||
+|| gwt-appointment-yellowgrey  || X               || -  ||
+|| gwt-appointment-brown       || X               || -  ||
