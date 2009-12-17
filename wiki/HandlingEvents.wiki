@@ -2,15 +2,81 @@
 
 = Appointment Selection =
 
+When an appointment is selected, either by click or by using the arrow keys, an Appointment `SelectionEvent` is fired.
+
+Example Code:
+{{{
+calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
+  @Override
+  public void onSelection(SelectionEvent<Appointment> event) {
+    ...
+  }		
+});
+}}}
 
 = Appointment Opened =
 
+When an appointment is double-clicked, it fires an appointment open event. Typically a developer would subscribe to this event to display some type of popup on the screen allowing the user to edit the opened appointment.
 
-= Appointment Update (DragDrop) =
+Example Code:
+{{{
+calendar.addOpenHandler(new OpenHandler<Appointment>(){
+  @Override
+  public void onOpen(OpenEvent<Appointment> event) {
+     ...
+  }
+});
+}}}
 
+= Appointment Update (`DragDrop`) =
+
+The user can update an appointment by `DragDrop`. When an appointment is moved (`onDrop`), it fires an UpdateEvent. You can subscribe to (and cancel) an appointment's update.
+
+Example code:
+
+{{{
+calendar.addUpdateHandler(new UpdateHandler<Appointment>() {
+  @Override
+  public void onUpdate(UpdateEvent<Appointment> event) {
+    boolean commit = Window.confirm(
+                       "Are you sure you want to update the appointment \""
+                        + event.getTarget().getTitle() + "\"");
+    if (!commit) {
+      event.setCancelled(true); //Cancel Appointment update
+    }
+  }
+});
+}}}
 
 = Appointment Deletion =
 
+The user can delete the selected appointment by pressing the delete key. When the delete key is pressed, it fires a `DeleteEvent`. You can subscribe to (and cancel) an appointment deletion.
 
+Example code:
+{{{
+calendar.addDeleteHandler(new DeleteHandler<Appointment>(){
+  @Override
+  public void onDelete(DeleteEvent<Appointment> event) {
+    boolean commit = Window.confirm("Are you sure you want to delete?");
+    if(commit==false) {
+      event.setCancelled(true);
+    }
+  }			
+});
+}}}
 
-= TimeBlock Clicked =
+= Time-Block Clicked =
+
+A `TimeBlockClickEvent` is fired when an empty section of the body of the `DayView` is clicked. A Date is provide that corresponds to the date time (including hours and minutes) that the user clicked. For example, if the user clicks the 8:30am time block, the event will get fired with the date and time equal to 8:30.
+
+Typically a developer would subscribe to this event to prompt a user to create a new appointment with the user-selected start time.
+
+Example Code:
+{{{
+calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
+  @Override
+  public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
+    ...
+  }		
+});
+}}}
