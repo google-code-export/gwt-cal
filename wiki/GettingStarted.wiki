@@ -1,5 +1,4 @@
 #summary Getting started with the gwt-cal component library.
-#labels Featured
 
 = Setup =
 
