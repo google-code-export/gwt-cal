@@ -12,10 +12,8 @@ CalendarSettings settings = new CalendarSettings();
 settings.setIntervalsPerHour(4);
 
 //you can pass through constructor
-DayView dayView = new DayView(settings);
-
-//or pass via setter
-dayView.setCalendarSettings(settings);
+Calendar calendar = new Calendar();
+calendar.setCalendarSettings(settings);
 }}}
 
 == Setting Timeline Intervals Height ==
