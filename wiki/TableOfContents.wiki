@@ -1,15 +1,17 @@
  * [Introduction Introduction]
- * Version 0.9.x
-   * COMING SOON!
- * Version 0.8.x
-   * [GettingStarted Getting Started]
-   * [MultiDayAppointments Multi-day Appointments]
-   * [Themes Themes]
-   * [Settings Settings]
+ * [GettingStartedv08 Getting Started]
+ * [MultiDayAppointmentsv08 Multi-day Appointments]
+ * [Themesv08 Themes]
+ * [Settingsv08 Settings]
  * [Roadmap Roadmap]
  * [ReleaseNotes Release Notes]
  * [BrowserCompatibility Browser Compatibility]
  * [CommercialLicense Commercial Use]
+ * Version 0.9.x
+   * [GettingStarted Getting Started]
+   * [MultiDayAppointments Multi-day Appointments]
+   * [Themes Themes]
+   * [Settings Settings]
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
    * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
