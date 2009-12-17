@@ -1,5 +1,4 @@
 #summary Applying themes to the gwt-cal widget.
-#labels Featured
 
 = Applying Themes =
 
