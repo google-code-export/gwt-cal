@@ -9,8 +9,9 @@
  * [CommercialLicense Commercial Use]
  * Version 0.9 Beta
    * [GettingStarted Getting Started]
-   * [MultiDayAppointments Multi-day Appointments]
-   * [Themes Themes]
+   * Creating Appointments
+   * Handling Events
+   * [Themes Changing Themes]
    * [Settings Settings]
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
