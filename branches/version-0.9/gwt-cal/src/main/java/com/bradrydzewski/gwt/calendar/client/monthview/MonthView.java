@@ -554,7 +554,7 @@ public class MonthView extends CalendarView {
                 selectedAppointmentAdapters.clear();
                 selectedAppointmentAdapters = clickedAppointmentAdapters;
 
-                clickedAppt.setSelected(true);
+                //clickedAppt.setSelected(true);
                 //selectAppointment(clickedAppt);
                 //super.setSelectedAppointment(clickedAppt, true);
             //}

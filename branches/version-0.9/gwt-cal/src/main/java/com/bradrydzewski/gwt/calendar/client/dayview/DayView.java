@@ -224,7 +224,7 @@ public class DayView extends CalendarView implements HasSettings {
 				selectedAppointmentWidgets.clear();
 				selectedAppointmentWidgets = clickedAppointmentAdapters;
 
-				clickedAppt.setSelected(true);
+				//clickedAppt.setSelected(true);
 				DOM.scrollIntoView(clickedAppointmentAdapters.get(0).getElement());
 				
 			//}

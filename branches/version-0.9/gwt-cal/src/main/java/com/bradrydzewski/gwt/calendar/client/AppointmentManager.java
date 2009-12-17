@@ -274,7 +274,7 @@ public class AppointmentManager {
      */
     public void resetSelectedAppointment() {
         if (hasAppointmentSelected()) {
-            selectedAppointment.setSelected(false);
+            //selectedAppointment.setSelected(false);
             selectedAppointment = null;
         }
     }
