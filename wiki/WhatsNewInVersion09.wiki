@@ -1,13 +1,29 @@
-#summary One-sentence summary of this page.
+#summary Overview of what's new in the 0.9 beta
 
-= Introduction =
+Version *0.9* of *gwt-cal* is a major release that required some big changes to it's underlying structure in order to accommodate the following features:
+  # Displaying appointments in multiple views (i.e. `DayView` and `MonthView`) and seamlessly switch between them
+  # Allowing a developer to create their own custom `CalendarView`
+  # Displaying an appointment as multiple panels on the screen. This was required for the `MonthView`, where an appointment can span the 1st week and 2nd week of the month. This means an appointment must be displayed as two panels. Previously there was a one-to-one relationship between an appointment and a panel. Now this is a one-to-many relationship.
 
-Add your content here.
+We also laid the ground work for *Drag and Drop* support, one of the most requested features. Right now Drag and Drop is supported in the `MonthView`, with plans to support the `DayView` in the 0.9.1 release.
 
+= 0.9 Beta Summary =
 
-= Details =
+  * Added support for multiple views (`MonthView`, `DayView`, etc)
+    * `Calendar` widget created as a facade to easily switch between views
+    * Ability to create and set custom views
 
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
+  * `MonthView` includes `DragDrop` support using gwt-dnd
+    * Added new `UpdateEvent` to notify when an appointment is dragged and updated
+    * Ability to 'undo' the update
+  
+  * Appointment class is now a plain java object. No longer extends a gwt Widget
+  * Appointments in the `DayView` can now display custom HTML in the description area
+  * Fixed issue 11 - Switching appointments with arrow keys past last appointment causes crash
+  * Added unit tests to a number of classes (finally)
+  * Upgraded project to use gwt 1.7
+
+= Known Issues =
+
+  * `MonthView` styles don't work right in IE6 and IE7
+  * `MultiDay` appointments not calculated. User must set `appointment.setMultiDay(true)`
