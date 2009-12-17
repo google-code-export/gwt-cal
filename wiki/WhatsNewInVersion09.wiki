@@ -7,6 +7,8 @@ Version *0.9* of *gwt-cal* is a major release that required some big changes to 
 
 We also laid the ground work for *Drag and Drop* support, one of the most requested features. Right now Drag and Drop is supported in the `MonthView`, with plans to support the `DayView` in the 0.9.1 release.
 
+*[http://code.google.com/p/gwt-cal/downloads/detail?name=gwt-cal-0.9.0-beta1.jar Download version 0.9 beta1 now]*
+
 = 0.9 Beta Summary =
 
   * Added support for multiple views (`MonthView`, `DayView`, etc)
