@@ -50,3 +50,10 @@ appt.setTitle(...);
 appt.addStyleName("gwt-appointment-blue");
 calendar.addAppointment(appt);
 }}}
+
+For now, if an appointment is multi day, you need to manually set the following appointment attribute**:
+{{{
+appt.setMultiDay(true);
+}}}
+
+** We plan to auto-calculate isMultiDay() before the final 0.9 version is released.
