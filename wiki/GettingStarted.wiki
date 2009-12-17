@@ -21,7 +21,7 @@ calendar.setDate(new Date()); //calendar date, not required
 calendar.setDays(3); //number of days displayed at a time, not required
 calendar.setWidth("500px");
 calendar.setHeight("400px");
-add(dayView);
+add(calendar);
 }}}
 
 You can then hook up an event listener to capture when an appointment is selected:
@@ -47,57 +47,51 @@ appt.addStyleName("gwt-appointment-blue");
 calendar.addAppointment(appt);
 }}}
 
-== appointment style ==
+#summary Getting started with the gwt-cal component library.
 
-When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Examples are: `gwt-appointment-blue`, `gwt-appointment-green`
+= Setup =
 
-Here is a table of appointment styles and the themes that support them:
-|| Style Name                  || Google Calendar || iCal ||
-|| gwt-appointment-red         || X               || X  ||
-|| gwt-appointment-green       || X               || X  ||
-|| gwt-appointment-blue        || X               || X  ||
-|| gwt-appointment-pink        || X               || -  ||
-|| gwt-appointment-purple      || X               || X  ||
-|| gwt-appointment-fushia      || -               || X  ||
-|| gwt-appointment-darkpurple  || X               || X  ||
-|| gwt-appointment-steelblue   || X               || -  ||
-|| gwt-appointment-lightblue   || X               || -  ||
-|| gwt-appointment-teal        || X               || -  ||
-|| gwt-appointment-lightgreen  || X               || -  ||
-|| gwt-appointment-yellowgreen || X               || -  ||
-|| gwt-appointment-yellow      || X               || -  ||
-|| gwt-appointment-orange      || X               || X  ||
-|| gwt-appointment-redorange   || X               || -  ||
-|| gwt-appointment-lightbrown  || X               || -  ||
-|| gwt-appointment-lightpurple || X               || -  ||
-|| gwt-appointment-grey        || X               || -  ||
-|| gwt-appointment-bluegrey    || X               || -  ||
-|| gwt-appointment-lightteal   || X               || -  ||
-|| gwt-appointment-yellowgrey  || X               || -  ||
-|| gwt-appointment-brown       || X               || -  ||
-
-== appointments in batch ==
-
-As stated earlier, every time an appointment is added to the calendar widget the layout is re-calculated. If you plan to add many appointments at once you should suspend the layout and then resume it once you are complete:
+ # Add the gwt-cal jar file to your project's build path. Right-click on the project node in the Package Explorer and select 'Build Path > Add External Archives...'. Specify the downloaded `gwt-cal-<version>.jar`
+ # Modify `<Your Application>.gwt.xml` to inherit the gwt-cal module and theme:
 
 {{{
-calendar.suspendLayout();
-
-//load 1,000 appointments into calendar
-for(int i=0;i<1000;i++) {
-	Appointment appt = new Appointment();
-	...
-	calendar.addAppointment(appt);
-}
-
-calendar.resumeLayout();
+  <inherits name='com.bradrydzewski.gwt.calendar.Calendar' />
+  <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
 }}}
 
-= Layout =
 
-As discussed, layout is calculated when an appointment is added, or when `resumeLayout` is invoked. Layout is also calculated when `setDays` and `setDate` are added.
+= Simple Example =
 
-There is no need to recalculate layout when the width or height of the calendar changes. The items use %'s to position the appointments on the screen. That being said, you should never set the calendar's height to a % - only use a fixed pixel value. Feel free to set calendar width to a % or fixed pixel value.
+Adding the calendar widget to a `Panel` just like any standard gwt widget. 
+{{{
+Calendar calendar = new Calendar();
+calendar.setDate(new Date()); //calendar date, not required
+calendar.setDays(3); //number of days displayed at a time, not required
+calendar.setWidth("500px");
+calendar.setHeight("400px");
+add(calendar);
+}}}
 
-= Questions?? =
-Please post all questions to the gwt-cal group, [http://groups.google.com/group/gwt-cal here]. Any bugs can be logged on the issue tab.
+You can then hook up an event listener to capture when an appointment is selected:
+{{{
+calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
+  @Override
+  public void onSelection(SelectionEvent<Appointment> event) {
+    System.out.println("selected " + event.getSelectedItem().getTitle());
+  }
+});
+}}}
+
+= Changing Views =
+
+gwt-cal version 0.9 now supports multiple view. You can switch 
+
+{{{
+//Displays the Day View
+calendar.setView(CalendarViews.DAY);
+//Displays the Day View with 3 days
+calendar.setView(CalendarViews.DAY, 3);
+
+//Displays the month View
+calendar.setView(CalendarViews.MONTH);
+}}}
