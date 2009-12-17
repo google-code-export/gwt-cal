@@ -8,6 +8,7 @@
  * [BrowserCompatibility Browser Compatibility]
  * [CommercialLicense Commercial Use]
  * Version 0.9 Beta
+   * [WhatsNewInVersion09 What's New]
    * [GettingStarted Getting Started]
    * [CreatingAppointments Creating Appointments]
    * [HandlingEvents Handling Events]
