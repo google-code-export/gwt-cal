@@ -9,7 +9,7 @@
  * [CommercialLicense Commercial Use]
  * Version 0.9 Beta
    * [GettingStarted Getting Started]
-   * Creating Appointments
+   * [CreatingAppointments Creating Appointments]
    * Handling Events
    * [Themes Changing Themes]
    * [Settings Settings]
