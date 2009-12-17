@@ -48,19 +48,16 @@ import com.google.gwt.user.client.ui.Widget;
  * displayed in a grid-style view where cells represents days, columns
  * represents days of the week (i.e. Monday, Tuesday, etc.) and rows represent a
  * full week (Sunday through Saturday).<p/>
- * 
- * <h3>CSS Style Rules</h3> 
- * <ul class='css'>
- * <li>.gwt-cal-MonthView { }</li>
- * <li>.dayCell { cell that represents a day }</li>
- * <li>.dayCell-today { cell that represents today }</li>
- * <li>.dayCell-disabled { cell's day falls outside the month }</li>
- * <li>.dayCell-today-disabled { cell represents today, falls outside the month }</li> <li>.dayCellLabel { header for the cell }</li>
+ * <p/>
+ * <h3>CSS Style Rules</h3> <ul class='css'> <li>.gwt-cal-MonthView { }</li>
+ * <li>.dayCell { cell that represents a day }</li> <li>.dayCell-today { cell
+ * that represents today }</li> <li>.dayCell-disabled { cell's day falls outside
+ * the month }</li> <li>.dayCell-today-disabled { cell represents today, falls
+ * outside the month }</li> <li>.dayCellLabel { header for the cell }</li>
  * <li>.dayCellLabel-today { cell represents today }</li>
  * <li>.dayCellLabel-disabled { cell's day falls outside the month }</li>
- * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the month }</li>
- * <li>.weekDayLabel { label for the days of the week }</li>
- * </ul>
+ * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the
+ * month }</li> <li>.weekDayLabel { label for the days of the week }</li> </ul>
  *
  * @author Brad Rydzewski
  * @since 0.9.0
@@ -129,10 +126,10 @@ public class MonthView extends CalendarView {
     private int monthViewRequiredRows = 5;
 
     /**
-     * List of AppointmentAdapter objects that represent the currently selected
-     * appointment.
+     * List of <code>AppointmentWidget</code>s that are associated to the
+     * currently selected <code>Appointment</code> appointment.
      */
-    private ArrayList<AppointmentWidget> selectedAppointmentAdapters
+    private ArrayList<AppointmentWidget> selectedAppointmentWidgets
             = new ArrayList<AppointmentWidget>();
 
     private PickupDragController dragController = null;
@@ -156,31 +153,35 @@ public class MonthView extends CalendarView {
         calendarWidget.addToRootPanel(appointmentCanvas);
         appointmentCanvas.setStyleName(CANVAS_STYLE);
 
-        selectedAppointmentAdapters.clear();
+        selectedAppointmentWidgets.clear();
 
         if (dragController == null) {
             dragController = new PickupDragController(appointmentCanvas, true);
             dragController.addDragHandler(new DragHandler() {
 
-				public void onDragEnd(DragEndEvent event) {
+                public void onDragEnd(DragEndEvent event) {
 
-					Appointment appt = ((AppointmentWidget)
-							event.getContext().draggable).getAppointment();
-					calendarWidget.setCommittedAppointment(appt);
-					calendarWidget.fireUpdateEvent(appt);
-				}
-				public void onDragStart(DragStartEvent event) { 
-					calendarWidget.setRollbackAppointment(
-							((AppointmentWidget)event.getContext().draggable).getAppointment().clone());
-				}
-				public void onPreviewDragEnd(DragEndEvent event)
-						throws VetoDragException { 
-					//do nothing
-				}
-				public void onPreviewDragStart(DragStartEvent event)
-						throws VetoDragException { 
-					//do nothing
-				}
+                    Appointment appt = ((AppointmentWidget)
+                            event.getContext().draggable).getAppointment();
+                    calendarWidget.setCommittedAppointment(appt);
+                    calendarWidget.fireUpdateEvent(appt);
+                }
+
+                public void onDragStart(DragStartEvent event) {
+                    calendarWidget.setRollbackAppointment(
+                            ((AppointmentWidget) event.getContext().draggable)
+                                    .getAppointment().clone());
+                }
+
+                public void onPreviewDragEnd(DragEndEvent event)
+                        throws VetoDragException {
+                    //do nothing
+                }
+
+                public void onPreviewDragStart(DragStartEvent event)
+                        throws VetoDragException {
+                    //do nothing
+                }
             });
         }
 
@@ -213,7 +214,7 @@ public class MonthView extends CalendarView {
         appointmentCanvas.clear();
         monthCalendarGrid.clear();
         appointmentsWidgets.clear();
-        selectedAppointmentAdapters.clear();
+        selectedAppointmentWidgets.clear();
         while (monthCalendarGrid.getRowCount() > 0) {
             monthCalendarGrid.removeRow(0);
         }
@@ -231,7 +232,7 @@ public class MonthView extends CalendarView {
         //monthViewDropController.setWeekdayHeaderHeight(calculatedWeekDayHeaderHeight);
         monthViewDropController.setWeeksPerMonth(monthViewRequiredRows);
         monthViewDropController.setFirstDateDisplayed(firstDateDisplayed);
-        
+
         //Sort the appointments
         //TODO: don't re-sort the appointment unless necessary
         Collections.sort(calendarWidget.getAppointments(),
@@ -269,8 +270,7 @@ public class MonthView extends CalendarView {
             ArrayList<AppointmentLayoutDescription> descriptionsInLayer
                     = weekTopElements.getDescriptionsInLayer(layer);
 
-            if (descriptionsInLayer == null)
-            {
+            if (descriptionsInLayer == null) {
                 break;
             }
 
@@ -337,7 +337,7 @@ public class MonthView extends CalendarView {
         dragController.makeDraggable(panel);
         if (calendarWidget.isTheSelectedAppointment(appointment)) {
             panel.addStyleName("selected");
-            selectedAppointmentAdapters.add(panel);
+            selectedAppointmentWidgets.add(panel);
         }
         appointmentsWidgets.add(panel);
         appointmentCanvas.add(panel);
@@ -361,7 +361,7 @@ public class MonthView extends CalendarView {
         if (!list.isEmpty()) {
             Appointment appt = list.get(0).getAppointment();
             //if (appt.equals(calendarWidget.getSelectedAppointment()))
-                calendarWidget.fireOpenEvent(appt);
+            calendarWidget.fireOpenEvent(appt);
         }
     }
 
@@ -374,13 +374,11 @@ public class MonthView extends CalendarView {
     public void onSingleClick(Element clickedElement, Event event) {
         if (clickedElement.equals(appointmentCanvas.getElement()))
             return;
-        
+
         Appointment appt =
-        	findAppointmentByElement(clickedElement);
-        System.out.println("onSingleClick: "+appt.getTitle());
-        if(appt!=null) {
-        	
-        	selectAppointment(appt);
+                findAppointmentByElement(clickedElement);
+        if (appt != null) {
+            selectAppointment(appt);
         }
     }
 
@@ -499,68 +497,51 @@ public class MonthView extends CalendarView {
     }
 
     /**
-     * Finds any related adapters that match the given Appointment.
+     * Finds any related <code>AppointmentWidgets</code> associated to the
+     * passed Appointment, <code>appt</code>.
      *
      * @param appt Appointment to match.
      * @return List of related AppointmentWidget objects.
      */
     private ArrayList<AppointmentWidget> findAppointmentWidgets(
             Appointment appt) {
-        ArrayList<AppointmentWidget> appointmentAdapters
+        ArrayList<AppointmentWidget> appointmentWidgets
                 = new ArrayList<AppointmentWidget>();
         if (appt != null) {
             for (AppointmentWidget widget : appointmentsWidgets) {
                 if (widget.getAppointment().equals(appt)) {
-                    appointmentAdapters.add(widget);
+                    appointmentWidgets.add(widget);
                 }
             }
         }
-        return appointmentAdapters;
+        return appointmentWidgets;
     }
 
-	public void onDeleteKeyPressed() {
-		if(calendarWidget.getSelectedAppointment()!=null)
-			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
-	}
-	
-	@Override
-	public void onAppointmentSelected(Appointment appt) {
+    public void onDeleteKeyPressed() {
+        if (calendarWidget.getSelectedAppointment() != null)
+            calendarWidget
+                    .fireDeleteEvent(calendarWidget.getSelectedAppointment());
+    }
 
-        ArrayList<AppointmentWidget> clickedAppointmentAdapters
+    @Override
+    public void onAppointmentSelected(Appointment appt) {
+
+        ArrayList<AppointmentWidget> clickedAppointmentWidgets
                 = findAppointmentWidgets(appt);
 
+        if (!clickedAppointmentWidgets.isEmpty()) {
+            for (AppointmentWidget widget : selectedAppointmentWidgets) {
+                widget.removeStyleName("selected");
+            }
 
-        if (!clickedAppointmentAdapters.isEmpty()) {
-            
-        	Appointment clickedAppt = clickedAppointmentAdapters.get(0)
-                    .getAppointment();
+            for (AppointmentWidget widget : clickedAppointmentWidgets) {
+                widget.addStyleName("selected");
+            }
 
-            //if (!calendarWidget.isTheSelectedAppointment(clickedAppt)) {
-
-                //if (calendarWidget.hasAppointmentSelected()) {
-                    //calendarWidget.resetSelectedAppointment();
-                    for (AppointmentWidget adapter : selectedAppointmentAdapters) {
-                        //if(adapter.getStyleName()!=null)
-	                    	adapter.removeStyleName(
-	                                "selected");
-                    }
-                //}
-
-                for (AppointmentWidget adapter : clickedAppointmentAdapters) {
-
-                    adapter.addStyleName("selected");
-                }
-
-                selectedAppointmentAdapters.clear();
-                selectedAppointmentAdapters = clickedAppointmentAdapters;
-
-                //clickedAppt.setSelected(true);
-                //selectAppointment(clickedAppt);
-                //super.setSelectedAppointment(clickedAppt, true);
-            //}
+            selectedAppointmentWidgets.clear();
+            selectedAppointmentWidgets = clickedAppointmentWidgets;
         }
-		
-	}
+    }
 
     //HERE ARE A BUNCH OF CALCULATED VALUES THAT ARE USED DURING LAYOUT
     // NOT SURE IF THE VARIABLES SHOULD BE KEPT AT THE CLASS LEVEL
@@ -588,8 +569,6 @@ public class MonthView extends CalendarView {
      * Calculates the height of each day cell in the Month grid. It excludes the
      * height of each day's header, as well as the overall header that shows the
      * weekday labels.
-     *
-     * @return
      */
     private void calculateCellHeight() {
 
@@ -619,8 +598,7 @@ public class MonthView extends CalendarView {
 
         calculatedCellAppointments = (int) Math.floor(
                 (float) (calculatedCellHeight - apptPaddingTop) /
-                        (float) (apptHeight
-                                + apptPaddingTop)) - 1;
+                        (float) (apptHeight + apptPaddingTop)) - 1;
     }
 
     private void placeItemInGrid(
@@ -650,6 +628,4 @@ public class MonthView extends CalendarView {
         DOM.setStyleAttribute(panel.getElement(), "left", left + "%");
         DOM.setStyleAttribute(panel.getElement(), "width", width + "%");
     }
-
-
 }

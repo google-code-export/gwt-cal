@@ -33,27 +33,22 @@ public class MonthLayoutDescription {
 
     private void placeAppointments(ArrayList<Appointment> appointments) {
         for (Appointment appointment : appointments) {
-            
-        	int startWeek =
+
+            int startWeek =
                     calculateWeekFor(appointment.getStart(), calendarFirstDay);
-            
-        	//needed to put this in because if appointment appears
-        	// in prior month, we get a negative number, which
-        	// causes an index out of bounds exception
-        	if(startWeek>=0 && startWeek < weeks.length) {
-        	
-//	            System.out.println(appointment.getTitle() + " ---  multi " + appointment.isMultiDayAppointment());
-//	            System.out.println(appointment.getTitle() + " ---  allday " + appointment.isAllDay());
-//	            System.out.println(appointment.getTitle() + " ---  start " + appointment.getStart());
-//	            System.out.println(appointment.getTitle() + " ---  startweek " + startWeek);
-	            initWeek(startWeek);
-	            
-	            if (appointment.isMultiDayAppointment() || appointment.isAllDay()) {                
-	                positionMultidayAppointment(startWeek, appointment);
-	            } else {
-	                weeks[startWeek].addAppointment(appointment);
-	            }
-        	}
+
+            //needed to put this in because if appointment appears
+            // in prior month, we get a negative number, which
+            // causes an index out of bounds exception
+            if (startWeek >= 0 && startWeek < weeks.length) {
+                initWeek(startWeek);
+                if (appointment.isMultiDayAppointment() ||
+                        appointment.isAllDay()) {
+                    positionMultidayAppointment(startWeek, appointment);
+                } else {
+                    weeks[startWeek].addAppointment(appointment);
+                }
+            }
         }
     }
 
@@ -64,17 +59,11 @@ public class MonthLayoutDescription {
     private void positionMultidayAppointment(int startWeek,
                                              Appointment appointment) {
         int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
-        
-        //need to account for an appointment that spans
-        // multiple months
-        if(endWeek >= weeks.length)
-        	endWeek = weeks.length-1;
-        
+
         initWeek(endWeek);
         if (isMultiWeekAppointment(startWeek, endWeek)) {
             distributeOverWeeks(startWeek, endWeek, appointment);
         } else {
-            //System.out.println("Se agrega como multiday " + appointment.getTitle());
             weeks[startWeek].addMultiDayAppointment(appointment);
         }
     }
@@ -96,9 +85,10 @@ public class MonthLayoutDescription {
     }
 
     private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
-        return (int) Math
+        int endWeek = (int) Math
                 .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
                         7d);
+        return Math.min(endWeek, weeks.length - 1);
     }
 
     public WeekLayoutDescription[] getWeekDescriptions() {

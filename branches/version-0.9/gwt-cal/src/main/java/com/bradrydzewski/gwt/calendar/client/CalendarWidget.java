@@ -437,8 +437,6 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public void fireSelectionEvent(Appointment appointment) {
-        //System.out.println("fireSelectionEvent: " + appointment.getTitle());
-        
     	view.onAppointmentSelected(appointment);
     	SelectionEvent.fire(this, appointment);
     }
