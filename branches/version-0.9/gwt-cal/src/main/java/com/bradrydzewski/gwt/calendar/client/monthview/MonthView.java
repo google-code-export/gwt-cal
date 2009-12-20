@@ -23,7 +23,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 
-import com.allen_sauer.gwt.dnd.client.DragContext;
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
 import com.allen_sauer.gwt.dnd.client.DragStartEvent;
@@ -31,6 +30,7 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.CalendarModel;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
@@ -98,8 +98,7 @@ public class MonthView extends CalendarView {
 	private final static String MORE_LABEL_STYLE = "moreAppointments";
 	private final static String CELL_HEADER_STYLE = "dayCellLabel";
 	private final static String WEEKDAY_LABEL_STYLE = "weekDayLabel";
-	private final static String[] WEEKDAY_LABELS = new String[] { "Sun", "Mon",
-			"Tue", "Wed", "Thurs", "Fri", "Sat" };
+	private final CalendarModel calendarModel = new CalendarModel();
 
 	/**
 	 * List of appointment panels drawn on the month view canvas.
@@ -400,16 +399,11 @@ public class MonthView extends CalendarView {
 	}
 
 	private void dayClicked(Event event) {
-		int y = event.getClientY()
-				- DOM.getAbsoluteTop(appointmentCanvas.getElement());
-		int x = event.getClientX()
-				- DOM.getAbsoluteLeft(appointmentCanvas.getElement());
+		int y = event.getClientY() - DOM.getAbsoluteTop(appointmentCanvas.getElement());
+		int x = event.getClientX() - DOM.getAbsoluteLeft(appointmentCanvas.getElement());
 
-		int row = (int) Math
-				.floor(y
-						/ (appointmentCanvas.getOffsetHeight() / monthViewRequiredRows));
-		int col = (int) Math.floor(x
-				/ (appointmentCanvas.getOffsetWidth() / DAYS_IN_A_WEEK));
+		int row = (int) Math.floor(y / (appointmentCanvas.getOffsetHeight() / monthViewRequiredRows));
+		int col = (int) Math.floor(x / (appointmentCanvas.getOffsetWidth() / DAYS_IN_A_WEEK));
 		int cell = row * DAYS_IN_A_WEEK + col;
 		Date clickedDate = (Date) firstDateDisplayed.clone();
 		clickedDate.setDate(clickedDate.getDate() + cell);
@@ -442,7 +436,7 @@ public class MonthView extends CalendarView {
 
 		/* Add the calendar weekday heading */
 		for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
-			monthCalendarGrid.setText(0, i, WEEKDAY_LABELS[i]);
+			monthCalendarGrid.setText(0, i, calendarModel.WEEKDAY_ABBREV_NAMES[i]);
 			monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i,
 					HasVerticalAlignment.ALIGN_TOP);
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,

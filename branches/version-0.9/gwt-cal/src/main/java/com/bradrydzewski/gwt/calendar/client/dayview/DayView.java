@@ -159,7 +159,7 @@ public class DayView extends CalendarView implements HasSettings {
 	}
 
 	public void onDeleteKeyPressed() {
-		System.out.println("onDeleteKeyPressed: "+calendarWidget.getSelectedAppointment());
+		//System.out.println("onDeleteKeyPressed: "+calendarWidget.getSelectedAppointment());
 		if(calendarWidget.getSelectedAppointment()!=null)
 			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
 	}

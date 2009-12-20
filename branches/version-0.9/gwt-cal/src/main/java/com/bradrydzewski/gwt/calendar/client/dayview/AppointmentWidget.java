@@ -188,7 +188,6 @@ public class AppointmentWidget extends Composite {
 
     public void setDescription(String description) {
         this.description = description;
-        System.out.println("setting desc: "+ description);
         DOM.setInnerHTML(bodyPanel.getElement(), description);
     }
 

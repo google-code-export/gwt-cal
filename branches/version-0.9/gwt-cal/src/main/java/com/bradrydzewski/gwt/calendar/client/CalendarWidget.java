@@ -372,10 +372,8 @@ public class CalendarWidget extends InteractiveWidget implements
     	boolean selected = appointmentManager.selectPreviousAppointment();
         if(selected) {
         	fireSelectionEvent(getSelectedAppointment());
-        	System.out.println("selectPreviousAppointment");
-        } else {
-        	System.out.println("selectPreviousAppointment failed");
         }
+        
         return selected;
     }
 
