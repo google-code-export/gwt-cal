@@ -13,7 +13,7 @@ settings.setIntervalsPerHour(4);
 
 //you can pass through constructor
 Calendar calendar = new Calendar();
-calendar.setCalendarSettings(settings);
+calendar.setSettings(settings);
 }}}
 
 == Setting Timeline Intervals Height ==
