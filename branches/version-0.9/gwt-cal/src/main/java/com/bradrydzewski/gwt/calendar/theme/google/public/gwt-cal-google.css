@@ -52,6 +52,11 @@
 	font-family:arial; font-size:11px;text-transform:lowercase;font-size:11px;color:#446688;
 }
 
+.gwt-cal .hour-noon-text {
+	display:inline; 
+	font-family:arial; font-size:11px;text-transform:lowercase;font-size:11px;color:#446688;
+}
+
 .gwt-cal .ampm-text {
 	display:inline;color:#446688;
 	font-family:arial; font-size:11px;text-transform:lowercase;font-weight:normal;

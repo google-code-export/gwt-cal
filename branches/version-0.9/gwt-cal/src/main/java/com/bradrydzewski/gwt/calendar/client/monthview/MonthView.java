@@ -98,7 +98,7 @@ public class MonthView extends CalendarView {
 	private final static String MORE_LABEL_STYLE = "moreAppointments";
 	private final static String CELL_HEADER_STYLE = "dayCellLabel";
 	private final static String WEEKDAY_LABEL_STYLE = "weekDayLabel";
-	private final CalendarModel calendarModel = new CalendarModel();
+
 
 	/**
 	 * List of appointment panels drawn on the month view canvas.
@@ -436,7 +436,7 @@ public class MonthView extends CalendarView {
 
 		/* Add the calendar weekday heading */
 		for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
-			monthCalendarGrid.setText(0, i, calendarModel.WEEKDAY_ABBREV_NAMES[i]);
+			monthCalendarGrid.setText(0, i, CalendarModel.INSTANCE.WEEKDAY_ABBREV_NAMES[i]);
 			monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i,
 					HasVerticalAlignment.ALIGN_TOP);
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,

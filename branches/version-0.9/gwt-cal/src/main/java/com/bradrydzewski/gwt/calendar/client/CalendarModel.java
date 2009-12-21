@@ -16,12 +16,23 @@ public class CalendarModel {
 	 * Number of days normally displayed in a week.
 	 */
 	public static final int DAYS_IN_WEEK = 7;
+	
+	/**
+	 * Number of hours in a day.
+	 */
+	public static final int HOURS_IN_DAY = 24;
 
 	public static final String[] WEEKDAY_NAMES = new String[7];
 	
 	public static final String[] WEEKDAY_ABBREV_NAMES = new String[7];
 	
 	public static final String[] MONTH_NAMES = new String[32];
+	
+	public static final String[] HOURS = new String[24];
+	
+	public static String NOON = "Noon";
+	public static String AM = "AM";
+	public static String PM = "PM";
 	
 	private static final DateTimeFormat dayOfMonthFormatter = DateTimeFormat
 			.getFormat("d");
@@ -32,6 +43,8 @@ public class CalendarModel {
 	private static final DateTimeFormat dayOfWeekAbbrevFormatter = DateTimeFormat
 			.getFormat("EEE");
 
+
+	public static CalendarModel INSTANCE = new CalendarModel();
 	
 
 	public CalendarModel() {
@@ -53,6 +66,33 @@ public class CalendarModel {
 			MONTH_NAMES[i] = getDayOfMonthFormatter().format(date);
 		}
 
+		
+		//here we format the hour blocks
+		//This is a hack... should use Google's built-in i18n
+		DateTimeFormat shortTimeFormat =
+			DateTimeFormat.getShortTimeFormat();
+		
+		date.setHours(12);
+		date.setMinutes(0);
+		String hour = shortTimeFormat.format(date);
+		String hourFormat = "h";
+		
+		if(!hour.equals("12:00 PM")) {
+			NOON = "12";
+			AM = "";
+			PM = "";
+			hourFormat = "HH";
+		}
+
+		shortTimeFormat =
+			DateTimeFormat.getFormat(hourFormat);
+		
+		for(int i=0; i<HOURS_IN_DAY;i++) {
+
+			date.setHours(i);
+			hour = shortTimeFormat.format(date);
+			HOURS[i] = hour;//hour.replaceAll(":00", "");
+		}
 	}
 
 	/**

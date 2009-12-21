@@ -1,5 +1,6 @@
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
+import com.bradrydzewski.gwt.calendar.client.CalendarModel;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -28,12 +29,12 @@ public /**
 //        "11 AM", "Noon", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM",
 //        "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"
 //    };
-    private final String[] HOURS = new String[]{"12", "1", "2", "3",
-        "4", "5", "6", "7", "8", "9", "10",
-        "11", "Noon", "1", "2", "3", "4", "5",
-        "6", "7", "8", "9", "10", "11"};
-    private final String AM = " AM";
-    private final String PM = " PM";
+//    private final String[] HOURS = new String[]{"12", "1", "2", "3",
+//        "4", "5", "6", "7", "8", "9", "10",
+//        "11", "Noon", "1", "2", "3", "4", "5",
+//        "6", "7", "8", "9", "10", "11"};
+//    private final String AM = " AM";
+//    private final String PM = " PM";
 
     public DayViewTimeline(HasSettings settings) {
         initWidget(timelinePanel);
@@ -61,9 +62,11 @@ public /**
             timelinePanel.add(sp);
         }
 
-        while (i < HOURS.length) {
+        boolean includeAMPM = !CalendarModel.INSTANCE.AM.equals("");
+        
+        while (i < CalendarModel.HOURS_IN_DAY) {
 
-            String hour = HOURS[i];
+            String hour = CalendarModel.HOURS[i];
             i++;
 
             //block
@@ -74,19 +77,26 @@ public /**
             FlowPanel flowPanel = new FlowPanel();
             flowPanel.setStyleName("hour-layout");
             
+
+            
+            String amPm = " ";
+            if(i<13)
+                amPm += CalendarModel.INSTANCE.AM;
+            else if(i>13)
+                amPm += CalendarModel.INSTANCE.PM;
+            else {
+            	hour = CalendarModel.INSTANCE.NOON;
+            	amPm = "";
+            }
+            
             Label hourLabel = new Label(hour);
             hourLabel.setStylePrimaryName("hour-text");
             flowPanel.add(hourLabel);
             
-            String amPm = "";
-            if(i<13)
-                amPm = AM;
-            else if(i>13)
-                amPm = PM;
-            
             Label ampmLabel = new Label(amPm);
             ampmLabel.setStylePrimaryName("ampm-text");
-            flowPanel.add(ampmLabel);
+            if(includeAMPM)
+            	flowPanel.add(ampmLabel);
 
             hourWrapper.add(flowPanel);
             

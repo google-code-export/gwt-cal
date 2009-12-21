@@ -49,7 +49,13 @@
 	position:absolute;top:50%;left:0px;margin-top:-0.5em;line-height:1; text-align:center;width:100%;
 }
 
+
 .gwt-cal .hour-label .hour-text {
+	display:inline;
+	text-transform:uppercase;
+}
+
+.gwt-cal .hour-noon-text {
 	display:inline;
 }
 
