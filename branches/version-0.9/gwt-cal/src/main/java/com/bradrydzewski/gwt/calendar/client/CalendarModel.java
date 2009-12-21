@@ -42,6 +42,8 @@ public class CalendarModel {
 	
 	private static final DateTimeFormat dayOfWeekAbbrevFormatter = DateTimeFormat
 			.getFormat("EEE");
+	
+	public static final DateTimeFormat hourFormatter = DateTimeFormat.getFormat("h");
 
 
 	public static CalendarModel INSTANCE = new CalendarModel();
@@ -69,6 +71,7 @@ public class CalendarModel {
 		
 		//here we format the hour blocks
 		//This is a hack... should use Google's built-in i18n
+		//See http://code.google.com/p/gwt-cal/issues/detail?id=18
 		DateTimeFormat shortTimeFormat =
 			DateTimeFormat.getShortTimeFormat();
 		
@@ -78,10 +81,10 @@ public class CalendarModel {
 		String hourFormat = "h";
 		
 		if(!hour.equals("12:00 PM")) {
-			NOON = "12";
+			NOON = hour;
 			AM = "";
 			PM = "";
-			hourFormat = "HH";
+			hourFormat = shortTimeFormat.getPattern();//"HH";
 		}
 
 		shortTimeFormat =
