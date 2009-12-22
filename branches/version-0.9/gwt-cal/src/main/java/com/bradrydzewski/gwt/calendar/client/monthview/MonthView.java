@@ -45,6 +45,8 @@ import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
+import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
+
 /**
  * <p>
  * A CalendarView that displays appointments for a given month. The Month is
@@ -307,7 +309,7 @@ public class MonthView extends CalendarView {
 							.get(i);
 
 					if (exceedMaxAppointmentsPerCell(maxMultiDay, i)) {
-						Label more = new Label("+" + (count - i) + " more");
+						Label more = new Label(MESSAGES.monthView_MoreAppointmentsPerDay(count - i));
 						more.setStyleName(MORE_LABEL_STYLE);
 						placeItemInGrid(more, dayOfWeek, dayOfWeek,
 								weekOfMonth, calculatedCellAppointments);

@@ -2,6 +2,7 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.Date;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 @SuppressWarnings("deprecation")
@@ -30,10 +31,6 @@ public class CalendarModel {
 	
 	public static final String[] HOURS = new String[24];
 	
-	public static String NOON = "Noon";
-	public static String AM = "AM";
-	public static String PM = "PM";
-	
 	private static final DateTimeFormat dayOfMonthFormatter = DateTimeFormat
 			.getFormat("d");
 	
@@ -47,7 +44,12 @@ public class CalendarModel {
 
 
 	public static CalendarModel INSTANCE = new CalendarModel();
-	
+
+   public static final GwtCalMessages MESSAGES = (GwtCalMessages) GWT.create(GwtCalMessages.class);
+
+   public static String AM = "AM";
+   public static String PM = "PM";
+   public static String NOON = MESSAGES.noon();
 
 	public CalendarModel() {
 

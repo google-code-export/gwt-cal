@@ -31,6 +31,7 @@ import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateHandler;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -444,7 +445,6 @@ public class CalendarWidget extends InteractiveWidget implements
     }
 
     public void fireUpdateEvent(Appointment appointment) {
-
     	//refresh the appointment
     	refresh();
     	//fire the event to notify the client
