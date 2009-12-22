@@ -309,7 +309,7 @@ public class MonthView extends CalendarView {
 							.get(i);
 
 					if (exceedMaxAppointmentsPerCell(maxMultiDay, i)) {
-						Label more = new Label(MESSAGES.monthView_MoreAppointmentsPerDay(count - i));
+						Label more = new Label(MESSAGES.monthView_MoreAppointmentsInDay(count - i));
 						more.setStyleName(MORE_LABEL_STYLE);
 						placeItemInGrid(more, dayOfWeek, dayOfWeek,
 								weekOfMonth, calculatedCellAppointments);

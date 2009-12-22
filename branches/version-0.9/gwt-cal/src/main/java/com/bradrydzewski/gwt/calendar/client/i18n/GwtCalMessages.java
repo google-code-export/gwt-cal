@@ -1,4 +1,4 @@
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.i18n;
 
 import com.google.gwt.i18n.client.Messages;
 
@@ -17,7 +17,7 @@ public interface GwtCalMessages extends Messages
      * @param appointments The number of additional appointments in the day
      * @return The localized string
      */
-    public String monthView_MoreAppointmentsPerDay(int appointments);
+    public String monthView_MoreAppointmentsInDay(int appointments);
 
     /**
      * The localized text label for 12 p.m.

@@ -2,6 +2,7 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.i18n.GwtCalMessages;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
