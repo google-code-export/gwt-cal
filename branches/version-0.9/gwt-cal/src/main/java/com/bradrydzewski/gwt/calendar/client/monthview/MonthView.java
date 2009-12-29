@@ -336,7 +336,9 @@ public class MonthView extends CalendarView {
 		}
 		panel.addStyleName(appointment.getStyle());
 
-		dragController.makeDraggable(panel);
+		if(calendarWidget.getSettings().isEnableDragDrop())
+			dragController.makeDraggable(panel);
+		
 		if (calendarWidget.isTheSelectedAppointment(appointment)) {
 			panel.addStyleName("selected");
 			selectedAppointmentWidgets.add(panel);
