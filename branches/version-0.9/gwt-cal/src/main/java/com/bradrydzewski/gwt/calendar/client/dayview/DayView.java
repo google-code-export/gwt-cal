@@ -282,6 +282,9 @@ public class DayView extends CalendarView implements HasSettings {
 		calendarWidget.getRootPanel().add(dayViewHeader);
 		calendarWidget.getRootPanel().add(multiViewBody);
 		calendarWidget.getRootPanel().add(dayViewBody);
+		
+		if(getSettings()!=null)
+			scrollToHour(getSettings().getScrollToHour());
 	}
 
 	void timeBlockClick(int x, int y) {
