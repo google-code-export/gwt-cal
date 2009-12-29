@@ -93,7 +93,7 @@ public class AppointmentBuilder {
      * #TITLES} array.
      */
     protected static String[] DESCRIPTIONS =
-            new String[]{"at the dog park, fetch ball", "best show on TV<br/><img src='http://t2.gstatic.com/images?q=tbn:iu9uOKIZkgnVxM:http://images.starpulse.com/Photos/Previews/Matlock-tv-01.jpg' />",
+            new String[]{"at the dog park, fetch ball", "<i><b>best</b> show on TV</i>",//<img src='http://t2.gstatic.com/images?q=tbn:iu9uOKIZkgnVxM:http://images.starpulse.com/Photos/Previews/Matlock-tv-01.jpg' />",
                     "Need to examen that rash...",
                     "tell wife I need to 'work late'",
                     "bring famous spicy nacho dip",

@@ -98,6 +98,8 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		mainLayoutPanel.add(calendar, DockPanel.CENTER);
 		mainLayoutPanel.setCellVerticalAlignment(dateLayoutPanel, HasAlignment.ALIGN_BOTTOM);
 		dateLayoutPanel.setCellVerticalAlignment(datePicker, HasAlignment.ALIGN_BOTTOM);
+		dateLayoutPanel.setWidth("168px");
+		
 		
 		//add today button
 		todayButton.setStyleName("todayButton");
@@ -166,7 +168,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton = oneDayButton;
 				activeDayButton.addStyleName("active");
 				calendar.setView(CalendarViews.DAY, 1);
-				calendar.scrollToHour(6);
+				//calendar.scrollToHour(6);
 			}
 		});
 		threeDayButton.addClickHandler(new ClickHandler(){
@@ -176,7 +178,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton = threeDayButton;
 				activeDayButton.addStyleName("active");
 				calendar.setView(CalendarViews.DAY, 3);
-				calendar.scrollToHour(6);
+				//calendar.scrollToHour(6);
 			}
 		});
 		weekDayButton.addClickHandler(new ClickHandler(){
@@ -186,7 +188,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton = weekDayButton;
 				activeDayButton.addStyleName("active");
 				calendar.setView(CalendarViews.DAY, 5);
-				calendar.scrollToHour(6);
+				//calendar.scrollToHour(6);
 			}
 		});
 		monthButton.addClickHandler(new ClickHandler(){
