@@ -1,3 +1,6 @@
 <module>
     <stylesheet src="gwt-cal-google.css"/>
+    <replace-with class="com.bradrydzewski.gwt.calendar.theme.google.client.GoogleAppointmentTheme">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.AppointmentTheme"/>
+    </replace-with>
 </module>

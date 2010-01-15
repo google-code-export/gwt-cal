@@ -1,3 +1,7 @@
 <module>
     <stylesheet src="gwt-cal-apple.css"/>
+    
+    <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalAppointmentTheme">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.AppointmentTheme"/>
+    </replace-with>
 </module>
