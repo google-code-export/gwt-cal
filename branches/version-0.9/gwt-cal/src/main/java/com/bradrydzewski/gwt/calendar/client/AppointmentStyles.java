@@ -2,10 +2,16 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import com.google.gwt.core.client.GWT;
 
+/**
+ * Set of constants with the names of the CSS styles that gwt-cal uses during
+ * the rendering of an {@link com.bradrydzewski.gwt.calendar.client.Appointment}.
+ *
+ * @author Brad Rydzewski
+ */
 public class AppointmentStyles {
 
-	public static AppointmentTheme THEME = GWT.create(AppointmentTheme.class);
-	
+    public static AppointmentTheme THEME = GWT.create(AppointmentTheme.class);
+
     protected static final String STYLE_PREFIX = "gwt-appointment-";
     public static final String BLUE = STYLE_PREFIX + "blue";
     public static final String RED = STYLE_PREFIX + "red";
