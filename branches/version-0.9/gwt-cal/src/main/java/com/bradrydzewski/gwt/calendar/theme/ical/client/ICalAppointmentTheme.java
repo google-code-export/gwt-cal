@@ -10,7 +10,7 @@ public class ICalAppointmentTheme extends AppointmentTheme {
     private static final AppointmentStyle PURPLE  = new ICalAppointmentStyle("#aa92ea", "#4b2ca0", "purple-appt-gradient.gif");
     private static final AppointmentStyle GREEN   = new ICalAppointmentStyle("#12A300", "#8EED7F", "green-appt-gradient.gif)");
     private static final AppointmentStyle ORANGE  = new ICalAppointmentStyle("#fca550", "#f37b14", "orange-appt-gradient.gif");
-    private static final AppointmentStyle FUSCHIA = new ICalAppointmentStyle("#c45cc3", "#b02cae", "fuschia-appt-gradient.gif");
+    private static final AppointmentStyle FUCHSIA = new ICalAppointmentStyle("#c45cc3", "#b02cae", "fuschia-appt-gradient.gif");
     private static final AppointmentStyle DEFAULT = BLUE;
 
 	@Override
@@ -25,7 +25,7 @@ public class ICalAppointmentTheme extends AppointmentTheme {
 
 	@Override
 	public AppointmentStyle getLightPurpleStyle() {
-		return FUSCHIA;
+		return FUCHSIA;
 	}
 
 	@Override

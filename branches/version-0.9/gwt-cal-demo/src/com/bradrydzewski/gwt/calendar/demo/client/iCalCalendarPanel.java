@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -58,6 +59,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 	
 	public iCalCalendarPanel() {
 		
+
 		//style this element as absolute position
 		DOM.setStyleAttribute(this.getElement(), "position", "absolute");
 		DOM.setStyleAttribute(this.getElement(), "top", "0px");

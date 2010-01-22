@@ -29,7 +29,7 @@ public class AppointmentBuilder {
      */
     public static final String[] ICAL_STYLES =
             new String[]{"gwt-appointment-green", "gwt-appointment-blue",
-                    "gwt-appointment-red"};
+                    "gwt-appointment-fuschia","gwt-appointment-purple"};
 
     /**
      * Available hours for appointments, from 0 to 24.

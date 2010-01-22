@@ -2,7 +2,7 @@ package com.bradrydzewski.gwt.calendar.theme.ical.client;
 
 import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 
-public class ICalAppointmentStyle extends AppointmentStyle {
+class ICalAppointmentStyle extends AppointmentStyle {
 	public ICalAppointmentStyle(String background, String border, String image) {
 		super();
 		this.background = background;
