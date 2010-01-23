@@ -68,7 +68,7 @@ import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
  * <li>.dayCellLabel-today-disabled { cell represents today, falls outside the
  * month }</li>
  * <li>.weekDayLabel { label for the days of the week }</li> </ul>
- * 
+ *
  * @author Brad Rydzewski
  * @since 0.9.0
  */
@@ -244,6 +244,13 @@ public class MonthView extends CalendarView {
 		Collections.sort(calendarWidget.getAppointments(),
 				APPOINTMENT_COMPARATOR);
 
+        for (int i = 0; i < calendarWidget.getAppointments().size(); i++) {
+            System.out.println(
+                calendarWidget.getAppointments().get(i).getTitle() + " = " +
+                    calendarWidget.getAppointments().get(i).getStart() + " - "
+                    + calendarWidget.getAppointments().get(i).getEnd());
+        }
+
 		// Send appointments to layout manager
 		MonthLayoutDescription monthLayoutDescription = new MonthLayoutDescription(
 				firstDateDisplayed, calendarWidget.getAppointments());
@@ -285,43 +292,45 @@ public class MonthView extends CalendarView {
 		}
 	}
 
-	private boolean exceedMaxAppointmentsPerCell(int maxMultiDay, int dayIndex) {
-		return maxMultiDay + dayIndex >= calculatedCellAppointments;
-	}
+    private void layOnWeekDaysAppointments(WeekLayoutDescription week,
+        int weekOfMonth) {
 
-	private void layOnWeekDaysAppointments(WeekLayoutDescription week,
-			int weekOfMonth) {
+        AppointmentStackingManager topAppointmentManager = week
+            .getTopAppointmentsManager();
 
-		AppointmentStackingManager topAppointmentManager = week
-				.getTopAppointmentsManager();
+        for (int dayOfWeek = 0; dayOfWeek < DAYS_IN_A_WEEK; dayOfWeek++) {
+            DayLayoutDescription dayAppointments = week
+                .getDayLayoutDescription(dayOfWeek);
 
-		for (int dayOfWeek = 0; dayOfWeek < DAYS_IN_A_WEEK; dayOfWeek++) {
-			int maxMultiDay = topAppointmentManager
-					.singleDayLowestOrder(dayOfWeek);
+            int appointmentLayer =
+                topAppointmentManager.lowestLayerIndex(dayOfWeek);
 
-			DayLayoutDescription dayAppointments = week
-					.getDayLayoutDescription(dayOfWeek);
+            if (dayAppointments != null) {
+                int count = dayAppointments.getAppointments().size();
+                for (int i = 0; i < count; i++) {
+                    Appointment appointment = dayAppointments.getAppointments()
+                        .get(i);
+                    appointmentLayer = topAppointmentManager
+                        .nextLowestLayerIndex(dayOfWeek,
+                                              appointmentLayer + i);
 
-			if (dayAppointments != null) {
-				int count = dayAppointments.getAppointments().size();
-				for (int i = 0; i < count; i++) {
-					Appointment appointment = dayAppointments.getAppointments()
-							.get(i);
-
-					if (exceedMaxAppointmentsPerCell(maxMultiDay, i)) {
-						Label more = new Label(MESSAGES.monthView_MoreAppointmentsInDay(count - i));
-						more.setStyleName(MORE_LABEL_STYLE);
-						placeItemInGrid(more, dayOfWeek, dayOfWeek,
-								weekOfMonth, calculatedCellAppointments);
-						appointmentCanvas.add(more);
-						break;
-					}
-					layOnAppointment(appointment, dayOfWeek, dayOfWeek,
-							weekOfMonth, i + maxMultiDay);
-				}
-			}
-		}
-	}
+                    if (appointmentLayer > calculatedCellAppointments - 1) {
+                        Label more = new Label(
+                            MESSAGES.monthView_MoreAppointmentsInDay(
+                                count - i));
+                        more.setStyleName(MORE_LABEL_STYLE);
+                        placeItemInGrid(more, dayOfWeek, dayOfWeek,
+                                        weekOfMonth,
+                                        calculatedCellAppointments);
+                        appointmentCanvas.add(more);
+                        break;
+                    }
+                    layOnAppointment(appointment, dayOfWeek, dayOfWeek,
+                                     weekOfMonth, appointmentLayer);
+                }
+            }
+        }
+    }
 
 	private void layOnAppointment(Appointment appointment, int colStart,
 			int colEnd, int row, int cellPosition) {
@@ -338,7 +347,7 @@ public class MonthView extends CalendarView {
 
 		if(calendarWidget.getSettings().isEnableDragDrop())
 			dragController.makeDraggable(panel);
-		
+
 		if (calendarWidget.isTheSelectedAppointment(appointment)) {
 			panel.addStyleName("selected");
 			selectedAppointmentWidgets.add(panel);
@@ -464,7 +473,7 @@ public class MonthView extends CalendarView {
 
 	/**
 	 * Configures a single day in the month grid of this <code>MonthView</code>.
-	 * 
+	 *
 	 * @param row
 	 *            The row in the grid on which the day will be set
 	 * @param col
@@ -510,7 +519,7 @@ public class MonthView extends CalendarView {
 	 * a Widget and therefore an Element. This method attempts to find an
 	 * Appointment based on the provided Element. If no match is found a null
 	 * value is returned.
-	 * 
+	 *
 	 * @param element
 	 *            Element to look up.
 	 * @return Appointment matching the element.
@@ -529,7 +538,7 @@ public class MonthView extends CalendarView {
 	/**
 	 * Finds any related <code>AppointmentWidgets</code> associated to the
 	 * passed Appointment, <code>appt</code>.
-	 * 
+	 *
 	 * @param appt
 	 *            Appointment to match.
 	 * @return List of related AppointmentWidget objects.

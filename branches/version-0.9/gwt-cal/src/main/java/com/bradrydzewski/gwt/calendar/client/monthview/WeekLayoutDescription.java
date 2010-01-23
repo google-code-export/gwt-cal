@@ -70,13 +70,12 @@ public class WeekLayoutDescription {
     }
 
     public int currentStackOrderInDay(int dayIndex) {
-        return topAppointmentsManager.singleDayLowestOrder(dayIndex);
+        return topAppointmentsManager.lowestLayerIndex(dayIndex);
     }
 
     public void addMultiDayAppointment(Appointment appointment) {
         int weekStartDay = dayInWeek(appointment.getStart());
         int weekEndDay = dayInWeek(appointment.getEnd());
-        //System.out.println(appointment.getTitle() + " ----- " + weekStartDay + " to " + weekEndDay);
         topAppointmentsManager.assignLayer(
                 new AppointmentLayoutDescription(weekStartDay, weekEndDay,
                         appointment));

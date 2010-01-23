@@ -94,8 +94,20 @@ public class AppointmentStackingManagerTest {
                 stackManager.getDescriptionsInLayer(1).size());
     }
 
+    @Test
+    public void singleDaysSlipThroughMultidays() {
+        stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+        stackManager.assignLayer(new AppointmentLayoutDescription(0, 1, null));
+
+        assertCurrentStackingOrder(0, 2);
+        assertCurrentStackingOrder(1, 0);
+
+        assertEquals("Next available layer should be after the 2nd. multi-day", 
+            2, stackManager.nextLowestLayerIndex(1, 1));
+    }
+
     private void assertCurrentStackingOrder(int day, int expected) {
         assertEquals("Unexpected lowest stack order for day " + day, expected,
-                stackManager.singleDayLowestOrder(day));
+                stackManager.lowestLayerIndex(day));
     }
 }

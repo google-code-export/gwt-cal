@@ -102,7 +102,7 @@ public class MonthLayoutDescriptionTest {
         // 1st Day
 
         assertEquals("Order for 2W/1D expected to be 2", 2, weekDescriptions[1]
-                .getTopAppointmentsManager().singleDayLowestOrder(0));
+                .getTopAppointmentsManager().lowestLayerIndex(0));
         assertTopAppointmentTitle("Multi Day 1", 1, 0, 0, 0);
         assertTopAppointmentTitle("Takeout...", 1, 0, 1, 0);
 
@@ -113,20 +113,20 @@ public class MonthLayoutDescriptionTest {
 
         // 2nd Day
         assertEquals("Order for 2W/2D expected to be 3", 3, weekDescriptions[1]
-                .getTopAppointmentsManager().singleDayLowestOrder(1));
+                .getTopAppointmentsManager().lowestLayerIndex(1));
         assertTopAppointmentTitle("Multi Day 1", 1, 1, 0, 0);
         assertTopAppointmentTitle("Takeout...", 1, 1, 1, 0);
         assertTopAppointmentTitle("Meal @ Planet Pizza", 1, 1, 2, 0);
 
         //6th Day
         assertEquals("Order for 2W/6D expected to be 2", 2, weekDescriptions[1]
-                .getTopAppointmentsManager().singleDayLowestOrder(5));
+                .getTopAppointmentsManager().lowestLayerIndex(5));
         assertTopAppointmentTitle("Multi Day 1", 1, 5, 0, 0);
         assertTopAppointmentTitle("Jimbob's 2", 1, 5, 1, 3);
 
         //7th Day
         assertEquals("Order for 2W/7D expected to be 3", 3, weekDescriptions[1]
-                .getTopAppointmentsManager().singleDayLowestOrder(6));
+                .getTopAppointmentsManager().lowestLayerIndex(6));
         assertTopAppointmentTitle("Multi Day 1", 1, 6, 0, 0);
         assertTopAppointmentTitle("Watch Matlock", 1, 6, 2, 3);
 
@@ -142,7 +142,7 @@ public class MonthLayoutDescriptionTest {
         System.out.println("--------------------------");
 
         assertEquals("Order for 3W/1D expected to be 2", 2, weekDescriptions[2]
-                .getTopAppointmentsManager().singleDayLowestOrder(0));
+                .getTopAppointmentsManager().lowestLayerIndex(0));
 
         // First Day
         assertTopAppointmentTitle("Multi Day 1", 2, 0, 0, 0);
