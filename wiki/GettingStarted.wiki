@@ -10,6 +10,11 @@
   <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
 }}}
 
+You will also need to download and add gwt-dnd (Drag Drop library). We used version 2.5, but it may also work with newer version.
+{{{
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
+}}}
+
 
 = Creating a Calendar =
 
