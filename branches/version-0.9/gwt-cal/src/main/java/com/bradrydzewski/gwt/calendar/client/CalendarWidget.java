@@ -21,8 +21,11 @@ package com.bradrydzewski.gwt.calendar.client;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.event.DateRequestEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DateRequestHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
+import com.bradrydzewski.gwt.calendar.client.event.HasDateRequestHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasUpdateHandlers;
@@ -31,7 +34,6 @@ import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateHandler;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.HasOpenHandlers;
 import com.google.gwt.event.logical.shared.HasSelectionHandlers;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -61,7 +63,7 @@ import com.google.gwt.user.client.ui.Widget;
 public class CalendarWidget extends InteractiveWidget implements
         HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
         HasOpenHandlers<Appointment>, HasTimeBlockClickHandlers<Date>,
-        HasUpdateHandlers<Appointment> {
+        HasUpdateHandlers<Appointment>, HasDateRequestHandlers<Date> {
 
     /**
      * Set to <code>true</code> if the calendar layout is suspended and cannot
@@ -443,6 +445,10 @@ public class CalendarWidget extends InteractiveWidget implements
     public void fireTimeBlockClickEvent(Date date) {
     	TimeBlockClickEvent.fire(this, date);
     }
+    
+    public void fireDateRequestEvent(Date date) {
+    	DateRequestEvent.fire(this, date);
+    }
 
     public void fireUpdateEvent(Appointment appointment) {
     	//refresh the appointment
@@ -479,6 +485,11 @@ public class CalendarWidget extends InteractiveWidget implements
     public HandlerRegistration addOpenHandler(
             OpenHandler<Appointment> handler) {
         return addHandler(handler, OpenEvent.getType());
+    }
+    
+    public HandlerRegistration addDateRequestHandler(
+            DateRequestHandler<Date> handler) {
+        return addHandler(handler, DateRequestEvent.getType());
     }
 
     public void addToRootPanel(Widget widget) {
