@@ -83,7 +83,7 @@ calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
 
 = Date Request Event =
 
-A `DateRequestEvent` is fired when the View (i.e. MonthView) is requesting to change the date. For example, this event is called when a user clicks the "+ n more" label on the month view. In a sense, the user is requesting to change the date (to a single day view for that date), and the view is publishing this request.
+A `DateRequestEvent` is fired when the View (i.e. `MonthView`) is requesting to change the date. For example, this event is called when a user clicks the "+n more" label on the `MonthView`. In a sense, the user is requesting to change the date (to a single day view for that date), and the view is publishing this request.
 
 {{{
 calendar.addDateRequestHandler(new DateRequestHandler<Date>(){
