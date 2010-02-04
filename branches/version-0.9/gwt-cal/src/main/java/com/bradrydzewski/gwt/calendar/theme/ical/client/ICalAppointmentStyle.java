@@ -8,10 +8,10 @@ class ICalAppointmentStyle extends AppointmentStyle {
 		this.background = background;
 		this.backgroundHeader = border;
 		this.border = border;
-		this.headerText = "FFFFFF";
+		this.headerText = "#FFFFFF";
 		this.text = border;
 		
-		this.selectedHeaderText = "FFFFFF";
+		this.selectedHeaderText = "#FFFFFF";
 		this.selectedBackground = background;
 		this.selectedBackgroundImage = image;
 		this.selectedBackgroundHeader = border;

@@ -2,12 +2,14 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.Date;
 
-import com.bradrydzewski.gwt.calendar.client.i18n.GwtCalMessages;
+import com.bradrydzewski.gwt.calendar.client.i18n.CalendarConstants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 @SuppressWarnings("deprecation")
 public class CalendarModel {
+
+	public static final CalendarConstants MESSAGES = (CalendarConstants) GWT.create(CalendarConstants.class);
 
 	/**
 	 * The number of weeks normally displayed in a month.
@@ -36,20 +38,22 @@ public class CalendarModel {
 			.getFormat("d");
 	
 	private static final DateTimeFormat dayOfWeekFormatter = DateTimeFormat
-			.getFormat("ccccc");
+			.getFormat(MESSAGES.weekdayFormat());
 	
 	private static final DateTimeFormat dayOfWeekAbbrevFormatter = DateTimeFormat
-			.getFormat("EEE");
+			.getFormat(MESSAGES.weekdayFormat());
 	
-	public static final DateTimeFormat hourFormatter = DateTimeFormat.getFormat("h");
+	public static final DateTimeFormat hourFormatter =
+		DateTimeFormat.getFormat(MESSAGES.timeFormat());
 
+	public static final DateTimeFormat dateFormatter =
+		DateTimeFormat.getFormat(MESSAGES.dateFormat());
 
 	public static CalendarModel INSTANCE = new CalendarModel();
 
-   public static final GwtCalMessages MESSAGES = (GwtCalMessages) GWT.create(GwtCalMessages.class);
 
-   public static String AM = "AM";
-   public static String PM = "PM";
+   public static String AM = MESSAGES.am();
+   public static String PM = MESSAGES.pm();
    public static String NOON = MESSAGES.noon();
 
 	public CalendarModel() {

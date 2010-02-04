@@ -2,6 +2,7 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.CalendarModel;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.WindowUtils;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -16,17 +17,13 @@ public class DayViewHeader extends Composite {
 	private AbsolutePanel dayPanel = new AbsolutePanel();
 	private AbsolutePanel splitter = new AbsolutePanel();
 	private HasSettings settings = null;
-	private static final DateTimeFormat DAY_FORMAT = DateTimeFormat.getFormat("EEE, MMM d");
+	//private static final DateTimeFormat DAY_FORMAT = DateTimeFormat.getFormat("EEE, MMM d");
 	private static final String GWT_CALENDAR_HEADER_STYLE = "gwt-calendar-header";
 	private static final String DAY_CELL_CONTAINER_STYLE = "day-cell-container";
 	private static final String YEAR_CELL_STYLE = "year-cell";
 	private static final String SPLITTER_STYLE = "splitter";
 	
-	public static final String[] DAY_LIST = new String[] { "Sun", "Mon", "Tue",
-		"Wed", "Thu", "Fri", "Sat" };
-public static final String[] MONTH_LIST = new String[] { "Jan", "Feb",
-		"Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov",
-		"Dec" };
+
 
 	public DayViewHeader(HasSettings settings) {
 		this.settings = settings;
@@ -73,7 +70,7 @@ public static final String[] MONTH_LIST = new String[] { "Jan", "Feb",
 			//String headerTitle = DAY_LIST[date.getDay()] + ", "
 			//		+ MONTH_LIST[date.getMonth()] + " " + date.getDate();
 			
-			String headerTitle = DAY_FORMAT.format(date);
+			String headerTitle = CalendarModel.INSTANCE.dateFormatter.format(date);
 			
 			Label dayLabel = new Label();
 			dayLabel.setStylePrimaryName("day-cell");

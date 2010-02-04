@@ -33,6 +33,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     private String location;
     private String createdBy;
     private List<Attendee> attendees = new ArrayList<Attendee>();
+    private AppointmentStyle appointmentStyle = AppointmentStyles.BLUE;
     private String style = BLUE;
     //private boolean selected;
     private boolean multiDay = false;
@@ -181,7 +182,18 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     	clone.setStart(this.start);
     	clone.setStyle(this.style);
     	clone.setTitle(this.title);
+    	clone.setStyle(this.style);
     	
     	return clone;
     }
+
+	public AppointmentStyle getAppointmentStyle() {
+		return appointmentStyle;
+	}
+
+	public void setAppointmentStyle(AppointmentStyle appointmentStyle) {
+		this.appointmentStyle = appointmentStyle;
+	}
+    
+    
 }

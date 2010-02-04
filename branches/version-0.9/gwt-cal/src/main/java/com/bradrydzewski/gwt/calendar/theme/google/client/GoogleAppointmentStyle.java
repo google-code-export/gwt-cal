@@ -8,7 +8,7 @@ class GoogleAppointmentStyle extends AppointmentStyle {
 		super();
 		
 		//set the border
-		this.border = border;
+		this.border = background;
 		this.selectedBorder = border;
 		
 		//set the body text
