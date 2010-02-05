@@ -137,15 +137,11 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     }
 
     public boolean isMultiDay() {
-        return multiDay;
-    }
-
-    public boolean isMultiDayAppointment() {
         if (getEnd() != null && getStart() != null) {
             return !DateUtils.areOnTheSameDay(getEnd(), getStart());
         }
         throw new IllegalStateException(
-                "Calculating isMultiDayAppointment with no start/end dates set");
+                "Calculating isMultiDay with no start/end dates set");
     }
 
     public void setMultiDay(boolean isMultiDay) {

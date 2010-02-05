@@ -39,7 +39,7 @@ public class DayLayoutDescription {
     }
 
     public void addAppointment(Appointment appointment) {
-        if (!appointment.isMultiDayAppointment()) {
+        if (!appointment.isMultiDay()) {
             appointments.add(appointment);
         } else {
             throw new IllegalArgumentException(

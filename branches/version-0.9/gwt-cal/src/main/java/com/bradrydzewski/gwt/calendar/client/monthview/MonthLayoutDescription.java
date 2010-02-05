@@ -42,8 +42,7 @@ public class MonthLayoutDescription {
             // causes an index out of bounds exception
             if (startWeek >= 0 && startWeek < weeks.length) {
                 initWeek(startWeek);
-                if (appointment.isMultiDayAppointment() ||
-                        appointment.isAllDay()) {
+                if (appointment.isMultiDay() || appointment.isAllDay()) {
                     positionMultidayAppointment(startWeek, appointment);
                 } else {
                     weeks[startWeek].addAppointment(appointment);
