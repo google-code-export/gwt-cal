@@ -18,10 +18,13 @@
 
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
+import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -39,13 +42,12 @@ import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
-
-import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
 
 /**
  * <p>
@@ -111,6 +113,11 @@ public class MonthView extends CalendarView {
 	 * All appointments are placed on this canvas and arranged.
 	 */
 	private AbsolutePanel appointmentCanvas = new AbsolutePanel();
+	
+	/**
+	 * All "+ n more" Labels, mapped to its cell in the MonthView Grid.
+	 */
+	private HashMap<Element, Integer> moreLabels = new HashMap<Element, Integer>();
 
 	/**
 	 * The first date displayed on the MonthView (1st cell.) This date is not
@@ -220,6 +227,7 @@ public class MonthView extends CalendarView {
 		appointmentCanvas.clear();
 		monthCalendarGrid.clear();
 		appointmentsWidgets.clear();
+		moreLabels.clear();
 		selectedAppointmentWidgets.clear();
 		while (monthCalendarGrid.getRowCount() > 0) {
 			monthCalendarGrid.removeRow(0);
@@ -316,13 +324,14 @@ public class MonthView extends CalendarView {
 
                     if (appointmentLayer > calculatedCellAppointments - 1) {
                         Label more = new Label(
-                            MESSAGES.monthView_MoreAppointmentsInDay(
+                            MESSAGES.more(
                                 count - i));
                         more.setStyleName(MORE_LABEL_STYLE);
                         placeItemInGrid(more, dayOfWeek, dayOfWeek,
                                         weekOfMonth,
                                         calculatedCellAppointments);
                         appointmentCanvas.add(more);
+                        moreLabels.put(more.getElement(),(dayOfWeek)+(weekOfMonth*7));
                         break;
                     }
                     layOnAppointment(appointment, dayOfWeek, dayOfWeek,
@@ -337,19 +346,25 @@ public class MonthView extends CalendarView {
 		AppointmentWidget panel = new AppointmentWidget(appointment);
 
 		placeItemInGrid(panel, colStart, colEnd, row, cellPosition);
-
+		Element penelElem = panel.getElement();
 		if (appointment.isMultiDay()) {
-			panel.setStyleName("multiDayAppointment");
+			panel.setStylePrimaryName("appointment-multiday");
+			DOM.setStyleAttribute(penelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
+			DOM.setStyleAttribute(penelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
+
 		} else {
 			panel.setStyleName("appointment");
+			DOM.setStyleAttribute(penelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
 		}
-		panel.addStyleName(appointment.getStyle());
+		//panel.addStyleName(appointment.getStyle());
+		
 
 		if(calendarWidget.getSettings().isEnableDragDrop())
 			dragController.makeDraggable(panel);
 
 		if (calendarWidget.isTheSelectedAppointment(appointment)) {
-			panel.addStyleName("selected");
+			panel.addStyleDependentName("selected");
+			DOM.setStyleAttribute(panel.getElement(), "borderColor", appointment.getAppointmentStyle().getSelectedBorder());
 			selectedAppointmentWidgets.add(panel);
 		}
 		appointmentsWidgets.add(panel);
@@ -407,6 +422,17 @@ public class MonthView extends CalendarView {
 
 			if (appt != null) {
 				selectAppointment(appt);
+			} else {
+				//else, lets see if a "+ n more" label was clicked
+				if(moreLabels.containsKey(clickedElement)) {
+					//if yes, figure out which cell
+					// and use to calculate date
+					int cell = moreLabels.get(clickedElement);
+					Date date = (Date)firstDateDisplayed.clone();
+					date.setDate(firstDateDisplayed.getDate()+cell);
+					calendarWidget.fireDateRequestEvent(date);
+					Window.alert("more label clicked date: " + date);
+				}
 			}
 		}
 	}
@@ -568,11 +594,15 @@ public class MonthView extends CalendarView {
 
 		if (!clickedAppointmentWidgets.isEmpty()) {
 			for (AppointmentWidget widget : selectedAppointmentWidgets) {
-				widget.removeStyleName("selected");
+				//widget.removeStyleName("selected");
+				widget.removeStyleDependentName("selected");
+				DOM.setStyleAttribute(widget.getElement(), "borderColor", widget.getAppointment().getAppointmentStyle().getBorder());
 			}
 
 			for (AppointmentWidget widget : clickedAppointmentWidgets) {
-				widget.addStyleName("selected");
+				widget.addStyleDependentName("selected");
+				DOM.setStyleAttribute(widget.getElement(), "borderColor", appt.getAppointmentStyle().getSelectedBorder());
+				//widget.addStyleName("selected");
 			}
 
 			selectedAppointmentWidgets.clear();
