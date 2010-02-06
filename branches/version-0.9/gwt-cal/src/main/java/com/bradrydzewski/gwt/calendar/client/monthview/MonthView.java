@@ -42,7 +42,6 @@ import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -113,7 +112,7 @@ public class MonthView extends CalendarView {
 	 * All appointments are placed on this canvas and arranged.
 	 */
 	private AbsolutePanel appointmentCanvas = new AbsolutePanel();
-	
+
 	/**
 	 * All "+ n more" Labels, mapped to its cell in the MonthView Grid.
 	 */
@@ -251,38 +250,36 @@ public class MonthView extends CalendarView {
 		// TODO: don't re-sort the appointment unless necessary
 		Collections.sort(calendarWidget.getAppointments(),
 				APPOINTMENT_COMPARATOR);
-
-        for (int i = 0; i < calendarWidget.getAppointments().size(); i++) {
-            System.out.println(
-                calendarWidget.getAppointments().get(i).getTitle() + " = " +
-                    calendarWidget.getAppointments().get(i).getStart() + " - "
-                    + calendarWidget.getAppointments().get(i).getEnd());
-        }
-
-		// Send appointments to layout manager
-		MonthLayoutDescription monthLayoutDescription = new MonthLayoutDescription(
-				firstDateDisplayed, calendarWidget.getAppointments());
+        // Distribute appointments
+		MonthLayoutDescription monthLayoutDescription = new
+            MonthLayoutDescription(
+				firstDateDisplayed, calendarWidget.getAppointments(),
+                calculatedCellAppointments - 1);
 
 		// Get the layouts for each week in the month
 		WeekLayoutDescription[] weeks = monthLayoutDescription
 				.getWeekDescriptions();
-
+//      System.out.println("\n\n\n\n\n===========================================================================");
 		for (int weekOfMonth = 0; weekOfMonth < weeks.length
 				&& weekOfMonth < monthViewRequiredRows; weekOfMonth++) {
 			WeekLayoutDescription weekDescription = weeks[weekOfMonth];
-
+//         if ( weekDescription != null && weekDescription.getTopAppointmentsManager() != null )
+//         {
+//            System.out.println(weekOfMonth + " weekDescription.getTopAppointmentsManager() = \n" +
+//               weekDescription.getTopAppointmentsManager());
+//         }
 			if (weekDescription != null) {
-				AppointmentStackingManager topAppointmentManager = weekDescription
-						.getTopAppointmentsManager();
-				layOnTopOfTheWeekHangingAppointments(topAppointmentManager,
-						weekOfMonth);
+				layOnTopOfTheWeekHangingAppointments(
+                    weekDescription, weekOfMonth);
 				layOnWeekDaysAppointments(weekDescription, weekOfMonth);
 			}
 		}
 	}
 
 	private void layOnTopOfTheWeekHangingAppointments(
-			AppointmentStackingManager weekTopElements, int weekOfMonth) {
+      WeekLayoutDescription weekDescription, int weekOfMonth) {
+      AppointmentStackingManager weekTopElements
+          = weekDescription.getTopAppointmentsManager();
 		for (int layer = 0; layer < calculatedCellAppointments; layer++) {
 
 			ArrayList<AppointmentLayoutDescription> descriptionsInLayer = weekTopElements
@@ -323,9 +320,7 @@ public class MonthView extends CalendarView {
                                               appointmentLayer + i);
 
                     if (appointmentLayer > calculatedCellAppointments - 1) {
-                        Label more = new Label(
-                            MESSAGES.more(
-                                count - i));
+                        Label more = new Label(MESSAGES.more(count - i));
                         more.setStyleName(MORE_LABEL_STYLE);
                         placeItemInGrid(more, dayOfWeek, dayOfWeek,
                                         weekOfMonth,
@@ -346,18 +341,16 @@ public class MonthView extends CalendarView {
 		AppointmentWidget panel = new AppointmentWidget(appointment);
 
 		placeItemInGrid(panel, colStart, colEnd, row, cellPosition);
-		Element penelElem = panel.getElement();
+		Element panelElem = panel.getElement();
 		if (appointment.isMultiDay()) {
 			panel.setStylePrimaryName("appointment-multiday");
-			DOM.setStyleAttribute(penelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
-			DOM.setStyleAttribute(penelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
+			DOM.setStyleAttribute(panelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
+			DOM.setStyleAttribute(panelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
 
 		} else {
 			panel.setStyleName("appointment");
-			DOM.setStyleAttribute(penelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
+			DOM.setStyleAttribute(panelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
 		}
-		//panel.addStyleName(appointment.getStyle());
-		
 
 		if(calendarWidget.getSettings().isEnableDragDrop())
 			dragController.makeDraggable(panel);
@@ -384,20 +377,14 @@ public class MonthView extends CalendarView {
 	 * get fired for that appointment.
 	 */
 	public void onDoubleClick(Element clickedElement, Event event) {
-
 		if (clickedElement.equals(appointmentCanvas.getElement())) {
-
 			if (calendarWidget.getSettings().getTimeBlockClickNumber() == Click.Double) {
 				dayClicked(event);
 			}
-
 		} else {
-
 			ArrayList<AppointmentWidget> list = findAppointmentWidgetsByElement(clickedElement);
 			if (!list.isEmpty()) {
-				Appointment appt = list.get(0).getAppointment();
-				// if (appt.equals(calendarWidget.getSelectedAppointment()))
-				calendarWidget.fireOpenEvent(appt);
+				calendarWidget.fireOpenEvent(list.get(0).getAppointment());
 			}
 		}
 	}
@@ -409,33 +396,36 @@ public class MonthView extends CalendarView {
 	 */
 	@Override
 	public void onSingleClick(Element clickedElement, Event event) {
-
 		if (clickedElement.equals(appointmentCanvas.getElement())) {
-
 			if (calendarWidget.getSettings().getTimeBlockClickNumber() == Click.Single) {
 				dayClicked(event);
 			}
-
 		} else {
-
-			Appointment appt = findAppointmentByElement(clickedElement);
-
-			if (appt != null) {
-				selectAppointment(appt);
+			Appointment appointment = findAppointmentByElement(clickedElement);
+			if (appointment != null) {
+				selectAppointment(appointment);
 			} else {
 				//else, lets see if a "+ n more" label was clicked
 				if(moreLabels.containsKey(clickedElement)) {
-					//if yes, figure out which cell
-					// and use to calculate date
-					int cell = moreLabels.get(clickedElement);
-					Date date = (Date)firstDateDisplayed.clone();
-					date.setDate(firstDateDisplayed.getDate()+cell);
-					calendarWidget.fireDateRequestEvent(date);
-					Window.alert("more label clicked date: " + date);
+                    calendarWidget.fireDateRequestEvent(
+                        cellDate(moreLabels.get(clickedElement))
+                    );
 				}
 			}
 		}
 	}
+
+    /**
+     * Returns the date corresponding to the <code>cell</code> (as if the
+     * month view grid was a big linear sequence of cells) in the month view
+     * grid.
+     * @param cell The cell number in the month view grid
+     * @return The date that corresponds to the given <code>cell</code>
+     */
+    private Date cellDate(int cell)
+    {
+        return DateUtils.shiftDate(firstDateDisplayed, cell);
+    }
 
 	private void dayClicked(Event event) {
 		int y = event.getClientY() - DOM.getAbsoluteTop(appointmentCanvas.getElement());
@@ -443,10 +433,8 @@ public class MonthView extends CalendarView {
 
 		int row = (int) Math.floor(y / (appointmentCanvas.getOffsetHeight() / monthViewRequiredRows));
 		int col = (int) Math.floor(x / (appointmentCanvas.getOffsetWidth() / DAYS_IN_A_WEEK));
-		int cell = row * DAYS_IN_A_WEEK + col;
-		Date clickedDate = (Date) firstDateDisplayed.clone();
-		clickedDate.setDate(clickedDate.getDate() + cell);
-		calendarWidget.fireTimeBlockClickEvent(clickedDate);
+        calendarWidget.fireTimeBlockClickEvent(
+            cellDate(row * DAYS_IN_A_WEEK + col));
 	}
 
 	private ArrayList<AppointmentWidget> findAppointmentWidgetsByElement(
@@ -475,7 +463,7 @@ public class MonthView extends CalendarView {
 
 		/* Add the calendar weekday heading */
 		for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
-			monthCalendarGrid.setText(0, i, CalendarModel.INSTANCE.WEEKDAY_ABBREV_NAMES[i]);
+			monthCalendarGrid.setText(0, i, CalendarModel.WEEKDAY_ABBREV_NAMES[i]);
 			monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i,
 					HasVerticalAlignment.ALIGN_TOP);
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,
@@ -536,7 +524,6 @@ public class MonthView extends CalendarView {
 				HasVerticalAlignment.ALIGN_TOP);
 		monthCalendarGrid.getCellFormatter().setStyleName(row, col,
 				cellStyle.toString());
-
 	}
 
 	/**
@@ -546,8 +533,7 @@ public class MonthView extends CalendarView {
 	 * Appointment based on the provided Element. If no match is found a null
 	 * value is returned.
 	 *
-	 * @param element
-	 *            Element to look up.
+	 * @param element Element to look up.
 	 * @return Appointment matching the element.
 	 */
 	private Appointment findAppointmentByElement(Element element) {
@@ -589,20 +575,19 @@ public class MonthView extends CalendarView {
 
 	@Override
 	public void onAppointmentSelected(Appointment appt) {
-
 		ArrayList<AppointmentWidget> clickedAppointmentWidgets = findAppointmentWidgets(appt);
 
 		if (!clickedAppointmentWidgets.isEmpty()) {
 			for (AppointmentWidget widget : selectedAppointmentWidgets) {
-				//widget.removeStyleName("selected");
 				widget.removeStyleDependentName("selected");
-				DOM.setStyleAttribute(widget.getElement(), "borderColor", widget.getAppointment().getAppointmentStyle().getBorder());
+				DOM.setStyleAttribute(widget.getElement(),
+                       "borderColor", widget.getAppointment().getAppointmentStyle().getBorder());
 			}
 
 			for (AppointmentWidget widget : clickedAppointmentWidgets) {
 				widget.addStyleDependentName("selected");
-				DOM.setStyleAttribute(widget.getElement(), "borderColor", appt.getAppointmentStyle().getSelectedBorder());
-				//widget.addStyleName("selected");
+				DOM.setStyleAttribute(widget.getElement(),
+                       "borderColor", appt.getAppointmentStyle().getSelectedBorder());
 			}
 
 			selectedAppointmentWidgets.clear();
@@ -610,9 +595,10 @@ public class MonthView extends CalendarView {
 		}
 	}
 
-	// HERE ARE A BUNCH OF CALCULATED VALUES THAT ARE USED DURING LAYOUT
-	// NOT SURE IF THE VARIABLES SHOULD BE KEPT AT THE CLASS LEVEL
-	// OR AT THE METHOD LEVEL
+    /**
+     * Multiple calculated (&quot;cached&quot;) values reused during
+     * laying out the month view elements.
+     */
 
 	private int calculatedWeekDayHeaderHeight;
 	private int calculatedDayHeaderHeight;
@@ -659,11 +645,11 @@ public class MonthView extends CalendarView {
 	private void calculateCellAppointments() {
 
 		int apptPaddingTop = 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
-		int apptPaddingBottom = 0;
+//		int apptPaddingBottom = 0;
 		int apptHeight = 20; // TODO: calculate appointment height dynamically
 
-		calculatedCellAppointments = (int) Math
-				.floor((float) (calculatedCellHeight - apptPaddingTop)
+		calculatedCellAppointments = (int)
+            Math.floor((float) (calculatedCellHeight - apptPaddingTop)
 						/ (float) (apptHeight + apptPaddingTop)) - 1;
 	}
 

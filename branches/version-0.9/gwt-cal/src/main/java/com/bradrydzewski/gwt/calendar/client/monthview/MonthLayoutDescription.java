@@ -20,30 +20,32 @@ public class MonthLayoutDescription {
     private WeekLayoutDescription[] weeks = new WeekLayoutDescription[6];
 
     public MonthLayoutDescription(Date calendarFirstDay,
-                                  ArrayList<Appointment> appointments) {
+        ArrayList<Appointment> appointments, int maxLayer) {
         this.calendarFirstDay = calendarFirstDay;
-        placeAppointments(appointments);
+        placeAppointments(appointments, maxLayer);
     }
 
-    private void initWeek(int weekIndex) {
+    public MonthLayoutDescription(Date calendarFirstDay,
+        ArrayList<Appointment> appointments) {
+        this(calendarFirstDay, appointments, Integer.MAX_VALUE);
+    }
+
+    private void initWeek(int weekIndex, int maxLayer) {
         if (weeks[weekIndex] == null) {
-            weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay);
+            weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay, maxLayer);
         }
     }
 
-    private void placeAppointments(ArrayList<Appointment> appointments) {
+    private void placeAppointments(ArrayList<Appointment> appointments,
+        int maxLayer) {
         for (Appointment appointment : appointments) {
-
             int startWeek =
-                    calculateWeekFor(appointment.getStart(), calendarFirstDay);
-
-            //needed to put this in because if appointment appears
-            // in prior month, we get a negative number, which
-            // causes an index out of bounds exception
+                calculateWeekFor(appointment.getStart(), calendarFirstDay);
+            /* Place appointments only in this month */
             if (startWeek >= 0 && startWeek < weeks.length) {
-                initWeek(startWeek);
+                initWeek(startWeek, maxLayer);
                 if (appointment.isMultiDay() || appointment.isAllDay()) {
-                    positionMultidayAppointment(startWeek, appointment);
+                    positionMultidayAppointment(startWeek, appointment, maxLayer);
                 } else {
                     weeks[startWeek].addAppointment(appointment);
                 }
@@ -56,37 +58,36 @@ public class MonthLayoutDescription {
     }
 
     private void positionMultidayAppointment(int startWeek,
-                                             Appointment appointment) {
+        Appointment appointment, int maxLayer) {
         int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
-
-        initWeek(endWeek);
+        initWeek(endWeek, maxLayer);
         if (isMultiWeekAppointment(startWeek, endWeek)) {
-            distributeOverWeeks(startWeek, endWeek, appointment);
+            distributeOverWeeks(startWeek, endWeek, appointment, maxLayer);
         } else {
             weeks[startWeek].addMultiDayAppointment(appointment);
         }
     }
 
     private void distributeOverWeeks(int startWeek, int endWeek,
-                                     Appointment appointment) {
+        Appointment appointment, int maxLayer) {
         weeks[startWeek].addMultiWeekAppointment(appointment,
-                AppointmentWidgetParts.FIRST_WEEK);
+                                                 AppointmentWidgetParts.FIRST_WEEK);
         for (int week = startWeek + 1; week < endWeek; week++) {
-            initWeek(week);
+            initWeek(week, maxLayer);
             weeks[week].addMultiWeekAppointment(appointment,
-                    AppointmentWidgetParts.IN_BETWEEN);
+                                                AppointmentWidgetParts.IN_BETWEEN);
         }
         if (startWeek < endWeek) {
-            initWeek(endWeek);
+            initWeek(endWeek, maxLayer);
             weeks[endWeek].addMultiWeekAppointment(appointment,
-                    AppointmentWidgetParts.LAST_WEEK);
+                                                   AppointmentWidgetParts.LAST_WEEK);
         }
     }
 
     private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
         int endWeek = (int) Math
-                .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
-                        7d);
+            .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
+                7d);
         return Math.min(endWeek, weeks.length - 1);
     }
 

@@ -52,7 +52,22 @@ public class DateUtils {
      */
     public static int differenceInDays(Date endDate, Date startDate) {
         return (int) Math.floor((endDate.getTime() - startDate.getTime()) /
-                MILLIS_IN_A_DAY);
+            MILLIS_IN_A_DAY);
+    }
+
+    /**
+     * Moves a date <code>shift</code> days. A clone of <code>date</code> to
+     * prevent undesired object modifications.
+     *
+     * @param date  The date to shift
+     * @param shift The number of days to push the original <code>date</code>
+     *              <em>forward</em>
+     * @return A <em>new</em> date pushed <code>shift</code> days forward
+     */
+    public static Date shiftDate(Date date, int shift) {
+        Date result = (Date) date.clone();
+        result.setDate(date.getDate() + shift);
+        return result;
     }
 
     /**
@@ -61,19 +76,19 @@ public class DateUtils {
      * @param date The date to reset
      */
     @SuppressWarnings("deprecation")
-	public static void resetTime(Date date) {
-        long msec = safeInMillis(date);
-        msec = (msec / 1000) * 1000;
-        date.setTime(msec);
+    public static void resetTime(Date date) {
+        long milliseconds = safeInMillis(date);
+        milliseconds = (milliseconds / 1000) * 1000;
+        date.setTime(milliseconds);
         date.setHours(0);
         date.setMinutes(0);
         date.setSeconds(0);
     }
 
     @SuppressWarnings("deprecation")
-	public static boolean areOnTheSameDay(Date dateOne, Date dateTwo) {
+    public static boolean areOnTheSameDay(Date dateOne, Date dateTwo) {
         return dateOne.getDate() == dateTwo.getDate() &&
-                dateOne.getMonth() == dateTwo.getMonth() &&
-                dateOne.getYear() == dateTwo.getYear();
+            dateOne.getMonth() == dateTwo.getMonth() &&
+            dateOne.getYear() == dateTwo.getYear();
     }
 }
