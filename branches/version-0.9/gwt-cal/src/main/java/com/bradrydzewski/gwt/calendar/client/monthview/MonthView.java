@@ -259,15 +259,9 @@ public class MonthView extends CalendarView {
 		// Get the layouts for each week in the month
 		WeekLayoutDescription[] weeks = monthLayoutDescription
 				.getWeekDescriptions();
-//      System.out.println("\n\n\n\n\n===========================================================================");
 		for (int weekOfMonth = 0; weekOfMonth < weeks.length
 				&& weekOfMonth < monthViewRequiredRows; weekOfMonth++) {
 			WeekLayoutDescription weekDescription = weeks[weekOfMonth];
-//         if ( weekDescription != null && weekDescription.getTopAppointmentsManager() != null )
-//         {
-//            System.out.println(weekOfMonth + " weekDescription.getTopAppointmentsManager() = \n" +
-//               weekDescription.getTopAppointmentsManager());
-//         }
 			if (weekDescription != null) {
 				layOnTopOfTheWeekHangingAppointments(
                     weekDescription, weekOfMonth);
@@ -282,8 +276,8 @@ public class MonthView extends CalendarView {
           = weekDescription.getTopAppointmentsManager();
 		for (int layer = 0; layer < calculatedCellAppointments; layer++) {
 
-			ArrayList<AppointmentLayoutDescription> descriptionsInLayer = weekTopElements
-					.getDescriptionsInLayer(layer);
+			ArrayList<AppointmentLayoutDescription> descriptionsInLayer
+            = weekTopElements.getDescriptionsInLayer(layer);
 
 			if (descriptionsInLayer == null) {
 				break;
@@ -309,32 +303,46 @@ public class MonthView extends CalendarView {
 
             int appointmentLayer =
                 topAppointmentManager.lowestLayerIndex(dayOfWeek);
-
+            
             if (dayAppointments != null) {
                 int count = dayAppointments.getAppointments().size();
                 for (int i = 0; i < count; i++) {
-                    Appointment appointment = dayAppointments.getAppointments()
-                        .get(i);
+                    Appointment appointment
+                       = dayAppointments.getAppointments().get(i);
                     appointmentLayer = topAppointmentManager
                         .nextLowestLayerIndex(dayOfWeek,
-                                              appointmentLayer + i);
-
+                                              appointmentLayer);
                     if (appointmentLayer > calculatedCellAppointments - 1) {
-                        Label more = new Label(MESSAGES.more(count - i));
-                        more.setStyleName(MORE_LABEL_STYLE);
-                        placeItemInGrid(more, dayOfWeek, dayOfWeek,
-                                        weekOfMonth,
-                                        calculatedCellAppointments);
-                        appointmentCanvas.add(more);
-                        moreLabels.put(more.getElement(),(dayOfWeek)+(weekOfMonth*7));
-                        break;
+                        int remaining = count + topAppointmentManager.multidayAppointmentsOverLimitOn(dayOfWeek) - i;
+                        if ( remaining == 1 ) {
+                           layOnAppointment(appointment, dayOfWeek, dayOfWeek,
+                                            weekOfMonth, appointmentLayer);
+                        } else {
+                           layOnNMoreLabel(remaining, dayOfWeek, weekOfMonth);
+                        }
+                       break;
                     }
                     layOnAppointment(appointment, dayOfWeek, dayOfWeek,
                                      weekOfMonth, appointmentLayer);
+                    appointmentLayer++;
                 }
+            } else if ( topAppointmentManager.multidayAppointmentsOverLimitOn(dayOfWeek) > 0 ) {
+               layOnNMoreLabel(topAppointmentManager
+                  .multidayAppointmentsOverLimitOn(dayOfWeek),
+                               dayOfWeek, weekOfMonth);               
             }
         }
     }
+
+   private void layOnNMoreLabel(int moreCount, int dayOfWeek, int weekOfMonth){
+      Label more = new Label(MESSAGES.more(moreCount));
+      more.setStyleName(MORE_LABEL_STYLE);
+      placeItemInGrid(more, dayOfWeek, dayOfWeek,weekOfMonth,
+                      calculatedCellAppointments);
+      appointmentCanvas.add(more);
+      moreLabels.put(more.getElement(),(dayOfWeek)+(weekOfMonth*7));
+   }
+
 
 	private void layOnAppointment(Appointment appointment, int colStart,
 			int colEnd, int row, int cellPosition) {
@@ -363,7 +371,7 @@ public class MonthView extends CalendarView {
 		appointmentsWidgets.add(panel);
 		appointmentCanvas.add(panel);
 	}
-
+   
 	/**
 	 * Gets the Month View's primary style name.
 	 */
@@ -667,11 +675,10 @@ public class MonthView extends CalendarView {
 				+ (row * calculatedCellOffsetHeight)
 				+ calculatedDayHeaderHeight + apptPaddingTop
 				+ (cellPosition * (apptHeight + apptPaddingTop));
-
-		// System.out.println(calculatedWeekDayHeaderHeight + " + (" + row +
-		// " * " + calculatedCellOffsetHeight + ") + " +
-		// calculatedDayHeaderHeight + " + " + apptPaddingTop + " + (" +
-		// cellPosition+"*("+apptHeight+"+"+apptPaddingTop + "));");
+//		 System.out.println( "\t" + calculatedWeekDayHeaderHeight + " + (" + row +
+//		 " * " + calculatedCellOffsetHeight + ") + " +
+//		 calculatedDayHeaderHeight + " + " + apptPaddingTop + " + (" +
+//		 cellPosition+"*("+apptHeight+"+"+apptPaddingTop + "));");
 
 		DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
 		DOM.setStyleAttribute(panel.getElement(), "top", top + "px");

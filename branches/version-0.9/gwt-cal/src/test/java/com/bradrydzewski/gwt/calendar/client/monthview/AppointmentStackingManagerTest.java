@@ -12,7 +12,8 @@ import static org.junit.Assert.assertEquals;
  */
 public class AppointmentStackingManagerTest {
 
-   private AppointmentStackingManager stackManager = new AppointmentStackingManager();
+   private AppointmentStackingManager stackManager =
+      new AppointmentStackingManager();
 
    @Test
    public void assignFullWeekDescriptions() {
@@ -125,7 +126,7 @@ public class AppointmentStackingManagerTest {
    }
 
    @Test
-   public void multidayLandsMountains() {
+   public void multidayLandsPike() {
 
       stackManager.setLayerOverflowLimit(2);
 
@@ -140,7 +141,69 @@ public class AppointmentStackingManagerTest {
 
       assertCurrentlyAvailableStackingOrder(0, 4);
       assertCurrentlyAvailableStackingOrder(1, 3);
+   }
 
+   @Test
+   public void multidayAppointmentsOverLimitOn_OneOverflown() {
+      stackManager.setLayerOverflowLimit(2);
+
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 1, null));
+
+      assertEquals("One appointment is above limit", 1,
+                   stackManager.multidayAppointmentsOverLimitOn(0));
+   }
+
+   @Test
+   public void multidayAppointmentsOverLimitOn_NoOverflown() {
+      stackManager.setLayerOverflowLimit(2);
+
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+
+      assertEquals("One appointment is above limit", 0,
+                   stackManager.multidayAppointmentsOverLimitOn(0));
+   }
+
+   @Test
+   public void multidayAppointmentsOverLimitOn_LimitNotSet() {
+
+      for(int i = 0; i < 100; i++){
+         stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      }
+
+      assertEquals("One appointment is above limit", 0,
+                   stackManager.multidayAppointmentsOverLimitOn(0));
+   }
+
+
+
+   @Test
+   public void nextLowestLayerIndex() {
+      // Assume no multi-day are on the day
+      assertEquals("Def. Lowest Layer", 0, stackManager.lowestLayerIndex(0));
+      assertEquals("1st Layer", 0, stackManager.nextLowestLayerIndex(0, 0));
+      assertEquals("2nd Layer", 1, stackManager.nextLowestLayerIndex(0, 1));
+      assertEquals("3rd Layer", 2, stackManager.nextLowestLayerIndex(0, 2));
+      assertEquals("4th Layer", 3, stackManager.nextLowestLayerIndex(0, 3));
+   }
+
+   @Test
+   public void nextLowestLayerIndexInterspersedWithMultidayAppointments() {
+
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 1, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 0, null));
+      stackManager.assignLayer(new AppointmentLayoutDescription(0, 1, null));
+
+      assertCurrentlyAvailableStackingOrder(0, 3);
+      assertCurrentlyAvailableStackingOrder(1, 1);
+
+      assertEquals("Def. Lowest Layer", 1, stackManager.lowestLayerIndex(1));
+      assertEquals("Third multi-day leaves next available layer 3",
+                   3, stackManager.nextLowestLayerIndex(0, 1));
    }
 
    private void assertCurrentlyAvailableStackingOrder(int day, int expected) {

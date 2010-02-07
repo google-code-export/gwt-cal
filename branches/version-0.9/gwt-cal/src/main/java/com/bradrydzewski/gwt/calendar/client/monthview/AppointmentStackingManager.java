@@ -150,7 +150,6 @@ public class AppointmentStackingManager {
             description.spansMoreThanADay()) {
             AppointmentLayoutDescription split = description.split();
             layerDescriptions.add(description);
-            System.out.print("#");
             assignLayer(split);
          } else {
             layerDescriptions.add(description);
@@ -188,6 +187,33 @@ public class AppointmentStackingManager {
    }
 
    /**
+    * Returns the number of appointments (multi-day or all-day, as that's the
+    * type of appointment that the stacking manager deals with only) that
+    * exceeded the <code>layerOverflowLimit</code> value when they were
+    * stacked.
+    *
+    * @param day The day to perform the count
+    * @return The number of days that got a layer higher than the configured
+    *         <code>layerOverflowLimit</code> layer, if there were any
+    */
+   public int multidayAppointmentsOverLimitOn(int day) {
+      int count = 0;
+      for (int layer = 0; layer <= highestLayer; layer++) {
+         ArrayList<AppointmentLayoutDescription> descriptions =
+            layeredDescriptions.get(layer);
+         if (descriptions != null) {
+            for (AppointmentLayoutDescription description : descriptions) {
+               if (layer > layerOverflowLimit &&
+                  description.overlapsWithRange(day, day)) {
+                  count++;
+               }
+            }
+         }
+      }
+      return count;
+   }
+
+   /**
     * Indicates whether there are <em>any</em> appointments that encompass the
     * specified <code>day</code>.
     *
@@ -216,17 +242,14 @@ public class AppointmentStackingManager {
          if (descriptions == null) continue;
          for (AppointmentLayoutDescription desc : descriptions) {
             managerState.append("[").append(i).append("]");
-            for (int before = 0; before < desc.getWeekStartDay(); before++)
-            {
+            for (int before = 0; before < desc.getWeekStartDay(); before++) {
                managerState.append("_");
             }
             for (int dur = desc.getWeekStartDay(); dur <= desc.getWeekEndDay();
-                 dur++)
-            {
+                 dur++) {
                managerState.append("X");
             }
-            for (int after = desc.getWeekEndDay(); after < 6; after++)
-            {
+            for (int after = desc.getWeekEndDay(); after < 6; after++) {
                managerState.append("_");
             }
             managerState.append(" ->").append(desc).append("\n");

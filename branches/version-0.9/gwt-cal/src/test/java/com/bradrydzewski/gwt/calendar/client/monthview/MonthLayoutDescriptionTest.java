@@ -134,13 +134,6 @@ public class MonthLayoutDescriptionTest {
         assertNotNull("Third Week should HAVE descriptions at all",
                 weekDescriptions[2]);
 
-        System.out.println("==========================");
-        for (AppointmentLayoutDescription weekTopStackableDescription : weekDescriptions[2]
-                .getTopAppointmentsManager().getDescriptionsInLayer(0)) {
-            System.out.println(weekTopStackableDescription.getAppointment().getTitle());
-        }
-        System.out.println("--------------------------");
-
         assertEquals("Order for 3W/1D expected to be 2", 2, weekDescriptions[2]
                 .getTopAppointmentsManager().lowestLayerIndex(0));
 
