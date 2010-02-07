@@ -19,6 +19,8 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
+import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewHelper.firstDateShownInAMonthView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -252,8 +254,8 @@ public class MonthView extends CalendarView {
 				APPOINTMENT_COMPARATOR);
         // Distribute appointments
 		MonthLayoutDescription monthLayoutDescription = new
-            MonthLayoutDescription(
-				firstDateDisplayed, calendarWidget.getAppointments(),
+            MonthLayoutDescription( 
+				   firstDateDisplayed, calendarWidget.getAppointments(),
                 calculatedCellAppointments - 1);
 
 		// Get the layouts for each week in the month
@@ -456,15 +458,9 @@ public class MonthView extends CalendarView {
 	 */
 	@SuppressWarnings("deprecation")
 	private void buildCalendarGrid() {
-		Date date = calendarWidget.getDate();
-		date.setDate(1);
 
-		int month = date.getMonth();
-
-		/* If the 1st of the month not Sunday we need to find the prior */
-		date.setDate(date.getDate() - date.getDay());
-
-		firstDateDisplayed = (Date) date.clone();
+      int month = calendarWidget.getDate().getMonth();
+      firstDateDisplayed = firstDateShownInAMonthView(calendarWidget.getDate());
 
 		Date today = new Date();
 		DateUtils.resetTime(today);
@@ -477,13 +473,13 @@ public class MonthView extends CalendarView {
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,
 					WEEKDAY_LABEL_STYLE);
 		}
-
-		monthViewRequiredRows = MonthViewHelper.monthViewRequiredRows(date);
+      Date date = (Date)firstDateDisplayed.clone();
+		monthViewRequiredRows = MonthViewHelper.monthViewRequiredRows(calendarWidget.getDate());
 		for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
 			for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
 
 				if (monthGridRowIndex != 1 || dayOfWeekIndex != 0) {
-					date.setDate(date.getDate() + 1);
+               moveOneDayForward(date);
 				}
 
 				configureDayInGrid(monthGridRowIndex, dayOfWeekIndex, String
