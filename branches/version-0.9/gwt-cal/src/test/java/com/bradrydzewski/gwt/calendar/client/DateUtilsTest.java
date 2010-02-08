@@ -80,6 +80,11 @@ public class DateUtilsTest {
       assertEquals(8, DateUtils.differenceInDays(date("01/03/2011"), date("12/26/2010")));
    }
 
+   @Test
+   public void differenceInDays_consecutive_but_swapped() throws Exception {
+      assertEquals(1,
+                   DateUtils.differenceInDays(date("05/25/1981"), date("05/26/1981")));
+   }
 
    public Date date(String dateString) throws Exception {
       return dateFormatter.parse(dateString);

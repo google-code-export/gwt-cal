@@ -51,17 +51,12 @@ public class DateUtils {
     *         <code>starDate</code> (inclusive)
     */
    public static int differenceInDays(Date endDate, Date startDate) {
-
-      long difference = endDate.getTime() - startDate.getTime();
-      int differenceInDays = 0;
-      do
-      {
-         difference = difference - MILLIS_IN_A_DAY;
-         differenceInDays++;
-      } while(difference >= MILLIS_IN_A_DAY);
-
-      double remainder = Math.ceil((double) difference / (double) MILLIS_IN_A_DAY);
-      return differenceInDays + (int)remainder;
+      long difference = Math.abs(endDate.getTime() - startDate.getTime());
+      int wholeDaysDiff = (int)Math.floor( difference / MILLIS_IN_A_DAY);
+      double remainderMilliseconds = (double)difference % MILLIS_IN_A_DAY;
+      double daysFractionDiff =
+         Math.ceil(remainderMilliseconds / (double) MILLIS_IN_A_DAY);
+      return wholeDaysDiff + (int)daysFractionDiff;
    }
 
    /**
