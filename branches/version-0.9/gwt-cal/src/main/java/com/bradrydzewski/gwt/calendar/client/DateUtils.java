@@ -31,7 +31,7 @@ public class DateUtils {
    public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
    /**
-    * Provides a <code>null</code>-safe way to return the number of millisecons
+    * Provides a <code>null</code>-safe way to return the number of milliseconds
     * on a <code>date</code>.
     *
     * @param date The date whose value in milliseconds will be returned
@@ -50,13 +50,22 @@ public class DateUtils {
     * @return The number of days between <code>endDate</code> and
     *         <code>starDate</code> (inclusive)
     */
+   @SuppressWarnings(value = "deprecation")
    public static int differenceInDays(Date endDate, Date startDate) {
-      long difference = Math.abs(endDate.getTime() - startDate.getTime());
-      int wholeDaysDiff = (int)Math.floor( difference / MILLIS_IN_A_DAY);
-      double remainderMilliseconds = (double)difference % MILLIS_IN_A_DAY;
-      double daysFractionDiff =
-         Math.ceil(remainderMilliseconds / (double) MILLIS_IN_A_DAY);
-      return wholeDaysDiff + (int)daysFractionDiff;
+      int difference = 0;
+      if ( !areOnTheSameDay(endDate, startDate) )
+      {
+         int endDateOffset = -(endDate.getTimezoneOffset() * 60 * 1000);
+         long endDateInstant = endDate.getTime() + endDateOffset;
+         int startDateOffset = -(startDate.getTimezoneOffset() * 60 * 1000);
+         long startDateInstant = startDate.getTime() + startDateOffset;
+         double differenceDouble =
+            (double) Math.abs(endDateInstant - startDateInstant) /
+               (double) MILLIS_IN_A_DAY;
+         differenceDouble = Math.max(1.0D, differenceDouble);
+         difference = (int) differenceDouble;
+      }
+      return difference;
    }
 
    /**

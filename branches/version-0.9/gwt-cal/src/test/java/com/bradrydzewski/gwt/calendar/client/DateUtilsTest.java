@@ -56,7 +56,7 @@ public class DateUtilsTest {
    @Test
    public void firstOfTheMonth_LastOfJan2010() throws Exception {
       Date someDayInMonth = date("01/31/2010");
-      Date first = firstOfTheMonth(someDayInMonth);
+      Date first = DateUtils.firstOfTheMonth(someDayInMonth);
       assertEquals(date("01/01/2010"), first);
       assertNotSame(first, someDayInMonth);
    }
@@ -64,26 +64,90 @@ public class DateUtilsTest {
    @Test
    public void firstOfTheMonth_LastOfFeb2010() throws Exception {
       Date someDayInMonth = date("02/28/2010");
-      Date first = firstOfTheMonth(someDayInMonth);
+      Date first = DateUtils.firstOfTheMonth(someDayInMonth);
       assertEquals(date("02/01/2010"), first);
       assertNotSame(first, someDayInMonth);
    }
 
    @Test
-   public void differenceInDays_SunApr_20100425_MonMay_20100503() throws Exception {
-      assertEquals(8, DateUtils.differenceInDays(date("05/03/2010"), date("04/25/2010")));
+   public void differenceInDays_SunDec_20101226_MonJan_20110103()
+      throws Exception {
+      assertEquals(8, DateUtils.differenceInDays(date("01/03/2011"),
+                                                 date("12/26/2010")));
+   }
+
+   @Test
+   public void differenceInDays_SunApr_20100425_MonMay_20100503()
+      throws Exception {
+      assertEquals(8, DateUtils.differenceInDays(date("05/03/2010"),
+                                                 date("04/25/2010")));
    }
 
 
    @Test
-   public void differenceInDays_SunDec_20101226_MonMay_20110103() throws Exception {
-      assertEquals(8, DateUtils.differenceInDays(date("01/03/2011"), date("12/26/2010")));
+   public void differenceInDays_SunDec_20101226_MonMay_20110103()
+      throws Exception {
+      assertEquals(8, DateUtils.differenceInDays(date("01/03/2011"),
+                                                 date("12/26/2010")));
    }
 
    @Test
    public void differenceInDays_consecutive_but_swapped() throws Exception {
       assertEquals(1,
-                   DateUtils.differenceInDays(date("05/25/1981"), date("05/26/1981")));
+                   DateUtils.differenceInDays(date("05/25/1981"),
+                                              date("05/26/1981")));
+   }
+
+   @Test
+   public void differenceInDays_endDateWithNoHours() throws Exception {
+      assertEquals(1, DateUtils.differenceInDays(date("02/01/2010"),
+                                                 date("01/31/2010")));
+   }
+
+   @Test
+   public void differenceInDays_endDateWithHours() throws Exception {
+
+      Date endDate = date("02/01/2010");
+      endDate.setHours(9);
+      endDate.setMinutes(0);
+      Date startDateFirstInstant = date("01/31/2010");
+      DateUtils.resetTime(startDateFirstInstant);
+      assertEquals(1, DateUtils.differenceInDays(endDate,
+                                                 startDateFirstInstant));
+   }
+
+   @Test
+   public void differenceInDays_startCloseToEOD_endRightAfterBeginningOfDay()
+      throws Exception {
+      Date endDate = date("02/01/2010");
+      endDate.setHours(0);
+      endDate.setMinutes(2);
+      Date startDate = date("01/31/2010");
+      startDate.setHours(23);
+      startDate.setMinutes(58);
+      assertEquals(1, DateUtils.differenceInDays(endDate, startDate));
+   }
+
+   @Test
+   public void differenceInDays_startOnFirstInstant_endOnLastInstant_differentDays()
+      throws Exception {
+      Date endDate = new Date(date("02/02/2010").getTime() - 1);
+      Date startDate = date("01/31/2010");
+      DateUtils.resetTime(startDate);
+      assertEquals(1, DateUtils.differenceInDays(endDate, startDate));
+   }
+
+
+   @Test
+   public void differenceInDays_bothSameDate_DifferentTimes()
+      throws Exception {
+      Date endDate = date("01/31/2010");
+      endDate.setHours(0);
+      endDate.setMinutes(2);
+      Date startDate = date("01/31/2010");
+      startDate.setHours(23);
+      startDate.setMinutes(58);
+      assertEquals(0, DateUtils.differenceInDays(endDate, startDate));
    }
 
    public Date date(String dateString) throws Exception {
