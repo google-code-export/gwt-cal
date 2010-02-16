@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -62,9 +63,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         DOM.setStyleAttribute(this.getElement(), "top", "20px");
         DOM.setStyleAttribute(this.getElement(), "left", "0px");
 
-        // change hour offset to false to facilitate google style
-        settings.setOffsetHourLabels(false);
-        settings.setTimeBlockClickNumber(Click.Double);
+
 
         configureCalendar();
         configureViewsTabBar();
@@ -147,7 +146,16 @@ public class GoogleCalendarPanel extends FlowPanel {
      * @see AppointmentBuilder#build()
      */
     private void configureCalendar() {
+    	
+    	
+        // change hour offset to false to facilitate google style
+        settings.setOffsetHourLabels(false);
+        settings.setTimeBlockClickNumber(Click.Double);
+        settings.setEnableDragDrop(true);    	
+    	
+    	
         calendar = new Calendar();
+        calendar.setSettings(settings);
         //calendar.setView(Calendar.DAY_VIEW);
         calendar.setWidth("100%");
         calendar.addDeleteHandler(new DeleteHandler<Appointment>() {
@@ -202,7 +210,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayAppt.setEnd(new Date(today.getYear(), today.getMonth(),
                 today.getDate() + 14));
         multiDayAppt.setTitle("All day 1");
-        multiDayAppt.setMultiDay(true);
+//        multiDayAppt.setMultiDay(true);
         calendar.addAppointment(multiDayAppt);
         
         Appointment multiDayApptA = new Appointment();
@@ -212,8 +220,8 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayApptA.setEnd(new Date(today.getYear(), today.getMonth(),
                 today.getDate() + 14));
         multiDayApptA.setTitle("All day A");
-        multiDayApptA.setStyle(Appointment.RED);
-        multiDayApptA.setMultiDay(true);
+        multiDayApptA.setAppointmentStyle(AppointmentStyles.RED);
+//        multiDayApptA.setMultiDay(true);
         calendar.addAppointment(multiDayApptA);
 
         Appointment multiDayAppt2 = new Appointment();
@@ -223,8 +231,8 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayAppt2.setEnd(new Date(today.getYear(), today.getMonth(),
                 today.getDate() + 6));
         multiDayAppt2.setTitle("All day 2");
-        multiDayAppt2.setStyle(Appointment.RED);
-        multiDayAppt2.setMultiDay(true);
+        multiDayAppt2.setAppointmentStyle(AppointmentStyles.RED);
+//        multiDayAppt2.setMultiDay(true);
         calendar.addAppointment(multiDayAppt2);
 
         calendar.resumeLayout();

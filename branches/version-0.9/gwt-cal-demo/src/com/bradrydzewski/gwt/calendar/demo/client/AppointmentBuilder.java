@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
 import com.bradrydzewski.gwt.calendar.client.Attending;
 import com.google.gwt.user.client.Random;
@@ -19,17 +21,17 @@ public class AppointmentBuilder {
      * The available styles that can be applied to appointments when using the
      * the &quot;Google&quot; theme.
      */
-    public static final String[] GOOGLE_STYLES =
-            new String[]{"gwt-appointment-green", "gwt-appointment-blue",
-                    "gwt-appointment-lightgreen", "gwt-appointment-bluegrey"};
+    public static final AppointmentStyle[] GOOGLE_STYLES =
+            new AppointmentStyle[]{AppointmentStyles.GREEN, AppointmentStyles.BLUE,
+    		AppointmentStyles.LIGHT_GREEN, AppointmentStyles.BLUE_GREY};
 
     /**
      * The available styles that can be applied to appointments when using the
      * &quot;iCal&quot; theme.
      */
-    public static final String[] ICAL_STYLES =
-            new String[]{"gwt-appointment-green", "gwt-appointment-blue",
-                    "gwt-appointment-fuschia","gwt-appointment-purple"};
+    public static final AppointmentStyle[] ICAL_STYLES =
+            new AppointmentStyle[]{AppointmentStyles.GREEN, AppointmentStyles.BLUE,
+    		AppointmentStyles.PURPLE,AppointmentStyles.RED};
 
     /**
      * Available hours for appointments, from 0 to 24.
@@ -119,7 +121,7 @@ public class AppointmentBuilder {
     /**
      * Generate random Appointments.
      */
-    public static ArrayList<Appointment> build(String[] styles) {
+    public static ArrayList<Appointment> build(AppointmentStyle[] styles) {
 
         ArrayList<Appointment> list = new ArrayList<Appointment>();
 
@@ -143,7 +145,7 @@ public class AppointmentBuilder {
                 Date end = (Date) start.clone();
                 end.setMinutes(start.getMinutes() + dur);
 
-                String style = styles[Random.nextInt(styles.length)];
+                AppointmentStyle style = styles[Random.nextInt(styles.length)];
                 Appointment appt = new Appointment();
                 appt.setStart(start);
                 appt.setEnd(end);
@@ -151,7 +153,7 @@ public class AppointmentBuilder {
                 int titleId = Random.nextInt(TITLES.length);
                 appt.setTitle(TITLES[titleId]);
                 appt.setDescription(DESCRIPTIONS[titleId]);
-                appt.setStyle(style);
+                appt.setAppointmentStyle(style);
 //				appt.addStyleName(style);
                 appt.setLocation(LOCATIONS[Random.nextInt(LOCATIONS.length)]);
                 int attendees = Random.nextInt(EMAIL.length) + 1;
@@ -163,8 +165,8 @@ public class AppointmentBuilder {
                     appt.getAttendees().add(attendee);
                 }
 
-                if (appt.getStart().getDate() != appt.getEnd().getDate())
-                    appt.setMultiDay(true);
+//                if (appt.getStart().getDate() != appt.getEnd().getDate())
+//                    appt.setMultiDay(true);
 
                 list.add(appt);
 
