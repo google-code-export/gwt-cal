@@ -84,7 +84,8 @@ public class DayView extends CalendarView implements HasSettings {
 			for (AppointmentAdapter appt : appointmentAdapters) {
 
 		    	AppointmentWidget panel = new AppointmentWidget();
-		    	panel.addStyleName(appt.getAppointment().getStyle());
+//		    	panel.addStyleName(appt.getAppointment().getStyle());
+		    	panel.setStylePrimaryName("dv-appointment");
 		    	panel.setWidth(appt.getWidth());
 		    	panel.setHeight(appt.getHeight());
 		    	panel.setTitle(appt.getAppointment().getTitle());
@@ -92,11 +93,13 @@ public class DayView extends CalendarView implements HasSettings {
 		    	panel.setLeft(appt.getLeft());
 				panel.setAppointment(appt.getAppointment());
 				panel.setDescription(appt.getAppointment().getDescription());
+				panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
 				dayViewBody.getGrid().grid.add(panel);
 
 				if (calendarWidget.isTheSelectedAppointment(panel
 						.getAppointment())) {
-					panel.addStyleName("gwt-appointment-selected");
+//					panel.addStyleDependentName("selected");
+					panel.setSelected(true);
 					selectedAppointmentWidgets.add(panel);
 				}
 				appointmentWidgets.add(panel);
@@ -118,7 +121,9 @@ public class DayView extends CalendarView implements HasSettings {
         for (AppointmentAdapter appt : adapterList) {
         	
 	    	AppointmentWidget panel = new AppointmentWidget();
-	    	panel.addStyleName(appt.getAppointment().getStyle());
+	    	//panel.addStyleName(appt.getAppointment().getStyle());
+	    	panel.setStylePrimaryName("dv-appointment-multiday");
+	    
 	    	panel.setWidth(appt.getWidth());
 	    	panel.setHeight(appt.getHeight());
 	    	panel.setTitle(appt.getAppointment().getTitle());
@@ -126,12 +131,14 @@ public class DayView extends CalendarView implements HasSettings {
 	    	panel.setLeft(appt.getLeft());
 			panel.setAppointment(appt.getAppointment());
 			panel.setMultiDay(true);
+			panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
 
 			dayViewBody.getGrid().grid.add(panel);
 
 			if (calendarWidget.isTheSelectedAppointment(panel
 					.getAppointment())) {
-				panel.addStyleName("gwt-appointment-selected");
+				panel.setSelected(true);
+//				panel.addStyleDependentName("selected");
 				selectedAppointmentWidgets.add(panel);
 			}
 			appointmentWidgets.add(panel);
@@ -219,13 +226,14 @@ public class DayView extends CalendarView implements HasSettings {
 				//if (calendarWidget.hasAppointmentSelected()) {
 				//	calendarWidget.resetSelectedAppointment();
 					for (AppointmentWidget adapter : selectedAppointmentWidgets) {
-						adapter.removeStyleName("gwt-appointment-selected");
+						//adapter.removeStyleName("gwt-appointment-selected");
+						adapter.setSelected(false);
 					}
 				//}
 
 				for (AppointmentWidget adapter : clickedAppointmentAdapters) {
-
-					adapter.addStyleName("gwt-appointment-selected");
+					adapter.setSelected(true);
+					//adapter.addStyleName("gwt-appointment-selected");
 				}
 
 				selectedAppointmentWidgets.clear();

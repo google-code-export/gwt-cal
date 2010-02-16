@@ -34,32 +34,9 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     private String createdBy;
     private List<Attendee> attendees = new ArrayList<Attendee>();
     private AppointmentStyle appointmentStyle = AppointmentStyles.BLUE;
-    private String style = BLUE;
-    private boolean multiDay = false;
     private boolean allDay = false;
 
-    protected static final String STYLE_PREFIX = "gwt-appointment-";
-    public static final String BLUE = STYLE_PREFIX + "blue";
-    public static final String RED = STYLE_PREFIX + "red";
-    public static final String PINK = STYLE_PREFIX + "pink";
-    public static final String PURPLE = STYLE_PREFIX + "purple";
-    public static final String DARK_PURPLE = STYLE_PREFIX + "darkpurple";
-    public static final String STEELE_BLUE = STYLE_PREFIX + "steelblue";
-    public static final String LIGHT_BLUE = STYLE_PREFIX + "lightblue";
-    public static final String TEAL = STYLE_PREFIX + "teal";
-    public static final String LIGHT_TEAL = STYLE_PREFIX + "lightteal";
-    public static final String GREEN = STYLE_PREFIX + "green";
-    public static final String LIGHT_GREEN = STYLE_PREFIX + "light";
-    public static final String YELLOW_GREEN = STYLE_PREFIX + "yellowgreen";
-    public static final String YELLOW = STYLE_PREFIX + "yellow";
-    public static final String ORANGE = STYLE_PREFIX + "orange";
-    public static final String RED_ORANGE = STYLE_PREFIX + "redorange";
-    public static final String LIGHT_BROWN = STYLE_PREFIX + "lightbrown";
-    public static final String LIGHT_PURPLE = STYLE_PREFIX + "lightpurple";
-    public static final String GREY = STYLE_PREFIX + "grey";
-    public static final String BLUE_GREY = STYLE_PREFIX + "bluegrey";
-    public static final String YELLOW_GREY = STYLE_PREFIX + "yellowgrey";
-    public static final String BROWN = STYLE_PREFIX + "brown";
+
 
     public Date getStart() {
         return start;
@@ -135,18 +112,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
                 "Calculating isMultiDay with no start/end dates set");
     }
 
-    public void setMultiDay(boolean isMultiDay) {
-        this.multiDay = isMultiDay;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
-    }
-
     public boolean isAllDay() {
         return allDay;
     }
@@ -164,11 +129,9 @@ public class Appointment implements Comparable<Appointment>, Serializable {
     	clone.setDescription(this.description);
     	clone.setEnd(this.end);
     	clone.setLocation(this.location);
-    	clone.setMultiDay(this.multiDay);
     	clone.setStart(this.start);
-    	clone.setStyle(this.style);
+    	clone.setAppointmentStyle(this.appointmentStyle);
     	clone.setTitle(this.title);
-    	clone.setStyle(this.style);
     	
     	return clone;
     }

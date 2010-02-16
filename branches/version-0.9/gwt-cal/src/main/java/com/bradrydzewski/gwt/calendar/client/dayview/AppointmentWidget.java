@@ -3,6 +3,7 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -129,11 +130,11 @@ public class AppointmentWidget extends Composite {
         this.selected = selected;
 
         // remove selected style (if exists)
-        this.removeStyleName("gwt-appointment-selected");
+        this.removeStyleDependentName("selected");
 
         // if selected, add the selected style
         if (selected) {
-            this.addStyleName("gwt-appointment-selected");
+            this.addStyleDependentName("selected");
         }
     }
 
@@ -230,5 +231,18 @@ public class AppointmentWidget extends Composite {
 
 	public void setAppointment(Appointment appointment) {
 		this.appointment = appointment;
+	}
+	
+	public void setAppointmentStyle(AppointmentStyle style) {
+
+		if(multiDay)
+			DOM.setStyleAttribute(this.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackgroundHeader());
+		else
+			DOM.setStyleAttribute(this.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackground());
+		
+		DOM.setStyleAttribute(this.getElement(), "borderColor", appointment.getAppointmentStyle().getBackgroundHeader());
+		DOM.setStyleAttribute(this.bodyPanel.getElement(), "color", appointment.getAppointmentStyle().getSelectedBorder());
+		DOM.setStyleAttribute(this.headerPanel.getElement(), "color", appointment.getAppointmentStyle().getHeaderText());
+		DOM.setStyleAttribute(this.headerPanel.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackgroundHeader());
 	}
 }
