@@ -88,7 +88,7 @@ A `DateRequestEvent` is fired when the View (i.e. `MonthView`) is requesting to 
 {{{
 calendar.addDateRequestHandler(new DateRequestHandler<Date>(){
   @Override
-  public void onSelection(DateRequestEvent<Date> event) {
+  public void onDateRequested(DateRequestEvent<Date> event) {
     //in this example we change to the DayView for the given date
     calendar.setView(CalendarViews.DAY, 1);
     calendar.setDate(event.getTarget());
