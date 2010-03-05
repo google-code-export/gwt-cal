@@ -8,7 +8,7 @@ public class ICalAppointmentTheme extends AppointmentTheme {
     private static final AppointmentStyle BLUE    = new ICalAppointmentStyle("#8DAFEA", "#0D50D5", "blue-appt-gradient.gif");
     private static final AppointmentStyle RED     = new ICalAppointmentStyle("#f76260", "#e3231f", "red-appt-gradient.gif");
     private static final AppointmentStyle PURPLE  = new ICalAppointmentStyle("#aa92ea", "#4b2ca0", "purple-appt-gradient.gif");
-    private static final AppointmentStyle GREEN   = new ICalAppointmentStyle("#12A300", "#8EED7F", "green-appt-gradient.gif)");
+    private static final AppointmentStyle GREEN   = new ICalAppointmentStyle("#8EED7F", "#12A300", "green-appt-gradient.gif)");
     private static final AppointmentStyle ORANGE  = new ICalAppointmentStyle("#fca550", "#f37b14", "orange-appt-gradient.gif");
     private static final AppointmentStyle FUCHSIA = new ICalAppointmentStyle("#c45cc3", "#b02cae", "fuschia-appt-gradient.gif");
     private static final AppointmentStyle DEFAULT = BLUE;
