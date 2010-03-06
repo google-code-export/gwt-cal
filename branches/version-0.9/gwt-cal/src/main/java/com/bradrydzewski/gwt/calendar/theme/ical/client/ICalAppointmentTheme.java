@@ -2,15 +2,17 @@ package com.bradrydzewski.gwt.calendar.theme.ical.client;
 
 import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.bradrydzewski.gwt.calendar.client.AppointmentTheme;
+import com.google.gwt.core.client.GWT;
 
 public class ICalAppointmentTheme extends AppointmentTheme {
 
-    private static final AppointmentStyle BLUE    = new ICalAppointmentStyle("#8DAFEA", "#0D50D5", "blue-appt-gradient.gif");
-    private static final AppointmentStyle RED     = new ICalAppointmentStyle("#f76260", "#e3231f", "red-appt-gradient.gif");
-    private static final AppointmentStyle PURPLE  = new ICalAppointmentStyle("#aa92ea", "#4b2ca0", "purple-appt-gradient.gif");
-    private static final AppointmentStyle GREEN   = new ICalAppointmentStyle("#8EED7F", "#12A300", "green-appt-gradient.gif)");
-    private static final AppointmentStyle ORANGE  = new ICalAppointmentStyle("#fca550", "#f37b14", "orange-appt-gradient.gif");
-    private static final AppointmentStyle FUCHSIA = new ICalAppointmentStyle("#c45cc3", "#b02cae", "fuschia-appt-gradient.gif");
+	private static final String URL = GWT.getModuleBaseURL()+"/";
+    private static final AppointmentStyle BLUE    = new ICalAppointmentStyle("#8DAFEA", "#0D50D5", URL+"blue-appt-gradient.gif");
+    private static final AppointmentStyle RED     = new ICalAppointmentStyle("#f76260", "#e3231f", URL+"red-appt-gradient.gif");
+    private static final AppointmentStyle PURPLE  = new ICalAppointmentStyle("#aa92ea", "#4b2ca0", URL+"purple-appt-gradient.gif");
+    private static final AppointmentStyle GREEN   = new ICalAppointmentStyle("#8EED7F", "#12A300", URL+"green-appt-gradient.gif");
+    private static final AppointmentStyle ORANGE  = new ICalAppointmentStyle("#fca550", "#f37b14", URL+"orange-appt-gradient.gif");
+    private static final AppointmentStyle FUCHSIA = new ICalAppointmentStyle("#c45cc3", "#b02cae", URL+"fuschia-appt-gradient.gif");
     private static final AppointmentStyle DEFAULT = BLUE;
 
 	@Override

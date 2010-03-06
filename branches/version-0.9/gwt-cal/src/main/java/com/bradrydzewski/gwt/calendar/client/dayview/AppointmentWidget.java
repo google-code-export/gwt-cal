@@ -136,9 +136,19 @@ public class AppointmentWidget extends Composite {
         if (selected) {
             this.addStyleDependentName("selected");
         }
+        
+		if(multiDay)
+			return;
+		
 		if(selected && this.getAppointment().getAppointmentStyle().getSelectedBackgroundImage()!=null) {
-			DOM.setStyleAttribute(this.headerPanel.getElement(), "backgroundImage", "url("+getAppointment().getAppointmentStyle().getSelectedBackgroundImage()+")");
+			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url("+this.getAppointment().getAppointmentStyle().getSelectedBackgroundImage()+")");
+
+		} else {
+			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
+			System.out.println("set bg image to none");
 		}
+		
+
     }
 
     public float getTop() {
@@ -248,8 +258,14 @@ public class AppointmentWidget extends Composite {
 		DOM.setStyleAttribute(this.headerPanel.getElement(), "color", appointment.getAppointmentStyle().getHeaderText());
 		DOM.setStyleAttribute(this.headerPanel.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackgroundHeader());
 	
+		if(multiDay)
+			return;
+		
 		if(selected && style.getSelectedBackgroundImage()!=null) {
-			DOM.setStyleAttribute(this.headerPanel.getElement(), "backgroundImage", style.getSelectedBackgroundImage());
+			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url("+style.getSelectedBackgroundImage()+")");
+		}
+		else{
+			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
 		}
 	}
 }
