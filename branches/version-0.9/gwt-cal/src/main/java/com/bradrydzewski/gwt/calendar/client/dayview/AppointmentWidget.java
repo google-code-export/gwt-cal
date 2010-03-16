@@ -29,243 +29,266 @@ import com.google.gwt.user.client.ui.Widget;
 public class AppointmentWidget extends Composite {
 
 
-    class Div extends ComplexPanel implements HasAllMouseHandlers {
+   class Div extends ComplexPanel implements HasAllMouseHandlers {
 
-        public Div() {
+      public Div() {
 
-            setElement(DOM.createDiv());
-        }
+         setElement(DOM.createDiv());
+      }
 
-        public void add(Widget w) {
-            super.add(w, getElement());
-        }
+      public void add(Widget w) {
+         super.add(w, getElement());
+      }
 
-        public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-            return addDomHandler(handler, MouseDownEvent.getType());
-        }
+      public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
+         return addDomHandler(handler, MouseDownEvent.getType());
+      }
 
-        public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-            return addDomHandler(handler, MouseUpEvent.getType());
-        }
+      public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+         return addDomHandler(handler, MouseUpEvent.getType());
+      }
 
-        public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-            return addDomHandler(handler, MouseOutEvent.getType());
-        }
+      public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+         return addDomHandler(handler, MouseOutEvent.getType());
+      }
 
-        public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-            return addDomHandler(handler, MouseOverEvent.getType());
-        }
+      public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+         return addDomHandler(handler, MouseOverEvent.getType());
+      }
 
-        public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-            return addDomHandler(handler, MouseMoveEvent.getType());
-        }
+      public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+         return addDomHandler(handler, MouseMoveEvent.getType());
+      }
 
-        public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-            return addDomHandler(handler, MouseWheelEvent.getType());
-        }
-    }
-    private String title;
-    private String description;
-    private Date start;
-    private Date end;
-    private boolean selected;
-    private float top;
-    private float left;
-    private float width;
-    private float height;
-    private AbsolutePanel mainPanel = new AbsolutePanel();
-    private Panel headerPanel = new Div();
-    private Panel bodyPanel = new SimplePanel();
-    private Panel footerPanel = new Div();
-    private Panel timelinePanel = new Div();
-    private Panel timelineFillPanel = new Div();
-    private boolean multiDay = false;
-    private Appointment appointment;
+      public HandlerRegistration addMouseWheelHandler(
+         MouseWheelHandler handler) {
+         return addDomHandler(handler, MouseWheelEvent.getType());
+      }
+   }
 
-    public AppointmentWidget() {
+   private String title;
+   private String description;
+   private Date start;
+   private Date end;
+   private boolean selected;
+   private float top;
+   private float left;
+   private float width;
+   private float height;
+   private AbsolutePanel mainPanel = new AbsolutePanel();
+   private Panel headerPanel = new Div();
+   private Panel bodyPanel = new SimplePanel();
+   private Panel footerPanel = new Div();
+   private Panel timelinePanel = new Div();
+   private Panel timelineFillPanel = new Div();
+   private boolean multiDay = false;
+   private Appointment appointment;
 
-        initWidget(mainPanel);
+   public AppointmentWidget() {
 
-        mainPanel.setStylePrimaryName("gwt-appointment");
-        headerPanel.setStylePrimaryName("header");
-        bodyPanel.setStylePrimaryName("body");
-        footerPanel.setStylePrimaryName("footer");
-        timelinePanel.setStylePrimaryName("timeline");
-        timelineFillPanel.setStylePrimaryName("timeline-fill");
+      initWidget(mainPanel);
 
-        mainPanel.add(headerPanel);
-        mainPanel.add(bodyPanel);
-        mainPanel.add(footerPanel);
-        mainPanel.add(timelinePanel);
-        timelinePanel.add(timelineFillPanel);
-        // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
-        // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
-        // "hidden");
-        DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
-    }
+      mainPanel.setStylePrimaryName("gwt-appointment");
+      headerPanel.setStylePrimaryName("header");
+      bodyPanel.setStylePrimaryName("body");
+      footerPanel.setStylePrimaryName("footer");
+      timelinePanel.setStylePrimaryName("timeline");
+      timelineFillPanel.setStylePrimaryName("timeline-fill");
 
-    public Date getStart() {
-        return start;
-    }
+      mainPanel.add(headerPanel);
+      mainPanel.add(bodyPanel);
+      mainPanel.add(footerPanel);
+      mainPanel.add(timelinePanel);
+      timelinePanel.add(timelineFillPanel);
+      // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
+      // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
+      // "hidden");
+      DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
+   }
 
-    public void setStart(Date start) {
-        this.start = start;
-    }
+   public Date getStart() {
+      return start;
+   }
 
-    public Date getEnd() {
-        return end;
-    }
+   public void setStart(Date start) {
+      this.start = start;
+   }
 
-    public void setEnd(Date end) {
-        this.end = end;
-    }
+   public Date getEnd() {
+      return end;
+   }
 
-    public boolean isSelected() {
-        return selected;
-    }
+   public void setEnd(Date end) {
+      this.end = end;
+   }
 
-    public void setSelected(boolean selected) {
+   public boolean isSelected() {
+      return selected;
+   }
 
-        // set selected
-        this.selected = selected;
+   public void setSelected(boolean selected) {
 
-        // remove selected style (if exists)
-        this.removeStyleDependentName("selected");
+      // set selected
+      this.selected = selected;
 
-        // if selected, add the selected style
-        if (selected) {
-            this.addStyleDependentName("selected");
-        }
-        
-		if(multiDay)
-			return;
-		
-		if(selected && this.getAppointment().getAppointmentStyle().getSelectedBackgroundImage()!=null) {
-			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url("+this.getAppointment().getAppointmentStyle().getSelectedBackgroundImage()+")");
+      // remove selected style (if exists)
+      this.removeStyleDependentName("selected");
 
-		} else {
-			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
-			System.out.println("set bg image to none");
-		}
-		
+      // if selected, add the selected style
+      if (selected) {
+         this.addStyleDependentName("selected");
+      }
 
-    }
+      if (multiDay)
+         return;
 
-    public float getTop() {
-        return top;
-    }
+      if (selected && this.getAppointment().getAppointmentStyle()
+         .getSelectedBackgroundImage() != null) {
+         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url(" +
+            this.getAppointment().getAppointmentStyle()
+               .getSelectedBackgroundImage() + ")");
 
-    public void setTop(float top) {
-        this.top = top;
-        DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
-    }
+      } else {
+         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
+         System.out.println("set bg image to none");
+      }
 
-    public float getLeft() {
-        return left;
-    }
 
-    public void setLeft(float left) {
-        this.left = left;
-        DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
-    }
+   }
 
-    public float getWidth() {
-        return width;
-    }
+   public float getTop() {
+      return top;
+   }
 
-    public void setWidth(float width) {
-        this.width = width;
-        DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
-    }
+   public void setTop(float top) {
+      this.top = top;
+      DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
+   }
 
-    public float getHeight() {
-        return height;
-    }
+   public float getLeft() {
+      return left;
+   }
 
-    public void setHeight(float height) {
-        this.height = height;
-        DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
-    }
+   public void setLeft(float left) {
+      this.left = left;
+      DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
+   }
 
-    public String getTitle() {
-        return title;
-    }
+   public float getWidth() {
+      return width;
+   }
 
-    public void setTitle(String title) {
-        this.title = title;
-        DOM.setInnerText(headerPanel.getElement(), title);
-    }
+   public void setWidth(float width) {
+      this.width = width;
+      DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
+   }
 
-    public String getDescription() {
-        return description;
-    }
+   public float getHeight() {
+      return height;
+   }
 
-    public void setDescription(String description) {
-        this.description = description;
-        DOM.setInnerHTML(bodyPanel.getElement(), description);
-    }
+   public void setHeight(float height) {
+      this.height = height;
+      DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
+   }
 
-    public void formatTimeline(float top, float height) {
-        timelineFillPanel.setHeight(height + "%");
-        DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
-    }
+   public String getTitle() {
+      return title;
+   }
 
-    public int compareTo(AppointmentWidget appt) {
-        // -1 0 1
-        // less, equal, greater
-        int compare = this.getStart().compareTo(appt.getStart());
+   public void setTitle(String title) {
+      this.title = title;
+      DOM.setInnerText(headerPanel.getElement(), title);
+   }
 
-        if (compare == 0) {
-            compare = appt.getEnd().compareTo(this.getEnd());
-        }
+   public String getDescription() {
+      return description;
+   }
 
-        return compare;
-    }
+   public void setDescription(String description) {
+      this.description = description;
+      DOM.setInnerHTML(bodyPanel.getElement(), description);
+   }
 
-    public Widget getMoveHandle() {
-        return headerPanel;
-    }
+   public void formatTimeline(float top, float height) {
+      timelineFillPanel.setHeight(height + "%");
+      DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
+   }
 
-    public Widget getResizeHandle() {
-        return footerPanel;
-    }
+   public int compareTo(AppointmentWidget appt) {
+      // -1 0 1
+      // less, equal, greater
+      int compare = this.getStart().compareTo(appt.getStart());
 
-    public boolean isMultiDay() {
-        return multiDay;
-    }
+      if (compare == 0) {
+         compare = appt.getEnd().compareTo(this.getEnd());
+      }
 
-    public void setMultiDay(boolean isMultiDay) {
-        this.multiDay = isMultiDay;
-    }
+      return compare;
+   }
 
-	public Appointment getAppointment() {
-		return appointment;
-	}
+   public Widget getMoveHandle() {
+      return headerPanel;
+   }
 
-	public void setAppointment(Appointment appointment) {
-		this.appointment = appointment;
-	}
-	
-	public void setAppointmentStyle(AppointmentStyle style) {
+   public Widget getResizeHandle() {
+      return footerPanel;
+   }
 
-		if(multiDay)
-			DOM.setStyleAttribute(this.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackgroundHeader());
-		else
-			DOM.setStyleAttribute(this.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackground());
-		
-		DOM.setStyleAttribute(this.getElement(), "borderColor", appointment.getAppointmentStyle().getBackgroundHeader());
-		DOM.setStyleAttribute(this.bodyPanel.getElement(), "color", appointment.getAppointmentStyle().getSelectedBorder());
-		DOM.setStyleAttribute(this.headerPanel.getElement(), "color", appointment.getAppointmentStyle().getHeaderText());
-		DOM.setStyleAttribute(this.headerPanel.getElement(), "backgroundColor", appointment.getAppointmentStyle().getBackgroundHeader());
-	
-		if(multiDay)
-			return;
-		
-		if(selected && style.getSelectedBackgroundImage()!=null) {
-			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url("+style.getSelectedBackgroundImage()+")");
-		}
-		else{
-			DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
-		}
-	}
+   public boolean isMultiDay() {
+      return multiDay;
+   }
+
+   public void setMultiDay(boolean isMultiDay) {
+      this.multiDay = isMultiDay;
+   }
+
+   public Appointment getAppointment() {
+      return appointment;
+   }
+
+   public void setAppointment(Appointment appointment) {
+      this.appointment = appointment;
+   }
+
+   public void setAppointmentStyle(AppointmentStyle style) {
+
+      if (appointment.getAppointmentStyle() != null) {
+         if (multiDay)
+            DOM.setStyleAttribute(
+               getElement(), "backgroundColor",
+               appointment.getAppointmentStyle().getBackgroundHeader());
+         else
+            DOM.setStyleAttribute(
+               getElement(), "backgroundColor",
+               appointment.getAppointmentStyle().getBackground());
+
+         DOM.setStyleAttribute(
+            getElement(), "borderColor",
+            appointment.getAppointmentStyle().getBackgroundHeader());
+
+         DOM.setStyleAttribute(
+            bodyPanel.getElement(), "color",
+            appointment.getAppointmentStyle().getSelectedBorder());
+
+         DOM.setStyleAttribute(
+            headerPanel.getElement(), "color",
+            appointment.getAppointmentStyle().getHeaderText());
+
+         DOM.setStyleAttribute(
+            headerPanel.getElement(), "backgroundColor",
+            appointment.getAppointmentStyle().getBackgroundHeader());
+
+         if (multiDay)
+            return;
+
+         if (selected && style.getSelectedBackgroundImage() != null) {
+            DOM.setStyleAttribute(
+               getElement(), "backgroundImage",
+               "url(" + style.getSelectedBackgroundImage() + ")");
+         } else {
+            DOM.setStyleAttribute(getElement(), "backgroundImage", "none");
+         }
+      }
+   }
 }
