@@ -15,18 +15,6 @@ import com.bradrydzewski.gwt.calendar.client.DateUtils;
  */
 public class AppointmentUtil {
 
-    /**
-     * Provides a <code>null</code>-safe way to return the number of millisecons
-     * on a <code>date</code>.
-     *
-     * @param date The date whose value in milliseconds will be returned
-     * @return The number of milliseconds in <code>date</code>, <code>0</code>
-     *         (zero) if <code>date</code> is <code>null</code>.
-     */
-    private static long safeInMillis(Date date) {
-        return date != null ? date.getTime() : 0;
-    }
-
     public static ArrayList filterListByDateRange(ArrayList<Appointment> fullList, Date date,
                                                   int days) {
         ArrayList<Appointment> group = new ArrayList<Appointment>();
@@ -75,14 +63,16 @@ public class AppointmentUtil {
     }
 
     /**
-     * filters a list of appointments and returns only appointments with a start
+     * Filters a list of appointments and returns only appointments with a start
      * date equal to the date provided. FYI - I hate everything about this
      * method and am pissed off I have to use it. May be able to avoid it in the
      * future
      *
-     * @param fullList
-     * @param startDate
-     * @return
+     * @param fullList A full set of <code>Appointment</code>s, that will be filtered
+     * with the above described rule
+     * @param startDate The start date
+     * @return A list with all appointments whose start date is on or after the
+     * passed <code>startDate</code>
      */
     public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate) {
 
@@ -93,15 +83,13 @@ public class AppointmentUtil {
                 startDate.getDate(), 0, 0, 0);
         endDate.setDate(endDate.getDate() + 1);
 
-        for (Appointment aFullList : fullList) {
-            Appointment tmpAppt = (Appointment) aFullList;
-
-            if (!tmpAppt.isMultiDay() && tmpAppt.getEnd()
-                    .before(endDate)) {
+        for (Appointment appointment : fullList) {
+           if (!appointment.isMultiDay() &&
+                appointment.getEnd().before(endDate)) {
                 //TODO: probably can shorten this by using the compareTo method
-                if (tmpAppt.getStart().after(startDate) || tmpAppt.getStart()
-                        .equals(startDate)) {
-                    group.add(tmpAppt);
+                if (appointment.getStart().after(startDate) ||
+                    appointment.getStart().equals(startDate)) {
+                    group.add(appointment);
                 }
             }
         }
