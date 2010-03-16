@@ -6,7 +6,7 @@
     <groupId>com.bradrydzewski</groupId>
     <artifactId>gwt-cal</artifactId>
     <packaging>jar</packaging>
-    <version>0.9.0</version>
+    <version>0.9-SNAPSHOT</version>
     <name>gwt-cal</name>
     <licenses>
         <license>
