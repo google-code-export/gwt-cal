@@ -2,12 +2,9 @@ package com.bradrydzewski.gwt.calendar.client.util;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.dayview.AppointmentWidget;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.Element;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 
 /**
  * Utility class for several operations involving time and {@link Appointment}
@@ -17,9 +14,6 @@ import com.google.gwt.user.client.Element;
  * @author Carlos D. Morales
  */
 public class AppointmentUtil {
-    public static List<Date> findDatesOccupied(Date from, Date to, Date in) {
-        return null;
-    }
 
     /**
      * Provides a <code>null</code>-safe way to return the number of millisecons
@@ -37,10 +31,8 @@ public class AppointmentUtil {
                                                   int days) {
         ArrayList<Appointment> group = new ArrayList<Appointment>();
         Date startDate = (Date) date.clone();
-        resetTime(startDate);
-        Date endDate = (Date) date.clone();
-        resetTime(endDate);
-        endDate.setDate(endDate.getDate() + days);
+        DateUtils.resetTime(startDate);
+        Date endDate = DateUtils.shiftDate(date, days);
 
         for (Appointment appointment : fullList) {
             if (appointment.isMultiDay() && rangeContains(appointment,
@@ -55,7 +47,7 @@ public class AppointmentUtil {
     public static boolean rangeContains(Appointment appt, Date date) {
         Date rangeEnd = (Date) date.clone();
         rangeEnd.setDate(rangeEnd.getDate() + 1);
-        resetTime(rangeEnd);
+        DateUtils.resetTime(rangeEnd);
         return rangeContains(appt, date, rangeEnd);
     }
 
@@ -71,10 +63,10 @@ public class AppointmentUtil {
      */
     public static boolean rangeContains(Appointment appointment,
                                         Date rangeStart, Date rangeEnd) {
-        Long apptStartMillis = appointment.getStart().getTime();
-        Long apptEndMillis = appointment.getEnd().getTime();
-        Long rangeStartMillis = rangeStart.getTime();
-        Long rangeEndMillis = rangeEnd.getTime();
+        long apptStartMillis = appointment.getStart().getTime();
+        long apptEndMillis = appointment.getEnd().getTime();
+        long rangeStartMillis = rangeStart.getTime();
+        long rangeEndMillis = rangeEnd.getTime();
 
         return apptStartMillis >= rangeStartMillis
                 && apptStartMillis < rangeEndMillis
@@ -104,32 +96,17 @@ public class AppointmentUtil {
         for (Appointment aFullList : fullList) {
             Appointment tmpAppt = (Appointment) aFullList;
 
-            if (tmpAppt.isMultiDay() == false && tmpAppt.getEnd()
+            if (!tmpAppt.isMultiDay() && tmpAppt.getEnd()
                     .before(endDate)) {
                 //TODO: probably can shorten this by using the compareTo method
                 if (tmpAppt.getStart().after(startDate) || tmpAppt.getStart()
                         .equals(startDate)) {
                     group.add(tmpAppt);
-                } else {
-                    // System.out.println(" exiting filter at index " +i+ " ,"
-                    // +group.size()+ " found");
-                    // return group;
                 }
             }
         }
 
         return group;
-    }
-
-    public static AppointmentWidget checkAppointmentElementClicked(
-            Element element, List<AppointmentWidget> appointments) {
-        for (AppointmentWidget appt : appointments) {
-            //throw new RuntimeException("checkAppointmentElementClicked is not implemented");
-            if (DOM.isOrHasChild(appt.getElement(), element)) {
-                return appt;
-            }
-        }
-        return null;
     }
 
     /**

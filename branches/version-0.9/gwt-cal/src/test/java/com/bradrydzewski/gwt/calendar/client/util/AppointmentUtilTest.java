@@ -1,43 +1,43 @@
 package com.bradrydzewski.gwt.calendar.client.util;
 
-import com.google.gwt.junit.client.GWTTestCase;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import org.junit.Before;
+import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * Created by IntelliJ IDEA. User: ytsejammer Date: Oct 27, 2009 Time: 2:43:59
- * PM To change this template use File | Settings | File Templates.
- */
-public class AppointmentUtilGwtCalTest extends GWTTestCase {
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
-    private DateTimeFormat dateFormatter = null;
+/**
+ * Test cases for the logic in the <code>AppointmentUtil</code>
+ * utilities class.
+ *
+ * @author Carlos D. Morales
+ */
+public class AppointmentUtilTest {
+
+    private DateFormat dateFormatter = null;
     private Date rangeStart = null;
     private Date rangeEnd = null;
     private Appointment appointment = null;
 
-    @Override
-    protected void gwtSetUp() throws Exception {
-        super.gwtSetUp();
-        dateFormatter = DateTimeFormat.getShortDateFormat();
+    @Before
+    public void init() throws Exception {
+        dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
         rangeStart = dateFormatter.parse("10/20/2009");
         rangeEnd = dateFormatter.parse("10/21/2009");
         appointment = new Appointment();
     }
 
     /**
-     * Returns the name of the Calendar module.
-     */
-    public String getModuleName() {
-        return "com.bradrydzewski.gwt.calendar.Calendar";
-    }
-
-    /**
      * Tests that an appointment completely out of the range
      * is not contained in the range.
      */
-    public void testRangeContains_AppointmentOutOfRange() {
+    @Test
+    public void rangeContains_AppointmentOutOfRange() throws Exception {
         appointment.setStart(dateFormatter.parse("11/17/2009"));
         appointment.setEnd(dateFormatter.parse("10/19/2009"));
         assertFalse(
@@ -49,7 +49,8 @@ public class AppointmentUtilGwtCalTest extends GWTTestCase {
      * with a specified range on the left side is considered contained in the
      * range.
      */
-    public void testRangeContains_AppointmentOverlapsOnLeft() {
+    @Test
+    public void testRangeContains_AppointmentOverlapsOnLeft() throws Exception {
         appointment.setStart(dateFormatter.parse("10/19/2009"));
         appointment.setEnd(dateFormatter.parse("10/25/2009"));
         assertTrue(
@@ -60,7 +61,8 @@ public class AppointmentUtilGwtCalTest extends GWTTestCase {
      * Tests that an appointment completely contained in the range
      * is actually considered contained.
      */
-    public void testRangeContains_AppointmentContained() {
+    @Test
+    public void rangeContains_AppointmentContained() throws Exception {
         appointment.setStart(dateFormatter.parse("10/20/2009"));
         appointment.setEnd(dateFormatter.parse("10/20/2009"));
         assertTrue(AppointmentUtil.rangeContains(appointment, rangeStart, rangeEnd));
@@ -70,7 +72,8 @@ public class AppointmentUtilGwtCalTest extends GWTTestCase {
      * Tests that an appointment whose start and end date exactly
      * overlap on the range is considered contained.
      */
-    public void testRangeContains_AppointmenEqualsRange() {
+    @Test
+    public void rangeContains_AppointmenEqualsRange() throws Exception {
         appointment.setStart(dateFormatter.parse("10/20/2009"));
         appointment.setEnd(dateFormatter.parse("10/21/2009"));
         assertTrue(AppointmentUtil.rangeContains(appointment, rangeStart, rangeEnd));
