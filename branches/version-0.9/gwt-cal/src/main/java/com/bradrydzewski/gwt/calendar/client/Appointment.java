@@ -25,13 +25,13 @@ import java.util.List;
 
 /**
  * Represents an event that Calendar Views display and manipulate through the
- * gwt-cal provided user interface elements. <p/> <p>The
+ * gwt-cal provided user interface elements. <p>The
  * <code>Appointment</code> class provides a set of text-based properties to
  * describe it, including a <em>title, description, location, createdBy</em>,
  * etc. Additional to these, there is a set of properties that exist to provide
  * the gwt-cal components with information useful during the
  * <code>Appointment</code> rendering in the widget views (<code>allDay</code>,
- * <code>recurring</code>, etc.)</p> <p/> <p>All <code>Appointment</code>
+ * <code>recurring</code>, etc.)</p> <p>All <code>Appointment</code>
  * properties are ultimately used by the gwt-cal views and it is up to these
  * components to decide how to render (if at all) them as well as to provide
  * appropriate runtime features to modify them.</p>
@@ -49,9 +49,28 @@ public class Appointment implements Comparable<Appointment>, Serializable {
    private String location;
    private String createdBy;
    private List<Attendee> attendees = new ArrayList<Attendee>();
-   private AppointmentStyle appointmentStyle = AppointmentStyles.BLUE;
+   private AppointmentStyle appointmentStyle = null;
    private boolean allDay = false;
 
+   /**
+    * <p>Creates an <code>Appointment</code> with the following attributes
+    * set to <code>null</code>
+    *
+    * <ul>
+    *    <li><code>title</code></li>
+    *    <li><code>description</code></li>
+    *    <li><code>start</code></li>
+    *    <li><code>end</code></li>
+    *    <li><code><code>location</code></li>
+    *    <li><code>createdBy</code></li>
+    * </ul>
+    * the <code>attendees</code> collection
+    * empty and the <code>allDay</code> property <code>false</code>.</p>
+    * 
+    */
+   public Appointment() {
+      
+   }
 
    /**
     * Returns the configured start time-stamp of this <code>Appointment</code>.
