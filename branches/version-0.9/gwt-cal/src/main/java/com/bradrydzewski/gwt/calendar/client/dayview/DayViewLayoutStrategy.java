@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 
@@ -323,7 +324,7 @@ public class DayViewLayoutStrategy {
 //        tempStartDate.setSeconds(0);
         for (int i = 0; i < days; i++) {
             Date d = (Date) tempStartDate.clone();
-            AppointmentUtil.resetTime(d);
+            DateUtils.resetTime(d);
             //appointmentDayMap.put(d, new ArrayList<AppointmentAdapter>());
             daySlotMap.put(i, new HashMap<Integer, Integer>());
             dateList.add(d);

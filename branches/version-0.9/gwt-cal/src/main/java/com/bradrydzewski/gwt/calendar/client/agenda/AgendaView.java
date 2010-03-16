@@ -25,6 +25,7 @@ import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -72,18 +73,23 @@ public class AgendaView extends CalendarView {
 			this.detailsPanel = detailsPanel;
 			this.appointment = appointment;
 		}
+
 		public Widget getTitleLabel() {
 			return titleLabel;
 		}
+
 		public Widget getDateLabel() {
 			return dateLabel;
 		}
+
 		public Widget getDetailsLabel() {
 			return detailsLabel;
 		}
+
 		public Appointment getAppointment() {
 			return appointment;
 		}
+
 		public Widget getDetailsPanel() {
 			return detailsPanel;
 		}
@@ -217,8 +223,8 @@ public class AgendaView extends CalendarView {
 		//Get the start date, make sure time is 0:00:00 AM
 		Date tmpDate = (Date) calendarWidget.getDate().clone();
 		Date today = new Date();
-		AppointmentUtil.resetTime(today);
-		AppointmentUtil.resetTime(tmpDate);
+      DateUtils.resetTime(today);
+      DateUtils.resetTime(tmpDate);
 		
 		
 		int row = 0;

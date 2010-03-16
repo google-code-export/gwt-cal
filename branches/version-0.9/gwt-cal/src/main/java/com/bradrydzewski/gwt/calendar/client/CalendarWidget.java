@@ -109,7 +109,7 @@ public class CalendarWidget extends InteractiveWidget implements
       super();
       appointmentManager = new AppointmentManager();
       this.date = date;
-      AppointmentUtil.resetTime(this.date);
+      DateUtils.resetTime(this.date);
    }
 
    /**
@@ -133,7 +133,7 @@ public class CalendarWidget extends InteractiveWidget implements
    }
 
    public void setDate(Date date, int days) {
-      AppointmentUtil.resetTime(date);
+      DateUtils.resetTime(date);
       this.date = date;
       view.setDisplayedDays(days);
       refresh();

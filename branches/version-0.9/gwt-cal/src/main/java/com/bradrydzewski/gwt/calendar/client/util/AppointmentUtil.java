@@ -108,19 +108,5 @@ public class AppointmentUtil {
 
         return group;
     }
-
-    /**
-     * Resets the date to have no time modifiers (hours, minutes, seconds.)
-     *
-     * @param date The date to reset
-     */
-    public static void resetTime(Date date) {
-        long msec = safeInMillis(date);
-        msec = (msec / 1000) * 1000;
-        date.setTime(msec);
-        date.setHours(0);
-        date.setMinutes(0);
-        date.setSeconds(0);
-    }
 }
 
