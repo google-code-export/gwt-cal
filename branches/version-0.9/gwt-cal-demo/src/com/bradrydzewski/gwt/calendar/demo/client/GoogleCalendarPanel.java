@@ -63,8 +63,6 @@ public class GoogleCalendarPanel extends FlowPanel {
         DOM.setStyleAttribute(this.getElement(), "top", "20px");
         DOM.setStyleAttribute(this.getElement(), "left", "0px");
 
-
-
         configureCalendar();
         configureViewsTabBar();
 
@@ -145,6 +143,7 @@ public class GoogleCalendarPanel extends FlowPanel {
      *
      * @see AppointmentBuilder#build()
      */
+    @SuppressWarnings("deprecation")
     private void configureCalendar() {
     	
     	
@@ -204,6 +203,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         Date today = new Date();
 
         Appointment multiDayAppt = new Appointment();
+        multiDayAppt.setAppointmentStyle(AppointmentStyles.BLUE);
         multiDayAppt.setStart(
                 new Date(today.getYear(), today.getMonth(), today.getDate(),
                         0, 0, 0));

@@ -8,6 +8,7 @@ import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
 import com.bradrydzewski.gwt.calendar.client.Attending;
+
 import com.google.gwt.user.client.Random;
 
 /**
@@ -15,6 +16,7 @@ import com.google.gwt.user.client.Random;
  * dummy data.
  *
  * @author Brad Rydzewski
+ * @author Carlos D. Morales
  */
 public class AppointmentBuilder {
     /**
@@ -121,15 +123,15 @@ public class AppointmentBuilder {
     /**
      * Generate random Appointments.
      */
+    @SuppressWarnings("deprecation")
     public static ArrayList<Appointment> build(AppointmentStyle[] styles) {
-
         ArrayList<Appointment> list = new ArrayList<Appointment>();
 
         Date now = new Date();
         now.setHours(0);
         now.setMinutes(0);
         now.setSeconds(0);
-        now.setDate(now.getDate());//-5
+        now.setDate(now.getDate());
 
         for (int day = 0; day < 14; day++) {
 
@@ -154,7 +156,6 @@ public class AppointmentBuilder {
                 appt.setTitle(TITLES[titleId]);
                 appt.setDescription(DESCRIPTIONS[titleId]);
                 appt.setAppointmentStyle(style);
-//				appt.addStyleName(style);
                 appt.setLocation(LOCATIONS[Random.nextInt(LOCATIONS.length)]);
                 int attendees = Random.nextInt(EMAIL.length) + 1;
                 for (int i = 0; i < attendees; i++) {
@@ -169,14 +170,11 @@ public class AppointmentBuilder {
 //                    appt.setMultiDay(true);
 
                 list.add(appt);
-
             }
 
             //increment date by +1
             now.setDate(now.getDate() + 1);
         }
-
         return list;
     }
-
 }
