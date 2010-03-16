@@ -15,7 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/
  */
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import org.junit.Test;
 
