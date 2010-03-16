@@ -19,27 +19,47 @@ package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
 
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.previousDay;
+
+
 import java.util.Date;
 
 /**
- * Contains utilities with logic required to generate the {@link
+ * Contains date-related utilities with logic required to generate the {@link
  * com.bradrydzewski.gwt.calendar.client.monthview.MonthView}.
  *
  * @author Carlos D. Morales
  */
-public class MonthViewHelper {
+public class MonthViewDateUtils {
 
-   private static final long MILLIS_IN_A_DAY = 86400000;
-
+   /**
+    * Calculates the first date that should be displayed in a month view.
+    * Depending on the year and month, sometimes, viewing at a month will show
+    * days from the previous month in the first week.
+    *
+    * @param dayInMonth Any day in the month that is being visualized in a month
+    *                   view
+    * @return The first date that should appear on the first week of a month
+    *         view
+    */
    @SuppressWarnings("deprecation")
    public static Date firstDateShownInAMonthView(Date dayInMonth) {
       Date date = DateUtils.firstOfTheMonth(dayInMonth);
-      /* If the 1st of the month not Sunday we need to find the prior */      
+      /* If the 1st of the month not Sunday we need to find the prior */
       date.setDate(date.getDate() - date.getDay());
       return date;
    }
 
-
+   /**
+    * Dynamically calculates the number of rows required to display all the days
+    * in a month.
+    *
+    * @param dayInMonth Any day in the month that is being visualized through
+    *                   the month view
+    * @return The number of rows (which represent weeks in the month view)
+    *         required to display all days in the month view
+    */
    @SuppressWarnings("deprecation")
    public static int monthViewRequiredRows(Date dayInMonth) {
       int requiredRows = 5;
@@ -63,10 +83,19 @@ public class MonthViewHelper {
             requiredRows = 6;
          }
       }
-//        com.google.gwt.user.client.Window.alert("The first of the month " + dayInMonth + " , requiredRows " + requiredRows);
       return requiredRows;
    }
 
+   /**
+    * Returns the total number of days between <code>start</code> and
+    * <code>end</code>.
+    *
+    * @param start The first day in the period
+    * @param end   The last day in the period
+    * @return The number of days between <code>start</code> and
+    *         <code>end</code>, the minimum difference being one
+    *         (<code>1</code>)
+    */
    @SuppressWarnings("deprecation")
    private static int daysInPeriod(Date start, Date end) {
       if (start.getMonth() != end.getMonth()) {
@@ -74,19 +103,5 @@ public class MonthViewHelper {
             "Start and end dates must be in the same month.");
       }
       return 1 + end.getDate() - start.getDate();
-   }
-
-   @SuppressWarnings("deprecation")
-   public static Date firstOfNextMonth(Date date) {
-      Date firstOfNextMonth = null;
-      if (date != null) {
-         int year = date.getMonth() == 11 ? date.getYear() + 1 : date.getYear();
-         firstOfNextMonth = new Date(year, date.getMonth() + 1 % 11, 1);
-      }
-      return firstOfNextMonth;
-   }
-
-   public static Date previousDay(Date date) {
-      return new Date(date.getTime() - MILLIS_IN_A_DAY);
    }
 }

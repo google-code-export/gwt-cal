@@ -53,8 +53,7 @@ public class DateUtils {
    @SuppressWarnings(value = "deprecation")
    public static int differenceInDays(Date endDate, Date startDate) {
       int difference = 0;
-      if ( !areOnTheSameDay(endDate, startDate) )
-      {
+      if (!areOnTheSameDay(endDate, startDate)) {
          int endDateOffset = -(endDate.getTimezoneOffset() * 60 * 1000);
          long endDateInstant = endDate.getTime() + endDateOffset;
          int startDateOffset = -(startDate.getTimezoneOffset() * 60 * 1000);
@@ -143,5 +142,38 @@ public class DateUtils {
    public static Date moveOneDayForward(Date date) {
       date.setDate(date.getDate() + 1);
       return date;
+   }
+
+   /**
+    * Returns the date corresponding to the first day of the next month relative
+    * to the passed <code>date</code>.
+    *
+    * @param date The reference date
+    * @return The first day of the next month, if the month of the passed date
+    *         corresponds to december (<code>11</code>) <em>one</em> will be
+    *         added to the year of the returned date.
+    */
+   @SuppressWarnings("deprecation")
+   public static Date firstOfNextMonth(Date date) {
+      Date firstOfNextMonth = null;
+      if (date != null) {
+         int year = date.getMonth() == 11 ? date.getYear() + 1 : date.getYear();
+         firstOfNextMonth = new Date(year, date.getMonth() + 1 % 11, 1);
+      }
+      return firstOfNextMonth;
+   }
+
+   /**
+    * Returns a day <em>exactly</em> 24 hours before the instant passed as
+    * <code>date</code>. // TODO: This logic should address the time zone
+    * offset
+    *
+    * @param date A point in time from which the moment 24 hours before will be
+    *             calculated
+    * @return A new object <em>24</em> hours prior to the passed
+    *         <code>date</code>
+    */
+   public static Date previousDay(Date date) {
+      return new Date(date.getTime() - MILLIS_IN_A_DAY);
    }
 }

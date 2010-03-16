@@ -23,7 +23,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfTheMonth;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
@@ -105,6 +105,7 @@ public class DateUtilsTest {
    }
 
    @Test
+   @SuppressWarnings(value = "deprecation")
    public void differenceInDays_endDateWithHours() throws Exception {
 
       Date endDate = date("02/01/2010");
@@ -117,6 +118,7 @@ public class DateUtilsTest {
    }
 
    @Test
+   @SuppressWarnings(value = "deprecation")
    public void differenceInDays_startCloseToEOD_endRightAfterBeginningOfDay()
       throws Exception {
       Date endDate = date("02/01/2010");
@@ -139,6 +141,7 @@ public class DateUtilsTest {
 
 
    @Test
+   @SuppressWarnings("deprecation")
    public void differenceInDays_bothSameDate_DifferentTimes()
       throws Exception {
       Date endDate = date("01/31/2010");
@@ -148,6 +151,25 @@ public class DateUtilsTest {
       startDate.setHours(23);
       startDate.setMinutes(58);
       assertEquals(0, DateUtils.differenceInDays(endDate, startDate));
+   }
+
+   @Test
+   @SuppressWarnings("deprecation")
+   public void testFirstOfNextMonthChangeYear() throws Exception {
+      Date dec012009 = date("12/01/2009");
+      Date jan012010 = firstOfNextMonth(dec012009);
+      assertEquals("Day should be the first", 1, jan012010.getDate());
+      assertEquals("Year should have changed", 0, jan012010.getMonth());
+   }
+
+   @Test
+   @SuppressWarnings("deprecation")
+   public void testFirstOfNextMonthFromFebOnLeapYear() throws Exception {
+      Date feb012009 = date("02/01/2009");
+      Date mar012009 = firstOfNextMonth(feb012009);
+      assertEquals("Day should be the first", 1, mar012009.getDate());
+      assertEquals("Month should be march", 2, mar012009.getMonth());
+      assertEquals("Year should be the same", 2009 - 1900, mar012009.getYear());
    }
 
    public Date date(String dateString) throws Exception {

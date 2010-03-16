@@ -20,7 +20,7 @@ package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
-import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewHelper.firstDateShownInAMonthView;
+import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils.firstDateShownInAMonthView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -252,7 +252,7 @@ public class MonthView extends CalendarView {
 		// TODO: don't re-sort the appointment unless necessary
 		Collections.sort(calendarWidget.getAppointments(),
 				APPOINTMENT_COMPARATOR);
-        // Distribute appointments
+      // Distribute appointments
 		MonthLayoutDescription monthLayoutDescription = new
             MonthLayoutDescription( 
 				   firstDateDisplayed, calendarWidget.getAppointments(),
@@ -474,7 +474,7 @@ public class MonthView extends CalendarView {
 					WEEKDAY_LABEL_STYLE);
 		}
       Date date = (Date)firstDateDisplayed.clone();
-		monthViewRequiredRows = MonthViewHelper.monthViewRequiredRows(calendarWidget.getDate());
+		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(calendarWidget.getDate());
 		for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
 			for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
 
@@ -644,24 +644,31 @@ public class MonthView extends CalendarView {
 
 	/**
 	 * Calculates the maximum number of appointments that can be displayed in a
-	 * given "day cell".
+	 * given &quot;day cell&quot;.
 	 */
 	private void calculateCellAppointments() {
 
-		int apptPaddingTop = 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
-//		int apptPaddingBottom = 0;
-		int apptHeight = 20; // TODO: calculate appointment height dynamically
+		int paddingTop = appointmentPaddingTop();
+		int height = appointmentHeight();
 
 		calculatedCellAppointments = (int)
-            Math.floor((float) (calculatedCellHeight - apptPaddingTop)
-						/ (float) (apptHeight + apptPaddingTop)) - 1;
+            Math.floor((float) (calculatedCellHeight - paddingTop)
+						/ (float) (height + paddingTop)) - 1;
 	}
+
+   private static int appointmentPaddingTop() {
+      return 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
+   }
+
+   private static int appointmentHeight()
+   {
+      return 20; // TODO: calculate appointment height dynamically
+   }
 
 	private void placeItemInGrid(Widget panel, int colStart, int colEnd,
 			int row, int cellPosition) {
-
-		int apptPaddingTop = 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
-		int apptHeight = 20; // TODO: calculate appointment height dynamically
+		int paddingTop = appointmentPaddingTop();
+		int height = appointmentHeight();
 
 		float left = (float) colStart / (float) DAYS_IN_A_WEEK * 100f + .5f;
 
@@ -669,12 +676,12 @@ public class MonthView extends CalendarView {
 
 		float top = calculatedWeekDayHeaderHeight
 				+ (row * calculatedCellOffsetHeight)
-				+ calculatedDayHeaderHeight + apptPaddingTop
-				+ (cellPosition * (apptHeight + apptPaddingTop));
+				+ calculatedDayHeaderHeight + paddingTop
+				+ (cellPosition * (height + paddingTop));
 //		 System.out.println( "\t" + calculatedWeekDayHeaderHeight + " + (" + row +
 //		 " * " + calculatedCellOffsetHeight + ") + " +
-//		 calculatedDayHeaderHeight + " + " + apptPaddingTop + " + (" +
-//		 cellPosition+"*("+apptHeight+"+"+apptPaddingTop + "));");
+//		 calculatedDayHeaderHeight + " + " + paddingTop + " + (" +
+//		 cellPosition+"*("+height+"+"+paddingTop + "));");
 
 		DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
 		DOM.setStyleAttribute(panel.getElement(), "top", top + "px");

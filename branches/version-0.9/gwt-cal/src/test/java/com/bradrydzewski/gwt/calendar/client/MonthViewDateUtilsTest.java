@@ -19,9 +19,9 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import org.junit.Test;
 
-import com.bradrydzewski.gwt.calendar.client.monthview.MonthViewHelper;
+import com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils;
 
-import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewHelper.firstDateShownInAMonthView;
+import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils.firstDateShownInAMonthView;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
@@ -30,7 +30,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- * Test cases for the {@link MonthViewHelper} utilities. This test case checks
+ * Test cases for the {@link com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils} utilities. This test case checks
  * with the whole 2009 year months.
  * <p/>
  * Also, many of the test cases in this suite are meant to verify that the
@@ -39,7 +39,7 @@ import java.text.SimpleDateFormat;
  *
  * @author Carlos D. Morales
  */
-public class MonthViewHelperTest {
+public class MonthViewDateUtilsTest {
 
    private DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
 
@@ -56,7 +56,6 @@ public class MonthViewHelperTest {
       assertMonthRequiredRows(5, "11/01/2009", "Nov 09");
       assertMonthRequiredRows(5, "12/01/2009", "Dec 09");
    }
-
 
    @Test
    public void firstDateShownInAMonthView_CreatesClone() throws Exception {
@@ -85,30 +84,11 @@ public class MonthViewHelperTest {
       assertMonthRequiredRows(6, "08/01/2009", "Aug 09");
    }
 
-   @Test
-   @SuppressWarnings("deprecation")
-   public void testFirstOfNextMonthChangeYear() throws Exception {
-      Date dec012009 = date("12/01/2009");
-      Date jan012010 = MonthViewHelper.firstOfNextMonth(dec012009);
-      assertEquals("Day should be the first", 1, jan012010.getDate());
-      assertEquals("Year should have changed", 0, jan012010.getMonth());
-   }
-
-   @Test
-   @SuppressWarnings("deprecation")
-   public void testFirstOfNextMonthFromFebOnLeapYear() throws Exception {
-      Date feb012009 = date("02/01/2009");
-      Date mar012009 = MonthViewHelper.firstOfNextMonth(feb012009);
-      assertEquals("Day should be the first", 1, mar012009.getDate());
-      assertEquals("Month should be march", 2, mar012009.getMonth());
-      assertEquals("Year should be the same", 2009 - 1900, mar012009.getYear());
-   }
-
    private void assertMonthRequiredRows(int expectedRows, String dateString,
       String monthYear) throws Exception {
       assertEquals(String.format("%s required %d rows", monthYear,
                                  expectedRows), expectedRows,
-                   MonthViewHelper.monthViewRequiredRows(date(dateString)));
+                   MonthViewDateUtils.monthViewRequiredRows(date(dateString)));
    }
 
    public Date date(String dateString) throws Exception {
