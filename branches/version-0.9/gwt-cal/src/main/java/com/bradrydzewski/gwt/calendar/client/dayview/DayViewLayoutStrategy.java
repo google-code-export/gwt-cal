@@ -1,3 +1,20 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.ArrayList;
@@ -251,7 +268,6 @@ public class DayViewLayoutStrategy {
 
 
         //last step is to calculate the adjustment reuired for 'multi-day' / multi-column
-        float leftAdj = dayIndex / dayCount; //  0/3  or 2/3
         float widthAdj = 1f / dayCount;
 
         float paddingLeft = .5f;
@@ -328,7 +344,7 @@ public class DayViewLayoutStrategy {
             //appointmentDayMap.put(d, new ArrayList<AppointmentAdapter>());
             daySlotMap.put(i, new HashMap<Integer, Integer>());
             dateList.add(d);
-            tempStartDate.setDate(tempStartDate.getDate() + 1);
+            DateUtils.moveOneDayForward(tempStartDate);
         }
 
 
@@ -369,7 +385,7 @@ public class DayViewLayoutStrategy {
                 for (int y = adapter.getColumnStart(); y <= adapter.getColumnStart() + adapter.getColumnSpan(); y++) {
                     try{
                 	HashMap<Integer, Integer> rowMap = daySlotMap.get(y);
-                    if (rowMap.containsKey(x) == true) {
+                    if (rowMap.containsKey(x)) {
                         isRowOccupied = true;
                     //System.out.println("    row [" + x+"] is occupied for day [" + y+"]");
                     } else {

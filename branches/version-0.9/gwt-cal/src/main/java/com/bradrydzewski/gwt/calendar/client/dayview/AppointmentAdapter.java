@@ -1,12 +1,12 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Brad Rydzewski
- * 
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -19,10 +19,10 @@
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.minutesSinceDayStarted;
 
 /**
  * The Appointment Adapter is used to track the layout of an
@@ -87,8 +87,8 @@ public class AppointmentAdapter {
 
 	public AppointmentAdapter(Appointment appointment) {
         this.appointment = appointment;
-        this.appointmentStart = calculateDateInMinutes(appointment.getStart());
-        this.appointmentEnd = calculateDateInMinutes(appointment.getEnd());
+        this.appointmentStart = minutesSinceDayStarted(appointment.getStart());
+        this.appointmentEnd = minutesSinceDayStarted(appointment.getEnd());
         this.intersectingBlocks = new ArrayList<TimeBlock>();
     }
 
@@ -150,10 +150,6 @@ public class AppointmentAdapter {
 
     public Appointment getAppointment() {
         return appointment;
-    }
-
-    protected int calculateDateInMinutes(Date date) {
-        return date.getHours() * 60 + date.getMinutes();
     }
 
     public float getCellPercentFill() {

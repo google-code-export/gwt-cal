@@ -223,7 +223,6 @@ public class MonthView extends CalendarView {
 	 */
 	@Override
 	public void doLayout() {
-
 		// Clear all existing appointments
 		appointmentCanvas.clear();
 		monthCalendarGrid.clear();

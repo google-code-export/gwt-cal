@@ -1,21 +1,29 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import org.junit.Test;
-import org.junit.Before;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
-import com.bradrydzewski.gwt.calendar.client.Appointment;
-
 /**
- * Test cases for the {@link com.bradrydzewski.gwt.calendar.client.monthview.MultiDayLayoutDescription}
- * class. The only interesting logic in this class is the {@link
- * com.bradrydzewski.gwt.calendar.client.monthview.MultiDayLayoutDescription#overlapsWithRange(int,
- * int)} method.
+ * Test cases for the {@link com.bradrydzewski.gwt.calendar.client.monthview.AppointmentLayoutDescription}
+ * class. These test cases focus on verifying logic for appointments that
+ * span more than a day (hence multi-day in the name).
  *
  * @author Carlos D. Morales
  */

@@ -68,6 +68,16 @@ public class DateUtils {
    }
 
    /**
+    * Returns the full year (4-digits) of the passed <code>date</code>.
+    * @param date The date whose year will be returned
+    * @return The full year of the passed <code>date</code>.
+    */
+   @SuppressWarnings("deprecation")
+   public static int year(Date date) {
+      return 1900 + date.getYear();
+   }
+
+   /**
     * Moves a date <code>shift</code> days. A clone of <code>date</code> to
     * prevent undesired object modifications.
     *
@@ -176,4 +186,32 @@ public class DateUtils {
    public static Date previousDay(Date date) {
       return new Date(date.getTime() - MILLIS_IN_A_DAY);
    }
+
+
+   /**
+    * Copies the hours, minutes and seconds in the <code>source</code> date into
+    * the <code>target</code> date object.
+    *
+    * @param source The date with the hour, minutes and seconds to be copied
+    * @param target The date whose time fields will be set
+    */
+   @SuppressWarnings("deprecation")
+   public static void copyTime(Date source, Date target) {
+      target.setHours(source.getHours());
+      target.setMinutes(source.getMinutes());
+      target.setSeconds(source.getSeconds());
+   }
+
+   /**
+    * Returns the amount of minutes elapsed since the beginning of the passed
+    * <code>day</code>.
+    *
+    * @param day The day to calculate the elapsed minutes
+    * @return The number of minutes since <code>day</code> started
+    */
+   @SuppressWarnings("deprecation")
+   public static int minutesSinceDayStarted(Date day) {
+      return day.getHours() * 60 + day.getMinutes();
+   }
+
 }

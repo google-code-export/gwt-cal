@@ -33,6 +33,7 @@ import com.google.gwt.user.client.ui.FlexTable;
  * the Month View.
  *
  * @author Brad Rydzewski
+ * @author Carlos D. Morales
  */
 public class MonthViewDropController extends AbsolutePositionDropController {
 
@@ -50,6 +51,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
     * dragged.
     */
    private Element[] highlightedCells;
+   private static final String BACKGROUND = "backgroundColor";
 
    public MonthViewDropController(AbsolutePanel dropTarget,
       FlexTable monthGrid) {
@@ -92,22 +94,9 @@ public class MonthViewDropController extends AbsolutePositionDropController {
       if (draggable == null)
          return;
 
-      //get the mouse/drag coordinates
-      int x =
-         context.desiredDraggableX - dropTargetOffsetX + draggable.relativeX;
-      int y =
-         context.desiredDraggableY - dropTargetOffsetY + draggable.relativeY;
+      int col = getColumn(context, draggable);
+      int row = getRow(context, draggable);
 
-      //Now we need to figure out which cell to highlight based
-      // on the X,Y coordinates
-      int col =
-         (int) Math.floor(x / (monthGrid.getOffsetWidth() / daysPerWeek));
-      int row =
-         (int) Math.floor(y / (monthGrid.getOffsetHeight() / weeksPerMonth)) +
-            1;
-
-
-      //Get element for cell
       Element currHoveredCell =
          monthGrid.getFlexCellFormatter().getElement(row, col);
 
@@ -118,28 +107,24 @@ public class MonthViewDropController extends AbsolutePositionDropController {
          if (highlightedCells != null) {
             for (Element elem : highlightedCells) {
                if (elem != null)
-                  DOM.setStyleAttribute(elem, "backgroundColor", "#FFFFFF");
+                  DOM.setStyleAttribute(elem, BACKGROUND, "#FFFFFF");
             }
          }
 
-         //here I hard-code 5 as the number of cells an appointment
-         // should span. This, however, should be calculated.
-         //Beware, we need to be very careful about memory here.
-         // I tried to do a date diff calculation and got
-         // out of memory exceptions in the JVM AND in the chrome browser
          Date startDate =
             ((AppointmentWidget) draggable.widget).getAppointment().getStart();
          Date endDate =
             ((AppointmentWidget) draggable.widget).getAppointment().getEnd();
 
-         int dateDiff = getDateDiff(startDate, endDate);
+         int dateDiff = DateUtils.differenceInDays(endDate, startDate);
          dateDiff = (dateDiff <= 0) ? 1 : dateDiff;
          highlightedCells = getCells(row, col, dateDiff);
 
          //TODO: month view highlighted cell style be moved to the css style sheet
          for (Element elem : highlightedCells) {
-            if (elem != null)
-               DOM.setStyleAttribute(elem, "backgroundColor", "#C3D9FF");
+            if (elem != null) {
+               DOM.setStyleAttribute(elem, BACKGROUND, "#C3D9FF");
+            }
          }
       }
    }
@@ -160,7 +145,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 
       for (Element elem : highlightedCells) {
          if (elem != null) {
-            DOM.setStyleAttribute(elem, "backgroundColor", "#FFFFFF");
+            DOM.setStyleAttribute(elem, BACKGROUND, "#FFFFFF");
          }
       }
       highlightedCells = null;
@@ -180,9 +165,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
 
       //calculate the new start & end dates
       Date newStart = DateUtils.shiftDate(firstDateDisplayed, cell);
-      newStart.setHours(appointment.getStart().getHours());
-      newStart.setMinutes(appointment.getStart().getMinutes());
-      newStart.setSeconds(appointment.getStart().getSeconds());
+      DateUtils.copyTime(appointment.getStart(), newStart);
 
       Date newEnd = new Date(newStart.getTime() + originalStartToEndTimeDistance);
 
@@ -206,15 +189,16 @@ public class MonthViewDropController extends AbsolutePositionDropController {
       Element[] elems = new Element[days];
 
       for (int i = 0; i < days; i++) {
-
          if (col > daysPerWeek - 1) {
             col = 0;
             row++;
          }
 
-         //Cheap code here. If the row / cell throw an out of index exception
-         // we just break. THis kind of sucks because we have to
-         // now account for null items in the Element[] array.
+         /*
+          * Cheap code here. If the row / cell throw an out of index exception
+          * we just break. This kind of sucks because we have to
+          * now account for null items in the Element[] array.
+          */
          try {
             elems[i] = monthGrid.getFlexCellFormatter().getElement(row, col);
          } catch (Exception ex) {
@@ -227,44 +211,17 @@ public class MonthViewDropController extends AbsolutePositionDropController {
       return elems;
    }
 
-   /**
-    * Gets the difference in days between two Dates. TODO: not correctly
-    * calculating when end date's month != start date's month.
-    *
-    * TODO: Seriously analyze if it's not better to use DateUtils.differenceInDays
-    * considering the additional logic that is required to calculate
-    * the difference between two days additional to the difference and
-    * division by milliseconds in a day
-    *
-    * @param startDate
-    * @param endDate
-    * @return
-    */
-   public int getDateDiff(Date startDate, Date endDate) {
-
-      if (startDate.getMonth() == endDate.getMonth()) {
-         return endDate.getDate() - startDate.getDate() + 1;
-      } else
-         return (int) Math.ceil(((endDate.getTime() - startDate.getTime()) /
-            (1000 * 60 * 60 * 24))) + 1;
-   }
-
-
    public int getRow(DragContext context, Draggable draggable) {
-      int yCoordinate =
+      int y =
          context.desiredDraggableY - dropTargetOffsetY + draggable.relativeY;
-      //Figure out which cell to highlight based on X,Y coordinates
-      return
-         (int) Math.floor(
-            yCoordinate / (monthGrid.getOffsetHeight() / weeksPerMonth)) +
-            1;
+      return (int)
+         Math.floor(y / (monthGrid.getOffsetHeight() / weeksPerMonth)) + 1;
    }
 
    public int getColumn(DragContext context, Draggable draggable) {
-      int xCoordinate =
+      int x =
          context.desiredDraggableX - dropTargetOffsetX + draggable.relativeX;
-      //Figure out which cell to highlight based on X,Y coordinates
-      return (int) Math
-         .floor(xCoordinate / (monthGrid.getOffsetWidth() / daysPerWeek));
+      return (int) 
+         Math.floor(x / (monthGrid.getOffsetWidth() / daysPerWeek));
    }
 }
