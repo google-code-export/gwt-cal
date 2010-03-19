@@ -19,7 +19,7 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.Date;
 
-import com.bradrydzewski.gwt.calendar.client.CalendarModel;
+import com.bradrydzewski.gwt.calendar.client.CalendarFormat;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.WindowUtils;
@@ -89,7 +89,7 @@ public class DayViewHeader extends Composite {
          //String headerTitle = DAY_LIST[date.getDay()] + ", "
          //		+ MONTH_LIST[date.getMonth()] + " " + date.getDate();
 
-         String headerTitle = CalendarModel.INSTANCE.dateFormatter.format(date);
+         String headerTitle = CalendarFormat.INSTANCE.getDateFormat().format(date);
 
          Label dayLabel = new Label();
          dayLabel.setStylePrimaryName("day-cell");

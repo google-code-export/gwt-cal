@@ -18,7 +18,6 @@
 
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import static com.bradrydzewski.gwt.calendar.client.CalendarModel.MESSAGES;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
 import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils.firstDateShownInAMonthView;
 
@@ -35,7 +34,7 @@ import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.CalendarModel;
+import com.bradrydzewski.gwt.calendar.client.CalendarFormat;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
@@ -336,7 +335,7 @@ public class MonthView extends CalendarView {
     }
 
    private void layOnNMoreLabel(int moreCount, int dayOfWeek, int weekOfMonth){
-      Label more = new Label(MESSAGES.more(moreCount));
+      Label more = new Label(CalendarFormat.MESSAGES.more(moreCount));
       more.setStyleName(MORE_LABEL_STYLE);
       placeItemInGrid(more, dayOfWeek, dayOfWeek,weekOfMonth,
                       calculatedCellAppointments);
@@ -457,23 +456,24 @@ public class MonthView extends CalendarView {
 	 */
 	@SuppressWarnings("deprecation")
 	private void buildCalendarGrid() {
-
+      int firstDayOfWeek = CalendarFormat.INSTANCE.getFirstDayOfWeek();
       int month = calendarWidget.getDate().getMonth();
-      firstDateDisplayed = firstDateShownInAMonthView(calendarWidget.getDate());
+      firstDateDisplayed = firstDateShownInAMonthView(calendarWidget.getDate(), firstDayOfWeek);
 
 		Date today = new Date();
 		DateUtils.resetTime(today);
 
 		/* Add the calendar weekday heading */
-		for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
-			monthCalendarGrid.setText(0, i, CalendarModel.WEEKDAY_ABBREV_NAMES[i]);
+      for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
+         monthCalendarGrid.setText(0, i, CalendarFormat.INSTANCE.getDayOfWeekAbbreviatedNames()[(i +
+            firstDayOfWeek) % 7]);
 			monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i,
 					HasVerticalAlignment.ALIGN_TOP);
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,
 					WEEKDAY_LABEL_STYLE);
 		}
       Date date = (Date)firstDateDisplayed.clone();
-		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(calendarWidget.getDate());
+		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(calendarWidget.getDate(), firstDayOfWeek);
 		for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
 			for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
 

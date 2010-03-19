@@ -19,6 +19,7 @@ package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
 
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.areOnTheSameMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.previousDay;
 
@@ -38,18 +39,25 @@ public class MonthViewDateUtils {
     * Depending on the year and month, sometimes, viewing at a month will show
     * days from the previous month in the first week.
     *
-    * @param dayInMonth Any day in the month that is being visualized in a month
-    *                   view
+    * @param dayInMonth     Any day in the month that is being visualized in a
+    *                       month view
+    * @param firstDayOfWeek The day the weeks start on the month view, Sunday is
+    *                       <code>0</code>, Monday is <code>1</code>, etc.
     * @return The first date that should appear on the first week of a month
     *         view
     */
    @SuppressWarnings("deprecation")
-   public static Date firstDateShownInAMonthView(Date dayInMonth) {
+   public static Date firstDateShownInAMonthView(Date dayInMonth,
+      int firstDayOfWeek) {
       Date date = DateUtils.firstOfTheMonth(dayInMonth);
-      /* If the 1st of the month not Sunday we need to find the prior */
-      date.setDate(date.getDate() - date.getDay());
+      int firstDayOffset = firstDayOfWeek + date.getDate() - date.getDay();
+      date.setDate(firstDayOffset);
+      if (areOnTheSameMonth(date, dayInMonth) && date.getDate() > 1) {
+         date.setDate(firstDayOffset - 7);
+      }
       return date;
    }
+
 
    /**
     * Dynamically calculates the number of rows required to display all the days
@@ -57,17 +65,21 @@ public class MonthViewDateUtils {
     *
     * @param dayInMonth Any day in the month that is being visualized through
     *                   the month view
+    * @param firstDayOfWeek The day the weeks start on the month view, Sunday is
+    *                       <code>0</code>, Monday is <code>1</code>, etc.
     * @return The number of rows (which represent weeks in the month view)
     *         required to display all days in the month view
     */
    @SuppressWarnings("deprecation")
-   public static int monthViewRequiredRows(Date dayInMonth) {
+   public static int monthViewRequiredRows(Date dayInMonth,
+      int firstDayOfWeek) {
       int requiredRows = 5;
 
       Date firstOfTheMonthClone = (Date) dayInMonth.clone();
       firstOfTheMonthClone.setDate(1);
 
-      Date firstDayInCalendar = firstDateShownInAMonthView(dayInMonth);
+      Date firstDayInCalendar =
+         firstDateShownInAMonthView(dayInMonth, firstDayOfWeek);
 
       if (firstDayInCalendar.getMonth() != firstOfTheMonthClone.getMonth()) {
          Date lastDayOfPreviousMonth = previousDay(firstOfTheMonthClone);

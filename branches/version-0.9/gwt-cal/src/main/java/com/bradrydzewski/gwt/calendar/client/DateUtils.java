@@ -127,6 +127,20 @@ public class DateUtils {
    }
 
    /**
+    * Indicates whether two dates are on the same month of the same year.
+    *
+    * @param dateOne The first date of the comparison
+    * @param dateTwo The second date of the comparison
+    * @return <code>true</code> if both dates have the same year and month,
+    * <code>false</code> otherwise
+    */
+   @SuppressWarnings("deprecation")
+   public static boolean areOnTheSameMonth(Date dateOne, Date dateTwo) {
+      return dateOne.getYear() == dateTwo.getYear() &&
+            dateOne.getMonth() == dateTwo.getMonth();
+   }
+
+   /**
     * Returns a clone of the <code>anyDayInMonth</code> date set to the
     * <em>first</em> day of whatever its month is.
     *

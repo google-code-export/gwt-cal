@@ -17,7 +17,7 @@
  */
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
-import com.bradrydzewski.gwt.calendar.client.CalendarModel;
+import com.bradrydzewski.gwt.calendar.client.CalendarFormat;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -41,17 +41,17 @@ public /**
     private AbsolutePanel timelinePanel = new AbsolutePanel();
     private HasSettings settings = null;
     private static final String TIME_LABEL_STYLE = "hour-label";
-//    private final String[] HOURS = new String[]{"12 AM", "1 AM", "2 AM", "3 AM",
-//        "4 AM", "5 AM", "6 AM", "7 AM", "8 AM", "9 AM", "10 AM",
-//        "11 AM", "Noon", "1 PM", "2 PM", "3 PM", "4 PM", "5 PM",
-//        "6 PM", "7 PM", "8 PM", "9 PM", "10 PM", "11 PM"
+//    private final String[] HOURS = new String[]{"12 DEFAULT_AM_LABEL", "1 DEFAULT_AM_LABEL", "2 DEFAULT_AM_LABEL", "3 DEFAULT_AM_LABEL",
+//        "4 DEFAULT_AM_LABEL", "5 DEFAULT_AM_LABEL", "6 DEFAULT_AM_LABEL", "7 DEFAULT_AM_LABEL", "8 DEFAULT_AM_LABEL", "9 DEFAULT_AM_LABEL", "10 DEFAULT_AM_LABEL",
+//        "11 DEFAULT_AM_LABEL", "Noon", "1 DEFAULT_PM_LABEL", "2 DEFAULT_PM_LABEL", "3 DEFAULT_PM_LABEL", "4 DEFAULT_PM_LABEL", "5 DEFAULT_PM_LABEL",
+//        "6 DEFAULT_PM_LABEL", "7 DEFAULT_PM_LABEL", "8 DEFAULT_PM_LABEL", "9 DEFAULT_PM_LABEL", "10 DEFAULT_PM_LABEL", "11 DEFAULT_PM_LABEL"
 //    };
 //    private final String[] HOURS = new String[]{"12", "1", "2", "3",
 //        "4", "5", "6", "7", "8", "9", "10",
 //        "11", "Noon", "1", "2", "3", "4", "5",
 //        "6", "7", "8", "9", "10", "11"};
-//    private final String AM = " AM";
-//    private final String PM = " PM";
+//    private final String DEFAULT_AM_LABEL = " DEFAULT_AM_LABEL";
+//    private final String DEFAULT_PM_LABEL = " DEFAULT_PM_LABEL";
 
     public DayViewTimeline(HasSettings settings) {
         initWidget(timelinePanel);
@@ -79,11 +79,11 @@ public /**
             timelinePanel.add(sp);
         }
 
-        boolean includeAMPM = !CalendarModel.INSTANCE.AM.equals("");
+        boolean includeAMPM = !CalendarFormat.INSTANCE.getAm().equals("");
         
-        while (i < CalendarModel.HOURS_IN_DAY) {
+        while (i < CalendarFormat.HOURS_IN_DAY) {
 
-            String hour = CalendarModel.HOURS[i];
+            String hour = CalendarFormat.INSTANCE.getHourLabels()[i];
             i++;
 
             //block
@@ -98,11 +98,11 @@ public /**
             
             String amPm = " ";
             if(i<13)
-                amPm += CalendarModel.INSTANCE.AM;
+                amPm += CalendarFormat.INSTANCE.getAm();
             else if(i>13)
-                amPm += CalendarModel.INSTANCE.PM;
+                amPm += CalendarFormat.INSTANCE.getPm();
             else {
-            	hour = CalendarModel.INSTANCE.NOON;
+            	hour = CalendarFormat.INSTANCE.getNoon();
             	amPm = "";
             }
             

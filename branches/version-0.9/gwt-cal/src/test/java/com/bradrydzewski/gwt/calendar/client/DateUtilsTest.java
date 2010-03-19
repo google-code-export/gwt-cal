@@ -23,10 +23,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.areOnTheSameMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.*;
 
 /**
  * Test cases for the set of utilities to work with <code>java.util.Date</code>
@@ -170,6 +170,15 @@ public class DateUtilsTest {
       assertEquals("Day should be the first", 1, mar012009.getDate());
       assertEquals("Month should be march", 2, mar012009.getMonth());
       assertEquals("Year should be the same", 2009 - 1900, mar012009.getYear());
+   }
+
+   @Test
+   @SuppressWarnings("deprecation")
+   public void testAreOnTheSameMonth() throws Exception {
+      assertTrue(areOnTheSameMonth(date("02/28/2010"), date("02/01/2010")));
+      assertTrue(areOnTheSameMonth(date("12/31/2010"), date("12/01/2010")));
+      assertFalse(areOnTheSameMonth(date("10/28/2009"), date("10/28/2010")));
+      assertFalse(areOnTheSameMonth(date("01/01/2009"), date("02/01/2009")));
    }
 
    public Date date(String dateString) throws Exception {
