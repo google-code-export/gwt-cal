@@ -79,7 +79,7 @@ public /**
             timelinePanel.add(sp);
         }
 
-        boolean includeAMPM = !CalendarFormat.INSTANCE.getAm().equals("");
+        //boolean includeAMPM = !CalendarFormat.INSTANCE.getAm().equals("");
         
         while (i < CalendarFormat.HOURS_IN_DAY) {
 
@@ -112,7 +112,7 @@ public /**
             
             Label ampmLabel = new Label(amPm);
             ampmLabel.setStylePrimaryName("ampm-text");
-            if(includeAMPM)
+            //if(includeAMPM)
             	flowPanel.add(ampmLabel);
 
             hourWrapper.add(flowPanel);

@@ -29,7 +29,7 @@ public class CalendarFormat {
    private static final DateTimeFormat DEFAULT_DATE_FORMAT =
       DateTimeFormat.getFormat(MESSAGES.dateFormat());
 
-   public static CalendarFormat INSTANCE = new CalendarFormat();
+   
 
    private static String DEFAULT_AM_LABEL = MESSAGES.am();
    private static String DEFAULT_PM_LABEL = MESSAGES.pm();
@@ -49,9 +49,10 @@ public class CalendarFormat {
    private String pm = null;
    private String noon = null;
 
-
    private int firstDayOfWeek = Integer.valueOf(MESSAGES.firstDayOfWeek());
 
+   public static CalendarFormat INSTANCE = new CalendarFormat();
+   
    private CalendarFormat() {
       dayOfMonthFormat = DEFAULT_DAY_OF_MONTH_FORMAT;
       dayOfWeekFormat = DEFAULT_DAY_OF_WEEK_FORMAT;
@@ -182,25 +183,30 @@ public class CalendarFormat {
     * Default logic to generate the labels for the hours.
     */
    private void generateHourLabels() {
-      Date date = new Date();
-      DateTimeFormat shortTimeFormat = DateTimeFormat.getShortTimeFormat();
-      date.setHours(12);
-      date.setMinutes(0);
-      String hour = shortTimeFormat.format(date);
-      String hourFormat = "h";
+//      Date date = new Date();
+//      DateTimeFormat shortTimeFormat = DateTimeFormat.getShortTimeFormat();
+//      date.setHours(12);
+//      date.setMinutes(0);
+//      String hour = shortTimeFormat.format(date);
+//      String hourFormat = "h";
+//
+//      if (!hour.equals("12:00 DEFAULT_PM_LABEL")) {
+//         noon = hour;
+//         am = "";
+//         pm = "";
+//         hourFormat = shortTimeFormat.getPattern();
+//      }
+//
+//      shortTimeFormat = DateTimeFormat.getFormat(hourFormat);
 
-      if (!hour.equals("12:00 DEFAULT_PM_LABEL")) {
-         noon = hour;
-         am = "";
-         pm = "";
-         hourFormat = shortTimeFormat.getPattern();
-      }
-
-      shortTimeFormat = DateTimeFormat.getFormat(hourFormat);
-
+	   Date date = new Date();
+	   date.setHours(0);
+	   date.setMinutes(0);
+	   String hour;
+	   
       for (int i = 0; i < HOURS_IN_DAY; i++) {
          date.setHours(i);
-         hour = shortTimeFormat.format(date);
+         hour = timeFormat.format(date);//shortTimeFormat.format(date);
          hours[i] = hour;
       }
    }
