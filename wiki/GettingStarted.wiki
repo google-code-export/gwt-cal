@@ -54,5 +54,3 @@ appt.setTitle(...);
 appt.setStyle(AppointmentStyle.BLUE);
 calendar.addAppointment(appt);
 }}}
-
-** We plan to auto-calculate isMultiDay() before the final 0.9 version is released.
