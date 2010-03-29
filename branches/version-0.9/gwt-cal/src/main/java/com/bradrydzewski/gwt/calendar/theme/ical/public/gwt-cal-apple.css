@@ -205,6 +205,8 @@
 	opacity: 1;
     -moz-opacity:1;
     background-repeat:repeat-y;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
 }
 
 .gwt-cal .dv-appointment-multiday {
@@ -233,6 +235,8 @@
 		progid:DXImageTransform.Microsoft.dropshadow(OffX=3, OffY=3,Color='#C7C7C7', Positive='true');
 	opacity: 1;
     -moz-opacity:1;
+	-webkit-border-radius: 6px;
+	-moz-border-radius: 6px;
 }
 
 .gwt-cal .dv-appointment .header,

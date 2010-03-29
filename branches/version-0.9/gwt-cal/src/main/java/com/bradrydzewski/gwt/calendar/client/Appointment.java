@@ -49,8 +49,9 @@ public class Appointment implements Comparable<Appointment>, Serializable {
    private String location;
    private String createdBy;
    private List<Attendee> attendees = new ArrayList<Attendee>();
-   private AppointmentStyle appointmentStyle = null;
    private boolean allDay = false;
+   private AppointmentStyleEnum style = AppointmentStyleEnum.DEFAULT;
+   private String customStyle;
 
    /**
     * <p>Creates an <code>Appointment</code> with the following attributes
@@ -276,18 +277,34 @@ public class Appointment implements Comparable<Appointment>, Serializable {
       clone.setEnd(this.end);
       clone.setLocation(this.location);
       clone.setStart(this.start);
-      clone.setAppointmentStyle(this.appointmentStyle);
+      //clone.setAppointmentStyle(this.appointmentStyle);
       clone.setTitle(this.title);
+      clone.setStyle(this.style);
 
       return clone;
    }
 
-   public AppointmentStyle getAppointmentStyle() {
-      return appointmentStyle;
-   }
+//   public AppointmentStyle getAppointmentStyle() {
+//      return appointmentStyle;
+//   }
+//
+//   public void setAppointmentStyle(AppointmentStyle appointmentStyle) {
+//      this.appointmentStyle = appointmentStyle;
+//   }
 
-   public void setAppointmentStyle(AppointmentStyle appointmentStyle) {
-      this.appointmentStyle = appointmentStyle;
-   }
-
+	public AppointmentStyleEnum getStyle() {
+		return style;
+	}
+	
+	public void setStyle(AppointmentStyleEnum style) {
+		this.style = style;
+	}
+	
+	public String getCustomStyle() {
+		return customStyle;
+	}
+	
+	public void setCustomStyle(String customStyle) {
+		this.customStyle = customStyle;
+	}  
 }

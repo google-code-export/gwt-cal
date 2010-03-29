@@ -40,6 +40,7 @@ import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -148,6 +149,8 @@ public class MonthView extends CalendarView {
 	private PickupDragController dragController = null;
 
 	private MonthViewDropController monthViewDropController = null;
+	
+	private MonthViewStyleManager styleManager = GWT.create(MonthViewStyleManager.class);
 
 	/**
 	 * This method is called when the MonthView is attached to the Calendar and
@@ -350,24 +353,31 @@ public class MonthView extends CalendarView {
 
 		placeItemInGrid(panel, colStart, colEnd, row, cellPosition);
 		Element panelElem = panel.getElement();
-		if (appointment.isMultiDay()) {
-			panel.setStylePrimaryName("appointment-multiday");
-			DOM.setStyleAttribute(panelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
-			DOM.setStyleAttribute(panelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
-
-		} else {
-			panel.setStyleName("appointment");
-			DOM.setStyleAttribute(panelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
-		}
+		boolean selected = calendarWidget.isTheSelectedAppointment(appointment);
+		styleManager.applyStyle(panel, selected);
+		
+//		if (appointment.isMultiDay()) {
+//			panel.setStylePrimaryName("appointment-multiday");
+//			DOM.setStyleAttribute(panelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
+//			DOM.setStyleAttribute(panelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
+//
+//		} else {
+//			panel.setStyleName("appointment");
+//			DOM.setStyleAttribute(panelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
+//		}
 
 		if(calendarWidget.getSettings().isEnableDragDrop())
 			dragController.makeDraggable(panel);
 
-		if (calendarWidget.isTheSelectedAppointment(appointment)) {
-			panel.addStyleDependentName("selected");
-			DOM.setStyleAttribute(panel.getElement(), "borderColor", appointment.getAppointmentStyle().getSelectedBorder());
+//		if (calendarWidget.isTheSelectedAppointment(appointment)) {
+//			panel.addStyleDependentName("selected");
+//			DOM.setStyleAttribute(panel.getElement(), "borderColor", appointment.getAppointmentStyle().getSelectedBorder());
+//			selectedAppointmentWidgets.add(panel);
+//		}
+		
+		if(selected)
 			selectedAppointmentWidgets.add(panel);
-		}
+		
 		appointmentsWidgets.add(panel);
 		appointmentCanvas.add(panel);
 	}
@@ -582,15 +592,17 @@ public class MonthView extends CalendarView {
 
 		if (!clickedAppointmentWidgets.isEmpty()) {
 			for (AppointmentWidget widget : selectedAppointmentWidgets) {
-				widget.removeStyleDependentName("selected");
-				DOM.setStyleAttribute(widget.getElement(),
-                       "borderColor", widget.getAppointment().getAppointmentStyle().getBorder());
+				//widget.removeStyleDependentName("selected");
+				//DOM.setStyleAttribute(widget.getElement(),
+                //       "borderColor", widget.getAppointment().getAppointmentStyle().getBorder());
+				styleManager.applyStyle(widget, false);
 			}
 
 			for (AppointmentWidget widget : clickedAppointmentWidgets) {
-				widget.addStyleDependentName("selected");
-				DOM.setStyleAttribute(widget.getElement(),
-                       "borderColor", appt.getAppointmentStyle().getSelectedBorder());
+				//widget.addStyleDependentName("selected");
+				//DOM.setStyleAttribute(widget.getElement(),
+                //       "borderColor", appt.getAppointmentStyle().getSelectedBorder());
+				styleManager.applyStyle(widget, true);
 			}
 
 			selectedAppointmentWidgets.clear();

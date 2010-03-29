@@ -20,7 +20,6 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
@@ -122,6 +121,14 @@ public class AppointmentWidget extends Composite {
       // "hidden");
       DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
    }
+   
+   public Widget getBody() {
+	   return this.bodyPanel;
+   }
+   
+   public Widget getHeader() {
+	   return this.headerPanel;
+   }
 
    public Date getStart() {
       return start;
@@ -143,33 +150,6 @@ public class AppointmentWidget extends Composite {
       return selected;
    }
 
-   public void setSelected(boolean selected) {
-
-      // set selected
-      this.selected = selected;
-
-      // remove selected style (if exists)
-      this.removeStyleDependentName("selected");
-
-      // if selected, add the selected style
-      if (selected) {
-         this.addStyleDependentName("selected");
-      }
-
-      if (multiDay)
-         return;
-
-      if (selected && this.getAppointment().getAppointmentStyle()
-         .getSelectedBackgroundImage() != null) {
-         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url(" +
-            this.getAppointment().getAppointmentStyle()
-               .getSelectedBackgroundImage() + ")");
-
-      } else {
-         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
-//         System.out.println("set bg image to none");
-      }
-   }
 
    public float getTop() {
       return top;
@@ -266,44 +246,74 @@ public class AppointmentWidget extends Composite {
       this.appointment = appointment;
    }
 
-   public void setAppointmentStyle(AppointmentStyle style) {
+   
 
-      if (appointment.getAppointmentStyle() != null) {
-         if (multiDay)
-            DOM.setStyleAttribute(
-               getElement(), "backgroundColor",
-               appointment.getAppointmentStyle().getBackgroundHeader());
-         else
-            DOM.setStyleAttribute(
-               getElement(), "backgroundColor",
-               appointment.getAppointmentStyle().getBackground());
-
-         DOM.setStyleAttribute(
-            getElement(), "borderColor",
-            appointment.getAppointmentStyle().getBackgroundHeader());
-
-         DOM.setStyleAttribute(
-            bodyPanel.getElement(), "color",
-            appointment.getAppointmentStyle().getSelectedBorder());
-
-         DOM.setStyleAttribute(
-            headerPanel.getElement(), "color",
-            appointment.getAppointmentStyle().getHeaderText());
-
-         DOM.setStyleAttribute(
-            headerPanel.getElement(), "backgroundColor",
-            appointment.getAppointmentStyle().getBackgroundHeader());
-
-         if (multiDay)
-            return;
-
-         if (selected && style.getSelectedBackgroundImage() != null) {
-            DOM.setStyleAttribute(
-               getElement(), "backgroundImage",
-               "url(" + style.getSelectedBackgroundImage() + ")");
-         } else {
-            DOM.setStyleAttribute(getElement(), "backgroundImage", "none");
-         }
-      }
-   }
+//   public void setSelected1(boolean selected) {
+//
+//      // set selected
+//      this.selected = selected;
+//
+//      // remove selected style (if exists)
+//      this.removeStyleDependentName("selected");
+//
+//      // if selected, add the selected style
+//      if (selected) {
+//         this.addStyleDependentName("selected");
+//      }
+//
+//      if (multiDay)
+//         return;
+//
+//      if (selected && this.getAppointment().getAppointmentStyle()
+//         .getSelectedBackgroundImage() != null) {
+//         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url(" +
+//            this.getAppointment().getAppointmentStyle()
+//               .getSelectedBackgroundImage() + ")");
+//
+//      } else {
+//         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
+////         System.out.println("set bg image to none");
+//      }
+//   }
+//   
+//   public void setAppointmentStyle1(AppointmentStyle style) {
+//
+//      if (appointment.getAppointmentStyle() != null) {
+//         if (multiDay)
+//            DOM.setStyleAttribute(
+//               getElement(), "backgroundColor",
+//               appointment.getAppointmentStyle().getBackgroundHeader());
+//         else
+//            DOM.setStyleAttribute(
+//               getElement(), "backgroundColor",
+//               appointment.getAppointmentStyle().getBackground());
+//
+//         DOM.setStyleAttribute(
+//            getElement(), "borderColor",
+//            appointment.getAppointmentStyle().getBackgroundHeader());
+//
+//         DOM.setStyleAttribute(
+//            bodyPanel.getElement(), "color",
+//            appointment.getAppointmentStyle().getSelectedBorder());
+//
+//         DOM.setStyleAttribute(
+//            headerPanel.getElement(), "color",
+//            appointment.getAppointmentStyle().getHeaderText());
+//
+//         DOM.setStyleAttribute(
+//            headerPanel.getElement(), "backgroundColor",
+//            appointment.getAppointmentStyle().getBackgroundHeader());
+//
+//         if (multiDay)
+//            return;
+//
+//         if (selected && style.getSelectedBackgroundImage() != null) {
+//            DOM.setStyleAttribute(
+//               getElement(), "backgroundImage",
+//               "url(" + style.getSelectedBackgroundImage() + ")");
+//         } else {
+//            DOM.setStyleAttribute(getElement(), "backgroundImage", "none");
+//         }
+//      }
+//   }
 }

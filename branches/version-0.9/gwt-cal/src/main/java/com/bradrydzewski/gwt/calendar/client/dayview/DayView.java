@@ -28,6 +28,7 @@ import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -46,6 +47,8 @@ public class DayView extends CalendarView implements HasSettings {
 	 */
 	private ArrayList<AppointmentWidget> selectedAppointmentWidgets = new ArrayList<AppointmentWidget>();
 
+	private DayViewStyleManager styleManager = GWT.create(DayViewStyleManager.class);
+	
 	public DayView() {
 
 	}
@@ -102,7 +105,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 		    	AppointmentWidget panel = new AppointmentWidget();
 //		    	panel.addStyleName(appt.getAppointment().getStyle());
-		    	panel.setStylePrimaryName("dv-appointment");
+		    	//panel.setStylePrimaryName("dv-appointment"); //TODO Move to styleManager
 		    	panel.setWidth(appt.getWidth());
 		    	panel.setHeight(appt.getHeight());
 		    	panel.setTitle(appt.getAppointment().getTitle());
@@ -110,15 +113,16 @@ public class DayView extends CalendarView implements HasSettings {
 		    	panel.setLeft(appt.getLeft());
 				panel.setAppointment(appt.getAppointment());
 				panel.setDescription(appt.getAppointment().getDescription());
-				panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
+				//panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
 				dayViewBody.getGrid().grid.add(panel);
-
-				if (calendarWidget.isTheSelectedAppointment(panel
-						.getAppointment())) {
+				boolean selected = calendarWidget.isTheSelectedAppointment(panel
+						.getAppointment());
+				if (selected) {
 //					panel.addStyleDependentName("selected");
-					panel.setSelected(true);
+					//panel.setSelected(true);//TODO Move to styleManager
 					selectedAppointmentWidgets.add(panel);
 				}
+				styleManager.applyStyle(panel, selected);
 				appointmentWidgets.add(panel);
 			}
 
@@ -139,7 +143,7 @@ public class DayView extends CalendarView implements HasSettings {
         	
 	    	AppointmentWidget panel = new AppointmentWidget();
 	    	//panel.addStyleName(appt.getAppointment().getStyle());
-	    	panel.setStylePrimaryName("dv-appointment-multiday");
+	    	//panel.setStylePrimaryName("dv-appointment-multiday");//TODO Move to styleManager
 	    
 	    	panel.setWidth(appt.getWidth());
 	    	panel.setHeight(appt.getHeight());
@@ -148,16 +152,17 @@ public class DayView extends CalendarView implements HasSettings {
 	    	panel.setLeft(appt.getLeft());
 			panel.setAppointment(appt.getAppointment());
 			panel.setMultiDay(true);
-			panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
-
+			//panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
+			
 			dayViewBody.getGrid().grid.add(panel);
-
-			if (calendarWidget.isTheSelectedAppointment(panel
-					.getAppointment())) {
-				panel.setSelected(true);
+			boolean selected = calendarWidget.isTheSelectedAppointment(panel
+					.getAppointment());
+			if (selected) {
+				//panel.setSelected(true); //TODO: Move to styleManager
 //				panel.addStyleDependentName("selected");
 				selectedAppointmentWidgets.add(panel);
 			}
+			styleManager.applyStyle(panel, selected);
 			appointmentWidgets.add(panel);
             this.multiViewBody.grid.add(panel);
         }
@@ -243,12 +248,14 @@ public class DayView extends CalendarView implements HasSettings {
 				//if (calendarWidget.hasAppointmentSelected()) {
 				//	calendarWidget.resetSelectedAppointment();
 					for (AppointmentWidget adapter : selectedAppointmentWidgets) {
-						adapter.setSelected(false);
+						//adapter.setSelected(false);
+						styleManager.applyStyle(adapter, false);
 					}
 				//}
 
 				for (AppointmentWidget adapter : clickedAppointmentAdapters) {
-					adapter.setSelected(true);
+					//adapter.setSelected(true);
+					styleManager.applyStyle(adapter, true);
 				}
 
 				selectedAppointmentWidgets.clear();
