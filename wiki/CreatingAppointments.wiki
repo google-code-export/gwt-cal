@@ -9,7 +9,7 @@ Appointment appt = new Appointment();
 appt.setStart(...);
 appt.setEnd(...);
 appt.setTitle(...);
-appt.addStyleName("gwt-appointment-blue");
+appt.setStyle(AppointmentStyle.RED);
 calendar.addAppointment(appt);
 }}}
 
@@ -40,29 +40,12 @@ calendar.resumeLayout();
 
 == appointment style ==
 
-When adding appointments you provide it with a style that defines its color palette. Use the `addStyleName` method. Examples are: `gwt-appointment-blue`, `gwt-appointment-green`
+When adding appointments you provide it with a style that defines its color palette. Use the `setStyle` method to set the `AppointmentStyle`. Options are: `AppointmentStyle.GREEN`, `AppointmentStyle.BLUE`
 
-Here is a table of appointment styles and the themes that support them:
-|| Style Name                  || Google Calendar || iCal ||
-|| gwt-appointment-red         || X               || X  ||
-|| gwt-appointment-green       || X               || X  ||
-|| gwt-appointment-blue        || X               || X  ||
-|| gwt-appointment-pink        || X               || -  ||
-|| gwt-appointment-purple      || X               || X  ||
-|| gwt-appointment-fushia      || -               || X  ||
-|| gwt-appointment-darkpurple  || X               || X  ||
-|| gwt-appointment-steelblue   || X               || -  ||
-|| gwt-appointment-lightblue   || X               || -  ||
-|| gwt-appointment-teal        || X               || -  ||
-|| gwt-appointment-lightgreen  || X               || -  ||
-|| gwt-appointment-yellowgreen || X               || -  ||
-|| gwt-appointment-yellow      || X               || -  ||
-|| gwt-appointment-orange      || X               || X  ||
-|| gwt-appointment-redorange   || X               || -  ||
-|| gwt-appointment-lightbrown  || X               || -  ||
-|| gwt-appointment-lightpurple || X               || -  ||
-|| gwt-appointment-grey        || X               || -  ||
-|| gwt-appointment-bluegrey    || X               || -  ||
-|| gwt-appointment-lightteal   || X               || -  ||
-|| gwt-appointment-yellowgrey  || X               || -  ||
-|| gwt-appointment-brown       || X               || -  ||
+You can also add a custom style with the following code
+{{{
+appt.setStyle(AppointmentStyle.CUSTOM);
+appt.setCustomStyle("my-custom-style");
+}}}
+
+**Note: this functionality is not hooked up yet, but it will override the default gwt-cal styles and you will have to create your own. It is a huge pain to define your appointment styles in css, so consider yourself forewarned.
