@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -220,7 +220,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayApptA.setEnd(new Date(today.getYear(), today.getMonth(),
                 today.getDate() + 14));
         multiDayApptA.setTitle("All day A");
-        multiDayApptA.setAppointmentStyle(AppointmentStyles.RED);
+        multiDayApptA.setStyle(AppointmentStyle.RED);
 //        multiDayApptA.setMultiDay(true);
         calendar.addAppointment(multiDayApptA);
 
@@ -231,7 +231,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         multiDayAppt2.setEnd(new Date(today.getYear(), today.getMonth(),
                 today.getDate() + 6));
         multiDayAppt2.setTitle("All day 2");
-        multiDayAppt2.setAppointmentStyle(AppointmentStyles.RED);
+        multiDayAppt2.setStyle(AppointmentStyle.RED);
 //        multiDayAppt2.setMultiDay(true);
         calendar.addAppointment(multiDayAppt2);
 

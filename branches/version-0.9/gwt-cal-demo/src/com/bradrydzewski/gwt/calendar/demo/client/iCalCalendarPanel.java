@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -86,10 +85,10 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		splitterPanel.setStyleName("splitter");
 		mainLayoutPanel.add(dateLayoutPanel, DockPanel.WEST);
 		
-		
+		//CalendarFormat.INSTANCE.setFirstDayOfWeek(1);
 		
 		//change hour offset to false to facilitate iCal style
-		settings.setOffsetHourLabels(true);
+		//settings.setOffsetHourLabels(true);
 		settings.setTimeBlockClickNumber(Click.Double);
 		//create day view
 		calendar = new Calendar();
@@ -264,6 +263,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		/* Add appointments to day view */
 		calendar.suspendLayout();
 		calendar.addAppointments(appointments);
+
 		calendar.resumeLayout();
 		
 		

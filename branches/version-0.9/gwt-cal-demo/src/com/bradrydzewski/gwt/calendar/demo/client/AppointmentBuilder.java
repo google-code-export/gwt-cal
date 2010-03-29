@@ -5,7 +5,6 @@ import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
-import com.bradrydzewski.gwt.calendar.client.AppointmentStyles;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
 import com.bradrydzewski.gwt.calendar.client.Attending;
 
@@ -24,16 +23,16 @@ public class AppointmentBuilder {
      * the &quot;Google&quot; theme.
      */
     public static final AppointmentStyle[] GOOGLE_STYLES =
-            new AppointmentStyle[]{AppointmentStyles.GREEN, AppointmentStyles.BLUE,
-    		AppointmentStyles.LIGHT_GREEN, AppointmentStyles.BLUE_GREY};
+            new AppointmentStyle[]{AppointmentStyle.GREEN, AppointmentStyle.BLUE,
+    	AppointmentStyle.LIGHT_GREEN, AppointmentStyle.BLUE_GREY};
 
     /**
      * The available styles that can be applied to appointments when using the
      * &quot;iCal&quot; theme.
      */
     public static final AppointmentStyle[] ICAL_STYLES =
-            new AppointmentStyle[]{AppointmentStyles.GREEN, AppointmentStyles.BLUE,
-    		AppointmentStyles.PURPLE,AppointmentStyles.RED};
+            new AppointmentStyle[]{AppointmentStyle.GREEN, AppointmentStyle.BLUE,
+    	AppointmentStyle.PURPLE,AppointmentStyle.RED};
 
     /**
      * Available hours for appointments, from 0 to 24.
@@ -155,7 +154,7 @@ public class AppointmentBuilder {
                 int titleId = Random.nextInt(TITLES.length);
                 appt.setTitle(TITLES[titleId]);
                 appt.setDescription(DESCRIPTIONS[titleId]);
-                appt.setAppointmentStyle(style);
+                appt.setStyle(style);
                 appt.setLocation(LOCATIONS[Random.nextInt(LOCATIONS.length)]);
                 int attendees = Random.nextInt(EMAIL.length) + 1;
                 for (int i = 0; i < attendees; i++) {
