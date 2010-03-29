@@ -88,7 +88,7 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		//CalendarFormat.INSTANCE.setFirstDayOfWeek(1);
 		
 		//change hour offset to false to facilitate iCal style
-		//settings.setOffsetHourLabels(true);
+		settings.setOffsetHourLabels(true);
 		settings.setTimeBlockClickNumber(Click.Double);
 		//create day view
 		calendar = new Calendar();

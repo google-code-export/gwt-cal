@@ -203,7 +203,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         Date today = new Date();
 
         Appointment multiDayAppt = new Appointment();
-        multiDayAppt.setAppointmentStyle(AppointmentStyles.BLUE);
+        multiDayAppt.setStyle(AppointmentStyle.BLUE);
         multiDayAppt.setStart(
                 new Date(today.getYear(), today.getMonth(), today.getDate(),
                         0, 0, 0));
