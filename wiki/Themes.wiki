@@ -15,6 +15,12 @@ The gwt-library includes a set of themes to style the calendar widget. The desir
   <inherits name='com.bradrydzewski.gwt.calendar.theme.ical.iCal' />
 }}}
 
+To achieve a more authentic iCal look and feel you should also set the following property in the `CalendarSetting` class.
+{{{
+settings.setOffsetHourLabels(true);
+calendar.setSettings(settings);
+}}}
+
 *Preview examples of each theme:*
  * [http://google.latest.gwt-web-calendar.appspot.com/ Google theme]
  * [http://outlook.latest.gwt-web-calendar.appspot.com/ Outlook theme]
