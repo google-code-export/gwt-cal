@@ -24,3 +24,16 @@ You can also configure the height (in pixels) of a block of time. By default the
 //set time block height to 50px
 settings.setPixelsPerInterval(50);
 }}}
+
+== Configuring Date/Time Formats ==
+
+Date/Time formats are configured in a set of internationalized properties files. For more information see [i18n].
+
+
+== Single vs. Double Click ==
+
+When a user clicks a timeblock in the `DayView` or day cell in the `MonthView`, it triggers a `TimeBlockClicked` event. You can configure if this event is triggered on Single vs. Double click:
+
+{{{
+settings.setTimeBlockClickNumber(Click.Double);
+}}}
