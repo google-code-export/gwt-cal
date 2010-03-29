@@ -40,8 +40,8 @@ public class AppointmentUtil {
         Date endDate = DateUtils.shiftDate(date, days);
 
         for (Appointment appointment : fullList) {
-            if (appointment.isMultiDay() && rangeContains(appointment,
-                    startDate, endDate)) {
+            if ((appointment.isMultiDay() || appointment.isAllDay()) &&
+            		rangeContains(appointment, startDate, endDate)) {
                 group.add(appointment);
             }
         }
@@ -101,7 +101,7 @@ public class AppointmentUtil {
         endDate.setDate(endDate.getDate() + 1);
 
         for (Appointment appointment : fullList) {
-           if (!appointment.isMultiDay() &&
+           if (!appointment.isMultiDay() && !appointment.isAllDay() &&
                 appointment.getEnd().before(endDate)) {
                 //TODO: probably can shorten this by using the compareTo method
                 if (appointment.getStart().after(startDate) ||
