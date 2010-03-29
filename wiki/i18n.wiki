@@ -1,6 +1,6 @@
 #summary Describes internationalization and formatting in gwt-cal
 
-= Overview =
+== Overview ==
 
 All date formats and labels are driven by properties file, leveraging gwt's built-in support for internationalization.
 
@@ -30,6 +30,8 @@ pm=
 firstDayOfWeek=0
 }}}
 
+=== Supported Locales ===
+
 gwt-cal currently supports the following locales:
  * English (default)
  * French (fr)
@@ -39,7 +41,7 @@ gwt-cal currently supports the following locales:
 
 If you would like to add your locale, please send us a properties file to add to our project.
 
-= Custom Date Formatting =
+== Custom Date Formatting ==
 
 Sometimes we get questions (and complex patches) asking how one can specify their own custom formats. Everything in the properties files described above can be overridden in the `CalendarFormat` class.
 
