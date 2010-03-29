@@ -3,7 +3,7 @@ package com.bradrydzewski.gwt.calendar.theme.google.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.bradrydzewski.gwt.calendar.client.AppointmentStyleEnum;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 
 public class GoogleAppointmentTheme {
                                                                            //border,   background
@@ -29,31 +29,31 @@ public class GoogleAppointmentTheme {
     public static final GoogleAppointmentStyle YELLOW_GREY  = new GoogleAppointmentStyle("#6E6E41","#A7A77D");
     public static final GoogleAppointmentStyle BROWN        = new GoogleAppointmentStyle("#8D6F47","#C4A883");
     public static final GoogleAppointmentStyle DEFAULT = BLUE;
-    public static Map<AppointmentStyleEnum, GoogleAppointmentStyle> STYLES;
+    public static Map<AppointmentStyle, GoogleAppointmentStyle> STYLES;
     
     static {
-		STYLES = new HashMap<AppointmentStyleEnum, GoogleAppointmentStyle>();
-		STYLES.put(AppointmentStyleEnum.BLUE, BLUE);
-		STYLES.put(AppointmentStyleEnum.BLUE_GREY, BLUE_GREY);
-		STYLES.put(AppointmentStyleEnum.BROWN, BROWN);
-		STYLES.put(AppointmentStyleEnum.DARK_PURPLE, DARK_PURPLE);
-		STYLES.put(AppointmentStyleEnum.GREEN, GREEN);
-		STYLES.put(AppointmentStyleEnum.GREY, GREY);
-		STYLES.put(AppointmentStyleEnum.LIGHT_BLUE, LIGHT_BLUE);
-		STYLES.put(AppointmentStyleEnum.LIGHT_BROWN, LIGHT_BROWN);
-		STYLES.put(AppointmentStyleEnum.LIGHT_GREEN, LIGHT_GREEN);
-		STYLES.put(AppointmentStyleEnum.LIGHT_PURPLE, LIGHT_PURPLE);
-		STYLES.put(AppointmentStyleEnum.LIGHT_TEAL, LIGHT_TEAL);
-		STYLES.put(AppointmentStyleEnum.ORANGE, ORANGE);
-		STYLES.put(AppointmentStyleEnum.PINK, PINK);
-		STYLES.put(AppointmentStyleEnum.PURPLE, PURPLE);
-		STYLES.put(AppointmentStyleEnum.RED, RED);
-		STYLES.put(AppointmentStyleEnum.RED_ORANGE, RED_ORANGE);
-		STYLES.put(AppointmentStyleEnum.STEELE_BLUE, STEELE_BLUE);
-		STYLES.put(AppointmentStyleEnum.TEAL, TEAL);
-		STYLES.put(AppointmentStyleEnum.YELLOW, YELLOW);
-		STYLES.put(AppointmentStyleEnum.YELLOW_GREEN, YELLOW_GREEN);
-		STYLES.put(AppointmentStyleEnum.YELLOW_GREY, YELLOW_GREY);
-		STYLES.put(AppointmentStyleEnum.DEFAULT, DEFAULT);
+		STYLES = new HashMap<AppointmentStyle, GoogleAppointmentStyle>();
+		STYLES.put(AppointmentStyle.BLUE, BLUE);
+		STYLES.put(AppointmentStyle.BLUE_GREY, BLUE_GREY);
+		STYLES.put(AppointmentStyle.BROWN, BROWN);
+		STYLES.put(AppointmentStyle.DARK_PURPLE, DARK_PURPLE);
+		STYLES.put(AppointmentStyle.GREEN, GREEN);
+		STYLES.put(AppointmentStyle.GREY, GREY);
+		STYLES.put(AppointmentStyle.LIGHT_BLUE, LIGHT_BLUE);
+		STYLES.put(AppointmentStyle.LIGHT_BROWN, LIGHT_BROWN);
+		STYLES.put(AppointmentStyle.LIGHT_GREEN, LIGHT_GREEN);
+		STYLES.put(AppointmentStyle.LIGHT_PURPLE, LIGHT_PURPLE);
+		STYLES.put(AppointmentStyle.LIGHT_TEAL, LIGHT_TEAL);
+		STYLES.put(AppointmentStyle.ORANGE, ORANGE);
+		STYLES.put(AppointmentStyle.PINK, PINK);
+		STYLES.put(AppointmentStyle.PURPLE, PURPLE);
+		STYLES.put(AppointmentStyle.RED, RED);
+		STYLES.put(AppointmentStyle.RED_ORANGE, RED_ORANGE);
+		STYLES.put(AppointmentStyle.STEELE_BLUE, STEELE_BLUE);
+		STYLES.put(AppointmentStyle.TEAL, TEAL);
+		STYLES.put(AppointmentStyle.YELLOW, YELLOW);
+		STYLES.put(AppointmentStyle.YELLOW_GREEN, YELLOW_GREEN);
+		STYLES.put(AppointmentStyle.YELLOW_GREY, YELLOW_GREY);
+		STYLES.put(AppointmentStyle.DEFAULT, DEFAULT);
     }
 }

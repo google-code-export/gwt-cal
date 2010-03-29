@@ -50,7 +50,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
    private String createdBy;
    private List<Attendee> attendees = new ArrayList<Attendee>();
    private boolean allDay = false;
-   private AppointmentStyleEnum style = AppointmentStyleEnum.DEFAULT;
+   private AppointmentStyle style = AppointmentStyle.DEFAULT;
    private String customStyle;
 
    /**
@@ -292,11 +292,11 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 //      this.appointmentStyle = appointmentStyle;
 //   }
 
-	public AppointmentStyleEnum getStyle() {
+	public AppointmentStyle getStyle() {
 		return style;
 	}
 	
-	public void setStyle(AppointmentStyleEnum style) {
+	public void setStyle(AppointmentStyle style) {
 		this.style = style;
 	}
 	
