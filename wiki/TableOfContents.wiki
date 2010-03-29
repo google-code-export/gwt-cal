@@ -14,6 +14,7 @@
    * [HandlingEvents Handling Events]
    * [Themes Changing Themes]
    * [Settings Changing Settings]
+   * [i18n i18n]
  * Demos
    * [http://google.latest.gwt-web-calendar.appspot.com Google theme]
    * [http://outlook.latest.gwt-web-calendar.appspot.com Outlook theme]
