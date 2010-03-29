@@ -51,7 +51,7 @@ Appointment appt = new Appointment();
 appt.setStart(...);
 appt.setEnd(...);
 appt.setTitle(...);
-appt.addStyleName("gwt-appointment-blue");
+appt.setStyle(AppointmentStyle.BLUE);
 calendar.addAppointment(appt);
 }}}
 
