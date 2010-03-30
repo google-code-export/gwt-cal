@@ -116,7 +116,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
          Date endDate =
             ((AppointmentWidget) draggable.widget).getAppointment().getEnd();
 
-         int dateDiff = DateUtils.differenceInDays(endDate, startDate);
+         int dateDiff = DateUtils.differenceInDays(endDate, startDate)+1;
          dateDiff = (dateDiff <= 0) ? 1 : dateDiff;
          highlightedCells = getCells(row, col, dateDiff);
 
