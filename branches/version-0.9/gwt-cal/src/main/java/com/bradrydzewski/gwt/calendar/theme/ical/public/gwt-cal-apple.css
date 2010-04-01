@@ -317,7 +317,7 @@
 
 /* Month View Appointment Styles */
 .gwt-cal-MonthView .appointment { position:absolute;height:20px; overflow:hidden;text-decoration:none; }
-.gwt-cal-MonthView .appointment-selected { text-decoration:underline;border:0px; }
+.gwt-cal-MonthView .appointment-selected { text-decoration:underline;border:0px;overflow:hidden; }
 
 .gwt-cal-MonthView .appointment-multiday { 	-webkit-border-radius: 6px; -moz-border-radius: 6px;position:absolute;height:20px; color:#FFF;overflow:hidden; border-style:solid;border-width:1px; }
 .gwt-cal-MonthView .appointment-multiday-selected  { position:absolute;height:20px; overflow:hidden; border-style:solid;border-width:1px;-webkit-box-shadow: 3px 3px 5px #B7B7B7; -moz-box-shadow: 3px 3px 5px #B7B7B7; text-decoration:none; -webkit-border-radius: 6px; -moz-border-radius: 6px;position:absolute;height:20px; color:#FFF;overflow:hidden; }
