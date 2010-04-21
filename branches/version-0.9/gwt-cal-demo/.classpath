@@ -2,9 +2,18 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="com.google.appengine.eclipse.core.GAE_CONTAINER"/>
-	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/home/brad/.m2/repository/com/googlecode/gwt-dnd/gwt-dnd/2.6.5/gwt-dnd-2.6.5.jar"/>
+	<classpathentry kind="lib" path="/home/brad/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036/gwt-2.0.3/gwt-user.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/brad/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036/gwt-2.0.3/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/home/brad/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036/gwt-2.0.3/gwt-dev.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="file:/home/brad/.eclipse/org.eclipse.platform_3.5.0_155965261/plugins/com.google.gwt.eclipse.sdkbundle.2.0.3_2.0.3.v201002191036/gwt-2.0.3/doc/javadoc/"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/gwt-cal"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Brad/.m2/repository/com/googlecode/gwt-dnd/gwt-dnd/2.6.5/gwt-dnd-2.6.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>

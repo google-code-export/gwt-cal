@@ -96,6 +96,8 @@ background: transparent;
 	width:30px;
 	height:25px;
 }
+
+
 .gwt-Cal-DemoBody .datePickerDayIsHighlighted {
 	background:#5b739a url(selected-cell-gradient.gif);
 	border-right: 1px solid #4C6C93;
@@ -123,13 +125,22 @@ background: transparent;
 	border-bottom: 1px solid #304769;
 	border-top: 1px solid #304769;
 }
+
+
+.gwt-Cal-DemoBody .datePickerDays td:last-child  {
+	border-right-width:0px;
+}
+.gwt-Cal-DemoBody .datePickerDays tr:nth-child(2) td {
+	border-top: 1px solid #B0B7C1;
+}
+
+
+
 .gwt-Cal-DemoBody .splitter {
 	background: url(splitter-gradient.gif);
 	height:10px;
 	font-size:1px;
 }
-
-
 
 
 .todayButton {

@@ -1,0 +1,227 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.scrollPanel {
+			overflow: scroll;
+			overflow-x: hidden;
+			overflow-y: scroll;
+			width: 100%;
+			height: 100%;
+			background: #FFF;
+		}
+		
+		.splitter {
+			border-top: 1px solid #BEBEBE;
+			background: #E8E8E8;
+			border-bottom: 3px solid #D9D9D9;
+			overflow: hidden;
+		}
+		
+		.allDayCell,.headerYearCell {
+			font-family: arial;
+			font-size: 12px;
+			font-weight: normal;
+			text-align: center;
+			background: #FFF;
+			line-height: 20px;
+		}
+		
+		.headerDayCell {
+			background: #FFF;
+			border-left: 1px solid #C1C1C1;
+			position: absolute;
+			top: 0px;
+			height: 100%;
+			line-height: 20px;
+			text-align: center;
+			font-family: arial;
+			font-size: 12px;
+		}
+		
+		.headerDayCell-today {
+			background: #F2F2F2;
+			border-left: 1px solid #C1C1C1;
+			font-weight: bold;
+			position: absolute;
+			height: 100%;
+			top: 0px;
+			line-height: 20px;
+			text-align: center;
+			font-family: arial;
+			font-size: 12px;
+		}
+		
+		.headerOverflowCell {
+			background: #FFF;
+		}
+		
+		.multiDayPanel {
+			position: relative;
+			width: 100%;
+			height: 100%;
+		}
+		
+		.timelinePanel {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+		}
+		
+		@external time-strip, ampm-text, hour-layout, hour-text;
+		.hour-layout {
+			position: absolute;
+			top: 50%;
+			left: 0px;
+			margin-top: -0.5em;
+			line-height: 1;
+			text-align: center;
+			width: 100%;
+		}
+		
+		.hour-text {
+			display: inline;
+			text-transform: uppercase;
+			color: #8F8F8F;
+			font-family: arial;
+			font-size: 12px;
+		}
+		
+		.ampm-text {
+			display: inline;
+			text-transform: uppercase;
+			color: #8F8F8F;
+			font-family: arial;
+			font-size: 12px;
+		}
+		
+		.time-strip {
+			position: relative;
+			white-space: nowrap;
+			width: 50px;
+			border-top:1px solid #FFF;
+			border-bottom:1px solid #FFF;
+		}
+		@external major-time-interval;
+		.major-time-interval {
+			display: block;
+			height: 24px;
+			_height: 25px;
+			background: #F2F2F2;
+			border-top: 1px solid #C1C1C1;
+			width: 100%;
+		}
+		@external minor-time-interval;
+		.minor-time-interval {
+			display: block;
+			height: 24px;
+			_height: 25px;
+			background: #F2F2F2;
+			border-top: 1px solid #E7E7E7;
+			width: 100%;
+		}
+		@external working-hours;
+		.working-hours {
+			background: #FFF;
+		}
+		@external day-separator;
+		.day-separator {
+			height: 100%;
+			position: absolute;
+			top: 0px;
+			left: 0%;
+			border-left: 1px solid #C1C1C1;
+			width: 1px;
+		}
+	</ui:style>
+
+	<g:DockLayoutPanel unit='PX' width="100%" height="100%"
+		styleName="style.dockPanel">
+		<g:north size='20'>
+			<g:DockLayoutPanel unit='PX' width="100%" height="100%">
+				<g:west size="50">
+					<g:Label styleName="{style.headerYearCell}">2009</g:Label>
+				</g:west>
+				<g:east size="18">
+					<g:HTML styleName="{style.headerOverflowCell}">&nbsp;</g:HTML>
+				</g:east>
+				<g:center>
+					<g:HTMLPanel styleName="{style.multiDayPanel}">
+						<!-- Created with Code -->
+						<div class="{style.headerDayCell}" style="left:0.0000%;width:33.333%;">Tue, Apr 6</div>
+						<div class="{style.headerDayCell-today}" style="left:33.333%;width:33.333%;">Wed, Apr 7</div>
+						<div class="{style.headerDayCell}" style="left:66.666%;width:33.333%;">Thu, Apr 8</div>
+					</g:HTMLPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:north>
+		<g:north size='7'>
+			<g:HTML styleName="{style.splitter}">&nbsp;</g:HTML>
+		</g:north>
+		<g:north size='30'>
+			<g:DockLayoutPanel unit='PX' width="100%" height="100%">
+				<g:west size="50">
+					<g:HTML styleName="{style.allDayCell}">all-day</g:HTML>
+				</g:west>
+				<g:east size="18">
+					<g:HTML>&nbsp;</g:HTML>
+				</g:east>
+				<g:center>
+					<g:HTMLPanel styleName="{style.multiDayPanel}">
+						<!-- Created with Code -->
+						<div
+							style="left:0px;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px solid #C1C1C1;background:#FFF;">&nbsp;</div>
+						<div
+							style="left:33.333%;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px solid #C1C1C1;background:#FFF;">&nbsp;</div>
+						<div
+							style="left:66.666%;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px solid #C1C1C1;background:#FFF;">&nbsp;</div>
+					</g:HTMLPanel>
+				</g:center>
+			</g:DockLayoutPanel>
+		</g:north>
+		<g:north size='7'>
+			<g:HTML styleName="{style.splitter}">&nbsp;</g:HTML>
+		</g:north>
+		<!--
+			unfortunately we can't use the combination of a ScrollPanel with a
+			DockPanel due to internal GWT stuff (creating child "wrapper" widgets
+			with position:relative). so instead we fall back on the trusty old
+			html table.
+		-->
+		<g:center>
+			<g:HTMLPanel styleName="{style.scrollPanel}">
+				<table style="width:100%;" cellpadding="0" cellspacing="0"
+					border="0">
+					<tr>
+						<td valign="top" style="width:50px;background:#FFF;">
+							<g:FlowPanel ui:field="timelinePanel"></g:FlowPanel>
+						</td>
+						<td valign="top">
+							<g:FlowPanel ui:field="grid">
+								<g:FlowPanel ui:field="gridOverlay"></g:FlowPanel>
+							</g:FlowPanel>
+						</td>
+					</tr>
+				</table>
+			</g:HTMLPanel>
+		</g:center>
+	</g:DockLayoutPanel>
+</ui:UiBinder>
+
+	<!--							<div style="height:1600px;position:relative;">-->
+	<!--
+		<div
+		style="left:0px;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px
+		solid #C1C1C1;background:#FFF;">&nbsp;</div>
+	-->
+	<!--
+		<div
+		style="left:33.333%;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px
+		solid #C1C1C1;background:#FFF;">&nbsp;</div>
+	-->
+	<!--
+		<div
+		style="left:66.666%;position:absolute;top:0px;height:100%;width:33.333%;border-left:1px
+		solid #C1C1C1;background:#FFF;">&nbsp;</div>
+	-->
+	<!--							</div>-->
