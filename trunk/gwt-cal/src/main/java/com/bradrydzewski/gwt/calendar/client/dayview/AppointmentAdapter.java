@@ -1,12 +1,12 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Brad Rydzewski
- * 
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
@@ -16,11 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/
  */
 
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.minutesSinceDayStarted;
 
 /**
  * The Appointment Adapter is used to track the layout of an
@@ -34,7 +36,7 @@ import java.util.List;
  */
 public class AppointmentAdapter {
 
-    private AppointmentInterface appointment;
+    private Appointment appointment;
     private int cellStart;
     private int cellSpan;
     private int columnStart = -1;
@@ -44,11 +46,49 @@ public class AppointmentAdapter {
     private float cellPercentFill;
     private float cellPercentStart;
     private List<TimeBlock> intersectingBlocks;
+    private float top;
+    private float left;
+    private float width;
+    private float height;
 
-    public AppointmentAdapter(AppointmentInterface appointment) {
+    
+    
+    public float getTop() {
+		return top;
+	}
+
+	public void setTop(float top) {
+		this.top = top;
+	}
+
+	public float getLeft() {
+		return left;
+	}
+
+	public void setLeft(float left) {
+		this.left = left;
+	}
+
+	public float getWidth() {
+		return width;
+	}
+
+	public void setWidth(float width) {
+		this.width = width;
+	}
+
+	public float getHeight() {
+		return height;
+	}
+
+	public void setHeight(float height) {
+		this.height = height;
+	}
+
+	public AppointmentAdapter(Appointment appointment) {
         this.appointment = appointment;
-        this.appointmentStart = calculateDateInMinutes(appointment.getStart());
-        this.appointmentEnd = calculateDateInMinutes(appointment.getEnd());
+        this.appointmentStart = minutesSinceDayStarted(appointment.getStart());
+        this.appointmentEnd = minutesSinceDayStarted(appointment.getEnd());
         this.intersectingBlocks = new ArrayList<TimeBlock>();
     }
 
@@ -108,12 +148,8 @@ public class AppointmentAdapter {
         this.intersectingBlocks = intersectingBlocks;
     }
 
-    public AppointmentInterface getAppointment() {
+    public Appointment getAppointment() {
         return appointment;
-    }
-
-    protected int calculateDateInMinutes(Date date) {
-        return date.getHours() * 60 + date.getMinutes();
     }
 
     public float getCellPercentFill() {

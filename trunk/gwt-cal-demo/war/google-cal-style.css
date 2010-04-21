@@ -332,3 +332,6 @@
   color:#000;
   font-weight: bold;
 }
+
+.gwt-DecoratorPanel .middleCenter {width:100%;}
+.gwt-DecoratorPanel { width:100%; }

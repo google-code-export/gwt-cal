@@ -1,10 +1,31 @@
-package com.bradrydzewski.gwt.calendar.client;
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
 
-import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
+package com.bradrydzewski.gwt.calendar.client.dayview;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
+import com.bradrydzewski.gwt.calendar.client.HasSettings;
+import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 
 /**
  * Responsible for arranging all Appointments, visually, on a screen in a manner
@@ -27,7 +48,7 @@ public class DayViewLayoutStrategy {
         this.settings = settings;
     }
 
-    public ArrayList<AppointmentAdapter> doLayout(List<AppointmentInterface> appointments, int dayIndex, int dayCount) {
+    public ArrayList<AppointmentAdapter> doLayout(List<Appointment> appointments, int dayIndex, int dayCount) {
 
 
         int intervalsPerHour = settings.getSettings().getIntervalsPerHour(); //30 minute intervals
@@ -84,7 +105,7 @@ public class DayViewLayoutStrategy {
 
         // for each appointments, we need to see if it intersects with each time
         // block
-        for (AppointmentInterface appointment : appointments) {
+        for (Appointment appointment : appointments) {
 
             TimeBlock startBlock = null;
             TimeBlock endBlock = null;
@@ -247,7 +268,6 @@ public class DayViewLayoutStrategy {
 
 
         //last step is to calculate the adjustment reuired for 'multi-day' / multi-column
-        float leftAdj = dayIndex / dayCount; //  0/3  or 2/3
         float widthAdj = 1f / dayCount;
 
         float paddingLeft = .5f;
@@ -263,11 +283,11 @@ public class DayViewLayoutStrategy {
             float width = 1f / (float) apptCell.getIntersectingBlocks().get(0).getTotalColumns() * 100;
             float left = (float) apptCell.getColumnStart() / (float) apptCell.getIntersectingBlocks().get(0).getTotalColumns() * 100;
 
-            AppointmentInterface appt = apptCell.getAppointment();
-            appt.setTop((float) apptCell.getCellStart() * intervalSize); // ok!
-            appt.setLeft((widthAdj * 100 * dayIndex) + (left * widthAdj) + paddingLeft); // ok
-            appt.setWidth(width * widthAdj - paddingLeft - paddingRight); // ok!
-            appt.setHeight((float) apptCell.getIntersectingBlocks().size() * ((float) intervalSize) - paddingBottom); // ok!
+            //AppointmentInterface appt = apptCell.getAppointment();
+            apptCell.setTop((float) apptCell.getCellStart() * intervalSize); // ok!
+            apptCell.setLeft((widthAdj * 100 * dayIndex) + (left * widthAdj) + paddingLeft); // ok
+            apptCell.setWidth(width * widthAdj - paddingLeft - paddingRight); // ok!
+            apptCell.setHeight((float) apptCell.getIntersectingBlocks().size() * ((float) intervalSize) - paddingBottom); // ok!
 
             float apptStart = apptCell.getAppointmentStart();
             float apptEnd = apptCell.getAppointmentEnd();
@@ -286,13 +306,13 @@ public class DayViewLayoutStrategy {
             //System.out.println("------------");
             apptCell.setCellPercentFill(timeFillHeight);
             apptCell.setCellPercentStart(timeFillStart);
-            appt.formatTimeline(apptCell.getCellPercentStart(), apptCell.getCellPercentFill());
+            //appt.formatTimeline(apptCell.getCellPercentStart(), apptCell.getCellPercentFill());
         }
 
         return appointmentCells;
     }
 
-    public int doMultiDayLayout(ArrayList<AppointmentInterface> appointments, Date start, int days) {
+    public int doMultiDayLayout(ArrayList<Appointment> appointments, ArrayList<AppointmentAdapter> adapters, Date start, int days) {
 
 
         //create array to hold all appointments for a particular day
@@ -305,11 +325,9 @@ public class DayViewLayoutStrategy {
         int minHeight = 30;
         int maxRow = 0;
 
-        //list of appointment adapters
-        ArrayList<AppointmentAdapter> adapters = new ArrayList<AppointmentAdapter>();
 
         //convert appointment to adapter
-        for (AppointmentInterface appointment : appointments) {
+        for (Appointment appointment : appointments) {
             adapters.add(new AppointmentAdapter(appointment));
         }
 
@@ -322,11 +340,11 @@ public class DayViewLayoutStrategy {
 //        tempStartDate.setSeconds(0);
         for (int i = 0; i < days; i++) {
             Date d = (Date) tempStartDate.clone();
-            AppointmentUtil.resetTime(d);
+            DateUtils.resetTime(d);
             //appointmentDayMap.put(d, new ArrayList<AppointmentAdapter>());
             daySlotMap.put(i, new HashMap<Integer, Integer>());
             dateList.add(d);
-            tempStartDate.setDate(tempStartDate.getDate() + 1);
+            DateUtils.moveOneDayForward(tempStartDate);
         }
 
 
@@ -367,7 +385,7 @@ public class DayViewLayoutStrategy {
                 for (int y = adapter.getColumnStart(); y <= adapter.getColumnStart() + adapter.getColumnSpan(); y++) {
                     try{
                 	HashMap<Integer, Integer> rowMap = daySlotMap.get(y);
-                    if (rowMap.containsKey(x) == true) {
+                    if (rowMap.containsKey(x)) {
                         isRowOccupied = true;
                     //System.out.println("    row [" + x+"] is occupied for day [" + y+"]");
                     } else {
@@ -395,15 +413,15 @@ public class DayViewLayoutStrategy {
 
 
                     //now we set the appointment's location
-                    AppointmentInterface appt = adapter.getAppointment();
+                    //Appointment appt = adapter.getAppointment();
                     float top = adapter.getCellStart() * 25f + 5f;
                     float width = ((float) adapter.getColumnSpan() + 1f) / days * 100f - 1f;//10f=padding
                     float left = ((float) adapter.getColumnStart()) / days * 100f + .5f;//10f=padding
                     //float left = (float) adapter.getColumnStart() / (float) apptCell.getIntersectingBlocks().get(0).getTotalColumns() * 100;
-                    appt.setWidth(width);
-                    appt.setLeft(left);
-                    appt.setTop(top);
-                    appt.setHeight(20);
+                    adapter.setWidth(width);
+                    adapter.setLeft(left);
+                    adapter.setTop(top);
+                    adapter.setHeight(20);
                     //System.out.println("set appointment [" + appt.getTitle() + "]  layout left: " + left + " top: " + top + " width: " + width);
                     break;
                 }
