@@ -4,7 +4,29 @@
     <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalMonthViewStyleManager">
         <when-type-is class="com.bradrydzewski.gwt.calendar.client.monthview.MonthViewStyleManager"/>
     </replace-with>
+    
     <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalDayViewStyleManager">
         <when-type-is class="com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager"/>
     </replace-with>
+    <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalDayViewStyleManagerIEImpl">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager"/>
+        <any>
+            <when-property-is name="user.agent" value="ie6"/>
+            <when-property-is name="user.agent" value="ie7"/>
+            <when-property-is name="user.agent" value="ie8"/>
+        </any>
+    </replace-with>
+    <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalDayViewStyleManagerWebkitImpl">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager"/>
+        <any>
+            <when-property-is name="user.agent" value="safari"/>
+        </any>
+    </replace-with>
+    <replace-with class="com.bradrydzewski.gwt.calendar.theme.ical.client.ICalDayViewStyleManagerFirefoxImpl">
+        <when-type-is class="com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager"/>
+        <any>
+            <when-property-is name="user.agent" value="gecko"/>
+            <when-property-is name="user.agent" value="gecko1_8"/>
+        </any>
+    </replace-with>  
 </module>

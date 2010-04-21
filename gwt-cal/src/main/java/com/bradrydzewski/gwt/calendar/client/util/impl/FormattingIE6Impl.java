@@ -4,6 +4,6 @@ public class FormattingIE6Impl extends FormattingImpl {
 
 	@Override
 	public int getBorderOffset() {
-		return 0;
+		return -1;
 	}
 }

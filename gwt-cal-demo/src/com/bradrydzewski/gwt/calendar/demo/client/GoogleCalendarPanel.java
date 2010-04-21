@@ -294,7 +294,9 @@ public class GoogleCalendarPanel extends FlowPanel {
         HTML when = new HTML("When");
         dialogContents.add(when);
         final TextBox eventWhenText = new TextBox();
+        final TextBox eventEndText = new TextBox();
         dialogContents.add(eventWhenText);
+        dialogContents.add(eventEndText);
         // Description
         HTML description = new HTML("Description");
         dialogContents.add(description);
@@ -313,6 +315,8 @@ public class GoogleCalendarPanel extends FlowPanel {
             eventNameText.setText(appt.getTitle());
             eventWhenText
                     .setText(appt.getStart().toString());
+            eventEndText
+            .setText(appt.getEnd().toString());
             descriptionText.setText(appt.getDescription());
             ap = appt;
         } else if (event instanceof TimeBlockClickEvent) {

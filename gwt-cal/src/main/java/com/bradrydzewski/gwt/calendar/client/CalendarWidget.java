@@ -126,6 +126,10 @@ public class CalendarWidget extends InteractiveWidget implements
       this.setStyleName(this.view.getStyleName());
       this.refresh();
    }
+   
+   public final CalendarView getView() {
+	   return view;
+   }
 
    public Date getDate() {
       return (Date) date.clone();

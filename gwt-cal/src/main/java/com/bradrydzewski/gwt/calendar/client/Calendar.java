@@ -18,16 +18,13 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
-import com.bradrydzewski.gwt.calendar.client.agenda.AgendaView;
 import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
 import com.bradrydzewski.gwt.calendar.client.monthview.MonthView;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.ProvidesResize;
+import com.google.gwt.user.client.ui.RequiresResize;
 
-public class Calendar extends CalendarWidget {
-
-    /**
-     * The component to manage the presentation of appointments as a list.
-     */
-    private AgendaView agendaView = null;
+public class Calendar extends CalendarWidget implements RequiresResize, ProvidesResize {
 
 	/**
      * The component to manage the presentation of appointments in a single day
@@ -84,7 +81,7 @@ public class Calendar extends CalendarWidget {
      *             ignored by some views.
      */
     public void setView(CalendarViews view, int days) {
-        switch (view) {
+    	switch (view) {
             case DAY: {
                 if (dayView == null)
                     dayView = new DayView();
@@ -93,11 +90,8 @@ public class Calendar extends CalendarWidget {
                 break;
             }
             case AGENDA: {
-                //TODO: need to cache agendaView, but there is a layout bug after a calendar item is deleted.
-//                agendaView = new AgendaView();
-//                setView(agendaView);
-//            	break;
-                throw new RuntimeException("Agenda View is not yet supported");
+                throw new RuntimeException(
+                		"Agenda View is not yet supported");
             }
             case MONTH: {
             	if(monthView==null)
@@ -107,5 +101,32 @@ public class Calendar extends CalendarWidget {
             }
         }
     }
+
+    
+    
+	public void onResize() {
+		resizeTimer.schedule(500);
+	}
+	
+    
+    private Timer resizeTimer = new Timer() {
+    	/**
+    	 * Snapshot of the Calendar's height at the last time
+    	 * it was resized.
+    	 */
+    	private int height;
+
+        @Override
+        public void run() {
+
+            int newHeight = getOffsetHeight();
+            if (newHeight != height) {
+                height = newHeight;
+                doSizing();
+                if(getView() instanceof MonthView)
+                	doLayout();
+            }
+        }
+    };
 }
  

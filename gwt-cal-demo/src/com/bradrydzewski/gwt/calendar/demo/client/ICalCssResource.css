@@ -1,0 +1,115 @@
+@external test, test2;
+.test { border: 10px solid #000999; }
+.test2 { border: 99px solid #000000; }
+
+
+@external gwt-ICalDatePicker;
+@external datePickerMonthSelector;
+@external datePickerNextButton;
+@external datePickerPreviousButton;
+@external datePickerMonth;
+@external datePickerDays;
+@external datePickerDay;
+@external datePickerDayIsWeekend;
+@external datePickerDayIsFiller;
+@external datePickerWeekdayLabel;
+@external datePickerWeekendLabel;
+@external datePickerDay;
+@external datePickerDayIsHighlighted;
+@external datePickerDayIsValue;
+@external datePickerDayIsToday;
+
+/* Override gwt-DatePicker look and feel */
+/* to resemble the OSX iCal client look & feel */
+.gwt-ICalDatePicker {
+	border:0px;
+	background: #c0c6cd url(daypicker-gradient.gif);
+	background:url("daypicker-gradient.gif") repeat scroll 0 0 #C0C6CD;
+}
+
+.gwt-ICalDatePicker .datePickerMonthSelector {
+background: transparent;
+}
+
+.gwt-ICalDatePicker .datePickerNextButton,
+.gwt-ICalDatePicker .datePickerPreviousButton {
+	color: #23344F;
+}
+.gwt-ICalDatePicker .datePickerMonth {
+	color: #333333;
+	font-size: 14px;
+	text-shadow:.75px 1px 1px #F3F3F3
+}
+.gwt-ICalDatePicker .datePickerDays {
+	background:transparent;
+}
+.gwt-ICalDatePicker .datePickerDay{
+	font-weight:bold;
+	color:#333333;
+	text-shadow:0px 1px 1px #E5E5E5;
+}
+.gwt-ICalDatePicker .datePickerDayIsWeekend {
+	background:transparent;
+	font-size:12px;
+	font-weight:bold;
+	color:#333333;
+}
+.gwt-ICalDatePicker .datePickerDayIsFiller {
+	font-weight:bold;
+	font-size:12px;
+	color: #A6A6A6;
+	text-shadow:0px 1px 1px #E5E5E5;
+}
+.gwt-ICalDatePicker .datePickerWeekdayLabel,
+.gwt-ICalDatePicker .datePickerWeekendLabel{
+	font-size:10px;
+	font-weight:bold;
+	background:transparent;	
+}
+
+.gwt-ICalDatePicker .datePickerDay  {
+	border-right: 1px solid #B0B7C1;
+	border-left: 1px solid #DCE3EB;
+	border-bottom: 1px solid #B0B7C1;
+	border-top: 1px solid #DCE3EB;
+	width:30px;
+	height:25px;
+	font-size:12px;
+}
+
+
+.gwt-ICalDatePicker .datePickerDayIsHighlighted {
+	background:#5b739a url(selected-cell-gradient.gif);
+	border-right: 1px solid #4C6C93;
+	border-left: 1px solid #4C6C93;
+	border-bottom: 1px solid #4C6C93;
+	border-top: 1px solid #4C6C93;
+	color:#FFF;
+	text-shadow:0px 1px 5px #000;
+}
+.gwt-ICalDatePicker .datePickerDayIsValue {
+	color:#FFF;
+	text-shadow:0px 1px 5px #000;
+	background:#5b739a url(selected-cell-gradient.gif);
+	border-right: 1px solid #4C6C93;
+	border-left: 1px solid #4C6C93;
+	border-bottom: 1px solid #4C6C93;
+	border-top: 1px solid #4C6C93;
+}
+.gwt-ICalDatePicker .datePickerDayIsToday {
+	color:#FFF;
+	text-shadow:0px 1px 5px #000;
+	background:#5b739a url(today-cell-gradient.gif);
+	border-right: 1px solid #304769;
+	border-left: 1px solid #304769;
+	border-bottom: 1px solid #304769;
+	border-top: 1px solid #304769;
+}
+
+.gwt-ICalDatePicker .datePickerDays tr td:last-child  {
+	border-right-width:0px;
+}
+
+.gwt-ICalDatePicker .datePickerDays tr:nth-child(2) td {
+	border-top: 1px solid #B0B7C1;
+}

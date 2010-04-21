@@ -6,7 +6,7 @@
 	overflow: hidden;
 	width: 100%;
 	overflow: hidden;
-	border: 1px solid #C1C1C1;
+	border: 0px solid #C1C1C1;
         background:#FFF;
 }
 
@@ -184,9 +184,9 @@
 	font-family: arial;
 	/*border: 1px solid #000;*/
 	overflow: hidden;
-	filter: alpha(opacity = 50);
-	opacity: .5;
-    -moz-opacity: .5;
+	/*filter: alpha(opacity = 50);*/
+	/*opacity: .5;
+    -moz-opacity: .5;*/
 	-webkit-border-radius: 6px;
 	-moz-border-radius: 6px;
 	background-repeat:repeat-y;
@@ -200,8 +200,8 @@
 	overflow: hidden;
 	-webkit-box-shadow: 3px 3px 5px #B7B7B7;
         -moz-box-shadow: 3px 3px 5px #B7B7B7;
-	filter: alpha(opacity=100)  
-		progid:DXImageTransform.Microsoft.dropshadow(OffX=3, OffY=3,Color='#C7C7C7', Positive='true');
+	/*filter: alpha(opacity=100)  
+		progid:DXImageTransform.Microsoft.dropshadow(OffX=3, OffY=3,Color='#C7C7C7', Positive='true');*/
 	opacity: 1;
     -moz-opacity:1;
     background-repeat:repeat-y;
@@ -254,7 +254,9 @@
 
 .gwt-cal .dv-appointment-multiday .header,
 .gwt-cal .dv-appointment-multiday-selected .header {
-	background:transparent;	
+	background:transparent;
+	padding-top:3px;
+	padding-left:3px;	
 }
 
 .gwt-cal .dv-appointment .body,
@@ -268,13 +270,15 @@
 
 .gwt-cal .dv-appointment .footer,
 .gwt-cal .dv-appointment-selected .footer {
-	border-bottom: 3px double #FFF;
+	border-bottom: 3px double transparent;
 	position: absolute;
-	bottom: 2px;
-	left: 48%;
-	height: 4px;
-	width: 8px;
+	bottom: 0px;
+	left: 0%;
+	height: 10px;
+	width: 100%;
+	/*cursor:ns-resize;*/
 }
+
 .gwt-cal .dv-appointment-multiday .footer,
 .gwt-cal .dv-appointment-multiday-selected .footer {
 	display:none;
@@ -304,13 +308,13 @@
 
 .gwt-cal-MonthView .weekDayLabel, 
 .gwt-cal-MonthView .weekDayLabel-today { height:20px; text-align:center;background-color: #FFF;font-size:13px;color:#666; border-bottom:1px solid #E7E7E7;}
-.gwt-Cal-MonthView .dayCellLabel,
-.gwt-Cal-MonthView .dayCellLabel-today { background-color: #FFF; display:block;height:15px;font-family:arial;font-size:13px;text-align:right;padding-right:5px; color: #5F5F5F;}
-.gwt-Cal-MonthView .dayCellLabel-today-disabled,
-.gwt-Cal-MonthView .dayCellLabel-disabled { background-color: #FFF; display:block;height:15px;font-family:arial;font-size:13px;text-align:right;padding-right:5px; color:#CCC; }
+.gwt-cal-MonthView .dayCellLabel,
+.gwt-cal-MonthView .dayCellLabel-today { background-color: #FFF; display:block;height:15px;font-family:arial;font-size:13px;text-align:right;padding-right:5px; color: #5F5F5F; }
+.gwt-cal-MonthView .dayCellLabel-today-disabled,
+.gwt-cal-MonthView .dayCellLabel-disabled { background-color: #FFF; display:block;height:15px;font-family:arial;font-size:13px;text-align:right;padding-right:5px; color:#CCC;}
 
-.gwt-Cal-MonthView .dayCellLabel-today,
-.gwt-Cal-MonthView .dayCellLabel-today-disabled { background-color: #F2F2F2; }
+.gwt-cal-MonthView .dayCellLabel-today,
+.gwt-cal-MonthView .dayCellLabel-today-disabled { background-color: #F2F2F2; }
 .gwt-cal-MonthView .dayCell-today {   background-color: #F2F2F2;}
 
 .gwt-cal-MonthView .moreAppointments { position:absolute;text-align:center;text-decoration:underline;color:#000;}

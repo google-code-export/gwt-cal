@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.AppointmentStyle;
 import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
@@ -264,6 +265,15 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		calendar.suspendLayout();
 		calendar.addAppointments(appointments);
 
+		Appointment allDayAppointment = new Appointment();
+		Date today = new Date();
+		allDayAppointment.setStart(new Date(today.getYear(), today.getMonth()-1, today.getDate()-4, 0, 0, 0));
+		allDayAppointment.setEnd(new Date(today.getYear(), today.getMonth()-1, today.getDate()-4, 0, 0, 0));
+        allDayAppointment.setTitle("All Day Test");
+        allDayAppointment.setStyle(AppointmentStyle.RED);
+        allDayAppointment.setAllDay(true);
+        calendar.addAppointment(allDayAppointment);
+		
 		calendar.resumeLayout();
 		
 		
