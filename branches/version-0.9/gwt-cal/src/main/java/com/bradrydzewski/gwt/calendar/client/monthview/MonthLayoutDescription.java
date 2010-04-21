@@ -41,6 +41,7 @@ public class MonthLayoutDescription {
         for (Appointment appointment : appointments) {
             int startWeek =
                 calculateWeekFor(appointment.getStart(), calendarFirstDay);
+
             /* Place appointments only in this month */
             if (startWeek >= 0 && startWeek < weeks.length) {
                 initWeek(startWeek, maxLayer);
@@ -88,6 +89,7 @@ public class MonthLayoutDescription {
         int endWeek = (int) Math
             .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
                 7d);
+        
         return Math.min(endWeek, weeks.length - 1);
     }
 

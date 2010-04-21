@@ -178,7 +178,7 @@ public class DayView extends CalendarView implements HasSettings {
 	public void doSizing() {
 
 		if (calendarWidget.getOffsetHeight() > 0) {
-			dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
+			dayViewBody.setHeight(calendarWidget.getOffsetHeight() 
 					- dayViewHeader.getOffsetHeight()
 					- multiViewBody.getOffsetHeight() + "px");
 			// System.out.println("doComponentLayout called");

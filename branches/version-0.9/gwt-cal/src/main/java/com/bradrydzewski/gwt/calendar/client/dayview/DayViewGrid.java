@@ -15,7 +15,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Brad
  * 
  */
-public class DayViewGrid /*Impl*/ extends Composite {
+public class DayViewGrid extends Composite {
 	
     
         class Div extends ComplexPanel {

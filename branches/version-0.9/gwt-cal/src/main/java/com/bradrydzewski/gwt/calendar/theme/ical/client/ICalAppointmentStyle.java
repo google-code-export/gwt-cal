@@ -2,7 +2,7 @@ package com.bradrydzewski.gwt.calendar.theme.ical.client;
 
 
 public class ICalAppointmentStyle  {
-	public ICalAppointmentStyle(String background, String border, String image) {
+	public ICalAppointmentStyle(String background, String border, String image, String gradientStart, String gradientStop) {
 		super();
 		this.background = background;
 		this.backgroundHeader = border;
@@ -11,15 +11,18 @@ public class ICalAppointmentStyle  {
 		this.text = border;
 		
 		this.selectedHeaderText = "#FFFFFF";
-		this.selectedBackground = background;
 		this.selectedBackgroundImage = image;
 		this.selectedBackgroundHeader = border;
 		this.selectedText = border;
 		this.selectedBorder = border;
+		
+		
+		this.gradientStart = gradientStart;
+		this.gradientStop = gradientStop;
 	}
 	
     protected String selectedBorder;
-    protected String selectedBackground;
+
     protected String selectedBackgroundImage;
     protected String selectedBackgroundHeader;
     protected String selectedBackgroundFooter;
@@ -33,13 +36,14 @@ public class ICalAppointmentStyle  {
     protected String text;
     protected String headerText;
 
+    protected String gradientStart;
+    protected String gradientStop;
+
     public String getSelectedBorder() {
         return selectedBorder;
     }
 
-    public String getSelectedBackground() {
-        return selectedBackground;
-    }
+
 
     public String getSelectedBackgroundHeader() {
         return selectedBackgroundHeader;
@@ -85,9 +89,7 @@ public class ICalAppointmentStyle  {
         this.selectedBorder = selectedBorder;
     }
 
-    public void setSelectedBackground(String selectedBackground) {
-        this.selectedBackground = selectedBackground;
-    }
+
 
     public void setSelectedBackgroundHeader(String selectedBackgroundHeader) {
         this.selectedBackgroundHeader = selectedBackgroundHeader;
@@ -144,4 +146,15 @@ public class ICalAppointmentStyle  {
     public void setBackgroundImage(String backgroundImage) {
         this.backgroundImage = backgroundImage;
     }
+
+    
+    
+
+	public String getGradientStart() {
+		return gradientStart;
+	}
+
+	public String getGradientStop() {
+		return gradientStop;
+	}
 }
