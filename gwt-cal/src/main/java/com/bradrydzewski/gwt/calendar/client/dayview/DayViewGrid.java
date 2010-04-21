@@ -1,5 +1,6 @@
-package com.bradrydzewski.gwt.calendar.client;
+package com.bradrydzewski.gwt.calendar.client.dayview;
 
+import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ComplexPanel;

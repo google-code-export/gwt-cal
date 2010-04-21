@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.AppointmentInterface;
+import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
-import com.bradrydzewski.gwt.calendar.client.DayView;
+import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
@@ -18,6 +18,8 @@ import com.google.gwt.event.logical.shared.OpenEvent;
 import com.google.gwt.event.logical.shared.OpenHandler;
 import com.google.gwt.event.logical.shared.ResizeEvent;
 import com.google.gwt.event.logical.shared.ResizeHandler;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Command;
@@ -35,7 +37,7 @@ import com.google.gwt.user.datepicker.client.DatePicker;
 
 public class iCalCalendarPanel extends AbsolutePanel {
 
-	private DayView dayView = null;	
+	private Calendar calendar = null;	
 	private DatePicker datePicker = new DatePicker();
 	private SimplePanel splitterPanel = new SimplePanel();
 	private AbsolutePanel headerPanel = new AbsolutePanel();
@@ -49,12 +51,14 @@ public class iCalCalendarPanel extends AbsolutePanel {
 	private Button oneDayButton = new Button();
 	private Button threeDayButton = new Button();
 	private Button weekDayButton = new Button();
+	private Button monthButton = new Button();
 	private Button activeDayButton = null;
 	
 	private CalendarSettings settings = new CalendarSettings();
 	
 	public iCalCalendarPanel() {
 		
+
 		//style this element as absolute position
 		DOM.setStyleAttribute(this.getElement(), "position", "absolute");
 		DOM.setStyleAttribute(this.getElement(), "top", "0px");
@@ -81,19 +85,22 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		splitterPanel.setStyleName("splitter");
 		mainLayoutPanel.add(dateLayoutPanel, DockPanel.WEST);
 		
-		
+		//CalendarFormat.INSTANCE.setFirstDayOfWeek(1);
 		
 		//change hour offset to false to facilitate iCal style
 		settings.setOffsetHourLabels(true);
 		settings.setTimeBlockClickNumber(Click.Double);
 		//create day view
-		dayView = new DayView(settings);
+		calendar = new Calendar();
+		calendar.setSettings(settings);
 		//set style as google-cal
-		dayView.setWidth("100%");
+		calendar.setWidth("100%");
 		//set today as default date
-		mainLayoutPanel.add(dayView, DockPanel.CENTER);
+		mainLayoutPanel.add(calendar, DockPanel.CENTER);
 		mainLayoutPanel.setCellVerticalAlignment(dateLayoutPanel, HasAlignment.ALIGN_BOTTOM);
 		dateLayoutPanel.setCellVerticalAlignment(datePicker, HasAlignment.ALIGN_BOTTOM);
+		dateLayoutPanel.setWidth("168px");
+		
 		
 		//add today button
 		todayButton.setStyleName("todayButton");
@@ -136,14 +143,17 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		activeDayButton = threeDayButton;
 		weekDayButton.setText("Work Week");
 		weekDayButton.setStyleName("dayButton");
+		monthButton.setText("Month");
+		monthButton.setStyleName("dayButton");
 		headerPanelLayout.setWidget(0,2,oneDayButton);
 		headerPanelLayout.setWidget(0,3,threeDayButton);
 		headerPanelLayout.setWidget(0,4,weekDayButton);
-		headerPanelLayout.setWidget(0,5,nextDayButton);
-		headerPanelLayout.setHTML(0, 6, "&nbsp;");
+		headerPanelLayout.setWidget(0,5,monthButton);
+		headerPanelLayout.setWidget(0,6,nextDayButton);
+		headerPanelLayout.setHTML(0, 7, "&nbsp;");
 		
 		headerPanelLayout.getCellFormatter().setWidth(0, 0, "50%");
-		headerPanelLayout.getCellFormatter().setWidth(0, 6, "50%");
+		headerPanelLayout.getCellFormatter().setWidth(0, 7, "50%");
 		
 		headerPanelLayout.setWidth("100%");
 		headerPanelLayout.setCellPadding(0);
@@ -158,7 +168,8 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = oneDayButton;
 				activeDayButton.addStyleName("active");
-				dayView.setDays(1);
+				calendar.setView(CalendarViews.DAY, 1);
+				//calendar.scrollToHour(6);
 			}
 		});
 		threeDayButton.addClickHandler(new ClickHandler(){
@@ -167,7 +178,8 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = threeDayButton;
 				activeDayButton.addStyleName("active");
-				dayView.setDays(3);
+				calendar.setView(CalendarViews.DAY, 3);
+				//calendar.scrollToHour(6);
 			}
 		});
 		weekDayButton.addClickHandler(new ClickHandler(){
@@ -176,19 +188,30 @@ public class iCalCalendarPanel extends AbsolutePanel {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = weekDayButton;
 				activeDayButton.addStyleName("active");
-				dayView.setDays(5);
+				calendar.setView(CalendarViews.DAY, 5);
+				//calendar.scrollToHour(6);
 			}
 		});
+		monthButton.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				activeDayButton.removeStyleName("active");
+				activeDayButton = monthButton;
+				activeDayButton.addStyleName("active");
+				calendar.setView(CalendarViews.MONTH);
+			}
+		});
+		
 		datePicker.addValueChangeHandler(new ValueChangeHandler<Date>(){
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
-				dayView.setDate(event.getValue());
+				calendar.setDate(event.getValue());
 			}
 		});
-		dayView.addDeleteHandler(new DeleteHandler<AppointmentInterface>(){
+		calendar.addDeleteHandler(new DeleteHandler<Appointment>(){
 
 			@Override
-			public void onDelete(DeleteEvent<AppointmentInterface> event) {
+			public void onDelete(DeleteEvent<Appointment> event) {
 				boolean commit = Window.confirm("Are you sure you want to delete appointment \"" + event.getTarget().getTitle() + "\"");
 				if(commit==false) {
 					event.setCancelled(true);
@@ -198,26 +221,25 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			}
 			
 		});
-		dayView.addOpenHandler(new OpenHandler<AppointmentInterface>(){
+		calendar.addOpenHandler(new OpenHandler<Appointment>(){
 
 			@Override
-			public void onOpen(OpenEvent<AppointmentInterface> event) {
+			public void onOpen(OpenEvent<Appointment> event) {
 				Window.alert("You double-clicked appointment \"" + event.getTarget().getTitle() + "\"");
 			}
 			
 		});
 		
-		dayView.addValueChangeHandler(new ValueChangeHandler<Appointment>(){
+		calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
 
 			@Override
-			public void onValueChange(ValueChangeEvent<Appointment> event) {
-				// TODO Auto-generated method stub
-				System.out.println("selected " + event.getValue().getTitle());
+			public void onSelection(SelectionEvent<Appointment> event) {
+				System.out.println("selected " + event.getSelectedItem().getTitle());
 			}
 			
 		});
 		
-		dayView.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
+		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
 
 			@Override
 			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
@@ -231,16 +253,18 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		
 		/* Generate random appointments */
 		AppointmentBuilder.appointmentsPerDay = 5;
-		AppointmentBuilder.hours = new Integer[]{7,8,9,10,11,12,13,14,15,16,17,18,19};
-		AppointmentBuilder.minutes = new Integer[] {0,30};
-		AppointmentBuilder.durations = new Integer[] {60,90,120,180,240};
+		AppointmentBuilder.HOURS = new Integer[]{7,8,9,10,11,12,13,14,15,16,17,18,19};
+		AppointmentBuilder.MINUTES = new Integer[] {0,30};
+		AppointmentBuilder.DURATIONS = new Integer[] {60,90,120,180,240,600};
+		AppointmentBuilder.DESCRIPTIONS[1] = "Best show on TV!";
 		
 		ArrayList<Appointment> appointments = 
 			AppointmentBuilder.build(AppointmentBuilder.ICAL_STYLES);
 		/* Add appointments to day view */
-		dayView.suspendLayout();
-		dayView.addAppointments(appointments);
-		dayView.resumeLayout();
+		calendar.suspendLayout();
+		calendar.addAppointments(appointments);
+
+		calendar.resumeLayout();
 		
 		
 		//window events to handle resizing
@@ -249,15 +273,15 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			@Override
 			public void onResize(ResizeEvent event) {
 				int h = event.getHeight();
-				dayView.setHeight(h-headerPanel.getOffsetHeight()-footerPanel.getOffsetHeight()+"px");
+				calendar.setHeight(h-headerPanel.getOffsetHeight()-footerPanel.getOffsetHeight()+"px");
 
 			}
 		});
 		DeferredCommand.addCommand(new Command(){
 			@Override
 			public void execute() {
-				dayView.setHeight(Window.getClientHeight()-headerPanel.getOffsetHeight()-footerPanel.getOffsetHeight()+"px");
-				dayView.scrollToHour(6);
+				calendar.setHeight(Window.getClientHeight()-headerPanel.getOffsetHeight()-footerPanel.getOffsetHeight()+"px");
+				calendar.scrollToHour(6);
 			}
 		});
 		

@@ -1,6 +1,6 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Brad Rydzewski
+ * Copyright (C) 2010  Scottsdale Software LLC
  * 
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,223 +18,293 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.google.gwt.event.dom.client.HasAllMouseHandlers;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseDownHandler;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseMoveHandler;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOutHandler;
-import com.google.gwt.event.dom.client.MouseOverEvent;
-import com.google.gwt.event.dom.client.MouseOverHandler;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.dom.client.MouseWheelEvent;
-import com.google.gwt.event.dom.client.MouseWheelHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.AbsolutePanel;
-import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Panel;
-import com.google.gwt.user.client.ui.Widget;
+/**
+ * Represents an event that Calendar Views display and manipulate through the
+ * gwt-cal provided user interface elements. <p>The
+ * <code>Appointment</code> class provides a set of text-based properties to
+ * describe it, including a <em>title, description, location, createdBy</em>,
+ * etc. Additional to these, there is a set of properties that exist to provide
+ * the gwt-cal components with information useful during the
+ * <code>Appointment</code> rendering in the widget views (<code>allDay</code>,
+ * <code>recurring</code>, etc.)</p> <p>All <code>Appointment</code>
+ * properties are ultimately used by the gwt-cal views and it is up to these
+ * components to decide how to render (if at all) them as well as to provide
+ * appropriate runtime features to modify them.</p>
+ *
+ * @author Brad Rydzewski
+ * @author Carlos D. Morales
+ */
+@SuppressWarnings("serial")
+public class Appointment implements Comparable<Appointment>, Serializable {
 
-public class Appointment extends Composite implements AppointmentInterface {
+   private String title;
+   private String description;
+   private Date start;
+   private Date end;
+   private String location;
+   private String createdBy;
+   private List<Attendee> attendees = new ArrayList<Attendee>();
+   private boolean allDay = false;
+   private AppointmentStyle style = AppointmentStyle.DEFAULT;
+   private String customStyle;
 
-    class Div extends ComplexPanel implements HasAllMouseHandlers {
+   /**
+    * <p>Creates an <code>Appointment</code> with the following attributes
+    * set to <code>null</code>
+    *
+    * <ul>
+    *    <li><code>title</code></li>
+    *    <li><code>description</code></li>
+    *    <li><code>start</code></li>
+    *    <li><code>end</code></li>
+    *    <li><code><code>location</code></li>
+    *    <li><code>createdBy</code></li>
+    * </ul>
+    * the <code>attendees</code> collection
+    * empty and the <code>allDay</code> property <code>false</code>.</p>
+    * 
+    */
+   public Appointment() {
+      
+   }
 
-        public Div() {
+   /**
+    * Returns the configured start time-stamp of this <code>Appointment</code>.
+    *
+    * @return A date object with the date and time this appointment starts
+    * on
+    */
+   public Date getStart() {
+      return start;
+   }
 
-            setElement(DOM.createDiv());
-        }
+   /**
+    * Sets the start time-stamp of this <code>Appointment</code>.
+    *
+    * @param start A date object with the date and time this appointment starts
+    */
+   public void setStart(Date start) {
+      this.start = start;
+   }
 
-        public void add(Widget w) {
-            super.add(w, getElement());
-        }
+   /**
+    * Returns the configured end time-stamp of this <code>Appointment</code>.
+    *
+    * @return A date object with the date and time this appointment ends
+    * on
+    */
+   public Date getEnd() {
+      return end;
+   }
 
-        public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
-            return addDomHandler(handler, MouseDownEvent.getType());
-        }
+   /**
+    * Sets the end time-stamp of this <code>Appointment</code>.
+    *
+    * @param end A date object with the date and time this appointment starts
+    */
+   public void setEnd(Date end) {
+      this.end = end;
+   }
 
-        public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
-            return addDomHandler(handler, MouseUpEvent.getType());
-        }
+   /**
+    * Returns the identifying title of this <code>Appointment</code>.
+    *
+    * @return The title's short text
+    */
+   public String getTitle() {
+      return title;
+   }
 
-        public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
-            return addDomHandler(handler, MouseOutEvent.getType());
-        }
+   /**
+    * Sets the identifying title of this <code>Appointment</code>.
+    *
+    * @param title The title's short text
+    */
+   public void setTitle(String title) {
+      this.title = title;
+   }
 
-        public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
-            return addDomHandler(handler, MouseOverEvent.getType());
-        }
+   /**
+    * Returns a description for this <code>Appointment</code>.
+    *
+    * @return The <code>appointment</code>'s description
+    */
+   public String getDescription() {
+      return description;
+   }
 
-        public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
-            return addDomHandler(handler, MouseMoveEvent.getType());
-        }
+   /**
+    * Sets the description of this <code>Appointment</code>.
+    *
+    * @param description The title's short text
+    */
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-        public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
-            return addDomHandler(handler, MouseWheelEvent.getType());
-        }
-    }
-    private String title;
-    private String description;
-    private Date start;
-    private Date end;
-    private boolean selected;
-    private float top;
-    private float left;
-    private float width;
-    private float height;
-    private AbsolutePanel mainPanel = new AbsolutePanel();
-    private Panel headerPanel = new Div();
-    private Panel bodyPanel = new Div();
-    private Panel footerPanel = new Div();
-    private Panel timelinePanel = new Div();
-    private Panel timelineFillPanel = new Div();
-    private boolean multiDay = false;
+   /**
+    * Returns a location of this <code>Appointment</code>.
+    *
+    * @return The <code>appointment</code> location.
+    */
+   public String getLocation() {
+      return location;
+   }
 
-    public Appointment() {
+   /**
+    * Sets the location of this <code>Appointment</code>.
+    *
+    * @param location The <code>appointment</code> location
+    */
+   public void setLocation(String location) {
+      this.location = location;
+   }
 
-        initWidget(mainPanel);
+   /**
+    * Returns a creator of this <code>Appointment</code>.
+    *
+    * @return The <code>appointment</code> creator description.
+    */
+   public String getCreatedBy() {
+      return createdBy;
+   }
 
-        mainPanel.setStylePrimaryName("gwt-appointment");
-        headerPanel.setStylePrimaryName("header");
-        bodyPanel.setStylePrimaryName("body");
-        footerPanel.setStylePrimaryName("footer");
-        timelinePanel.setStylePrimaryName("timeline");
-        timelineFillPanel.setStylePrimaryName("timeline-fill");
+   /**
+    * Sets the creator of this <code>Appointment</code>.
+    *
+    * @param createdBy The <code>appointment</code> creator description.
+    */
+   public void setCreatedBy(String createdBy) {
+      this.createdBy = createdBy;
+   }
 
-        mainPanel.add(headerPanel);
-        mainPanel.add(bodyPanel);
-        mainPanel.add(footerPanel);
-        mainPanel.add(timelinePanel);
-        timelinePanel.add(timelineFillPanel);
-        // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
-        // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
-        // "hidden");
-        DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
-    }
+   /**
+    * Returns the collection of associated attendees.
+    * @return The currently configured list of attendees
+    */
+   public List<Attendee> getAttendees() {
+      return attendees;
+   }
 
-    public Date getStart() {
-        return start;
-    }
+   /**
+    * Sets the attendees associated to this <code>Appointment</code>.
+    * @param attendees The entities associated (<em>attending</em>) this
+    * <code>Appointment</code>
+    */
+   public void setAttendees(List<Attendee> attendees) {
+      this.attendees = attendees;
+   }
 
-    public void setStart(Date start) {
-        this.start = start;
-    }
+   /**
+    * Compares this <code>Appointment</code> with the specified
+    * <code>appointment</code> based first on the <code>start</code> dates
+    * of each appointment and then (if they happen to be the same),
+    * on the <code>end</code> dates.
+    *
+    * @param appointment The appointment to compare this one to
+    * @return a negative integer if <code>this</code> appointment
+    * <em>is before</em> <code>appointment</code>, <code>zero</code> if both
+    * appointments have the same <code>start</code>/<code>end</code> dates,
+    * and a positive integer if <code>this</code> appointment <em>is after</em>
+    * <code>appointment</code>.
+    */
+   public int compareTo(Appointment appointment) {
+      int compare = this.getStart().compareTo(appointment.getStart());
 
-    public Date getEnd() {
-        return end;
-    }
+      if (compare == 0) {
+         compare = appointment.getEnd().compareTo(this.getEnd());
+      }
 
-    public void setEnd(Date end) {
-        this.end = end;
-    }
+      return compare;
+   }
 
-    public boolean isSelected() {
-        return selected;
-    }
+   /**
+    * Tells whether this <code>Appointment</code> spans more
+    * than a single day, based on its <code>start</code> and <code>end</code>
+    * properties.
+    * @return <code>true</code> if the <code>start</code> and <code>end</code>
+    * dates fall on different dates, <code>false</code> otherwise.
+    */
+   public boolean isMultiDay() {
+      if (getEnd() != null && getStart() != null) {
+         return !DateUtils.areOnTheSameDay(getEnd(), getStart());
+      }
+      throw new IllegalStateException(
+         "Calculating isMultiDay with no start/end dates set");
+   }
 
-    public void setSelected(boolean selected) {
+   /**
+    * Returns the configured value of the <code>allDay</code> property,
+    * which indicates if this <code>Appointment</code> should be
+    * considered as spanning all day. It is left to the view rendering this
+    * <code>Appointment</code> to decide how to render an appointment
+    * based on this property value. For instance, the month view,
+    * will display the <code>Appointment</code> at the top of the
+    * days in a week.
+    *
+    * @return The current value of the <code>allDay</code> property
+    */
+   public boolean isAllDay() {
+      return allDay;
+   }
 
-        // set selected
-        this.selected = selected;
+   /**
+    * Configures the the <code>allDay</code> property,
+    * which indicates if this <code>Appointment</code> should be
+    * considered as spanning all day. It is left to the view rendering this
+    * <code>Appointment</code> to decide how to render an appointment
+    * based on this property value. For instance, the month view,
+    * will display the <code>Appointment</code> at the top of the
+    * days in a week.
+    *
+    * @param allDay The current value of the <code>allDay</code> property
+    */
+   public void setAllDay(boolean allDay) {
+      this.allDay = allDay;
+   }
 
-        // remove selected style (if exists)
-        this.removeStyleName("gwt-appointment-selected");
+   public Appointment clone() {
+      Appointment clone = new Appointment();
+      clone.setAllDay(this.allDay);
+      clone.setAttendees(this.attendees);
+      clone.setCreatedBy(this.createdBy);
+      clone.setDescription(this.description);
+      clone.setEnd(this.end);
+      clone.setLocation(this.location);
+      clone.setStart(this.start);
+      //clone.setAppointmentStyle(this.appointmentStyle);
+      clone.setTitle(this.title);
+      clone.setStyle(this.style);
 
-        // if selected, add the selected style
-        if (selected) {
-            this.addStyleName("gwt-appointment-selected");
-        }
-    }
+      return clone;
+   }
 
-    public float getTop() {
-        return top;
-    }
+//   public AppointmentStyle getAppointmentStyle() {
+//      return appointmentStyle;
+//   }
+//
+//   public void setAppointmentStyle(AppointmentStyle appointmentStyle) {
+//      this.appointmentStyle = appointmentStyle;
+//   }
 
-    public void setTop(float top) {
-        this.top = top;
-        DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
-    }
-
-    public float getLeft() {
-        return left;
-    }
-
-    public void setLeft(float left) {
-        this.left = left;
-        DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
-    }
-
-    public float getWidth() {
-        return width;
-    }
-
-    public void setWidth(float width) {
-        this.width = width;
-        DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
-    }
-
-    public float getHeight() {
-        return height;
-    }
-
-    public void setHeight(float height) {
-        this.height = height;
-        DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-        DOM.setInnerText(headerPanel.getElement(), title);
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-        DOM.setInnerHTML(bodyPanel.getElement(), description);
-    }
-
-    public void formatTimeline(float top, float height) {
-        timelineFillPanel.setHeight(height + "%");
-        DOM.setStyleAttribute(timelineFillPanel.getElement(), "top", top + "%");
-    }
-
-    public int compareTo(AppointmentInterface appt) {
-        // -1 0 1
-        // less, equal, greater
-        int compare = this.getStart().compareTo(appt.getStart());
-
-        if (compare == 0) {
-            compare = appt.getEnd().compareTo(this.getEnd());
-        }
-
-        return compare;
-    }
-
-    public Widget getMoveHandle() {
-        return headerPanel;
-    }
-
-    public Widget getResizeHandle() {
-        return footerPanel;
-    }
-
-    public boolean isMultiDay() {
-        return multiDay;
-    }
-
-    public void setMultiDay(boolean isMultiDay) {
-        this.multiDay = isMultiDay;
-    }
+	public AppointmentStyle getStyle() {
+		return style;
+	}
+	
+	public void setStyle(AppointmentStyle style) {
+		this.style = style;
+	}
+	
+	public String getCustomStyle() {
+		return customStyle;
+	}
+	
+	public void setCustomStyle(String customStyle) {
+		this.customStyle = customStyle;
+	}  
 }

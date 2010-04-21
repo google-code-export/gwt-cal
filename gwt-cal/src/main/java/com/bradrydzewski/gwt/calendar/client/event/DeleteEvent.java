@@ -1,91 +1,106 @@
+/*
+ * This file is part of gwt-cal
+ * Copyright (C) 2010  Scottsdale Software LLC
+ *
+ * gwt-cal is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/
+ */
 package com.bradrydzewski.gwt.calendar.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
- *
+ * TODO: Complete Javadoc comments.
  * @author Brad Rydzewski
  */
 public class DeleteEvent<T> extends GwtEvent<DeleteHandler<T>> {
 
-  /**
-   * Handler type.
-   */
-  private static Type<DeleteHandler<?>> TYPE;
-  
-  private boolean cancelled = false;
+   /**
+    * Handler type.
+    */
+   private static Type<DeleteHandler<?>> TYPE;
 
-    public boolean isCancelled() {
-        return cancelled;
-    }
+   private boolean cancelled = false;
 
-    public void setCancelled(boolean cancelled) {
-        this.cancelled = cancelled;
-    }
-  
-  
+   public boolean isCancelled() {
+      return cancelled;
+   }
 
-  /**
-   * Fires a open event on all registered handlers in the handler manager.If no
-   * such handlers exist, this method will do nothing.
-   * 
-   * @param <T> the target type
-   * @param source the source of the handlers
-   * @param target the target
-   */
-  public static <T> boolean fire(HasDeleteHandlers<T> source, T target) {
-    if (TYPE != null) {
-      DeleteEvent<T> event = new DeleteEvent<T>(target);
-      source.fireEvent(event);
-      return !event.isCancelled();
-    }
-    return true;
-  }
+   public void setCancelled(boolean cancelled) {
+      this.cancelled = cancelled;
+   }
 
-  /**
-   * Gets the type associated with this event.
-   * 
-   * @return returns the handler type
-   */
-  public static Type<DeleteHandler<?>> getType() {
-    if (TYPE == null) {
-      TYPE = new Type<DeleteHandler<?>>();
-    }
-    return TYPE;
-  }
 
-  private final T target;
+   /**
+    * Fires a open event on all registered handlers in the handler manager.If no
+    * such handlers exist, this method will do nothing.
+    *
+    * @param <T>    the target type
+    * @param source the source of the handlers
+    * @param target the target
+    */
+   public static <T> boolean fire(HasDeleteHandlers<T> source, T target) {
+      if (TYPE != null) {
+         DeleteEvent<T> event = new DeleteEvent<T>(target);
+         source.fireEvent(event);
+         return !event.isCancelled();
+      }
+      return true;
+   }
 
-  /**
-   * Creates a new delete event.
-   * 
-   * @param target the ui object being opened
-   */
-  protected DeleteEvent(T target) {
-    this.target = target;
-  }
+   /**
+    * Gets the type associated with this event.
+    *
+    * @return returns the handler type
+    */
+   public static Type<DeleteHandler<?>> getType() {
+      if (TYPE == null) {
+         TYPE = new Type<DeleteHandler<?>>();
+      }
+      return TYPE;
+   }
 
-  @SuppressWarnings("unchecked")
-  @Override
-  public final Type<DeleteHandler<T>> getAssociatedType() {
-    return (Type) TYPE;
-  }
+   private final T target;
 
-  /**
-   * Gets the target.
-   * 
-   * @return the target
-   */
-  public T getTarget() {
-    return target;
-  }
+   /**
+    * Creates a new delete event.
+    *
+    * @param target the ui object being opened
+    */
+   protected DeleteEvent(T target) {
+      this.target = target;
+   }
 
-  // Because of type erasure, our static type is
-  // wild carded, yet the "real" type should use our I param.
+   @SuppressWarnings("unchecked")
+   @Override
+   public final Type<DeleteHandler<T>> getAssociatedType() {
+      return (Type) TYPE;
+   }
 
-  @Override
-  protected void dispatch(DeleteHandler<T> handler) {
-        handler.onDelete(this);
-  }
+   /**
+    * Gets the target.
+    *
+    * @return the target
+    */
+   public T getTarget() {
+      return target;
+   }
+
+   // Because of type erasure, our static type is
+   // wild carded, yet the "real" type should use our I param.
+
+   @Override
+   protected void dispatch(DeleteHandler<T> handler) {
+      handler.onDelete(this);
+   }
 }
