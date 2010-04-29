@@ -147,8 +147,16 @@ public class CalendarFormat {
       return dateFormat;
    }
 
+   /**
+    * Sets the pattern used to format the displayed hours and re-generates
+    * all hour labels.
+    *
+    * @param formatPattern A legal format following the patterns
+    * in {@link com.google.gwt.i18n.client.DateTimeFormat}
+    */
    public void setTimeFormat(String formatPattern) {
       dateFormat = DateTimeFormat.getFormat(formatPattern);
+      generateHourLabels();      
    }
 
    public DateTimeFormat getTimeFormat() {
