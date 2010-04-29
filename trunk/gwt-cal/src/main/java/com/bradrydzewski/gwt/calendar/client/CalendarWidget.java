@@ -132,8 +132,9 @@ public class CalendarWidget extends InteractiveWidget implements
    }
 
    public void setDate(Date date, int days) {
-      DateUtils.resetTime(date);
-      this.date = date;
+      Date dateCopy = (Date)date.clone();
+      DateUtils.resetTime(dateCopy);
+      this.date = dateCopy;
       view.setDisplayedDays(days);
       refresh();
    }
