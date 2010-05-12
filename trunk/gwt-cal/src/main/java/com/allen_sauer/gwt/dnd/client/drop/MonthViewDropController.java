@@ -85,7 +85,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
     */
    @Override
    public void onMove(DragContext context) {
-      super.onMove(context);
+      //super.onMove(context);
 
       //get the draggable object
       Draggable draggable = draggableList.get(0);

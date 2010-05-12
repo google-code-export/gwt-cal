@@ -101,8 +101,8 @@ public class WeekLayoutDescription {
 
    public void addMultiWeekAppointment(Appointment appointment,
       AppointmentWidgetParts presenceInMonth) {
-	   System.out.println("adding appointment " + appointment.getTitle() + " as "+presenceInMonth);
-      switch (presenceInMonth) {
+
+	   switch (presenceInMonth) {
          case FIRST_WEEK:
             int weekStartDay = dayInWeek(appointment.getStart());
             topAppointmentsManager.assignLayer(

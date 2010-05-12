@@ -33,6 +33,7 @@ import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.MonthViewDropController;
+import com.allen_sauer.gwt.dnd.client.drop.MonthViewPickupDragController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.CalendarFormat;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
@@ -44,7 +45,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -173,20 +173,18 @@ public class MonthView extends CalendarView {
 		selectedAppointmentWidgets.clear();
 
 		if (dragController == null) {
-			dragController = new PickupDragController(appointmentCanvas, true);
+			dragController = new MonthViewPickupDragController(appointmentCanvas, true);
 			dragController.addDragHandler(new DragHandler() {
 
 				public void onDragEnd(DragEndEvent event) {
+                    Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
 
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable)
-							.getAppointment();
-					
-					calendarWidget.setCommittedAppointment(appt);
-					calendarWidget.fireUpdateEvent(appt);
-					
+                    calendarWidget.setCommittedAppointment(appt);
+                    calendarWidget.fireUpdateEvent(appt);
 				}
 
 				public void onDragStart(DragStartEvent event) {
+
 					calendarWidget
 							.setRollbackAppointment(((AppointmentWidget) event
 									.getContext().draggable).getAppointment()
