@@ -7,9 +7,9 @@ Version *0.9* of *gwt-cal* is a major release that required some big changes to 
 
 We also laid the ground work for *Drag and Drop* support, one of the most requested features. Right now Drag and Drop is supported in the `MonthView`, with plans to support the `DayView` in the 0.9.1 release.
 
-*[http://code.google.com/p/gwt-cal/downloads/detail?name=gwt-cal-0.9.0-beta1.jar Download version 0.9 beta1 now]*
+*[http://code.google.com/p/gwt-cal/downloads/detail?name=gwt-cal-0.9.0-beta2.jar Download version 0.9 beta2 now]*
 
-= 0.9 Beta Summary =
+= 0.9.0 Beta Summary =
 
   * Added support for multiple views (`MonthView`, `DayView`, etc)
     * `Calendar` facade class to easily switch between views
@@ -20,14 +20,13 @@ We also laid the ground work for *Drag and Drop* support, one of the most reques
     * Ability to 'undo' the update
   
   * Appointment class is now a plain java object. No longer extends a gwt Widget
-  * Appointments in the `DayView` can now display custom HTML in the description area
-  * Fixed issue 11 - Switching appointments with arrow keys past last appointment causes crash
+  * Appointments in the `DayView` can now display custom HTML in the description and header area
+  * Multi-day is now calculated, as opposed to setting `Appointment.setMultiDay(true)`
   * Added unit tests to a number of classes (finally)
   * Upgraded project to use gwt 1.7
-
-= Known Issues =
-
-  * `MonthView` Appointment styles don't display the correct colors in IE6 and IE7
-  * `MonthView` Appointments sometimes don't layout correctly and overlap each other  - <font color='green' size='2'>fixed in trunk</font>
-  * `MultiDay` appointments are not calculated. User must set `appointment.setMultiDay(true)`  - <font color='green' size='2'>fixed in trunk</font>
-  * i18n is not supported for the date labels in the `DayView` or `MonthView`, see issue 18  - <font color='green' size='2'>fixed in trunk</font>
+  * Added improved i18n including EN, ES, IT, FR, and NO
+  * Appointment style improvements
+    * Used inline styles for color themes to simplify css files
+    * Fixed style inconsistencies in IE7/IE8
+ 
+In addition, over 30 bugs and enhancements were closed out
