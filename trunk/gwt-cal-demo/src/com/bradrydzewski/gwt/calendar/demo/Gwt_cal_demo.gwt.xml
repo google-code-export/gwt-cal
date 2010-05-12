@@ -12,7 +12,7 @@
   <!-- Other module inherits                                      -->
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.bradrydzewski.gwt.calendar.demo.client.Main'/>
-  
+  <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
   <inherits name='com.bradrydzewski.gwt.calendar.Calendar' />
   <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
 </module>

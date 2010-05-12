@@ -160,6 +160,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         calendar.addDeleteHandler(new DeleteHandler<Appointment>() {
             @Override
             public void onDelete(DeleteEvent<Appointment> event) {
+//            	boolean commit = true;
                 boolean commit = Window
                         .confirm(
                                 "Are you sure you want to delete appointment \""
@@ -295,6 +296,10 @@ public class GoogleCalendarPanel extends FlowPanel {
         dialogContents.add(when);
         final TextBox eventWhenText = new TextBox();
         dialogContents.add(eventWhenText);
+        HTML until = new HTML("To");
+        dialogContents.add(until);
+        final TextBox eventUntilText = new TextBox();
+        dialogContents.add(eventUntilText);
         // Description
         HTML description = new HTML("Description");
         dialogContents.add(description);
@@ -313,6 +318,8 @@ public class GoogleCalendarPanel extends FlowPanel {
             eventNameText.setText(appt.getTitle());
             eventWhenText
                     .setText(appt.getStart().toString());
+
+            eventUntilText.setText(appt.getEnd().toString());
             descriptionText.setText(appt.getDescription());
             ap = appt;
         } else if (event instanceof TimeBlockClickEvent) {
