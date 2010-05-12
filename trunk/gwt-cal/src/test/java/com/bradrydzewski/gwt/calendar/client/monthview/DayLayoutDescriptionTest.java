@@ -40,7 +40,7 @@ public class DayLayoutDescriptionTest {
 
     @Before
     public void initDayAndWeek() throws Exception {
-        weekDescription = new WeekLayoutDescription(dateFormatter.parse("11/01/2009"));
+        weekDescription = new WeekLayoutDescription(dateFormatter.parse("11/01/2009"), dateFormatter.parse("12/05/2009"));
         dayDescription = new DayLayoutDescription(0);
         appointment = new Appointment();
     }

@@ -18,6 +18,7 @@ public class WeekLayoutDescriptionTest {
 
     private DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
     private Date NOV_1_2009 = null;
+    private Date DEC_5_2009 = null;
     private Appointment appointment = null;
 
     private WeekLayoutDescription weekDescription = null;
@@ -25,7 +26,8 @@ public class WeekLayoutDescriptionTest {
     @Before
     public void init() throws Exception {
         NOV_1_2009 = dateFormatter.parse("11/01/2009");
-        weekDescription = new WeekLayoutDescription(NOV_1_2009);
+        DEC_5_2009 = dateFormatter.parse("12/05/2009");
+        weekDescription = new WeekLayoutDescription(NOV_1_2009, DEC_5_2009);
         appointment = new Appointment();
     }
 

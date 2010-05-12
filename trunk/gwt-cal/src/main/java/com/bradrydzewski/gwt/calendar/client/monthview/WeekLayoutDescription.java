@@ -1,9 +1,9 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
+import java.util.Date;
+
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
-
-import java.util.Date;
 
 /**
  * Describes the layout of days (single, all and multi-day) within a single week
@@ -25,19 +25,22 @@ public class WeekLayoutDescription {
    private DayLayoutDescription[] days = null;
 
    private Date calendarFirstDay = null;
+   private Date calendarLastDay = null;
 
    private int maxLayer = -1;
 
-   public WeekLayoutDescription(Date calendarFirstDay, int maxLayer) {
+   public WeekLayoutDescription(Date calendarFirstDay, Date calendarLastDay,
+		   int maxLayer) {
       this.calendarFirstDay = calendarFirstDay;
+      this.calendarLastDay = calendarLastDay;
       days = new DayLayoutDescription[7];
       this.maxLayer = maxLayer;
       topAppointmentsManager = new AppointmentStackingManager();
       topAppointmentsManager.setLayerOverflowLimit(this.maxLayer);
    }
 
-   public WeekLayoutDescription(Date calendarFirstDay) {
-      this(calendarFirstDay, Integer.MAX_VALUE);
+   public WeekLayoutDescription(Date calendarFirstDay, Date calendarLastDay) {
+      this(calendarFirstDay, calendarLastDay, Integer.MAX_VALUE);
    }
 
    private void assertValidDayIndex(int day) {
@@ -86,6 +89,11 @@ public class WeekLayoutDescription {
    public void addMultiDayAppointment(Appointment appointment) {
       int weekStartDay = dayInWeek(appointment.getStart());
       int weekEndDay = dayInWeek(appointment.getEnd());
+      
+      if(!appointment.getEnd().before(calendarLastDay)) {
+    	  weekEndDay = 6;
+      }
+      
       topAppointmentsManager.assignLayer(
          new AppointmentLayoutDescription(weekStartDay, weekEndDay,
                                           appointment));
@@ -93,6 +101,7 @@ public class WeekLayoutDescription {
 
    public void addMultiWeekAppointment(Appointment appointment,
       AppointmentWidgetParts presenceInMonth) {
+	   System.out.println("adding appointment " + appointment.getTitle() + " as "+presenceInMonth);
       switch (presenceInMonth) {
          case FIRST_WEEK:
             int weekStartDay = dayInWeek(appointment.getStart());
@@ -106,6 +115,7 @@ public class WeekLayoutDescription {
             break;
          case LAST_WEEK:
             int weekEndDay = dayInWeek(appointment.getEnd());
+            
             topAppointmentsManager.assignLayer(
                new AppointmentLayoutDescription(0, weekEndDay,
                                                 appointment));

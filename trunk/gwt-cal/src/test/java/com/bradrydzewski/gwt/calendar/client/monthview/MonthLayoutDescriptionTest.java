@@ -17,9 +17,7 @@
  */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -85,7 +83,7 @@ public class MonthLayoutDescriptionTest {
       Collections.sort(appointments, MonthView.APPOINTMENT_COMPARATOR);
 
       MonthLayoutDescription monthDescription =
-         new MonthLayoutDescription(dateFormatter.parse("01/31/2010"),
+         new MonthLayoutDescription(dateFormatter.parse("01/31/2010"),5,
                                     appointments);
 
       weekDescriptions = monthDescription.getWeekDescriptions();
@@ -96,6 +94,106 @@ public class MonthLayoutDescriptionTest {
       assertNull(weekDescriptions[2]);
       assertNull(weekDescriptions[3]);
       assertNull(weekDescriptions[4]);
+   }
+   
+   @Test
+   public void priorMonthAppointmentExcluded_issue40() throws Exception {
+	      Appointment twoHourAppointment = new Appointment();
+	      twoHourAppointment.setTitle("Issue 40, 2-hour");
+	      Date nineAM = dateFormatter.parse("05/15/2010");
+	      nineAM.setHours(9);
+	      nineAM.setMinutes(0);
+
+	      Date elevenAM = dateFormatter.parse("05/15/2010");
+	      elevenAM.setHours(11);
+	      elevenAM.setMinutes(0);
+
+	      twoHourAppointment.setStart(nineAM);
+	      twoHourAppointment.setEnd(elevenAM);
+	      
+	      ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+	      appointments.add(twoHourAppointment);
+	      Collections.sort(appointments, MonthView.APPOINTMENT_COMPARATOR);
+
+	      MonthLayoutDescription monthDescription =
+	          new MonthLayoutDescription(dateFormatter.parse("05/30/2010"),5,
+	                                     appointments);
+	      
+	      weekDescriptions = monthDescription.getWeekDescriptions();
+
+
+	      assertNull("Appointment should NOT be in the 3nd week.",
+	                    weekDescriptions[2]);
+   }
+
+   @Test
+   public void multiWeekAppointmentInFinalWeek_issue40() throws Exception {
+	      Appointment twoHourAppointment = new Appointment();
+	      twoHourAppointment.setTitle("Issue 40, multi-week appointment at end of month");
+	      Date nineAM = dateFormatter.parse("05/30/2010");
+	      nineAM.setHours(9);
+	      nineAM.setMinutes(0);
+
+	      Date elevenAM = dateFormatter.parse("06/15/2010");
+	      elevenAM.setHours(11);
+	      elevenAM.setMinutes(0);
+
+	      twoHourAppointment.setStart(nineAM);
+	      twoHourAppointment.setEnd(elevenAM);
+	      
+	      ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+	      appointments.add(twoHourAppointment);
+	      Collections.sort(appointments, MonthView.APPOINTMENT_COMPARATOR);
+
+	      MonthLayoutDescription monthDescription =
+	          new MonthLayoutDescription(dateFormatter.parse("04/25/2010"),6,
+	                                     appointments);
+	      
+	      weekDescriptions = monthDescription.getWeekDescriptions();
+
+	      assertNull("4th week should have no appointments",
+                  weekDescriptions[4]);
+	      assertNotNull("Appointment should be in the 6th week.",
+	                    weekDescriptions[5]);
+	      
+	      assertTrue("There should be no 7th week in any month",
+                  weekDescriptions.length==6);
+	      
+
+	      assertEquals("Last week in month should be 7 (days)",6,
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.getDescriptionsInLayer(0).get(0).getWeekEndDay());
+	      
+	      
+	      assertTrue("Appointment starts on 1st day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(0));
+	      
+	      assertTrue("Multi-day Appointment should lay over 2nd day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(1));
+	      
+	      assertTrue("Multi-day Appointment should lay over 3rd day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(2));
+	      
+	      assertTrue("Multi-day Appointment should lay over 4th day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(3));
+	      
+	      assertTrue("Multi-day Appointment should lay over 5th day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(4));
+	      
+	      assertTrue("Multi-day Appointment should lay over 6th day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(5));
+	      
+	      assertTrue("Multi-day Appointment should lay over 7th day of 6th week",
+	    		  weekDescriptions[5].getTopAppointmentsManager()
+	    		  	.areThereAppointmentsOn(6));
+	      
+	      
    }
 
    private void assertTopAppointmentTitle(String expectedTitle, int week,

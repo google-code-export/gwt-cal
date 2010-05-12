@@ -16,40 +16,49 @@ import java.util.Date;
 public class MonthLayoutDescription {
 
     private Date calendarFirstDay = null;
+    
+    private Date calendarLastDay = null;
 
     private WeekLayoutDescription[] weeks = new WeekLayoutDescription[6];
 
     public MonthLayoutDescription(Date calendarFirstDay,
-        ArrayList<Appointment> appointments, int maxLayer) {
+    		int monthViewRequiredRows,
+    		ArrayList<Appointment> appointments, int maxLayer) {
         this.calendarFirstDay = calendarFirstDay;
+        this.calendarLastDay = calculateLastDate(calendarFirstDay, monthViewRequiredRows);
         placeAppointments(appointments, maxLayer);
     }
 
     public MonthLayoutDescription(Date calendarFirstDay,
-        ArrayList<Appointment> appointments) {
-        this(calendarFirstDay, appointments, Integer.MAX_VALUE);
+    		int monthViewRequiredRows,
+    		ArrayList<Appointment> appointments) {
+        this(calendarFirstDay, monthViewRequiredRows,
+        		appointments, Integer.MAX_VALUE);
     }
 
     private void initWeek(int weekIndex, int maxLayer) {
         if (weeks[weekIndex] == null) {
-            weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay, maxLayer);
+            weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay,
+            		calendarLastDay, maxLayer);
         }
     }
 
     private void placeAppointments(ArrayList<Appointment> appointments,
         int maxLayer) {
         for (Appointment appointment : appointments) {
-            int startWeek =
-                calculateWeekFor(appointment.getStart(), calendarFirstDay);
-            /* Place appointments only in this month */
-            if (startWeek >= 0 && startWeek < weeks.length) {
-                initWeek(startWeek, maxLayer);
-                if (appointment.isMultiDay() || appointment.isAllDay()) {
-                    positionMultidayAppointment(startWeek, appointment, maxLayer);
-                } else {
-                    weeks[startWeek].addAppointment(appointment);
-                }
-            }
+        	if(overlapsWithMonth(appointment, calendarFirstDay)) {
+	            int startWeek =
+	                calculateWeekFor(appointment.getStart(), calendarFirstDay);
+	            /* Place appointments only in this month */
+	            if (startWeek >= 0 && startWeek < weeks.length) {
+	                initWeek(startWeek, maxLayer);
+	                if (appointment.isMultiDay() || appointment.isAllDay()) {
+	                    positionMultidayAppointment(startWeek, appointment, maxLayer);
+	                } else {
+	                    weeks[startWeek].addAppointment(appointment);
+	                }
+	            }
+        	}
         }
     }
 
@@ -84,11 +93,24 @@ public class MonthLayoutDescription {
         }
     }
 
+    private boolean overlapsWithMonth(Appointment appointment, Date calendarFirstDate) {
+    	
+    	return !(appointment.getStart().before(calendarFirstDate) && appointment.getEnd().before(calendarFirstDate));
+    }
+
     private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
         int endWeek = (int) Math
             .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
                 7d);
         return Math.min(endWeek, weeks.length - 1);
+    }
+    
+    @SuppressWarnings("deprecation")
+	private Date calculateLastDate(final Date startDate, int weeks) {
+    	int daysInMonthGrid = weeks * 7;
+    	Date endDate = (Date)startDate.clone();
+    	endDate.setDate(startDate.getDate()+daysInMonthGrid-1);
+    	return endDate;
     }
 
     public WeekLayoutDescription[] getWeekDescriptions() {
