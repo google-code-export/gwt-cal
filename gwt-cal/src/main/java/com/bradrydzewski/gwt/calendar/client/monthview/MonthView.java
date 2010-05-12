@@ -44,6 +44,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -179,8 +180,10 @@ public class MonthView extends CalendarView {
 
 					Appointment appt = ((AppointmentWidget) event.getContext().draggable)
 							.getAppointment();
+					
 					calendarWidget.setCommittedAppointment(appt);
 					calendarWidget.fireUpdateEvent(appt);
+					
 				}
 
 				public void onDragStart(DragStartEvent event) {
@@ -256,8 +259,9 @@ public class MonthView extends CalendarView {
       // Distribute appointments
 		MonthLayoutDescription monthLayoutDescription = new
             MonthLayoutDescription( 
-				   firstDateDisplayed, calendarWidget.getAppointments(),
-                calculatedCellAppointments - 1);
+				   firstDateDisplayed, monthViewRequiredRows, 
+				   calendarWidget.getAppointments(),
+				   calculatedCellAppointments - 1);
 
 		// Get the layouts for each week in the month
 		WeekLayoutDescription[] weeks = monthLayoutDescription
@@ -352,29 +356,13 @@ public class MonthView extends CalendarView {
 		AppointmentWidget panel = new AppointmentWidget(appointment);
 
 		placeItemInGrid(panel, colStart, colEnd, row, cellPosition);
-		Element panelElem = panel.getElement();
+
 		boolean selected = calendarWidget.isTheSelectedAppointment(appointment);
 		styleManager.applyStyle(panel, selected);
 		
-//		if (appointment.isMultiDay()) {
-//			panel.setStylePrimaryName("appointment-multiday");
-//			DOM.setStyleAttribute(panelElem, "backgroundColor", appointment.getAppointmentStyle().getBackground());
-//			DOM.setStyleAttribute(panelElem, "borderColor", appointment.getAppointmentStyle().getBorder());
-//
-//		} else {
-//			panel.setStyleName("appointment");
-//			DOM.setStyleAttribute(panelElem, "color", appointment.getAppointmentStyle().getSelectedBorder());
-//		}
-
 		if(calendarWidget.getSettings().isEnableDragDrop())
 			dragController.makeDraggable(panel);
 
-//		if (calendarWidget.isTheSelectedAppointment(appointment)) {
-//			panel.addStyleDependentName("selected");
-//			DOM.setStyleAttribute(panel.getElement(), "borderColor", appointment.getAppointmentStyle().getSelectedBorder());
-//			selectedAppointmentWidgets.add(panel);
-//		}
-		
 		if(selected)
 			selectedAppointmentWidgets.add(panel);
 		
