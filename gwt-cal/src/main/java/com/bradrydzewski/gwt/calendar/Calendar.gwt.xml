@@ -9,6 +9,7 @@
     <extend-property name="locale" values="es"/>
     <extend-property name="locale" values="es_MX"/>
     <extend-property name="locale" values="fr"/>
+    <extend-property name="locale" values="it"/>
     <extend-property name="locale" values="no"/>
     <extend-property name="locale" values="nn_NO"/>
     
