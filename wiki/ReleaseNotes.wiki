@@ -4,7 +4,7 @@
   * Basic support for all/multi-day appointments`**`
   * Added full set of color schemes for iCal theme
   * Click time block to create new appointment, [http://code.google.com/p/gwt-cal/issues/detail?id=7 Issue #9]
-  * Workaround for error when inserting DayView into DockPanel, [http://code.google.com/p/gwt-cal/issues/detail?id=8 Issue #8]
+  * Workaround for error when inserting `DayView` into `DockPanel`, [http://code.google.com/p/gwt-cal/issues/detail?id=8 Issue #8]
 
 `**`This is just a preview of what's to come. There is quite a bit more work to do on all/multi-day appointments. Anders Lundgren has been kind enough to provide a patch for very flexible all/multi-day appointment rendering. We are working to integrate these changes with a number of structural changes required to enable multiple views (i.e. month view, list view) and drag drop functionality.
 
