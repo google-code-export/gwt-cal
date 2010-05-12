@@ -5,6 +5,6 @@
 	<classpathentry kind="con" path="com.google.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/gwt-cal"/>
-	<classpathentry kind="lib" path="C:/Documents and Settings/Brad/.m2/repository/com/googlecode/gwt-dnd/gwt-dnd/2.6.5/gwt-dnd-2.6.5.jar"/>
+	<classpathentry kind="lib" path="/home/brad/.m2/repository/com/googlecode/gwt-dnd/gwt-dnd/2.6.5/gwt-dnd-2.6.5.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
