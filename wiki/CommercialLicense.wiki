@@ -20,12 +20,11 @@ View the Commercial License: [http://docs.google.com/View?id=ddbrvgw7_6f4zdp3pg 
 = Pricing =
 
   * Single developer license = $750 USD
-  * Team license (5 developers) = $1500 USD
-  * Workgroup license (25 developers) = $3000 USD
-  * Enterprise license (100 developers) = $6000 USD
+  * Team license (5 developers) = $2,000 USD
+  * Workgroup license (25 developers) = $5,000 USD
+  * Enterprise license (100 developers) = $10,000 USD
 
 = How to Buy =
 
 Commercial license may be purchased through Google Checkout:
-
-<wiki:gadget url="http://gwt-cal.googlecode.com/svn/wiki/gadgets/gwt-cal-CheckoutGadget.xml" border="0" width="500" />
+<wiki:gadget url="https://storegadgetwizard.appspot.com/servlets/gadgetServlet?key=0AkSRDCFEVYRKdDlJeDN1UnI4TjljdVlZeUdaMUZSSmc&mid=372482647000954&currency=USD&sandbox=false&gadget=TINY" border="0" width="400" height="360" />
