@@ -185,10 +185,10 @@ public class MonthView extends CalendarView {
 
 				public void onDragStart(DragStartEvent event) {
 
-					calendarWidget
-							.setRollbackAppointment(((AppointmentWidget) event
-									.getContext().draggable).getAppointment()
-									.clone());
+//					calendarWidget
+//							.setRollbackAppointment(((AppointmentWidget) event
+//									.getContext().draggable).getAppointment()
+//									.clone());
 				}
 
 				public void onPreviewDragEnd(DragEndEvent event)
