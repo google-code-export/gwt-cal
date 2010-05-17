@@ -67,7 +67,9 @@ calendar.addDeleteHandler(new DeleteHandler<Appointment>(){
 
 = Time-Block Clicked =
 
-A `TimeBlockClickEvent` is fired when an empty section of the body of the `DayView` is clicked. A Date is provide that corresponds to the date time (including hours and minutes) that the user clicked. For example, if the user clicks the 8:30am time block, the event will get fired with the date and time equal to 8:30.
+A `TimeBlockClickEvent` is fired when an empty section of the body of the `DayView` is clicked. A Date is provide that corresponds to the date time (including hours and minutes, if applicable) that the user clicked. For example, if the user clicks the 8:30am time block, the event will get fired with the date and time equal to 8:30.
+
+This also works with the `MonthView`. When a cell (i.e. day) in the `MonthView` is clicked the event is fired and provided the cell's date.
 
 Typically a developer would subscribe to this event to prompt a user to create a new appointment with the user-selected start time.
 
