@@ -5,7 +5,7 @@ This is a tentative list of features planned for future releases. This list is a
 == Version 0.9.1 ==
 
   * Add drag drop support in the `DayView`
-  * Add resize support in the `DayView` <font color='green' size='2'>in trunk</font>
+  * Add resize support in the `DayView` (<font color='green' size='1.5'>in trunk</font>)
   * Unit tests to support the `DayView`
 
 == Version 0.9.2 ==
