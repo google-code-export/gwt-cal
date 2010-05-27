@@ -23,7 +23,7 @@ calendar.setSettings(settings);
 
 *Preview examples of each theme:*
  * [http://google.latest.gwt-web-calendar.appspot.com/ Google theme]
- * [http://outlook.latest.gwt-web-calendar.appspot.com/ Outlook theme]
- * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme] `**`
+ * [http://ical.latest.gwt-web-calendar.appspot.com/ iCal theme] 
+ * [http://outlook.latest.gwt-web-calendar.appspot.com/ Outlook theme] `**`
 
-`**`Outlook theme support is not yet included in 0.9. We may exclude completely since the Outlook 2000 look and feel is a bit outdated.
+`**`Outlook 2000 theme is no longer supported and will be removed in a future release.
