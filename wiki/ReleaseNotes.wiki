@@ -3,7 +3,7 @@
 === Version 0.9.0 (May 25) ===
 
   * Add support for multiple views, includes `MonthView`
-  * Add drag drop support in the `MonthView`
+  * Add drag drop support in the `MonthView`, including event handling and ability to cancel
   * Create `Calendar` facade class to easily switch between views
   * Support html in an `Appointment`'s description property
   * Improve `Calendar` and `Appointment` domain model. Remove all gwt dependencies from the `Appointment` class.
