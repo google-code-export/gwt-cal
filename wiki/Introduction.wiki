@@ -12,19 +12,8 @@ Features include:
 
 = Feedback = 
 
-Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. [http://groups.google.com/group/gwt-cal/web/community-feedback Click here] to post your comments.
+Have you downloaded or checked-out gwt-cal? If so, I would really appreciate your feedback on the project and your experience with the library. [http://groups.google.com/group/gwt-cal/ Click here] to post your comments.
 
 = Roadmap =
 
-The following items will be the primary focus of future releases:
-  * Refactoring, code cleanup, commenting! and maybe some unit tests
-  * Create Month view
-  * Create List view
-  * Drag / Drop appointments to change date, time and duration
-  * Drag across time blocks to create a new appointment <font color='green' size='2'>added partial support in r65</font>
-  * Support for Multi-day appointments <font color='green' size='2'>added in r80</font>
-  * Delete key removes selected appointment <font color='green' size='2'>added in r53</font>
-  * Arrow keys change selected appointment <font color='green' size='2'>added in r56</font>
-  * Appointment double-click to fire event also <font color='green' size='2'>added in r53</font>
-  * Drag / drop prompts user to confirm desired change 
-  * Deletion prompts user to confirm, ability to cancel <font color='green' size='2'>added in r61</font>
+Our official Roadmap is published [Roadmap here].
