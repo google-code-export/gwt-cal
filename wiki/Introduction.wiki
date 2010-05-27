@@ -5,10 +5,12 @@
 gwt-cal is a web-based calendar component similar to iCal, Microsoft Outlook or Google Calendar. It can be included in any standard gwt web application, and can be easily themed to resemble your favorite calendar tool.
 
 Features include:
- * view one or many days at a time
+ * view one or many days at a time (1day, 3day, 7day)
+ * view an entire month at a time
  * handles overlapping appointments using Outlook-style layout
  * ability to customize display duration (15min, 30min, 1hour, etc)
  * multiple themes provided out-of-the-box. easy to customize
+ * partial support for drag & drop (month view only)
 
 = Feedback = 
 
