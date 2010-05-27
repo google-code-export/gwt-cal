@@ -1,6 +1,16 @@
 #summary gwt-cal project release notes
 
-=== Version 0.8.2 (August 10) ===
+=== Version 0.9.0 (May 25) ===
+
+  * Add support for multiple views, includes `MonthView`
+  * Add drag drop support in the `MonthView`
+  * Create `Calendar` facade class to easily switch between views
+  * Support html in an `Appointment`'s description property
+  * Improve `Calendar` and `Appointment` domain model. Remove all gwt dependencies from the `Appointment` class.
+  * Unit tests to support the new Views and the new domain Model
+  * A ton of small bug fixes and enhancements that I can't remember...
+
+=== Version 0.8.2 (August 10, 2009) ===
   * Basic support for all/multi-day appointments`**`
   * Added full set of color schemes for iCal theme
   * Click time block to create new appointment, [http://code.google.com/p/gwt-cal/issues/detail?id=7 Issue #9]
@@ -8,7 +18,7 @@
 
 `**`This is just a preview of what's to come. There is quite a bit more work to do on all/multi-day appointments. Anders Lundgren has been kind enough to provide a patch for very flexible all/multi-day appointment rendering. We are working to integrate these changes with a number of structural changes required to enable multiple views (i.e. month view, list view) and drag drop functionality.
 
-=== Version 0.8.1 (July 21) ===
+=== Version 0.8.1 (July 21, 2009) ===
   * Delete key removes selected appointment
   * Deletion fires `DeleteEvent`, ability to cancel
   * Arrow keys change selected appointment
@@ -16,7 +26,7 @@
   * Added all Google colors to Google theme, [http://code.google.com/p/gwt-cal/issues/detail?id=7 Issue #7]
   * Fixed `DayView.scrollToHour()` scrolls too far, [http://code.google.com/p/gwt-cal/issues/detail?id=1 Issue #1]
 
-=== Version 0.8.0 (July 7) ===
+=== Version 0.8.0 (July 7, 2009) ===
 
 _Moved from private repository to Google Code, released under GPLv3 License. Project features include:_
   * Day / multi-Day View
