@@ -20,4 +20,4 @@ This is a tentative list of features planned for future releases. This list is a
 
   * Add support for Recurring Appointments
   * Add an `AgendaView`
-  * Differentiate between AllDay vs. MultiDay appointments in the DayView
+  * Differentiate between `AllDay` vs. `MultiDay` appointments in the `DayView`
