@@ -8,7 +8,7 @@
   * Support html in an `Appointment`'s description property
   * Improve `Calendar` and `Appointment` domain model. Remove all gwt dependencies from the `Appointment` class.
   * Unit tests to support the new Views and the new domain Model
-  * A ton of small bug fixes and enhancements that I can't remember...
+  * A ton of small bug fixes and enhancements that I don't feel like typing up ... see the full list [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9&colspec=ID+Type+Status+Priority+Reporter+Summary+Opened+Modified+Closed+Stars&cells=tiles here]
 
 === Version 0.8.2 (August 10, 2009) ===
   * Basic support for all/multi-day appointments`**`
