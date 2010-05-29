@@ -10,7 +10,7 @@ Features include:
  * handles overlapping appointments using Outlook-style layout
  * ability to customize display duration (15min, 30min, 1hour, etc)
  * multiple themes provided out-of-the-box. easy to customize
- * partial support for drag & drop (month view only)
+ * partial support for drag & drop (full support coming soon, see trunk)
 
 = Feedback = 
 
