@@ -326,11 +326,13 @@ public class AppointmentManager {
     }
     
     public void setRollbackAppointment(Appointment appt) {
+    	sortPending = true;
     	commit();
     	rollbackAppointment = appt;
     }
     
     public void setCommittedAppointment(Appointment appt) {
+    	sortPending = true;
     	committedAppointment = appt;
     }
 }
