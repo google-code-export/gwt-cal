@@ -193,7 +193,7 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setTitle(String title) {
       this.title = title;
-      DOM.setInnerText(headerPanel.getElement(), title);
+      DOM.setInnerHTML(headerPanel.getElement(), title);
    }
 
    public String getDescription() {
