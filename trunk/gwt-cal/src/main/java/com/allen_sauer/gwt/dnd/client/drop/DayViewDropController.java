@@ -45,6 +45,8 @@ public class DayViewDropController extends AbsolutePositionDropController {
 	@Override
 	public void onDrop(DragContext context) {
 
+		super.onDrop(context);
+		
 		//get the top and left position and the widget
 		int top =draggableList.get(0).desiredY;
 		int left=draggableList.get(0).desiredX;
@@ -74,8 +76,12 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		end.setDate(end.getDate()+day);
 		
         start.setHours(0);
+        start.setMinutes(0);
+        start.setSeconds(0);
         start.setMinutes((intervalStart)*(60/intervalsPerHour));
         end.setHours(0);
+        end.setMinutes(0);
+        end.setSeconds(0);
         end.setMinutes((intervalStart + intervalSpan)*(60/intervalsPerHour));
 		
 
@@ -83,14 +89,14 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		appt.setEnd(end);
 		
 		
-		super.onDrop(context);
+		
 	}
 
 	
-	@Override
-	public void drop(Widget widget, int left, int top) {
-
-	}
+//	@Override
+//	public void drop(Widget widget, int left, int top) {
+//			
+//	}
 	
 //	@Override
 //	public void drop(Widget widget, int left, int top) {

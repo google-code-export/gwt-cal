@@ -27,6 +27,7 @@ import com.allen_sauer.gwt.dnd.client.DragStartEvent;
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
 import com.allen_sauer.gwt.dnd.client.VetoDragException;
 import com.allen_sauer.gwt.dnd.client.drop.DayViewDropController;
+import com.allen_sauer.gwt.dnd.client.drop.DayViewPickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DayViewResizeController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
@@ -39,6 +40,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 
 public class DayView extends CalendarView implements HasSettings {
 
@@ -90,10 +92,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 		
 		
-		// LAYOUT THE VIEW NOW
-		// view.doSizing(this);
-		// doSizing(widget);
-
+		
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
 
@@ -114,8 +113,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 			// add all appointments back to the grid
 			for (AppointmentAdapter appt : appointmentAdapters) {
-
-		    	AppointmentWidget panel = new AppointmentWidget();
+				AppointmentWidget panel = new AppointmentWidget();
 		    	panel.setWidth(appt.getWidth());
 		    	panel.setHeight(appt.getHeight());
 		    	panel.setTitle(appt.getAppointment().getTitle());
@@ -136,8 +134,8 @@ public class DayView extends CalendarView implements HasSettings {
 				appointmentWidgets.add(panel);
 
 				//make footer 'draggable'
-//	            resizeController.makeDraggable(panel.getResizeHandle());
-//	            dragController.makeDraggable(panel,panel.getMoveHandle());
+	            resizeController.makeDraggable(panel.getResizeHandle());
+	            dragController.makeDraggable(panel,panel.getMoveHandle());
 			}
 
 			tmpDate.setDate(tmpDate.getDate() + 1);
@@ -330,7 +328,7 @@ public class DayView extends CalendarView implements HasSettings {
 			scrollToHour(getSettings().getScrollToHour());
 		
 		if(dragController ==null) {
-			dragController = new PickupDragController(dayViewBody.getGrid().grid, false);
+			dragController = new DayViewPickupDragController(dayViewBody.getGrid().grid, false);
 	        dragController.setBehaviorDragProxy(true);
 	        dragController.setBehaviorDragStartSensitivity(1);
 	        dragController.setBehaviorConstrainedToBoundaryPanel(true); //do I need these?
@@ -467,7 +465,6 @@ public class DayView extends CalendarView implements HasSettings {
 		}
 		return appointmentAdapters;
 	}
-
 
 
 }
