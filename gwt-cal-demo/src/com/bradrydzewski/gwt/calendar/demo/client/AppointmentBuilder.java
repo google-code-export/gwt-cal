@@ -87,7 +87,7 @@ public class AppointmentBuilder {
                     "In-laws coming to visit...run!", "Dinner party at Carol's",
                     "Meal at Planet Pizza", "Takeout from Kit's Thai Kitchen",
                     "Office Happy Hour", "Bowling Night!", "Jimbob's birthday",
-                    "Mow the lawn", "Vacation in Erie, PA",
+                    "Mow the lawn", "<i><b>Vacation</b></i> in Erie, PA",
                     "Happy Hour at Sapporos", "Get oil changed"};
 
     /**
