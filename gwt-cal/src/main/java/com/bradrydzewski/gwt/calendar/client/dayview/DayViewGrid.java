@@ -3,7 +3,6 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ComplexPanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -42,8 +41,8 @@ public class DayViewGrid /*Impl*/ extends Composite {
 	private static final String INTERVAL_MINOR_STYLE = "minor-time-interval";
 	private static final String WORKING_HOUR_STYLE = "working-hours";
 	// private FlexTable grid = new FlexTable();
-	protected AbsolutePanel grid = new AbsolutePanel();
-    protected SimplePanel gridOverlay = new SimplePanel();
+	protected ComplexPanel grid = new Div();
+        protected SimplePanel gridOverlay = new SimplePanel();
         
 	private HasSettings settings = null;
 	//private FormattingImpl impl = GWT.create(FormattingImpl.class);
@@ -60,11 +59,11 @@ public class DayViewGrid /*Impl*/ extends Composite {
 		//System.out.println("DayViewGrid loaded, with offset = " + impl.getBorderOffset());
 		// grid.setCellPadding(0);
 		// grid.setCellSpacing(0);
-//		 DOM.setStyleAttribute(grid.getElement(), "width", "100%");
+		// DOM.setStyleAttribute(grid.getElement(), "width", "100%");
 		// DOM.setStyleAttribute(grid.getElement(), "height", "1200px");
-//		 DOM.setStyleAttribute(grid.getElement(), "position", "absolute");
-//		 DOM.setStyleAttribute(grid.getElement(), "top", "0px");
-//		 DOM.setStyleAttribute(grid.getElement(), "left", "0px");
+		// DOM.setStyleAttribute(grid.getElement(), "position", "absolute");
+		// DOM.setStyleAttribute(grid.getElement(), "top", "0px");
+		// DOM.setStyleAttribute(grid.getElement(), "left", "0px");
 		// DOM.setStyleAttribute(grid.getElement(), "emptyCells", "show");
 		//init();
 	}

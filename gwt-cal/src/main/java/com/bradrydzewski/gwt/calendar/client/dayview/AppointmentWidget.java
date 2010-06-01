@@ -35,14 +35,14 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
+import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.ComplexPanel;
-import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.FocusPanel;
+import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Panel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 
-public class AppointmentWidget extends FlowPanel {
+public class AppointmentWidget extends Composite {
 
 
    class Div extends ComplexPanel implements HasAllMouseHandlers {
@@ -91,35 +91,35 @@ public class AppointmentWidget extends FlowPanel {
    private float left;
    private float width;
    private float height;
-   //private AbsolutePanel mainPanel = new AbsolutePanel();
-   private Widget headerPanel = new Div();
+   private AbsolutePanel mainPanel = new AbsolutePanel();
+   private Panel headerPanel = new Div();
    private Panel bodyPanel = new SimplePanel();
-   private Widget footerPanel = new Div();
-   private Panel timelinePanel = new SimplePanel();
-   private Panel timelineFillPanel = new SimplePanel();
+   private Panel footerPanel = new Div();
+   private Panel timelinePanel = new Div();
+   private Panel timelineFillPanel = new Div();
    private boolean multiDay = false;
    private Appointment appointment;
 
    public AppointmentWidget() {
 
-      //initWidget(mainPanel);
+      initWidget(mainPanel);
 
-      this.setStylePrimaryName("gwt-appointment");
+      mainPanel.setStylePrimaryName("gwt-appointment");
       headerPanel.setStylePrimaryName("header");
       bodyPanel.setStylePrimaryName("body");
       footerPanel.setStylePrimaryName("footer");
       timelinePanel.setStylePrimaryName("timeline");
       timelineFillPanel.setStylePrimaryName("timeline-fill");
 
-      this.add(headerPanel);
-      this.add(bodyPanel);
-      this.add(footerPanel);
-      this.add(timelinePanel);
+      mainPanel.add(headerPanel);
+      mainPanel.add(bodyPanel);
+      mainPanel.add(footerPanel);
+      mainPanel.add(timelinePanel);
       timelinePanel.add(timelineFillPanel);
       // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
       // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
       // "hidden");
-      DOM.setStyleAttribute(this.getElement(), "position", "absolute");
+      DOM.setStyleAttribute(mainPanel.getElement(), "position", "absolute");
    }
    
    public Widget getBody() {
@@ -157,7 +157,7 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setTop(float top) {
       this.top = top;
-      DOM.setStyleAttribute(this.getElement(), "top", top + "px");
+      DOM.setStyleAttribute(mainPanel.getElement(), "top", top + "px");
    }
 
    public float getLeft() {
@@ -166,7 +166,7 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setLeft(float left) {
       this.left = left;
-      DOM.setStyleAttribute(this.getElement(), "left", left + "%");
+      DOM.setStyleAttribute(mainPanel.getElement(), "left", left + "%");
    }
 
    public float getWidth() {
@@ -175,7 +175,7 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setWidth(float width) {
       this.width = width;
-      DOM.setStyleAttribute(this.getElement(), "width", width + "%");
+      DOM.setStyleAttribute(mainPanel.getElement(), "width", width + "%");
    }
 
    public float getHeight() {
@@ -184,7 +184,7 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setHeight(float height) {
       this.height = height;
-      DOM.setStyleAttribute(this.getElement(), "height", height + "px");
+      DOM.setStyleAttribute(mainPanel.getElement(), "height", height + "px");
    }
 
    public String getTitle() {

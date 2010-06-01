@@ -21,13 +21,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.allen_sauer.gwt.dnd.client.DragEndEvent;
-import com.allen_sauer.gwt.dnd.client.DragHandler;
-import com.allen_sauer.gwt.dnd.client.DragStartEvent;
-import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.allen_sauer.gwt.dnd.client.VetoDragException;
-import com.allen_sauer.gwt.dnd.client.drop.DayViewDropController;
-import com.allen_sauer.gwt.dnd.client.drop.DayViewResizeController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
@@ -56,12 +49,6 @@ public class DayView extends CalendarView implements HasSettings {
 
 	private DayViewStyleManager styleManager = GWT.create(DayViewStyleManager.class);
 	
-	private DayViewResizeController resizeController = null;
-	
-	private DayViewDropController dropController = null;
-	
-	private PickupDragController dragController = null;
-	
 	public DayView() {
 
 	}
@@ -78,27 +65,27 @@ public class DayView extends CalendarView implements HasSettings {
 		dayViewBody.setDays((Date) d.clone(), calendarWidget.getDays());
 		dayViewBody.getTimeline().prepare();
 
-		dropController.setColumns(calendarWidget.getDays());
-		dropController.setIntervalsPerHour(calendarWidget.getSettings().getIntervalsPerHour());
-		dropController.setDate((Date)calendarWidget.getDate().clone());
-		dropController.setSnapSize(
-				calendarWidget.getSettings().getPixelsPerInterval());
-		resizeController.setIntervalsPerHour(
-				calendarWidget.getSettings().getIntervalsPerHour());
-		resizeController.setSnapSize(
-				calendarWidget.getSettings().getPixelsPerInterval());
-
-		
-		
 		// LAYOUT THE VIEW NOW
 		// view.doSizing(this);
 		// doSizing(widget);
 
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
+		// widgetAppointmentIndex.clear();
+		// appointmentWidgetIndex.clear();
 
-
-
+		// PROBLEMS ARE
+		// 1) Month View may actually show different dates,
+		// such as days before the 1st and after the last
+		// day of month. Push this to the "VIEW"?????
+		// 2) This works great for Absolute Positioning, such as the
+		// DayView and MonthView, but not so well for the
+		// ListView which is relative positioning... how to handle???
+		// 3) How to handle scenarios where multiple appointments are "grouped"
+		// such as a MS Outlook Resource / Booking view????? FUCK!!!
+		// Or is this a separate widget all together???
+		// 4) How to handle scenarios where appointments need to be grouped by
+		// the calendar??
 
 		// HERE IS WHERE WE DO THE LAYOUT
 		Date tmpDate = (Date) calendarWidget.getDate().clone();
@@ -113,9 +100,12 @@ public class DayView extends CalendarView implements HasSettings {
 					.doLayout(filteredList, i, calendarWidget.getDays());
 
 			// add all appointments back to the grid
+			// CHANGE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			for (AppointmentAdapter appt : appointmentAdapters) {
 
 		    	AppointmentWidget panel = new AppointmentWidget();
+//		    	panel.addStyleName(appt.getAppointment().getStyle());
+		    	//panel.setStylePrimaryName("dv-appointment"); //TODO Move to styleManager
 		    	panel.setWidth(appt.getWidth());
 		    	panel.setHeight(appt.getHeight());
 		    	panel.setTitle(appt.getAppointment().getTitle());
@@ -134,10 +124,6 @@ public class DayView extends CalendarView implements HasSettings {
 				}
 				styleManager.applyStyle(panel, selected);
 				appointmentWidgets.add(panel);
-
-				//make footer 'draggable'
-//	            resizeController.makeDraggable(panel.getResizeHandle());
-//	            dragController.makeDraggable(panel,panel.getMoveHandle());
 			}
 
 			tmpDate.setDate(tmpDate.getDate() + 1);
@@ -168,7 +154,7 @@ public class DayView extends CalendarView implements HasSettings {
 			panel.setMultiDay(true);
 			//panel.setAppointmentStyle(appt.getAppointment().getAppointmentStyle());
 			
-			//dayViewBody.getGrid().grid.add(panel);
+			dayViewBody.getGrid().grid.add(panel);
 			boolean selected = calendarWidget.isTheSelectedAppointment(panel
 					.getAppointment());
 			if (selected) {
@@ -328,68 +314,6 @@ public class DayView extends CalendarView implements HasSettings {
 		
 		if(getSettings()!=null)
 			scrollToHour(getSettings().getScrollToHour());
-		
-		if(dragController ==null) {
-			dragController = new PickupDragController(dayViewBody.getGrid().grid, false);
-	        dragController.setBehaviorDragProxy(true);
-	        dragController.setBehaviorDragStartSensitivity(1);
-	        dragController.setBehaviorConstrainedToBoundaryPanel(true); //do I need these?
-	        dragController.setConstrainWidgetToBoundaryPanel(true); //do I need these?
-	        dragController.setBehaviorMultipleSelection(false);
-	        dragController.addDragHandler(new DragHandler(){
-
-				public void onDragEnd(DragEndEvent event) {
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
-                    calendarWidget.setCommittedAppointment(appt);
-                    calendarWidget.fireUpdateEvent(appt);
-				}
-
-				public void onDragStart(DragStartEvent event) {
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
-					calendarWidget.setRollbackAppointment(appt.clone());
-				}
-
-				public void onPreviewDragEnd(DragEndEvent event)
-						throws VetoDragException {
-				}
-
-				public void onPreviewDragStart(DragStartEvent event)
-						throws VetoDragException {
-				}
-	        });
-		}
-		
-		if(dropController==null) {
-			dropController = new DayViewDropController(dayViewBody.getGrid().grid);
-			dragController.registerDropController(dropController);
-		}
-		
-		if(resizeController == null) {
-			resizeController = new DayViewResizeController(dayViewBody.getGrid().grid);
-			resizeController.addDragHandler(new DragHandler(){
-
-				public void onDragEnd(DragEndEvent event) {
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
-
-                    calendarWidget.setCommittedAppointment(appt);
-                    calendarWidget.fireUpdateEvent(appt);
-				}
-
-				public void onDragStart(DragStartEvent event) {
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
-					//AppointmentWidget appointment = (AppointmentWidget)event.getContext().draggable;
-					calendarWidget
-					.setRollbackAppointment(((AppointmentWidget) event
-							.getContext().draggable.getParent()).getAppointment()
-							.clone());
-				}
-
-				public void onPreviewDragEnd(DragEndEvent event)
-						throws VetoDragException {}
-				public void onPreviewDragStart(DragStartEvent event)
-						throws VetoDragException {}
-			});
-		}
 	}
 
 	void timeBlockClick(int x, int y) {
