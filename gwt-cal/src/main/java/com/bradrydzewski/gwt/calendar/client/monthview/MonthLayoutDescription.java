@@ -15,106 +15,112 @@ import java.util.Date;
  */
 public class MonthLayoutDescription {
 
-    private Date calendarFirstDay = null;
-    
-    private Date calendarLastDay = null;
+   private Date calendarFirstDay = null;
 
-    private WeekLayoutDescription[] weeks = new WeekLayoutDescription[6];
+   private Date calendarLastDay = null;
 
-    public MonthLayoutDescription(Date calendarFirstDay,
-    		int monthViewRequiredRows,
-    		ArrayList<Appointment> appointments, int maxLayer) {
-        this.calendarFirstDay = calendarFirstDay;
-        this.calendarLastDay = calculateLastDate(calendarFirstDay, monthViewRequiredRows);
-        placeAppointments(appointments, maxLayer);
-    }
+   private WeekLayoutDescription[] weeks = new WeekLayoutDescription[6];
 
-    public MonthLayoutDescription(Date calendarFirstDay,
-    		int monthViewRequiredRows,
-    		ArrayList<Appointment> appointments) {
-        this(calendarFirstDay, monthViewRequiredRows,
-        		appointments, Integer.MAX_VALUE);
-    }
+   public MonthLayoutDescription(Date calendarFirstDay,
+      int monthViewRequiredRows,
+      ArrayList<Appointment> appointments, int maxLayer) {
+      this.calendarFirstDay = calendarFirstDay;
+      this.calendarLastDay =
+         calculateLastDate(calendarFirstDay, monthViewRequiredRows);
+      placeAppointments(appointments, maxLayer);
+   }
 
-    private void initWeek(int weekIndex, int maxLayer) {
-        if (weeks[weekIndex] == null) {
-            weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay,
-            		calendarLastDay, maxLayer);
-        }
-    }
+   public MonthLayoutDescription(Date calendarFirstDay,
+      int monthViewRequiredRows,
+      ArrayList<Appointment> appointments) {
+      this(calendarFirstDay, monthViewRequiredRows,
+           appointments, Integer.MAX_VALUE);
+   }
 
-    private void placeAppointments(ArrayList<Appointment> appointments,
-        int maxLayer) {
-        for (Appointment appointment : appointments) {
-        	if(overlapsWithMonth(appointment, calendarFirstDay)) {
-	            int startWeek =
-	                calculateWeekFor(appointment.getStart(), calendarFirstDay);
-	            /* Place appointments only in this month */
-	            if (startWeek >= 0 && startWeek < weeks.length) {
-	                initWeek(startWeek, maxLayer);
-	                if (appointment.isMultiDay() || appointment.isAllDay()) {
-	                    positionMultidayAppointment(startWeek, appointment, maxLayer);
-	                } else {
-	                    weeks[startWeek].addAppointment(appointment);
-	                }
-	            }
-        	}
-        }
-    }
+   private void initWeek(int weekIndex, int maxLayer) {
+      if (weeks[weekIndex] == null) {
+         weeks[weekIndex] = new WeekLayoutDescription(calendarFirstDay,
+                                                      calendarLastDay,
+                                                      maxLayer);
+      }
+   }
 
-    private boolean isMultiWeekAppointment(int startWeek, int endWeek) {
-        return startWeek != endWeek;
-    }
+   private void placeAppointments(ArrayList<Appointment> appointments,
+      int maxLayer) {
+      for (Appointment appointment : appointments) {
+         if (overlapsWithMonth(appointment, calendarFirstDay,
+                               calendarLastDay)) {
+            int startWeek =
+               calculateWeekFor(appointment.getStart(), calendarFirstDay);
+            /* Place appointments only in this month */
+            if (startWeek >= 0 && startWeek < weeks.length) {
+               initWeek(startWeek, maxLayer);
+               if (appointment.isMultiDay() || appointment.isAllDay()) {
+                  positionMultidayAppointment(startWeek, appointment, maxLayer);
+               } else {
+                  weeks[startWeek].addAppointment(appointment);
+               }
+            }
+         }
+      }
+   }
 
-    private void positionMultidayAppointment(int startWeek,
-        Appointment appointment, int maxLayer) {
-        int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
-        initWeek(endWeek, maxLayer);
-        if (isMultiWeekAppointment(startWeek, endWeek)) {
-            distributeOverWeeks(startWeek, endWeek, appointment, maxLayer);
-        } else {
-            weeks[startWeek].addMultiDayAppointment(appointment);
-        }
-    }
+   private boolean isMultiWeekAppointment(int startWeek, int endWeek) {
+      return startWeek != endWeek;
+   }
 
-    private void distributeOverWeeks(int startWeek, int endWeek,
-        Appointment appointment, int maxLayer) {
-        weeks[startWeek].addMultiWeekAppointment(appointment,
-                                                 AppointmentWidgetParts.FIRST_WEEK);
-        for (int week = startWeek + 1; week < endWeek; week++) {
-            initWeek(week, maxLayer);
-            weeks[week].addMultiWeekAppointment(appointment,
-                                                AppointmentWidgetParts.IN_BETWEEN);
-        }
-        if (startWeek < endWeek) {
-            initWeek(endWeek, maxLayer);
-            weeks[endWeek].addMultiWeekAppointment(appointment,
-                                                   AppointmentWidgetParts.LAST_WEEK);
-        }
-    }
+   private void positionMultidayAppointment(int startWeek,
+      Appointment appointment, int maxLayer) {
+      int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
+      initWeek(endWeek, maxLayer);
+      if (isMultiWeekAppointment(startWeek, endWeek)) {
+         distributeOverWeeks(startWeek, endWeek, appointment, maxLayer);
+      } else {
+         weeks[startWeek].addMultiDayAppointment(appointment);
+      }
+   }
 
-    private boolean overlapsWithMonth(Appointment appointment, Date calendarFirstDate) {
-    	
-    	return !(appointment.getStart().before(calendarFirstDate) && appointment.getEnd().before(calendarFirstDate));
-    }
+   private void distributeOverWeeks(int startWeek, int endWeek,
+      Appointment appointment, int maxLayer) {
+      weeks[startWeek].addMultiWeekAppointment(appointment,
+                                               AppointmentWidgetParts.FIRST_WEEK);
+      for (int week = startWeek + 1; week < endWeek; week++) {
+         initWeek(week, maxLayer);
+         weeks[week].addMultiWeekAppointment(appointment,
+                                             AppointmentWidgetParts.IN_BETWEEN);
+      }
+      if (startWeek < endWeek) {
+         initWeek(endWeek, maxLayer);
+         weeks[endWeek].addMultiWeekAppointment(appointment,
+                                                AppointmentWidgetParts.LAST_WEEK);
+      }
+   }
 
-    private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
-        int endWeek = (int) Math
-            .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
-                7d);
-        return Math.min(endWeek, weeks.length - 1);
-    }
-    
-    @SuppressWarnings("deprecation")
-	private Date calculateLastDate(final Date startDate, int weeks) {
-    	int daysInMonthGrid = weeks * 7;
-    	Date endDate = (Date)startDate.clone();
-    	endDate.setDate(startDate.getDate()+daysInMonthGrid-1);
-    	return endDate;
-    }
+   private boolean overlapsWithMonth(Appointment appointment,
+      Date calendarFirstDate, Date calendarLastDate) {
+      return !(appointment.getStart().before(calendarFirstDate)
+         && appointment.getEnd().before(calendarFirstDate)
+         || appointment.getStart().after(calendarLastDate)
+         && appointment.getEnd().after(calendarLastDate));
+   }
 
-    public WeekLayoutDescription[] getWeekDescriptions() {
-        return weeks;
-    }
+   private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
+      int endWeek = (int) Math
+         .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
+            7d);
+      return Math.min(endWeek, weeks.length - 1);
+   }
+
+   @SuppressWarnings("deprecation")
+   private Date calculateLastDate(final Date startDate, int weeks) {
+      int daysInMonthGrid = weeks * 7;
+      Date endDate = (Date) startDate.clone();
+      endDate.setDate(startDate.getDate() + daysInMonthGrid - 1);
+      return endDate;
+   }
+
+   public WeekLayoutDescription[] getWeekDescriptions() {
+      return weeks;
+   }
 
 }
