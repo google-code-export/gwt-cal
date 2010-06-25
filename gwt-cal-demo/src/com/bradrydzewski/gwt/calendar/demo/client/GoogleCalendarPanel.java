@@ -9,6 +9,8 @@ import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
+import com.bradrydzewski.gwt.calendar.client.event.DateRequestEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DateRequestHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
@@ -237,6 +239,15 @@ public class GoogleCalendarPanel extends FlowPanel {
         calendar.addAppointment(multiDayAppt2);
 
         calendar.resumeLayout();
+        
+        
+        
+        calendar.addDateRequestHandler(new DateRequestHandler<Date>(){
+			@Override
+			public void onDateRequested(DateRequestEvent<Date> event) {
+				Window.alert("requested: " + event.getTarget() + " " + event.getSource().getClass().getName());
+			}
+        });
     }
 
     /**
