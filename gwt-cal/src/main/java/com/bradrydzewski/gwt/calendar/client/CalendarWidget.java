@@ -452,6 +452,10 @@ public class CalendarWidget extends InteractiveWidget implements
       DateRequestEvent.fire(this, date);
    }
 
+   public void fireDateRequestEvent(Date date, Element clicked) {
+	      DateRequestEvent.fire(this, date, clicked);
+   }
+
    public void fireUpdateEvent(Appointment appointment) {
       //refresh the appointment
       refresh();

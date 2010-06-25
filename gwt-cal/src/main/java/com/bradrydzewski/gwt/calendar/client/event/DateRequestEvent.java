@@ -39,12 +39,16 @@ public class DateRequestEvent<T> extends GwtEvent<DateRequestHandler<T>> {
    * @param target the target
    */
   public static <T> void fire(HasDateRequestHandlers<T> source, T target) {
-    if (TYPE != null) {
-      DateRequestEvent<T> event = new DateRequestEvent<T>(target);
-      source.fireEvent(event);
-    }
+    fire(source, target, null);
   }
 
+  public static <T> void fire(HasDateRequestHandlers<T> source, T target, Object widget) {
+	    if (TYPE != null) {
+	      DateRequestEvent<T> event = new DateRequestEvent<T>(target, widget);
+	      source.fireEvent(event);
+	    }
+	  }
+  
   /**
    * Gets the type associated with this event.
    * 
@@ -58,14 +62,16 @@ public class DateRequestEvent<T> extends GwtEvent<DateRequestHandler<T>> {
   }
 
   private final T target;
+  private final Object clicked;
 
   /**
    * Creates a new delete event.
    * 
    * @param target the ui object being opened
    */
-  protected DateRequestEvent(T target) {
+  protected DateRequestEvent(T target, Object clicked) {
     this.target = target;
+    this.clicked = clicked;
   }
 
   @SuppressWarnings("unchecked")
@@ -81,6 +87,10 @@ public class DateRequestEvent<T> extends GwtEvent<DateRequestHandler<T>> {
    */
   public T getTarget() {
     return target;
+  }
+  
+  public Object getClicked() {
+	  return clicked;
   }
 
   // Because of type erasure, our static type is
