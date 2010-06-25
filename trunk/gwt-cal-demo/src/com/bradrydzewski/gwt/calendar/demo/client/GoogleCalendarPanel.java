@@ -29,6 +29,7 @@ import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.DeferredCommand;
+import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
@@ -245,7 +246,7 @@ public class GoogleCalendarPanel extends FlowPanel {
         calendar.addDateRequestHandler(new DateRequestHandler<Date>(){
 			@Override
 			public void onDateRequested(DateRequestEvent<Date> event) {
-				Window.alert("requested: " + event.getTarget() + " " + event.getSource().getClass().getName());
+				Window.alert("requested: " + event.getTarget() + " " + ((Element)event.getClicked()).getInnerText());
 			}
         });
     }

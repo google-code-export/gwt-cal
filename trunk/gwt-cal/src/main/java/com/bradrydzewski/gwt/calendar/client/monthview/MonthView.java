@@ -412,7 +412,7 @@ public class MonthView extends CalendarView {
 				//else, lets see if a "+ n more" label was clicked
 				if(moreLabels.containsKey(clickedElement)) {
                     calendarWidget.fireDateRequestEvent(
-                        cellDate(moreLabels.get(clickedElement))
+                        cellDate(moreLabels.get(clickedElement)),clickedElement
                     );
 				}
 			}
