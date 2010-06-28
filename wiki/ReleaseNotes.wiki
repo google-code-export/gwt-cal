@@ -2,8 +2,8 @@
 
 === Version 0.9.1 (June 27) ===
 
-  * Fixed a layout bug in the `MonthView`, Issue #60
-  * Enabled HTML markup in the Appointment header, Issue #48
+  * Fixed a layout bug in the `MonthView`, [http://code.google.com/p/gwt-cal/issues/detail?id=60 Issue #60]
+  * Enabled HTML markup in the Appointment header, [http://code.google.com/p/gwt-cal/issues/detail?id=48 Issue #48]
   * Added an "id" field to the `Appointment` class
   * Added `HasAppointment` and `HasLayout` classes for use with MVP pattern
   * Added a reference to the clicked "+ n more" label in the `DateRequestEvent`. See [http://code.google.com/p/gwt-cal/issues/detail?id=61#c9 Issue #61]
