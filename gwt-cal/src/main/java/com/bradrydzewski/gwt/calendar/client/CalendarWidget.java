@@ -62,7 +62,8 @@ import com.google.gwt.user.client.ui.Widget;
 public class CalendarWidget extends InteractiveWidget implements
    HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
    HasOpenHandlers<Appointment>, HasTimeBlockClickHandlers<Date>,
-   HasUpdateHandlers<Appointment>, HasDateRequestHandlers<Date> {
+   HasUpdateHandlers<Appointment>, HasDateRequestHandlers<Date>,
+   HasLayout, HasAppointments {
 
    /**
     * Set to <code>true</code> if the calendar layout is suspended and cannot
