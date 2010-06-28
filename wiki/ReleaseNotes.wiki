@@ -2,10 +2,10 @@
 
 === Version 0.9.1 (in trunk) ===
 
-  * Fixed a layout bug in the MonthView, Issue #60
+  * Fixed a layout bug in the `MonthView`, Issue #60
   * Enabled HTML markup in the Appointment header, Issue #48
-  * Added an "id" field to the Appointment class
-  * Added HasAppointment and HasLayout classes for use with MVP pattern
+  * Added an "id" field to the `Appointment` class
+  * Added `HasAppointment` and `HasLayout` classes for use with MVP pattern
 
 === Version 0.9.0 (May 25) ===
 
