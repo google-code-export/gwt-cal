@@ -2,6 +2,7 @@
 
 === Version 0.9.1 (June 27) ===
 
+  * Added drag drop support in the `DayView` for single-day appointments
   * Fixed a layout bug in the `MonthView`, [http://code.google.com/p/gwt-cal/issues/detail?id=60 Issue #60]
   * Enabled HTML markup in the Appointment header, [http://code.google.com/p/gwt-cal/issues/detail?id=48 Issue #48]
   * Added an "id" field to the `Appointment` class
