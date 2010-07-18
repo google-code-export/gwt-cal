@@ -21,8 +21,11 @@ package com.bradrydzewski.gwt.calendar.client;
 import com.bradrydzewski.gwt.calendar.client.agenda.AgendaView;
 import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
 import com.bradrydzewski.gwt.calendar.client.monthview.MonthView;
+import com.google.gwt.user.client.Timer;
+import com.google.gwt.user.client.ui.ProvidesResize;
+import com.google.gwt.user.client.ui.RequiresResize;
 
-public class Calendar extends CalendarWidget {
+public class Calendar extends CalendarWidget implements RequiresResize, ProvidesResize {
 
     /**
      * The component to manage the presentation of appointments as a list.
@@ -107,5 +110,33 @@ public class Calendar extends CalendarWidget {
             }
         }
     }
+    
+
+    
+    
+	public void onResize() {
+		resizeTimer.schedule(500);
+	}
+	
+    
+    private Timer resizeTimer = new Timer() {
+    	/**
+    	 * Snapshot of the Calendar's height at the last time
+    	 * it was resized.
+    	 */
+    	private int height;
+
+        @Override
+        public void run() {
+
+            int newHeight = getOffsetHeight();
+            if (newHeight != height) {
+                height = newHeight;
+                doSizing();
+                if(getView() instanceof MonthView)
+                	doLayout();
+            }
+        }
+    };
 }
  
