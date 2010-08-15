@@ -65,6 +65,30 @@ calendar.addDeleteHandler(new DeleteHandler<Appointment>(){
 });
 }}}
 
+= Appointment Mouse Over =
+
+The user can hover over an event with their mouse to trigger a MouseOverEvent. This event can be used to display tooltips, popups, etc.
+
+Example Code:
+{{{
+
+   final DecoratedPopupPanel appointmentPopup = new DecoratedPopupPanel(true);
+   appointmentPopup.setAutoHideEnabled(true);
+
+   calendar.addMouseOverHandler(new MouseOverHandler<Appointment>(){
+      @Override
+      public void onMouseOver(MouseOverEvent<Appointment> event) {
+        Element element = (Element)event.getElement();
+        appointmentPopup.setWidget(new HTML(event.getTarget().getTitle()));
+
+        int left = element.getAbsoluteLeft() + 10;
+        int top = element.getAbsoluteTop() + 10;
+        appointmentPopup.setPopupPosition(left, top);
+        appointmentPopup.show();
+      }
+   });
+}}}
+
 = Time-Block Clicked =
 
 A `TimeBlockClickEvent` is fired when an empty section of the body of the `DayView` is clicked. A Date is provide that corresponds to the date time (including hours and minutes, if applicable) that the user clicked. For example, if the user clicks the 8:30am time block, the event will get fired with the date and time equal to 8:30.
