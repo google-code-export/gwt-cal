@@ -136,6 +136,8 @@ public abstract class CalendarView {
     
     public abstract void onSingleClick(Element element, Event event);
 
+    public abstract void onMouseOver(Element element, Event event);
+    
     /**
      * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that

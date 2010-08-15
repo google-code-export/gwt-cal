@@ -46,6 +46,12 @@ public class AppointmentManager {
     private Appointment selectedAppointment = null;
    
     /**
+     * A reference to the most recent appointment to receive
+     * a mouse over event.
+     */
+    private Appointment hoveredAppointment = null;
+    
+    /**
      * A copy of the last appointment that was updated,
      * prior to the update taking place. 
      */
@@ -335,4 +341,16 @@ public class AppointmentManager {
     	sortPending = true;
     	committedAppointment = appt;
     }
+
+    public void resetHoveredAppointment() {
+    	this.hoveredAppointment = null;
+    }
+    
+	public void setHoveredAppointment(Appointment hoveredAppointment) {
+		this.hoveredAppointment = hoveredAppointment;
+	}
+
+	public Appointment getHoveredAppointment() {
+		return hoveredAppointment;
+	}
 }

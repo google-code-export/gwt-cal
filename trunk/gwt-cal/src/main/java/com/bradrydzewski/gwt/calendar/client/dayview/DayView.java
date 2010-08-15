@@ -246,6 +246,10 @@ public class DayView extends CalendarView implements HasSettings {
 		}
 	}
 	
+	public void onMouseOver(Element element, Event event) {
+		Appointment appointment = findAppointmentByElement(element);
+		calendarWidget.fireMouseOverEvent(appointment,element);
+	}
 	
 	@Override
 	public void onAppointmentSelected(Appointment appt) {

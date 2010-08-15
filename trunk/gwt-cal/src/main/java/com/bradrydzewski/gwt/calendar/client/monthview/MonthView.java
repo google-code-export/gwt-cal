@@ -419,6 +419,11 @@ public class MonthView extends CalendarView {
 		}
 	}
 
+	public void onMouseOver(Element element, Event event) {
+		Appointment appointment = findAppointmentByElement(element);
+		calendarWidget.fireMouseOverEvent(appointment,element);
+	}
+
     /**
      * Returns the date corresponding to the <code>cell</code> (as if the
      * month view grid was a big linear sequence of cells) in the month view

@@ -27,8 +27,11 @@ import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.HasDateRequestHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasDeleteHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.HasMouseOverHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasTimeBlockClickHandlers;
 import com.bradrydzewski.gwt.calendar.client.event.HasUpdateHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.MouseOverEvent;
+import com.bradrydzewski.gwt.calendar.client.event.MouseOverHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickHandler;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
@@ -63,6 +66,7 @@ public class CalendarWidget extends InteractiveWidget implements
    HasSelectionHandlers<Appointment>, HasDeleteHandlers<Appointment>,
    HasOpenHandlers<Appointment>, HasTimeBlockClickHandlers<Date>,
    HasUpdateHandlers<Appointment>, HasDateRequestHandlers<Date>,
+   HasMouseOverHandlers<Appointment>,
    HasLayout, HasAppointments {
 
    /**
@@ -321,8 +325,10 @@ public class CalendarWidget extends InteractiveWidget implements
          layoutPending = true;
          return;
       }
+      
+      appointmentManager.resetHoveredAppointment();
       appointmentManager.sortAppointments();
-      //doSizing();
+      
       doLayout();
       doSizing();
    }
@@ -418,6 +424,10 @@ public class CalendarWidget extends InteractiveWidget implements
    public void onMouseDown(Element element, Event event) {
       view.onSingleClick(element, event);
    }
+   
+   public void onMouseOver(Element element, Event event) {
+	   view.onMouseOver(element, event);
+   }
 
    @Override
    public void onRightArrowKeyPressed() {
@@ -447,6 +457,22 @@ public class CalendarWidget extends InteractiveWidget implements
    public void fireSelectionEvent(Appointment appointment) {
       view.onAppointmentSelected(appointment);
       SelectionEvent.fire(this, appointment);
+   }
+   
+   public void fireMouseOverEvent(
+		   Appointment appointment, Element element) {
+	   //we need to make sure we aren't re-firing the event
+	   // for the same appointment. This is a bit problematic,
+	   // because the mouse over event will fire for an appointment's
+	   // child elements (title label, footer, body, for example)
+	   // and will cause this method to be called with a null
+	   // appointment. this is a temp workaround, but basically
+	   // an appointment cannot be hovered twice in a row
+	   if(appointment!=null && !appointment.equals(
+			   appointmentManager.getHoveredAppointment())) {
+		   appointmentManager.setHoveredAppointment(appointment);
+		   MouseOverEvent.fire(this, appointment, element);
+	   }
    }
 
    public void fireTimeBlockClickEvent(Date date) {
@@ -481,6 +507,11 @@ public class CalendarWidget extends InteractiveWidget implements
    public HandlerRegistration addDeleteHandler(
       DeleteHandler<Appointment> handler) {
       return addHandler(handler, DeleteEvent.getType());
+   }
+   
+   public HandlerRegistration addMouseOverHandler(
+		      MouseOverHandler<Appointment> handler) {
+	   return addHandler(handler, MouseOverEvent.getType());
    }
 
    public HandlerRegistration addTimeBlockClickHandler(
