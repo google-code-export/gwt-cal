@@ -380,6 +380,10 @@ public class AgendaView extends CalendarView {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public void onMouseOver(Element element, Event event) {
+		
+	}
 
 	@Override
 	public void onAppointmentSelected(Appointment appt) {

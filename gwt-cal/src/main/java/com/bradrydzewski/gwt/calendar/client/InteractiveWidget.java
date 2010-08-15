@@ -66,7 +66,7 @@ public abstract class InteractiveWidget extends Composite {
         initWidget(rootPanel);
 
         //Sink events, mouse and keyboard for now
-        sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS);
+        sinkEvents(Event.ONMOUSEDOWN | Event.ONDBLCLICK | Event.KEYEVENTS | Event.ONMOUSEOVER);
 
         hideFocusPanel();
 
@@ -117,6 +117,15 @@ public abstract class InteractiveWidget extends Composite {
      */
     public abstract void onDoubleClick(Element element, Event event);
 
+    /**
+     * Processes mouse over events. Concrete interactive widgets
+     * should provide the component's specific logic.
+     * 
+     * @param element The HTML DOM element that originated the event
+     * @param event The HTML DOM event that was triggered
+     */
+    public abstract void onMouseOver(Element element, Event event);
+    
     /**
      * Processes mouse button pressing events. Concrete interactive widgets
      * should provide the component's specific logic.
@@ -183,6 +192,14 @@ public abstract class InteractiveWidget extends Composite {
                     DOM.eventPreventDefault(event);
                     return;
                 }
+            }
+            case Event.ONMOUSEOVER:{
+            	if (DOM.eventGetCurrentTarget(event) == getElement()){
+            		onMouseOver(element, event);
+            	    DOM.eventCancelBubble(event, true);
+            	    DOM.eventPreventDefault(event);
+            	    return;
+            	}
             }
         }
 
