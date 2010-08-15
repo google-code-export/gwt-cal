@@ -124,6 +124,7 @@
 	background:#C3D9FF ;
 }
 
+.gwt-cal .gwt-calendar-header .day-cell-weekend,
 .gwt-cal .gwt-calendar-header .day-cell {
 	border-left: 1px solid #C3D9FF;
 	position: absolute;

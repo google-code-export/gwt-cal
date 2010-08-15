@@ -228,4 +228,9 @@ public class DateUtils {
       return day.getHours() * 60 + day.getMinutes();
    }
 
+   
+   @SuppressWarnings("deprecation")
+public static boolean isWeekend(final Date day) {
+	   return day.getDay()==0 || day.getDay()==6;
+   }
 }
