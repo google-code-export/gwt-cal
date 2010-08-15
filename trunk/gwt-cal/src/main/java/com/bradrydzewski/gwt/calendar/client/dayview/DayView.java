@@ -134,8 +134,10 @@ public class DayView extends CalendarView implements HasSettings {
 				appointmentWidgets.add(panel);
 
 				//make footer 'draggable'
-	            resizeController.makeDraggable(panel.getResizeHandle());
-	            dragController.makeDraggable(panel,panel.getMoveHandle());
+				if(calendarWidget.getSettings().isEnableDragDrop()) {
+					resizeController.makeDraggable(panel.getResizeHandle());
+	            	dragController.makeDraggable(panel,panel.getMoveHandle());
+				}
 			}
 
 			tmpDate.setDate(tmpDate.getDate() + 1);
