@@ -37,3 +37,11 @@ When a user clicks a timeblock in the `DayView` or day cell in the `MonthView`, 
 {{{
 settings.setTimeBlockClickNumber(Click.Double);
 }}}
+
+== Default Scroll Position ==
+
+By default, the DayView's scroll bar starts at 00:00. You can force it to automatically scroll to a specified hour (ie your calendar's working hours) using the scrollToHour setting:
+
+{{{
+calendar.setScrollToHour(7);
+}}}
