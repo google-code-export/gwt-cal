@@ -42,6 +42,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		super(dropTarget);
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onDrop(DragContext context) {
 
@@ -65,7 +66,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		//figure out which day (column) the appointment was dragged to
 		int day = (int) Math.floor(left / gridX);
 		day = Math.max(0, day);
-		day = Math.min(day, columns);
+		day = Math.min(day, columns-1);
 
 		//get the appointment, create the start & end date
 		Appointment appt = ((AppointmentWidget)widget).getAppointment();
@@ -146,10 +147,11 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		for (Draggable draggable : draggableList) {
 			draggable.desiredX = context.desiredDraggableX - dropTargetOffsetX + draggable.relativeX;
 			draggable.desiredY = context.desiredDraggableY - dropTargetOffsetY + draggable.relativeY;
+			
 			draggable.desiredX = Math.max(0, Math.min(draggable.desiredX, dropTargetClientWidth - draggable.offsetWidth));
 			draggable.desiredY = Math.max(0, Math.min(draggable.desiredY, dropTargetClientHeight - draggable.offsetHeight));
-			draggable.desiredX = Math.round((float) draggable.desiredX / gridX) * gridX;
-			draggable.desiredY = Math.round((float) draggable.desiredY / gridY) * gridY;
+			draggable.desiredX = (int)Math.floor((double) draggable.desiredX / gridX) * gridX;
+			draggable.desiredY = (int)Math.round((double) draggable.desiredY / gridY) * gridY;
 			
 			dropTarget.add(draggable.positioner, draggable.desiredX, draggable.desiredY);
 		}
