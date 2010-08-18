@@ -1,15 +1,17 @@
 package com.bradrydzewski.gwt.calendar.client.util;
 
-import com.bradrydzewski.gwt.calendar.client.Appointment;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * Test cases for the logic in the <code>AppointmentUtil</code>
@@ -37,7 +39,7 @@ public class AppointmentUtilTest {
      * is not contained in the range.
      */
     @Test
-    public void rangeContains_AppointmentOutOfRange() throws Exception {
+    public void testRangeContains_AppointmentOutOfRange() throws Exception {
         appointment.setStart(dateFormatter.parse("11/17/2009"));
         appointment.setEnd(dateFormatter.parse("10/19/2009"));
         assertFalse(
@@ -62,7 +64,7 @@ public class AppointmentUtilTest {
      * is actually considered contained.
      */
     @Test
-    public void rangeContains_AppointmentContained() throws Exception {
+    public void testRangeContains_AppointmentContained() throws Exception {
         appointment.setStart(dateFormatter.parse("10/20/2009"));
         appointment.setEnd(dateFormatter.parse("10/20/2009"));
         assertTrue(AppointmentUtil.rangeContains(appointment, rangeStart, rangeEnd));
@@ -73,9 +75,10 @@ public class AppointmentUtilTest {
      * overlap on the range is considered contained.
      */
     @Test
-    public void rangeContains_AppointmenEqualsRange() throws Exception {
+    public void testRangeContains_AppointmenEqualsRange() throws Exception {
         appointment.setStart(dateFormatter.parse("10/20/2009"));
         appointment.setEnd(dateFormatter.parse("10/21/2009"));
         assertTrue(AppointmentUtil.rangeContains(appointment, rangeStart, rangeEnd));
     }
+
 }
