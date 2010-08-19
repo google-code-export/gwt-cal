@@ -5,7 +5,7 @@ This is a tentative list of features planned for future releases. This list is a
 == Version 0.9.x ==
 
   * Day View: Enable Drag/Drop for `MultiDay` appointments
-  * Day View: Differentiate between AllDay and MultiDay appointments
+  * Day View: Differentiate between `AllDay` and `MultiDay` appointments
   * Use Resource Bundles for CSS
   * Use CSS3 Properties, such as RGBA, Gradient, etc
   * Make gwt-cal more modular and customizable:
