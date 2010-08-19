@@ -124,6 +124,11 @@ public class WeekLayoutDescription {
    }
 
    private int dayInWeek(Date date) {
+	   
+	  if(date.before(calendarFirstDay)) {
+		  return 0;
+	  }
+	   
       return (int) Math
          .floor(DateUtils.differenceInDays(date, calendarFirstDay) % 7d);
    }

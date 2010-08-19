@@ -62,7 +62,7 @@ public class MonthLayoutDescriptionTest {
     *
     * @throws Exception If an unexpected error occurs
     */
-   //@Test
+   @Test
    public void layoutTwoHourAppointment_issue28() throws Exception {
 
       Appointment twoHourAppointment = new Appointment();
@@ -96,8 +96,7 @@ public class MonthLayoutDescriptionTest {
       assertNull(weekDescriptions[4]);
    }
 
-   //@Test
-
+   @Test
    public void priorMonthAppointmentExcluded_issue40() throws Exception {
       Appointment twoHourAppointment = new Appointment();
       twoHourAppointment.setTitle("Issue 40, 2-hour");
@@ -127,8 +126,7 @@ public class MonthLayoutDescriptionTest {
                  weekDescriptions[2]);
    }
 
-   //@Test
-
+   @Test
    public void multiWeekAppointmentInFinalWeek_issue40() throws Exception {
       Appointment twoHourAppointment = new Appointment();
       twoHourAppointment
@@ -254,6 +252,40 @@ public class MonthLayoutDescriptionTest {
                       .getTopAppointmentsManager().lowestLayerIndex(3));
    }
 
+   /**
+    * This checks to make sure a multi-day appointment that spans two
+    * months is displayed correction in the 2nd month. For example,
+    * when an appointment starts in 6/3 and ends on 7/5, we should see
+    * it drawn on the 1st week of July in the MonthView.
+    * @throws Exception
+    */
+   @Test
+   public void appointmentFromPriorMonthInFirstWeekOfNextMonth_issue66() throws Exception {
+      final String july2010FirstVisibleDate = "06/27/2010";
+      Appointment appt = new Appointment();
+      appt.setAllDay(true);
+      appt.setStart(new Date(2010 - 1900, 5, 3));
+      appt.setEnd(new Date(2010 - 1900, 6, 2));
+
+      ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+      appointments.add(appt);
+      
+      MonthLayoutDescription monthDescription =
+          new MonthLayoutDescription(
+             dateFormatter.parse(july2010FirstVisibleDate),
+             6, appointments);
+       weekDescriptions = monthDescription.getWeekDescriptions();
+      
+       weekDescriptions = monthDescription.getWeekDescriptions();
+       assertNotNull("1st week must have appointments", weekDescriptions[0]);
+       assertNull("2nd week must have NO appointments", weekDescriptions[1]);
+       assertNull("3rd week must have NO appointments", weekDescriptions[2]);
+       assertNull("4th week must have NO appointments", weekDescriptions[3]);
+       assertNull("5th week must have NO appointments", weekDescriptions[4]);
+       assertNull("6th week must have NO appointments", weekDescriptions[5]);
+   
+       assertTrue("appointment that starts prior month is displayed on first day of month",weekDescriptions[0].areThereAppointmentsOnDay(0));
+   }
 
    private void assertTopAppointmentTitle(String expectedTitle, int week,
       int day,

@@ -47,11 +47,13 @@ public class MonthLayoutDescription {
 
    private void placeAppointments(ArrayList<Appointment> appointments,
       int maxLayer) {
+
       for (Appointment appointment : appointments) {
          if (overlapsWithMonth(appointment, calendarFirstDay,
                                calendarLastDay)) {
             int startWeek =
                calculateWeekFor(appointment.getStart(), calendarFirstDay);
+
             /* Place appointments only in this month */
             if (startWeek >= 0 && startWeek < weeks.length) {
                initWeek(startWeek, maxLayer);
@@ -72,6 +74,7 @@ public class MonthLayoutDescription {
    private void positionMultidayAppointment(int startWeek,
       Appointment appointment, int maxLayer) {
       int endWeek = calculateWeekFor(appointment.getEnd(), calendarFirstDay);
+
       initWeek(endWeek, maxLayer);
       if (isMultiWeekAppointment(startWeek, endWeek)) {
          distributeOverWeeks(startWeek, endWeek, appointment, maxLayer);
@@ -105,10 +108,15 @@ public class MonthLayoutDescription {
    }
 
    private int calculateWeekFor(Date testDate, Date calendarFirstDate) {
-      int endWeek = (int) Math
-         .floor(DateUtils.differenceInDays(testDate, calendarFirstDate) /
-            7d);
-      return Math.min(endWeek, weeks.length - 1);
+	   //fix for issue 66. differenceInDays returns abs value, causing problems
+	   if(testDate.before(calendarFirstDate))
+		   return 0;
+	   
+	   int week = (int) Math.floor(
+			   DateUtils.differenceInDays(
+					   testDate, calendarFirstDate) / 7d);
+
+      return Math.min(week, weeks.length - 1);
    }
 
    @SuppressWarnings("deprecation")
