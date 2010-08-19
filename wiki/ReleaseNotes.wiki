@@ -1,8 +1,19 @@
 #summary gwt-cal project release notes
 
+=== Version 0.9.2 (August 19) ===
+
+  * Added a `MouseOver` event for Appointments
+  * Updated project to use gwt 2.0.3
+  * Updated project to use gwt-dnd 3.0.0
+  * Implemented `RequiresResize` and `ProvidesResize` for compatibility with [http://code.google.com/webtoolkit/doc/latest/DevGuideUiPanels.html#LayoutPanels LayoutPanels]
+  * Added the Polish locale
+  * Welcomed [http://www.pvittet.com Pierre Vittet] as a contributor
+  * See the full list of enhancements and issues [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9.2 here]
+
+
 === Version 0.9.1 (June 27) ===
 
-  * Added drag drop support in the `DayView` for single-day appointments
+  * Added drag drop & resize support in the `DayView` for single-day appointments
   * Fixed a layout bug in the `MonthView`, [http://code.google.com/p/gwt-cal/issues/detail?id=60 Issue #60]
   * Enabled HTML markup in the Appointment header, [http://code.google.com/p/gwt-cal/issues/detail?id=48 Issue #48]
   * Added an "id" field to the `Appointment` class
