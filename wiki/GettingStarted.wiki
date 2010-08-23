@@ -11,7 +11,7 @@
   <inherits name='com.bradrydzewski.gwt.calendar.theme.google.Google' />
 }}}
 
-You will also need to download and add gwt-dnd (Drag Drop library). We used version 2.5, but it may also work with newer version.
+You will also need to download and add gwt-dnd (Drag Drop library). We used version 3.0.0, but it may also work with newer versions.
 {{{
   <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
 }}}
