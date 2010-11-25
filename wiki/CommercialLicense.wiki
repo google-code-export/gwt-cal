@@ -27,4 +27,4 @@ View the Commercial License: [http://docs.google.com/View?id=ddbrvgw7_6f4zdp3pg 
 = How to Buy =
 
 Commercial license may be purchased through Google Checkout:
-<wiki:gadget url="https://storegadgetwizard.appspot.com/servlets/gadgetServlet?key=0AkSRDCFEVYRKdDlJeDN1UnI4TjljdVlZeUdaMUZSSmc&mid=372482647000954&currency=USD&sandbox=false&gadget=TINY" border="0" width="400" height="360" />
+<wiki:gadget url="https://storegadgetwizard.appspot.com/servlets/gadgetServlet?key=0AkSRDCFEVYRKdDlJeDN1UnI4TjljdVlZeUdaMUZSSmc&mid=372482647000954&currency=USD&sandbox=false&gadget=LARGE" border="0" width="400" height="360" />
