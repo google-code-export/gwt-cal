@@ -6,6 +6,8 @@
     <inherits name="com.google.gwt.user.UserAgent"/>
     <inherits name='com.allen_sauer.gwt.dnd.gwt-dnd'/>
     <inherits name="com.google.gwt.i18n.I18N" />
+    <extend-property name="locale" values="sv"/>
+    <extend-property name="locale" values="sv_SE"/>
     <extend-property name="locale" values="es"/>
     <extend-property name="locale" values="es_MX"/>
     <extend-property name="locale" values="fr"/>
