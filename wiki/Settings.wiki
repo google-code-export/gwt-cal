@@ -43,5 +43,5 @@ settings.setTimeBlockClickNumber(Click.Double);
 By default, the DayView's scroll bar starts at 00:00. You can force it to automatically scroll to a specified hour (ie your calendar's working hours) using the scrollToHour setting:
 
 {{{
-calendar.setScrollToHour(7);
+calendar.scrollToHour(7);
 }}}
