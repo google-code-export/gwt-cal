@@ -275,8 +275,6 @@ public class MonthLayoutDescriptionTest {
              dateFormatter.parse(july2010FirstVisibleDate),
              6, appointments);
        weekDescriptions = monthDescription.getWeekDescriptions();
-      
-       weekDescriptions = monthDescription.getWeekDescriptions();
        assertNotNull("1st week must have appointments", weekDescriptions[0]);
        assertNull("2nd week must have NO appointments", weekDescriptions[1]);
        assertNull("3rd week must have NO appointments", weekDescriptions[2]);
@@ -286,6 +284,35 @@ public class MonthLayoutDescriptionTest {
    
        assertTrue("appointment that starts prior month is displayed on first day of month",weekDescriptions[0].areThereAppointmentsOnDay(0));
    }
+
+   @Test
+   public void multipleMonthSpanningAppointmentNotDisplayedInFirstDaysOfNextMonth_issue83() throws Exception{
+       final String april25_2010 = "04/25/2010";
+       Appointment appt = new Appointment();
+       appt.setStart(new Date(2009 - 1900, 5, 1));
+       appt.setEnd(new Date(2011 - 1900, 10, 30));
+
+       ArrayList<Appointment> appointments = new ArrayList<Appointment>();
+       appointments.add(appt);
+
+       MonthLayoutDescription monthDescription =
+               new MonthLayoutDescription(dateFormatter.parse(april25_2010), 6,
+                       appointments);
+       weekDescriptions = monthDescription.getWeekDescriptions();
+       assertNotNull("1st week must have appointments", weekDescriptions[0]);
+       assertNotNull("2nd week must have appointments", weekDescriptions[1]);
+       assertNotNull("3rd week must have appointments", weekDescriptions[2]);
+       assertNotNull("4th week must have appointments", weekDescriptions[3]);
+       assertNotNull("5th week must have appointments", weekDescriptions[4]);
+       assertNotNull("6th week must have appointments", weekDescriptions[5]);
+
+       assertTrue("June 1 must have one appt", weekDescriptions[5].areThereAppointmentsOnDay(2));
+       assertTrue("June 2 must have one appt", weekDescriptions[5].areThereAppointmentsOnDay(3));
+       assertTrue("June 3 must have one appt", weekDescriptions[5].areThereAppointmentsOnDay(4));
+       assertTrue("June 4 must have one appt", weekDescriptions[5].areThereAppointmentsOnDay(5));
+       assertTrue("June 5 must have one appt", weekDescriptions[5].areThereAppointmentsOnDay(6));
+   }
+
 
    private void assertTopAppointmentTitle(String expectedTitle, int week,
       int day,
