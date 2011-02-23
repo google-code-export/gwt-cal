@@ -20,7 +20,9 @@ import com.bradrydzewski.gwt.calendar.client.DateUtils;
  */
 public class WeekLayoutDescription {
 
-   private AppointmentStackingManager topAppointmentsManager = null;
+    public static final int FIRST_DAY = 0;
+    public static final int LAST_DAY = 6;
+    private AppointmentStackingManager topAppointmentsManager = null;
 
    private DayLayoutDescription[] days = null;
 
@@ -44,7 +46,7 @@ public class WeekLayoutDescription {
    }
 
    private void assertValidDayIndex(int day) {
-      if (day < 0 || day > days.length) {
+      if (day < FIRST_DAY || day > days.length) {
          throw new IllegalArgumentException(
             "Invalid day index (" + day + ")");
       }
@@ -91,7 +93,7 @@ public class WeekLayoutDescription {
       int weekEndDay = dayInWeek(appointment.getEnd());
       
       if(!appointment.getEnd().before(calendarLastDay)) {
-    	  weekEndDay = 6;
+    	  weekEndDay = LAST_DAY;
       }
       
       topAppointmentsManager.assignLayer(
@@ -106,28 +108,30 @@ public class WeekLayoutDescription {
          case FIRST_WEEK:
             int weekStartDay = dayInWeek(appointment.getStart());
             topAppointmentsManager.assignLayer(
-               new AppointmentLayoutDescription(weekStartDay, 6,
+               new AppointmentLayoutDescription(weekStartDay, LAST_DAY,
                                                 appointment));
             break;
          case IN_BETWEEN:
             topAppointmentsManager.assignLayer(
-               new AppointmentLayoutDescription(0, 6, appointment));
+               new AppointmentLayoutDescription(FIRST_DAY, LAST_DAY, appointment));
             break;
          case LAST_WEEK:
             int weekEndDay = dayInWeek(appointment.getEnd());
-            
             topAppointmentsManager.assignLayer(
-               new AppointmentLayoutDescription(0, weekEndDay,
+               new AppointmentLayoutDescription(FIRST_DAY, weekEndDay,
                                                 appointment));
             break;
       }
    }
 
    private int dayInWeek(Date date) {
-	   
-	  if(date.before(calendarFirstDay)) {
-		  return 0;
+	  if (date.before(calendarFirstDay)) {
+		  return FIRST_DAY;
 	  }
+
+      if (date.after(calendarLastDay)) {
+          return LAST_DAY;
+      }
 	   
       return (int) Math
          .floor(DateUtils.differenceInDays(date, calendarFirstDay) % 7d);
