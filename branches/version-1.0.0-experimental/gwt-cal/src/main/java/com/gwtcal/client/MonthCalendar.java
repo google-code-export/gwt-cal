@@ -1,6 +1,6 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Scottsdale Software LLC
+ * Copyright (C) 2009-2011  Scottsdale Software LLC
  *
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
  */
 package com.gwtcal.client;
 
-import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -26,7 +25,6 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.safehtml.client.SafeHtmlTemplates;
-import com.google.gwt.safehtml.client.SafeHtmlTemplates.Template;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Event;
@@ -40,36 +38,41 @@ import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.RangeChangeEvent.Handler;
 import com.google.gwt.view.client.RowCountChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
+import com.gwtcal.client.util.Assert;
 
 /**
+ * GWT-Cal Widget to display a list of appointments in a month.
  *
  * @author Brad Rydewski
  * @author Carlos Morales
  */
 public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget {
 
-    interface Template extends SafeHtmlTemplates {
+    interface RenderAppointmentTemplate extends SafeHtmlTemplates {
 
         @Template("<div __index='{0}'>{1} -- {2}</div>")
         SafeHtml appointment(int id, String start, String title);
     }
-    private static Template TEMPLATE =
-            GWT.create(Template.class);
 
-    private final Scheduler.ScheduledCommand redrawCommand =
-            new Scheduler.ScheduledCommand() {
+    private static RenderAppointmentTemplate APPOINTMENT_TEMPLATE = GWT.create(RenderAppointmentTemplate.class);
 
+    /**
+     * Manages event-queue-friendly requests to redraw the widget state.
+     */
+    private final Scheduler.ScheduledCommand redrawCommand = new Scheduler.ScheduledCommand() {
         @Override
         public void execute() {
             redraw();
         }
     };
 
-    private static String NOT_SUPPORTED = "Not suppoted by gwt-cal";
     private final HTMLPanel root;
+
     private final AppointmentProvider<T> provider;
+
     private SelectionModel<? super T> selectionModel;
-    private List<? extends T> values;
+
+    private List<? extends T> appointments;
 
     public MonthCalendar(AppointmentProvider<T> provider) {
         this.provider = provider;
@@ -79,171 +82,226 @@ public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget 
         this.sinkEvents(Event.ONCLICK);// | Event.ONMOUSEDOWN | Event.ONMOUSEMOVE);
     }
 
+    /**
+     * Returns the selection model configured for this widget.
+     *
+     * @return A model for selection within a list.
+     * @see com.google.gwt.view.client.HasData#getSelectionModel()
+     */
     @Override
     public SelectionModel<? super T> getSelectionModel() {
         return selectionModel;
     }
 
-    @Override
-    public void setRowData(int start, List<? extends T> values) {
-        this.values = values;
-//        Collections.sort(values);
-        redrawCommand.execute();
-    }
-
+    /**
+     * Sets the selection model configured for this widget.
+     *
+     * @see com.google.gwt.view.client.HasData#setSelectionModel(com.google.gwt.view.client.SelectionModel)
+     */
     @Override
     public void setSelectionModel(SelectionModel<? super T> selectionModel) {
         this.selectionModel = selectionModel;
     }
 
+    /**
+     * Sets the data this widget will render.
+     *
+     * @param start  the start index of the data
+     * @param values the values within the range
+     * @see com.google.gwt.view.client.HasData#setRowData(int, java.util.List)
+     */
     @Override
-    public int getRowCount() {
-        return (values == null) ? 0 : values.size();
+    public void setRowData(int start, List<? extends T> values) {
+        this.appointments = values;
+        redrawCommand.execute();
     }
 
+    /**
+     * Get the total count of all rows set for this widget.
+     *
+     * @return the total row count
+     * @see com.google.gwt.view.client.HasRows#getRowCount()
+     */
+    @Override
+    public int getRowCount() {
+        return (appointments == null) ? 0 : appointments.size();
+    }
+
+    /**
+     * This method is called immediately after a widget becomes attached to the
+     * browser's document.
+     *
+     * @see com.google.gwt.user.client.ui.Widget#onLoad()
+     */
     @Override
     public void onLoad() {
         redrawCommand.execute();
+        //TODO: Get rid of this line, Widget.onLoad does nothing...
         super.onLoad();
     }
 
     @Override
     public void onBrowserEvent(Event event) {
-        switch(event.getTypeInt()) {
-            case Event.ONMOUSEDOWN:break;
-            case Event.ONMOUSEUP:break;
-            case Event.ONMOUSEMOVE:break;
-            case Event.ONMOUSEOUT:break;
-            case Event.ONMOUSEOVER:break;
-            case Event.ONCLICK:break;
+        //TODO: This is doing nothing yet...
+        switch (event.getTypeInt()) {
+            case Event.ONMOUSEDOWN:
+                break;
+            case Event.ONMOUSEUP:
+                break;
+            case Event.ONMOUSEMOVE:
+                break;
+            case Event.ONMOUSEOUT:
+                break;
+            case Event.ONMOUSEOVER:
+                break;
+            case Event.ONCLICK:
+                break;
         }
-
 
         EventTarget eventTarget = event.getEventTarget();
         if (!Element.is(eventTarget)) {
-          return;
+            return;
         }
 
         final Element target = event.getEventTarget().cast();
-        
 
-        
-        //get index of appointment, and retrieve from list of values
         int index = target.getPropertyInt("__index");
-        T value = values.get(index);
+        T value = appointments.get(index);
 
-        //set item as selected
-        if(selectionModel!=null)
+        if (selectionModel != null) {
             selectionModel.setSelected(value, true);
+        }
 
-        //what about mouse over events?
-        //what about mouse out events?
-
+        //TODO: what about mouse over/mouse out events?
 
         super.onBrowserEvent(event);
     }
 
 
-
     private void redraw() {
 
-        //provider should not be null
-        assert(provider != null);
-
-        //exit if list of values is null
-        if(values==null) {
-        	System.out.println("values are null");
+        if (appointments == null) {
             return;
         }
 
-        System.out.println("drawing "+values.size());
+        Assert.notNull(provider, "You must define a non-null AppointmentProvider<T> when using this widget.");
 
-        //string builder for html
-        SafeHtmlBuilder sb = new SafeHtmlBuilder();
+        SafeHtmlBuilder widgetMarkup = new SafeHtmlBuilder();
 
-        //for each appointment, render
-        for (int i=0;i<values.size();i++) {
-            T value = values.get(i);
-            sb.append(TEMPLATE.appointment(i,
-                    provider.getStart(value).toString(),
-                    provider.getTitle(value)));
+        for (int i = 0; i < appointments.size(); i++) {
+            T value = appointments.get(i);
+            widgetMarkup.append(
+                    APPOINTMENT_TEMPLATE.appointment(i, provider.getStart(value).toString(), provider.getTitle(value)));
         }
 
-        //set inner html
-        root.getElement().setInnerHTML(sb.toSafeHtml().asString());
+        root.getElement().setInnerHTML(widgetMarkup.toSafeHtml().asString());
     }
 
-
-
-
-
-    //Unsupported method required by HasData interface. Not used by gwt-cal
+    /**
+     * @see com.google.gwt.view.client.HasCellPreviewHandlers#addCellPreviewHandler(com.google.gwt.view.client.CellPreviewEvent.Handler)
+     * @see com.google.gwt.user.client.ui.Widget#addHandler(com.google.gwt.event.shared.EventHandler, com.google.gwt.event.shared.GwtEvent.Type)
+     */
     @Override
     public HandlerRegistration addCellPreviewHandler(CellPreviewEvent.Handler<T> handler) {
-    	return super.addHandler(handler, CellPreviewEvent.getType());
+        return super.addHandler(handler, CellPreviewEvent.getType());
     }
 
+    /**
+     * Set the visible range and clear the current visible data.
+     *
+     * @see com.google.gwt.view.client.HasData#setVisibleRangeAndClearData(com.google.gwt.view.client.Range, boolean)
+     */
     @Override
     public void setVisibleRangeAndClearData(Range range, boolean forceRangeChangeEvent) {
-//        throw new UnsupportedOperationException(NOT_SUPPORTED);
-    	if(forceRangeChangeEvent)
-    		redrawCommand.execute();
+        if (forceRangeChangeEvent) {
+            redrawCommand.execute();
+        }
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#addRangeChangeHandler(com.google.gwt.view.client.RangeChangeEvent.Handler)
+     * @see com.google.gwt.user.client.ui.Widget#addHandler(com.google.gwt.event.shared.EventHandler, com.google.gwt.event.shared.GwtEvent.Type)
+     */
     @Override
     public HandlerRegistration addRangeChangeHandler(Handler handler) {
-    	return super.addHandler(handler, RangeChangeEvent.getType());
+        return super.addHandler(handler, RangeChangeEvent.getType());
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#addRowCountChangeHandler(com.google.gwt.view.client.RowCountChangeEvent.Handler)
+     * @see com.google.gwt.user.client.ui.Widget#addHandler(com.google.gwt.event.shared.EventHandler, com.google.gwt.event.shared.GwtEvent.Type)
+     */
     @Override
     public HandlerRegistration addRowCountChangeHandler(RowCountChangeEvent.Handler handler) {
         return super.addHandler(handler, RowCountChangeEvent.getType());
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#getVisibleItem(int)
+     */
     @Override
     public T getVisibleItem(int indexOnPage) {
-        return values.get(indexOnPage);
+        return appointments.get(indexOnPage);
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#getVisibleItemCount()
+     */
     @Override
     public int getVisibleItemCount() {
-        return (values==null)?0:values.size();
+        return (appointments == null) ? 0 : appointments.size();
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#getVisibleItems()
+     */
     @SuppressWarnings("unchecked")
-	@Override
+    @Override
     public Iterable<T> getVisibleItems() {
-        return (Iterable<T>)values.iterator();
+        return (Iterable<T>) appointments.iterator();
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#getVisibleRange()
+     */
     @Override
     public Range getVisibleRange() {
-    	return new Range(0, Integer.MAX_VALUE);
-//        return new Range(0,(values==null)?0:values.size());
+        return new Range(0, Integer.MAX_VALUE);
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#setVisibleRange(int, int)
+     */
     @Override
     public void setVisibleRange(int start, int length) {
-//        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#setVisibleRange(int, int)
+     */
     @Override
     public void setVisibleRange(Range range) {
-//        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#isRowCountExact()
+     */
     @Override
     public boolean isRowCountExact() {
         return true;
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#setRowCount(int)
+     */
     @Override
     public void setRowCount(int count) {
-//        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 
+    /**
+     * @see com.google.gwt.view.client.HasData#setRowCount(int, boolean)
+     */
     @Override
     public void setRowCount(int count, boolean isExact) {
-//        throw new UnsupportedOperationException(NOT_SUPPORTED);
     }
 }
