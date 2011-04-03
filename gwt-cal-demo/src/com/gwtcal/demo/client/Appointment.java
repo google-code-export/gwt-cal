@@ -2,6 +2,12 @@ package com.gwtcal.demo.client;
 
 import java.util.Date;
 
+/**
+ * Simple JavaBean to hold state and properties of an appointment.
+ * 
+ * @author Brad Rydzewski
+ * @author Carlos D. Morales
+ */
 public class Appointment {
 	
 	private Date start;
