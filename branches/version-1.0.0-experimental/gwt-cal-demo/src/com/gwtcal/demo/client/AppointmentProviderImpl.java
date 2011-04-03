@@ -4,8 +4,13 @@ import java.util.Date;
 
 import com.gwtcal.client.AppointmentProvider;
 
-public class AppointmentProviderImpl
-	implements AppointmentProvider<Appointment> {
+/**
+ * Default implementation of {@link AppointmentProvider}.
+ * 
+ * @author Brad Rydzewski
+ * @author Carlos D. Morales
+ */
+public class AppointmentProviderImpl implements AppointmentProvider<Appointment> {
 
 	@Override
 	public Date getStart(Appointment value) {
@@ -32,4 +37,8 @@ public class AppointmentProviderImpl
 		return false;
 	}
 
+	@Override
+	public boolean isMultiDay(Appointment value) {
+		return true;
+	}
 }
