@@ -64,7 +64,7 @@ public interface AppointmentProvider<T> {
 
 
     /**
-     * Indicates whether the appointment should be considered as 'all day'
+     * Indicates whether the appointment should be handled as 'all day'
      * for the purposes of rendering it in a screen.
      *
      * @param value The original source object from which the boolean value can be extracted from
@@ -72,4 +72,14 @@ public interface AppointmentProvider<T> {
      * <code>false</code> otherwise
      */
     public boolean isAllDay(T value);
+
+    /**
+     * Indicates whether the passed appointment should be handled as multi-day
+     * (spanning multiple days).
+     *
+     * @param value The source object from which the boolean value can be extracted from
+     * @return <code>true</code> if the appointment should be rendered as spanning
+     * multiple days, <code>false</code> otherwise
+     */
+    public boolean isMultiDay(T value);
 }
