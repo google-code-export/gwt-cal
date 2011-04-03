@@ -17,6 +17,7 @@
  */
 package com.gwtcal.client;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -30,6 +31,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.HasVerticalAlignment;
 import com.google.gwt.user.client.ui.IsWidget;
 import com.google.gwt.view.client.CellPreviewEvent;
 import com.google.gwt.view.client.HasData;
@@ -38,7 +40,13 @@ import com.google.gwt.view.client.RangeChangeEvent;
 import com.google.gwt.view.client.RangeChangeEvent.Handler;
 import com.google.gwt.view.client.RowCountChangeEvent;
 import com.google.gwt.view.client.SelectionModel;
+import com.gwtcal.client.layout.month.MonthDateUtils;
+import com.gwtcal.client.layout.month.MonthLayoutDescription;
 import com.gwtcal.client.util.Assert;
+import com.gwtcal.client.util.DateUtils;
+
+import static com.gwtcal.client.layout.month.MonthDateUtils.firstDateShownInAMonthView;
+import static com.gwtcal.client.util.DateUtils.moveOneDayForward;
 
 /**
  * GWT-Cal Widget to display a list of appointments in a month.
@@ -48,13 +56,22 @@ import com.gwtcal.client.util.Assert;
  */
 public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget {
 
-    interface RenderAppointmentTemplate extends SafeHtmlTemplates {
+    private static final int DAYS_IN_A_WEEK = 7;
+
+    interface MonthCalendarTemplate extends SafeHtmlTemplates {
+
+        @Template("<table>{0}</table>")
+        SafeHtml calendarGrid(SafeHtml rows);
+
+        @Template("<div>{0}</div>")
+        SafeHtml dayHeading(String dayName);
+
 
         @Template("<div __index='{0}'>{1} -- {2}</div>")
         SafeHtml appointment(int id, String start, String title);
     }
 
-    private static RenderAppointmentTemplate APPOINTMENT_TEMPLATE = GWT.create(RenderAppointmentTemplate.class);
+    private static MonthCalendarTemplate MONTH_TEMPLATES = GWT.create(MonthCalendarTemplate.class);
 
     /**
      * Manages event-queue-friendly requests to redraw the widget state.
@@ -74,12 +91,35 @@ public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget 
 
     private List<? extends T> appointments;
 
+    private Date date;
+
+    /**
+     * The first date displayed on the MonthView (1st cell.) This date is not
+     * necessarily the first date of the month as the month view will sometimes
+     * display days from the adjacent months because of the number of days
+     * fitting in the visible grid.
+     */
+    private Date firstDateDisplayed;
+
+    /**
+     * The number of rows required to display the entire month in grid format.
+     * Although most months span a total of five weeks, there are some months
+     * that span six weeks.
+     */
+    private int monthViewRequiredRows = 5;
+
+
     public MonthCalendar(AppointmentProvider<T> provider) {
         this.provider = provider;
         this.root = new HTMLPanel("");
         initWidget(root);
 
         this.sinkEvents(Event.ONCLICK);// | Event.ONMOUSEDOWN | Event.ONMOUSEMOVE);
+    }
+
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     /**
@@ -142,20 +182,14 @@ public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget 
 
     @Override
     public void onBrowserEvent(Event event) {
-        //TODO: This is doing nothing yet...
         switch (event.getTypeInt()) {
             case Event.ONMOUSEDOWN:
-                break;
             case Event.ONMOUSEUP:
-                break;
             case Event.ONMOUSEMOVE:
-                break;
             case Event.ONMOUSEOUT:
-                break;
             case Event.ONMOUSEOVER:
-                break;
             case Event.ONCLICK:
-                break;
+                //TODO: This is doing nothing yet...
         }
 
         EventTarget eventTarget = event.getEventTarget();
@@ -186,15 +220,62 @@ public class MonthCalendar<T> extends Composite implements HasData<T>, IsWidget 
 
         Assert.notNull(provider, "You must define a non-null AppointmentProvider<T> when using this widget.");
 
-        SafeHtmlBuilder widgetMarkup = new SafeHtmlBuilder();
+//        MonthLayoutDescription monthLayoutDescription = new
+//                MonthLayoutDescription(
+//                firstDateDisplayed, monthViewRequiredRows,
+//                calendarWidget.getAppointments(),
+//                calculatedCellAppointments - 1);
 
+        SafeHtmlBuilder widgetMarkup = new SafeHtmlBuilder();
+        widgetMarkup.append(buildCalendarGrid());
         for (int i = 0; i < appointments.size(); i++) {
             T value = appointments.get(i);
             widgetMarkup.append(
-                    APPOINTMENT_TEMPLATE.appointment(i, provider.getStart(value).toString(), provider.getTitle(value)));
+                    MONTH_TEMPLATES.appointment(i, provider.getStart(value).toString(), provider.getTitle(value)));
         }
 
         root.getElement().setInnerHTML(widgetMarkup.toSafeHtml().asString());
+    }
+
+
+
+    private String[] dayNames={"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+    /**
+     * Builds and formats the Calendar Grid. No appointments are included when
+     * building the grid.
+     */
+    @SuppressWarnings("deprecation")
+    private SafeHtml buildCalendarGrid() {
+        //TODO: USE OUR CONFIGURATION
+        int firstDayOfWeek = 0;
+        int month = date.getMonth();
+        firstDateDisplayed = firstDateShownInAMonthView(date, firstDayOfWeek);
+
+        Date today = new Date();
+        DateUtils.resetTime(today);
+        SafeHtmlBuilder calendarGrid = new SafeHtmlBuilder();
+        for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
+            calendarGrid.append(MONTH_TEMPLATES.dayHeading(dayNames[(i + firstDayOfWeek) % 7]));
+//            monthCalendarGrid.setText(0, i, CalendarFormat.INSTANCE.getDayOfWeekAbbreviatedNames()[(i + firstDayOfWeek) % 7]);
+//            monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i, HasVerticalAlignment.ALIGN_TOP);
+//            monthCalendarGrid.getCellFormatter().setStyleName(0, i, WEEKDAY_LABEL_STYLE);
+        }
+//        Date date = (Date) firstDateDisplayed.clone();
+//        monthViewRequiredRows = MonthDateUtils.monthViewRequiredRows(date, firstDayOfWeek);
+//        for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
+//            for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
+//
+//                if (monthGridRowIndex != 1 || dayOfWeekIndex != 0) {
+//                    moveOneDayForward(date);
+//                }
+//
+                //TODO: Configure days in grid...
+//                configureDayInGrid(monthGridRowIndex, dayOfWeekIndex, String
+//                        .valueOf(date.getDate()), date.equals(today), date
+//                        .getMonth() != month);
+//            }
+//        }
+        return calendarGrid.toSafeHtml();
     }
 
     /**
