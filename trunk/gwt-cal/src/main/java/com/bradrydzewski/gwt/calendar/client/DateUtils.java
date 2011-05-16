@@ -1,6 +1,6 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2009  Scottsdale Software LLC
+ * Copyright (C) 2009-2011  Scottsdale Software LLC
  * 
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -228,6 +228,21 @@ public class DateUtils {
       return day.getHours() * 60 + day.getMinutes();
    }
 
+    /**
+     * Creates a new date with whatever date/time the passed <code>date</code>
+     * object represents.
+     *
+     * @param date The source date
+     * @return A new date object representing the same date and time as the passed
+     * object
+     */
+   public static Date newDate(Date date){
+       Date result = null;
+       if ( date != null ) {
+           result = new Date(date.getTime());
+       }
+       return result;
+   }
    
    @SuppressWarnings("deprecation")
 public static boolean isWeekend(final Date day) {

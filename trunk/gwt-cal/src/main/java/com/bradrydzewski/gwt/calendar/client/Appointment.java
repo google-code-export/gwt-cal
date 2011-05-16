@@ -1,6 +1,6 @@
 /*
  * This file is part of gwt-cal
- * Copyright (C) 2010  Scottsdale Software LLC
+ * Copyright (C) 2010-2011  Scottsdale Software LLC
  * 
  * gwt-cal is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -308,26 +308,17 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		Appointment clone = new Appointment();
         clone.setId(this.id);
 		clone.setAllDay(this.allDay);
-		clone.setAttendees(this.attendees);
+        clone.setAttendees(this.attendees);
 		clone.setCreatedBy(this.createdBy);
 		clone.setDescription(this.description);
-		clone.setEnd(this.end);
+		clone.setEnd(DateUtils.newDate(this.end));
 		clone.setLocation(this.location);
-		clone.setStart(this.start);
-		// clone.setAppointmentStyle(this.appointmentStyle);
+		clone.setStart(DateUtils.newDate(this.start));
 		clone.setTitle(this.title);
 		clone.setStyle(this.style);
-
+        clone.setCustomStyle(this.customStyle);
 		return clone;
 	}
-
-	// public AppointmentStyle getAppointmentStyle() {
-	// return appointmentStyle;
-	// }
-	//
-	// public void setAppointmentStyle(AppointmentStyle appointmentStyle) {
-	// this.appointmentStyle = appointmentStyle;
-	// }
 
 	public AppointmentStyle getStyle() {
 		return style;

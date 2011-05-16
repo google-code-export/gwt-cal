@@ -181,6 +181,20 @@ public class DateUtilsTest {
       assertFalse(areOnTheSameMonth(date("01/01/2009"), date("02/01/2009")));
    }
 
+   @Test
+   @SuppressWarnings("deprecation")
+   public void newDateSourceIsNull(){
+       assertNull(DateUtils.newDate(null));
+   }
+
+    @Test
+    @SuppressWarnings("deprecation")
+    public void newDateReturnsSemanticallyEqualObject(){
+        Date original = new Date();
+        Date copy = DateUtils.newDate(original);
+        assertEquals(original, copy);
+    }
+
    public Date date(String dateString) throws Exception {
       return dateFormatter.parse(dateString);
    }
