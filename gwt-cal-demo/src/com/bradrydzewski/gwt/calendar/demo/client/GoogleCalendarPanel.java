@@ -9,6 +9,8 @@ import com.bradrydzewski.gwt.calendar.client.Calendar;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarViews;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
+import com.bradrydzewski.gwt.calendar.client.event.CreateEvent;
+import com.bradrydzewski.gwt.calendar.client.event.CreateHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DateRequestEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DateRequestHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
@@ -152,9 +154,9 @@ public class GoogleCalendarPanel extends FlowPanel {
     	
         // change hour offset to false to facilitate google style
         settings.setOffsetHourLabels(false);
-        settings.setTimeBlockClickNumber(Click.Double);
-        settings.setEnableDragDrop(true);    	
-    	
+        settings.setEnableDragDrop(true);
+        settings.setEnableDragDropCreation(true);
+        settings.setTimeBlockClickNumber(Click.None);
     	
         calendar = new Calendar();
         calendar.setSettings(settings);
@@ -198,6 +200,21 @@ public class GoogleCalendarPanel extends FlowPanel {
                         event.getTarget().getTitle() + "\"");
             }
         });
+        calendar.addCreateHandler(new CreateHandler<Appointment>() {
+			@Override
+			public void onCreate(CreateEvent<Appointment> event) {
+                boolean commit = Window
+                        .confirm("Are you sure you want to create a new appointment");
+                if (!commit) {
+                    event.setCancelled(true);
+                    System.out.println("Cancelled Appointment creation");
+                } else {
+                	Appointment app = event.getTarget();
+                	app.setTitle("New Appointment");
+                	calendar.addAppointment(app);
+                }
+			}
+		});
 
         ArrayList<Appointment> appts = AppointmentBuilder.build();
         calendar.suspendLayout();
