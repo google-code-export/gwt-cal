@@ -21,6 +21,8 @@ package com.bradrydzewski.gwt.calendar.client;
 import java.util.ArrayList;
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.event.CreateEvent;
+import com.bradrydzewski.gwt.calendar.client.event.CreateHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DateRequestEvent;
 import com.bradrydzewski.gwt.calendar.client.event.DateRequestHandler;
 import com.bradrydzewski.gwt.calendar.client.event.DeleteEvent;
@@ -479,6 +481,14 @@ public class CalendarWidget extends InteractiveWidget implements
       TimeBlockClickEvent.fire(this, date);
    }
 
+   public void fireCreateEvent(Appointment appointment) {
+	   boolean allow = CreateEvent.fire(this, appointment);
+	   if (!allow) {
+		   appointmentManager.rollback();
+		   refresh();
+	   }
+	}
+
    public void fireDateRequestEvent(Date date) {
       DateRequestEvent.fire(this, date);
    }
@@ -519,9 +529,13 @@ public class CalendarWidget extends InteractiveWidget implements
       return addHandler(handler, TimeBlockClickEvent.getType());
    }
 
-   public HandlerRegistration addUpdateHandler(
-      UpdateHandler<Appointment> handler) {
-      return addHandler(handler, UpdateEvent.getType());
+	public HandlerRegistration addUpdateHandler(UpdateHandler<Appointment> handler) {
+		return addHandler(handler, UpdateEvent.getType());
+	}
+
+   public HandlerRegistration addCreateHandler(
+		      CreateHandler<Appointment> handler) {
+		      return addHandler(handler, CreateEvent.getType());
    }
 
    public HandlerRegistration addOpenHandler(
