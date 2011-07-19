@@ -78,7 +78,6 @@
                         <groupId>com.allen_sauer.gwt.dnd</groupId>
                         <artifactId>gwt-dnd</artifactId>
                         <version>3.0.0</version>
-                        <scope>test</scope>
                     </dependency>
                 </dependencies>
             </plugin>
