@@ -40,6 +40,7 @@ import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
+import com.bradrydzewski.gwt.calendar.client.monthview.AppointmentWidget;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -184,11 +185,8 @@ public class MonthView extends CalendarView {
 				}
 
 				public void onDragStart(DragStartEvent event) {
-
-					calendarWidget
-							.setRollbackAppointment(((AppointmentWidget) event
-									.getContext().draggable).getAppointment()
-									.clone());
+					Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
+					calendarWidget.setRollbackAppointment(appt.clone());
 				}
 
 				public void onPreviewDragEnd(DragEndEvent event)
