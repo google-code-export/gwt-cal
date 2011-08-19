@@ -278,8 +278,12 @@ public class DayView extends CalendarView implements HasSettings {
 
 				selectedAppointmentWidgets.clear();
 				selectedAppointmentWidgets = clickedAppointmentAdapters;
-
-				DOM.scrollIntoView(clickedAppointmentAdapters.get(0).getElement());
+				
+				float height = clickedAppointmentAdapters.get(0).getHeight();
+				// scrollIntoView ONLY if the appointment fits in the viewable area
+				if (dayViewBody.getScrollPanel().getOffsetHeight() > height) {
+					DOM.scrollIntoView(clickedAppointmentAdapters.get(0).getElement());	
+				}
 				
 			//}
 		}
@@ -344,6 +348,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 				public void onDragEnd(DragEndEvent event) {
 					Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
+					System.out.println("onDragEnd");
                     calendarWidget.setCommittedAppointment(appt);
                     calendarWidget.fireUpdateEvent(appt);
 				}
@@ -374,7 +379,7 @@ public class DayView extends CalendarView implements HasSettings {
 
 				public void onDragEnd(DragEndEvent event) {
 					Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
-
+					System.out.println("onDragEnd - resize");
                     calendarWidget.setCommittedAppointment(appt);
                     calendarWidget.fireUpdateEvent(appt);
 				}
