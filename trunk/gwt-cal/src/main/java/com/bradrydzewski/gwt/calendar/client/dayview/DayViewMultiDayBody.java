@@ -17,6 +17,8 @@
  */
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
+import java.util.Date;
+
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
 import com.bradrydzewski.gwt.calendar.client.util.WindowUtils;
 import com.google.gwt.user.client.DOM;
@@ -24,7 +26,6 @@ import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
-import java.util.Date;
 
 /**
  *

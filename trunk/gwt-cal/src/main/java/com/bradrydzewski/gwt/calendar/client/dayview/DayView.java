@@ -31,16 +31,15 @@ import com.allen_sauer.gwt.dnd.client.drop.DayViewPickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DayViewResizeController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.HasSettings;
-import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.Window;
 
 public class DayView extends CalendarView implements HasSettings {
 
@@ -69,6 +68,7 @@ public class DayView extends CalendarView implements HasSettings {
 	}
 
 
+	@SuppressWarnings("deprecation")
 	public void doLayout() {
 
 		// PERFORM APPOINTMENT LAYOUT NOW
@@ -89,14 +89,10 @@ public class DayView extends CalendarView implements HasSettings {
 				calendarWidget.getSettings().getIntervalsPerHour());
 		resizeController.setSnapSize(
 				calendarWidget.getSettings().getPixelsPerInterval());
-
-		
 		
 		
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
-
-
 
 
 		// HERE IS WHERE WE DO THE LAYOUT
@@ -401,6 +397,7 @@ public class DayView extends CalendarView implements HasSettings {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	void timeBlockClick(int x, int y) {
 
 		int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();

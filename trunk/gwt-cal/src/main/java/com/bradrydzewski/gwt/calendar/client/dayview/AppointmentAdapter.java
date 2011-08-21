@@ -18,11 +18,12 @@
 
 package com.bradrydzewski.gwt.calendar.client.dayview;
 
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.minutesSinceDayStarted;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import static com.bradrydzewski.gwt.calendar.client.DateUtils.minutesSinceDayStarted;
 
 /**
  * The Appointment Adapter is used to track the layout of an

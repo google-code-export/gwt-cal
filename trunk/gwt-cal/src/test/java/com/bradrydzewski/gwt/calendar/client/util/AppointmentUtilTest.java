@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.google.gwt.junit.client.GWTTestCase;
 
 /**
  * Test cases for the logic in the <code>AppointmentUtil</code>

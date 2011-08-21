@@ -50,7 +50,7 @@ public class DayViewResizeController extends AbstractDragController {
 	}
 	
 
-
+	@SuppressWarnings("deprecation")
 	public void dragEnd() {
 		AppointmentWidget apptWidget = (AppointmentWidget)context.draggable.getParent();
 		int apptHeight = apptWidget.getOffsetHeight();

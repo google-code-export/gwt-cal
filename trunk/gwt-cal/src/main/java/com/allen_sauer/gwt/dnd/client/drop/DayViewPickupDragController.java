@@ -1,7 +1,6 @@
 package com.allen_sauer.gwt.dnd.client.drop;
 
 import com.allen_sauer.gwt.dnd.client.PickupDragController;
-import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 
 public class DayViewPickupDragController extends PickupDragController {

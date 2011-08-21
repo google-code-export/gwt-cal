@@ -1,8 +1,8 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import com.bradrydzewski.gwt.calendar.client.Appointment;
-
 import java.util.ArrayList;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
 
 /**
  * Contains the calculated layout description of all <code>Appointment</code>s

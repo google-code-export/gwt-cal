@@ -18,6 +18,10 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import com.bradrydzewski.gwt.calendar.client.agenda.AgendaView;
+import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
+import com.bradrydzewski.gwt.calendar.client.monthview.MonthView;
+
 /**
  * Enumeration that represents each standard {@link CalendarView}.
  * @author Brad Rydzewski

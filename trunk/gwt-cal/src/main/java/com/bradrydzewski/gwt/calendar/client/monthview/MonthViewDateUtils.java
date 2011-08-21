@@ -17,14 +17,13 @@
  */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import com.bradrydzewski.gwt.calendar.client.DateUtils;
-
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.areOnTheSameMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
 import static com.bradrydzewski.gwt.calendar.client.DateUtils.previousDay;
 
-
 import java.util.Date;
+
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 
 /**
  * Contains date-related utilities with logic required to generate the {@link

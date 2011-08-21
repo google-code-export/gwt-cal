@@ -17,16 +17,20 @@
  */
 package com.bradrydzewski.gwt.calendar.client;
 
-import org.junit.Test;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.areOnTheSameMonth;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
+import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.bradrydzewski.gwt.calendar.client.DateUtils.areOnTheSameMonth;
-import static com.bradrydzewski.gwt.calendar.client.DateUtils.firstOfNextMonth;
-import static com.bradrydzewski.gwt.calendar.client.DateUtils.moveOneDayForward;
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 /**
  * Test cases for the set of utilities to work with <code>java.util.Date</code>
@@ -173,7 +177,6 @@ public class DateUtilsTest {
    }
 
    @Test
-   @SuppressWarnings("deprecation")
    public void testAreOnTheSameMonth() throws Exception {
       assertTrue(areOnTheSameMonth(date("02/28/2010"), date("02/01/2010")));
       assertTrue(areOnTheSameMonth(date("12/31/2010"), date("12/01/2010")));
@@ -182,13 +185,11 @@ public class DateUtilsTest {
    }
 
    @Test
-   @SuppressWarnings("deprecation")
    public void newDateSourceIsNull(){
        assertNull(DateUtils.newDate(null));
    }
 
     @Test
-    @SuppressWarnings("deprecation")
     public void newDateReturnsSemanticallyEqualObject(){
         Date original = new Date();
         Date copy = DateUtils.newDate(original);

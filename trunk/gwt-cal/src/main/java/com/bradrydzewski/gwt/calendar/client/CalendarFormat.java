@@ -17,11 +17,11 @@
  */
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.util.Date;
+
 import com.bradrydzewski.gwt.calendar.client.i18n.CalendarConstants;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
-
-import java.util.Date;
 
 @SuppressWarnings("deprecation")
 public class CalendarFormat {

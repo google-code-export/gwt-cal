@@ -1,10 +1,10 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.DateUtils;
-
 import java.util.ArrayList;
 import java.util.Date;
+
+import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
 
 /**
  * Describes the layout for all appointments in all the weeks displayed in a
