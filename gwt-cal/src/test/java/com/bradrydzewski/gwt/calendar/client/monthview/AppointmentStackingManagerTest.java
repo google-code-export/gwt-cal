@@ -1,8 +1,8 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import org.junit.Test;
-
 import static org.junit.Assert.assertEquals;
+
+import org.junit.Test;
 
 /**
  * Test cases for the {@link com.bradrydzewski.gwt.calendar.client.monthview.AppointmentStackingManager}

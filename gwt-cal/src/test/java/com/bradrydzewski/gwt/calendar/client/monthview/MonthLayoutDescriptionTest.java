@@ -17,7 +17,12 @@
  */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +68,7 @@ public class MonthLayoutDescriptionTest {
     * @throws Exception If an unexpected error occurs
     */
    @Test
+   @SuppressWarnings("deprecation")
    public void layoutTwoHourAppointment_issue28() throws Exception {
 
       Appointment twoHourAppointment = new Appointment();
@@ -97,6 +103,7 @@ public class MonthLayoutDescriptionTest {
    }
 
    @Test
+   @SuppressWarnings("deprecation")
    public void priorMonthAppointmentExcluded_issue40() throws Exception {
       Appointment twoHourAppointment = new Appointment();
       twoHourAppointment.setTitle("Issue 40, 2-hour");
@@ -127,6 +134,7 @@ public class MonthLayoutDescriptionTest {
    }
 
    @Test
+   @SuppressWarnings("deprecation")
    public void multiWeekAppointmentInFinalWeek_issue40() throws Exception {
       Appointment twoHourAppointment = new Appointment();
       twoHourAppointment
@@ -198,6 +206,7 @@ public class MonthLayoutDescriptionTest {
    }
 
    @Test
+   @SuppressWarnings("deprecation")
    public void appointmentInNextMonthVisible_issue60() throws Exception {
       final String may2010FirstVisibleDate = "04/25/2010";
       Appointment visibleInJune = new Appointment();
@@ -260,6 +269,7 @@ public class MonthLayoutDescriptionTest {
     * @throws Exception
     */
    @Test
+   @SuppressWarnings("deprecation")
    public void appointmentFromPriorMonthInFirstWeekOfNextMonth_issue66() throws Exception {
       final String july2010FirstVisibleDate = "06/27/2010";
       Appointment appt = new Appointment();
@@ -286,6 +296,7 @@ public class MonthLayoutDescriptionTest {
    }
 
    @Test
+   @SuppressWarnings("deprecation")
    public void multipleMonthSpanningAppointmentNotDisplayedInFirstDaysOfNextMonth_issue83() throws Exception{
        final String april25_2010 = "04/25/2010";
        Appointment appt = new Appointment();

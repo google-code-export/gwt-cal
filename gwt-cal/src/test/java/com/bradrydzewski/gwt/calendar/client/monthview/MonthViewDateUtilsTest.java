@@ -17,15 +17,15 @@
  */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import org.junit.Test;
-
 import static com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils.firstDateShownInAMonthView;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotSame;
 
-import java.util.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import org.junit.Test;
 
 /**
  * Test cases for the {@link com.bradrydzewski.gwt.calendar.client.monthview.MonthViewDateUtils}

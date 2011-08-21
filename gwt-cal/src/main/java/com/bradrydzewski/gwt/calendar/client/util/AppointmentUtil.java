@@ -49,6 +49,7 @@ public class AppointmentUtil {
         return group;
     }
 
+    @SuppressWarnings("deprecation")
     public static boolean rangeContains(Appointment appt, Date date) {
         Date rangeEnd = (Date) date.clone();
         rangeEnd.setDate(rangeEnd.getDate() + 1);
@@ -91,6 +92,7 @@ public class AppointmentUtil {
      * @return A list with all appointments whose start date is on or after the
      * passed <code>startDate</code>
      */
+    @SuppressWarnings("deprecation")
     public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate) {
 
         ArrayList<Appointment> group = new ArrayList<Appointment>();

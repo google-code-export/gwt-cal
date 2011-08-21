@@ -19,8 +19,8 @@
 package com.bradrydzewski.gwt.calendar.theme.ical.client;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
-import com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager;
 import com.bradrydzewski.gwt.calendar.client.ThemeAppointmentStyle;
+import com.bradrydzewski.gwt.calendar.client.dayview.DayViewStyleManager;
 
 /**
  * iCal theme style manager for the day view.

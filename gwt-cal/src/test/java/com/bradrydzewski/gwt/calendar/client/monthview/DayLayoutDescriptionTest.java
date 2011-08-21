@@ -17,13 +17,14 @@
  */
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import org.junit.Before;
-import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 
