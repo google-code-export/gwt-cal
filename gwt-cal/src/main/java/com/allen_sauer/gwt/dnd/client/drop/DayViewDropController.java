@@ -13,13 +13,13 @@ public class DayViewDropController extends AbsolutePositionDropController {
 	private int gridX;
 
 	private int gridY;
-
 	
 	int intervalsPerHour;
 	int snapSize;
 	int columns;
 	int rows;
 	Date date;
+	private int maxProxyHeight = -1;
 	
 	public void setColumns(int columns) {
 		this.columns = columns;
@@ -38,6 +38,10 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		this.rows = intervalsPerHour*24;
 	}
 
+	public void setMaxProxyHeight(int maxProxyHeight) {
+		this.maxProxyHeight = maxProxyHeight;
+	}
+	
 	public DayViewDropController(AbsolutePanel dropTarget) {
 		super(dropTarget);
 	}
@@ -154,6 +158,21 @@ public class DayViewDropController extends AbsolutePositionDropController {
 			draggable.desiredY = (int)Math.round((double) draggable.desiredY / gridY) * gridY;
 			
 			dropTarget.add(draggable.positioner, draggable.desiredX, draggable.desiredY);
+		}
+	}
+
+	@Override
+	public void onEnter(DragContext context) {
+		super.onEnter(context);
+		
+		for (Draggable draggable : draggableList) {
+			int width = draggable.positioner.getOffsetWidth();
+			int height = draggable.positioner.getOffsetHeight();
+			if (maxProxyHeight > 0 && height > maxProxyHeight) {
+				height = maxProxyHeight - 5;
+			}
+			
+			draggable.positioner.setPixelSize(width, height);
 		}
 	}
 }

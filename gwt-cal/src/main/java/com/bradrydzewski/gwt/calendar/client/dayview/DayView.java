@@ -67,7 +67,13 @@ public class DayView extends CalendarView implements HasSettings {
 
 	}
 
-
+	private int getMaxProxyHeight() {
+		// For a comfortable use, the Proxy should be, top 2/3 (66%) of the view
+		int maxProxyHeight = 2 * (dayViewBody.getScrollPanel().getOffsetHeight() / 3);
+		
+		return maxProxyHeight;
+	}
+	
 	@SuppressWarnings("deprecation")
 	public void doLayout() {
 
@@ -85,6 +91,7 @@ public class DayView extends CalendarView implements HasSettings {
 		dropController.setDate((Date)calendarWidget.getDate().clone());
 		dropController.setSnapSize(
 				calendarWidget.getSettings().getPixelsPerInterval());
+		dropController.setMaxProxyHeight(getMaxProxyHeight());
 		resizeController.setIntervalsPerHour(
 				calendarWidget.getSettings().getIntervalsPerHour());
 		resizeController.setSnapSize(
@@ -352,6 +359,7 @@ public class DayView extends CalendarView implements HasSettings {
 				public void onDragStart(DragStartEvent event) {
 					Appointment appt = ((AppointmentWidget) event.getContext().draggable).getAppointment();
 					calendarWidget.setRollbackAppointment(appt.clone());
+					((DayViewPickupDragController)dragController).setMaxProxyHeight(getMaxProxyHeight());
 				}
 
 				public void onPreviewDragEnd(DragEndEvent event)
