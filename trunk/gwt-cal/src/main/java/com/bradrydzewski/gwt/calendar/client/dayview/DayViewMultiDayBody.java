@@ -36,7 +36,6 @@ public class DayViewMultiDayBody extends Composite {
     private FlexTable header = new FlexTable();
     protected AbsolutePanel grid = new AbsolutePanel();
     private AbsolutePanel splitter = new AbsolutePanel();
-    private HasSettings settings = null;
     private static final String TIMELINE_EMPTY_CELL_STYLE = "leftEmptyCell";
     private static final String SCROLLBAR_EMPTY_CELL_STYLE = "rightEmptyCell";
     private static final String DAY_CONTAINER_CELL_STYLE = "centerDayContainerCell";
@@ -44,8 +43,6 @@ public class DayViewMultiDayBody extends Composite {
     protected SimplePanel gridOverlay = new SimplePanel();
 
     public DayViewMultiDayBody(HasSettings settings) {
-        this.settings = settings;
-        
         
         initWidget(header);
 

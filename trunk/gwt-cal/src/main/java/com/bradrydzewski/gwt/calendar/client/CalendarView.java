@@ -32,7 +32,7 @@ import com.google.gwt.user.client.Event;
  *
  * @author Brad Rydzewski
  */
-public abstract class CalendarView {
+public abstract class CalendarView implements HasSettings {
 
     /**
      * Calendar widget bound to the view.
@@ -229,6 +229,14 @@ public abstract class CalendarView {
     public void scrollToHour(int hour) {
     	
     }
+    
+	public CalendarSettings getSettings() {
+		return calendarWidget.getSettings();
+	}
+
+	public void setSettings(CalendarSettings settings) {
+		calendarWidget.setSettings(settings);
+	}
 
 //    /* loading and unloading of view */
 //    onLoad()
