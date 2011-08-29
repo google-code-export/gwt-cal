@@ -33,7 +33,6 @@ public class DayViewHeader extends Composite {
    private FlexTable header = new FlexTable();
    private AbsolutePanel dayPanel = new AbsolutePanel();
    private AbsolutePanel splitter = new AbsolutePanel();
-   private HasSettings settings = null;
    //private static final DateTimeFormat DAY_FORMAT = DateTimeFormat.getFormat("EEE, MMM d");
    private static final String GWT_CALENDAR_HEADER_STYLE =
       "gwt-calendar-header";
@@ -43,7 +42,6 @@ public class DayViewHeader extends Composite {
 
 
    public DayViewHeader(HasSettings settings) {
-      this.settings = settings;
       initWidget(header);
       header.setStyleName(GWT_CALENDAR_HEADER_STYLE);
       dayPanel.setStyleName(DAY_CELL_CONTAINER_STYLE);
