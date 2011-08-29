@@ -7,24 +7,64 @@
     <artifactId>gwt-cal</artifactId>
     <packaging>jar</packaging>
     <version>0.9.3-SNAPSHOT</version>
+    
+    <properties>
+    	<gwt.version>2.0.3</gwt.version>
+    	<gwt-dnd.version>3.0.0</gwt-dnd.version>
+<!--
+		<gpg.useagent>true</gpg.useagent>
+		<gpg.executable>gpg2</gpg.executable>
+-->
+    </properties>
+    
     <name>gwt-cal</name>
+    <description>a personal calendar widget similar to iCal, Outlook,
+        Google Calendar, etc
+    </description>
+    <url>http://code.google.com/p/gwt-cal/</url>
+    
     <licenses>
         <license>
             <name>GNU General Public License v3</name>
             <url>http://www.gnu.org/licenses/gpl.html</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
-    <description>a personal calendar widget similar to iCal, Outlook,
-        Google Calendar, etc
-    </description>
+    
+	<issueManagement>
+	  <system>Google Code</system>
+	  <url>http://code.google.com/p/gwt-cal/issues</url>
+	</issueManagement>
+      
     <developers>
         <developer>
             <name>Brad Rydzewski</name>
             <url>http://www.google.com/profiles/Brad.Rydzewski</url>
+			<roles>
+			  <role>owner</role>
+			  <role>developer</role>
+			</roles>
         </developer>
-    </developers>
-    <url>http://code.google.com/p/gwt-cal/</url>
+        <developer>
+            <name>Carlos Morales</name>
+            <url>http://code.google.com/u/carlos.morales.duran/</url>
+			<roles>
+			  <role>owner</role>
+			  <role>developer</role>
+			</roles>
+        </developer>
+        <developer>
+            <name>Carlos Tasada</name>
+            <url>http://code.google.com/u/ctasada/</url>
+			<roles>
+			  <role>developer</role>
+			</roles>
+        </developer>
+	</developers>
 
+<!--
+	NOT ALLOWED: When using the Maven Central Repository
+-->
 	<repositories>
 		<repository>
 			<name>gwt-maven-repo</name>
@@ -33,6 +73,18 @@
 		</repository>
 	</repositories>
 
+	<scm>
+	  <connection>
+	    scm:svn:http://gwt-cal.googlecode.com/svn/trunk
+	  </connection>
+	  <developerConnection>
+	    scm:svn:https://gwt-cal.googlecode.com/svn/trunk
+	  </developerConnection>
+	  <url>
+	    http://gwt-cal.googlecode.com/svn/trunk
+	  </url>
+	</scm>
+  
     <build>
         <plugins>
             <plugin>
@@ -55,7 +107,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.1</version>
+                <version>1.2</version>
                 <configuration>
                     <module>com.bradrydzewski.gwt.calendar.Calendar</module>
                     <includes>**/*GwtCalTest.java</includes>
@@ -71,16 +123,31 @@
                     <dependency>
                         <groupId>com.google.gwt</groupId>
                         <artifactId>gwt-user</artifactId>
-                        <version>2.0.3</version>
-<!--                        <scope>test</scope>-->
+                        <version>${gwt.version}</version>
                     </dependency>
                     <dependency>
                         <groupId>com.allen_sauer.gwt.dnd</groupId>
                         <artifactId>gwt-dnd</artifactId>
-                        <version>3.0.0</version>
+                        <version>${gwt-dnd.version}</version>
                     </dependency>
                 </dependencies>
             </plugin>
+<!--
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>1.3</version>
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+-->
         </plugins>
         <resources>
             <resource>
@@ -107,15 +174,12 @@
         <dependency>
             <groupId>com.google.gwt</groupId>
             <artifactId>gwt-user</artifactId>
-            <version>2.0.3</version>
+            <version>${gwt.version}</version>
         </dependency>
-        
-
-        
         <dependency>
             <groupId>com.allen_sauer.gwt.dnd</groupId>
             <artifactId>gwt-dnd</artifactId>
-            <version>3.0.0</version>
+            <version>${gwt-dnd.version}</version>
         </dependency>
     </dependencies>
 </project>
