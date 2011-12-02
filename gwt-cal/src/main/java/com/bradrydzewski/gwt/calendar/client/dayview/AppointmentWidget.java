@@ -243,6 +243,10 @@ public class AppointmentWidget extends FlowPanel {
 
    public void setAppointment(Appointment appointment) {
       this.appointment = appointment;
+      
+      if (appointment.isReadOnly()) {
+    	  this.remove(footerPanel);
+      }
    }
 
    

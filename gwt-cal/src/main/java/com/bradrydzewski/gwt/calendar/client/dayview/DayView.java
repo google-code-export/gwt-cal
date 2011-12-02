@@ -160,7 +160,7 @@ public class DayView extends CalendarView {
 				dayViewBody.getGrid().grid.add(panel);
 
 				//make footer 'draggable'
-				if (calendarWidget.getSettings().isEnableDragDrop()) {
+				if (calendarWidget.getSettings().isEnableDragDrop() && !appt.getAppointment().isReadOnly()) {
 					resizeController.makeDraggable(panel.getResizeHandle());
 	            	dragController.makeDraggable(panel, panel.getMoveHandle());
 				}
