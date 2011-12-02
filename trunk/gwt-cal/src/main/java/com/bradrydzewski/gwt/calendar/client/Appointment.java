@@ -57,6 +57,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	private boolean allDay = false;
 	private AppointmentStyle style = AppointmentStyle.DEFAULT;
 	private String customStyle;
+	private boolean readOnly = false;
 
 	/**
 	 * <p>
@@ -334,5 +335,13 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 
 	public void setCustomStyle(String customStyle) {
 		this.customStyle = customStyle;
+	}
+	
+	public boolean isReadOnly() {
+		return readOnly;
+	}
+	
+	public void setReadOnly(boolean readOnly) {
+		this.readOnly = readOnly;
 	}
 }
