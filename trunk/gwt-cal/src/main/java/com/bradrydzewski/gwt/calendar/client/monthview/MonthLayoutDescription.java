@@ -123,7 +123,7 @@ public class MonthLayoutDescription {
    private Date calculateLastDate(final Date startDate, int weeks) {
       int daysInMonthGrid = weeks * 7;
       Date endDate = (Date) startDate.clone();
-      endDate.setDate(startDate.getDate() + daysInMonthGrid - 1);
+      endDate.setDate(endDate.getDate() + daysInMonthGrid - 1);
       return endDate;
    }
 
