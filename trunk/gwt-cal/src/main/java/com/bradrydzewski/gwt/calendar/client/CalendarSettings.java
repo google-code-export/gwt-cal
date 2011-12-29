@@ -28,6 +28,7 @@ public class CalendarSettings {
     private int scrollToHour = 8; //default hour that gets scrolled to
     private boolean enableDragDrop = true;
     private boolean offsetHourLabels = false;
+    private boolean dragDropCreation = true;
     
     /*
      * Clicks required to fire TimeBlockClickEvent.
@@ -101,9 +102,15 @@ public class CalendarSettings {
         this.timeBlockClickNumber = timeBlockClickNumber;
     }
     
-    
+    public void setEnableDragDropCreation(boolean dragDropCreation) {
+    	this.dragDropCreation = dragDropCreation;
+    }
+
+    public boolean getEnableDragDropCreation() {
+    	return dragDropCreation;
+    }
     
     public enum Click {
-        Double, Single
+        Double, Single, None
     }
 }

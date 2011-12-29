@@ -35,6 +35,8 @@ import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -61,6 +63,8 @@ public class DayView extends CalendarView {
 	
 	private PickupDragController dragController = null;
 	
+	private DayViewResizeController proxyResizeController = null;
+	
 	public DayView() {
 		super();
 	}
@@ -74,7 +78,6 @@ public class DayView extends CalendarView {
 	
 	@SuppressWarnings("deprecation")
 	public void doLayout() {
-
 		// PERFORM APPOINTMENT LAYOUT NOW
 		final Date date = (Date) calendarWidget.getDate().clone();
 
@@ -94,6 +97,8 @@ public class DayView extends CalendarView {
 				calendarWidget.getSettings().getIntervalsPerHour());
 		resizeController.setSnapSize(
 				calendarWidget.getSettings().getPixelsPerInterval());
+		proxyResizeController.setSnapSize(calendarWidget.getSettings().getPixelsPerInterval());
+		proxyResizeController.setIntervalsPerHour(calendarWidget.getSettings().getIntervalsPerHour());
 		
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
@@ -206,7 +211,6 @@ public class DayView extends CalendarView {
 			int y = DOM.eventGetClientY(event);
 			timeBlockClick(x, y);
 		}
-
 	}
 
 	public void onSingleClick(final Element element, final Event event) {
@@ -221,7 +225,8 @@ public class DayView extends CalendarView {
         
         if (appt!=null) {
         	selectAppointment(appt);
-        } else if (getSettings().getTimeBlockClickNumber() == Click.Single
+        } else if ((getSettings().getTimeBlockClickNumber() == Click.Single
+				|| getSettings().getEnableDragDropCreation())
 				&& element == dayViewBody.getGrid().gridOverlay
 				.getElement()) {
 			int x = DOM.eventGetClientX(event);
@@ -374,6 +379,25 @@ public class DayView extends CalendarView {
 						throws VetoDragException {}
 			});
 		}
+			
+		if(proxyResizeController == null) {
+			proxyResizeController = new DayViewResizeController(dayViewBody.getGrid().grid);
+			proxyResizeController.addDragHandler(new DragHandler(){
+
+				public void onDragEnd(DragEndEvent event) {
+					Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
+					
+					calendarWidget.fireCreateEvent(appt);
+				}
+
+				public void onDragStart(DragStartEvent event) {}
+
+				public void onPreviewDragEnd(DragEndEvent event)
+						throws VetoDragException {}
+				public void onPreviewDragStart(DragStartEvent event)
+						throws VetoDragException {}
+			});
+		}
 	}
 	
 	@SuppressWarnings("deprecation")
@@ -403,8 +427,34 @@ public class DayView extends CalendarView {
 		newStartDate.setMinutes((int) interval
 				* (60 / getSettings().getIntervalsPerHour()));
 		newStartDate.setDate(newStartDate.getDate() + (int) day);
+		
+		if (getSettings().getTimeBlockClickNumber() != Click.None) {
+			calendarWidget.fireTimeBlockClickEvent(newStartDate);
+		} else {
+			int snapSize = calendarWidget.getSettings().getPixelsPerInterval();
+			// Create the proxy
+			width = width / calendarWidget.getDays();
+			int height = snapSize;
+			left = (int) day * width;
+			// Adjust the start to the closest interval
+			top = (int)Math.floor(
+					(float) relativeY / snapSize) * snapSize;
 
-		calendarWidget.fireTimeBlockClickEvent(newStartDate);
+			AppointmentWidget proxy = new AppointmentWidget();
+			Appointment app = new Appointment();
+			app.setStart(newStartDate);
+			app.setEnd(newStartDate);
+			proxy.setAppointment(app);
+			proxy.setStart(newStartDate);
+			proxy.setPixelSize(width, height);
+			dayViewBody.getGrid().grid.add(proxy, left, top);
+  			styleManager.applyStyle(proxy, false);
+  			proxyResizeController.makeDraggable(proxy.getResizeHandle());
+  			
+  		    NativeEvent evt = Document.get().createMouseDownEvent(1, 0, 0, x, y, false,
+  		          false, false, false, NativeEvent.BUTTON_LEFT);
+  		    proxy.getResizeHandle().getElement().dispatchEvent(evt);
+		}
 	}
 
 	private List<AppointmentWidget> findAppointmentWidgetsByElement(
