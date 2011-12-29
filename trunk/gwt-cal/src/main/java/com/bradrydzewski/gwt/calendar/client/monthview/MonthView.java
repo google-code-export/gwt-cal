@@ -406,11 +406,11 @@ public class MonthView extends CalendarView {
 			if (appointment != null) {
 				selectAppointment(appointment);
 			} else {
-				//else, lets see if a "+ n more" label was clicked
-				if(moreLabels.containsKey(clickedElement)) {
-                    calendarWidget.fireDateRequestEvent(
-                        cellDate(moreLabels.get(clickedElement)),clickedElement
-                    );
+				// else, lets see if a "+ n more" label was clicked
+				if (moreLabels.containsKey(clickedElement)) {
+					calendarWidget.fireDateRequestEvent(
+							cellDate(moreLabels.get(clickedElement)),
+							clickedElement);
 				}
 			}
 		}
@@ -418,7 +418,7 @@ public class MonthView extends CalendarView {
 
 	public void onMouseOver(Element element, Event event) {
 		Appointment appointment = findAppointmentByElement(element);
-		calendarWidget.fireMouseOverEvent(appointment,element);
+		calendarWidget.fireMouseOverEvent(appointment, element);
 	}
 
     /**
@@ -428,10 +428,9 @@ public class MonthView extends CalendarView {
      * @param cell The cell number in the month view grid
      * @return The date that corresponds to the given <code>cell</code>
      */
-    private Date cellDate(int cell)
-    {
-        return DateUtils.shiftDate(firstDateDisplayed, cell);
-    }
+	private Date cellDate(int cell) {
+		return DateUtils.shiftDate(firstDateDisplayed, cell);
+	}
 
 	private void dayClicked(Event event) {
 		int y = event.getClientY() - DOM.getAbsoluteTop(appointmentCanvas.getElement());
@@ -454,34 +453,40 @@ public class MonthView extends CalendarView {
 	 */
 	@SuppressWarnings("deprecation")
 	private void buildCalendarGrid() {
-      int firstDayOfWeek = CalendarFormat.INSTANCE.getFirstDayOfWeek();
-      int month = calendarWidget.getDate().getMonth();
-      firstDateDisplayed = firstDateShownInAMonthView(calendarWidget.getDate(), firstDayOfWeek);
+		int firstDayOfWeek = CalendarFormat.INSTANCE.getFirstDayOfWeek();
+		int month = calendarWidget.getDate().getMonth();
+		firstDateDisplayed = firstDateShownInAMonthView(
+				calendarWidget.getDate(), firstDayOfWeek);
 
 		Date today = new Date();
 		DateUtils.resetTime(today);
 
 		/* Add the calendar weekday heading */
-      for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
-         monthCalendarGrid.setText(0, i, CalendarFormat.INSTANCE.getDayOfWeekAbbreviatedNames()[(i +
-            firstDayOfWeek) % 7]);
+		for (int i = 0; i < DAYS_IN_A_WEEK; i++) {
+			monthCalendarGrid
+					.setText(
+							0,
+							i,
+							CalendarFormat.INSTANCE
+									.getDayOfWeekAbbreviatedNames()[(i + firstDayOfWeek) % 7]);
 			monthCalendarGrid.getCellFormatter().setVerticalAlignment(0, i,
 					HasVerticalAlignment.ALIGN_TOP);
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,
 					WEEKDAY_LABEL_STYLE);
 		}
-      Date date = (Date)firstDateDisplayed.clone();
-		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(calendarWidget.getDate(), firstDayOfWeek);
+		Date date = (Date) firstDateDisplayed.clone();
+		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(
+				calendarWidget.getDate(), firstDayOfWeek);
 		for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
 			for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
 
 				if (monthGridRowIndex != 1 || dayOfWeekIndex != 0) {
-               moveOneDayForward(date);
+					moveOneDayForward(date);
 				}
 
-				configureDayInGrid(monthGridRowIndex, dayOfWeekIndex, String
-						.valueOf(date.getDate()), date.equals(today), date
-						.getMonth() != month);
+				configureDayInGrid(monthGridRowIndex, dayOfWeekIndex,
+						String.valueOf(date.getDate()), date.equals(today),
+						date.getMonth() != month);
 			}
 		}
 	}
@@ -646,7 +651,6 @@ public class MonthView extends CalendarView {
 	 * given &quot;day cell&quot;.
 	 */
 	private void calculateCellAppointments() {
-
 		int paddingTop = appointmentPaddingTop();
 		int height = appointmentHeight();
 
@@ -655,14 +659,14 @@ public class MonthView extends CalendarView {
 						/ (float) (height + paddingTop)) - 1;
 	}
 
-   private static int appointmentPaddingTop() {
-      return 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
-   }
+	private static int appointmentPaddingTop() {
+		return 1 + (Math.abs(FormattingUtil.getBorderOffset()) * 3);
+	}
 
-   private static int appointmentHeight()
-   {
-      return 20; // TODO: calculate appointment height dynamically
-   }
+	private static int appointmentHeight() {
+		// TODO: calculate appointment height dynamically
+		return 20;
+	}
 
 	private void placeItemInGrid(Widget panel, int colStart, int colEnd,
 			int row, int cellPosition) {

@@ -29,10 +29,9 @@ public class GoogleAppointmentTheme {
     public static final GoogleAppointmentStyle YELLOW_GREY  = new GoogleAppointmentStyle("#6E6E41","#A7A77D");
     public static final GoogleAppointmentStyle BROWN        = new GoogleAppointmentStyle("#8D6F47","#C4A883");
     public static final GoogleAppointmentStyle DEFAULT = BLUE;
-    public static Map<AppointmentStyle, GoogleAppointmentStyle> STYLES;
+    public static final Map<AppointmentStyle, GoogleAppointmentStyle> STYLES = new HashMap<AppointmentStyle, GoogleAppointmentStyle>();
     
     static {
-		STYLES = new HashMap<AppointmentStyle, GoogleAppointmentStyle>();
 		STYLES.put(AppointmentStyle.BLUE, BLUE);
 		STYLES.put(AppointmentStyle.BLUE_GREY, BLUE_GREY);
 		STYLES.put(AppointmentStyle.BROWN, BROWN);
@@ -56,4 +55,6 @@ public class GoogleAppointmentTheme {
 		STYLES.put(AppointmentStyle.YELLOW_GREY, YELLOW_GREY);
 		STYLES.put(AppointmentStyle.DEFAULT, DEFAULT);
     }
+    
+    private GoogleAppointmentTheme() { }
 }

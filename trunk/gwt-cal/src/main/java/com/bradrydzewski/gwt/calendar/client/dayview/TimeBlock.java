@@ -54,7 +54,7 @@ public class TimeBlock {
 
    private List<AppointmentAdapter> appointments =
       new ArrayList<AppointmentAdapter>();
-   private Map occupiedColumns = new HashMap();
+   private Map<Integer, Integer> occupiedColumns = new HashMap<Integer, Integer>();
    private int totalColumns = 1;
    private int order;
    private String name;
@@ -67,7 +67,7 @@ public class TimeBlock {
       return appointments;
    }
 
-   public Map getOccupiedColumns() {
+   public Map<Integer, Integer> getOccupiedColumns() {
       return occupiedColumns;
    }
 
