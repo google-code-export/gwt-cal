@@ -16,6 +16,8 @@ import com.bradrydzewski.gwt.calendar.client.event.DeleteHandler;
 import com.bradrydzewski.gwt.calendar.client.event.TimeBlockClickEvent;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateEvent;
 import com.bradrydzewski.gwt.calendar.client.event.UpdateHandler;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.logical.shared.OpenEvent;
@@ -26,9 +28,7 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.Command;
 import com.google.gwt.user.client.DOM;
-import com.google.gwt.user.client.DeferredCommand;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
@@ -126,15 +126,13 @@ public class GoogleCalendarPanel extends FlowPanel {
             @Override
             public void onResize(ResizeEvent event) {
                 resizeTimer.schedule(500);
-                int h = event.getHeight();
             }
         });
-        DeferredCommand.addCommand(new Command() {
-            @Override
-            public void execute() {
-                calendar.setHeight(Window.getClientHeight() - 85 + "px");
-            }
-        });
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			public void execute() {
+				calendar.setHeight(Window.getClientHeight() - 85 + "px");
+			}
+		});
         DOM.setStyleAttribute(getElement(), "padding", "10px");
     }
 
