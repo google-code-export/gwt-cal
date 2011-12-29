@@ -170,7 +170,7 @@ public class DayView extends CalendarView {
 	
 	@Override
     public void scrollToHour(final int hour) {
-        dayViewBody.getScrollPanel().setScrollPosition(hour *
+        dayViewBody.getScrollPanel().setVerticalScrollPosition(hour *
                 getSettings().getIntervalsPerHour() * getSettings().getPixelsPerInterval());
     }
 	

@@ -9,12 +9,8 @@
     <version>0.9.3-SNAPSHOT</version>
     
     <properties>
-    	<gwt.version>2.0.3</gwt.version>
-    	<gwt-dnd.version>3.0.0</gwt-dnd.version>
-<!--
-		<gpg.useagent>true</gpg.useagent>
-		<gpg.executable>gpg2</gpg.executable>
--->
+    	<gwt.version>2.4.0</gwt.version>
+    	<gwt-dnd.version>3.1.2</gwt-dnd.version>
     </properties>
     
     <name>gwt-cal</name>
@@ -65,14 +61,6 @@
 <!--
 	NOT ALLOWED: When using the Maven Central Repository
 -->
-	<repositories>
-		<repository>
-			<name>gwt-maven-repo</name>
-			<id>gwt-maven-repo</id>
-			<url>http://gwt-maven-repo.googlecode.com/svn/trunk/</url>
-		</repository>
-	</repositories>
-
 	<scm>
 	  <connection>
 	    scm:svn:http://gwt-cal.googlecode.com/svn/trunk
@@ -107,7 +95,7 @@
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>gwt-maven-plugin</artifactId>
-                <version>1.2</version>
+                <version>2.4.0</version>
                 <configuration>
                     <module>com.bradrydzewski.gwt.calendar.Calendar</module>
                     <includes>**/*GwtCalTest.java</includes>
@@ -177,7 +165,7 @@
             <version>${gwt.version}</version>
         </dependency>
         <dependency>
-            <groupId>com.allen_sauer.gwt.dnd</groupId>
+            <groupId>com.allen-sauer.gwt.dnd</groupId>
             <artifactId>gwt-dnd</artifactId>
             <version>${gwt-dnd.version}</version>
         </dependency>
