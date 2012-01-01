@@ -1,5 +1,7 @@
 package com.bradrydzewski.gwt.calendar.client.util;
 
+import com.google.gwt.user.client.Window.Navigator;
+
 /**
  * Provides a set of re-usable methods related to the client's
  * browser window.
@@ -20,6 +22,15 @@ public class WindowUtils {
      * @return Width, in pixels, of Client's scroll bar
      */
     public static int getScrollBarWidth(boolean useCachedValue) {
+    	/*
+    	 * OSX Lion doesn't show the scrollbars (ala iOS) which causes cosmetic problems: issue 143
+    	 */
+    	boolean isOSXLion = Navigator.getUserAgent().contains("Mac OS X 10.7") || Navigator.getUserAgent().contains("Mac OS X 10_7");
+    	if (isOSXLion && Navigator.getUserAgent().contains("Safari")) {
+    		// 0 seems to cause weird effects in Chrome
+    		return 1;
+    	}
+
         if (useCachedValue && scrollBarWidth > 0) {
             return scrollBarWidth;
         }
@@ -30,8 +41,9 @@ public class WindowUtils {
         * but we won't save it as a cached value.
         */
         int tmpScrollBarWidth = getScrollBarWidth();
-        if (tmpScrollBarWidth <= 0)
+        if (tmpScrollBarWidth <= 0) {
             return 17;
+        }
 
         scrollBarWidth = tmpScrollBarWidth;
 
