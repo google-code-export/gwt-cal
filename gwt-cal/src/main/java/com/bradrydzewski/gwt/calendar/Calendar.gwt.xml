@@ -15,6 +15,7 @@
     <extend-property name="locale" values="no"/>
     <extend-property name="locale" values="nn_NO"/>
     <extend-property name="locale" values="pl_PL"/>
+    <extend-property name="locale" values="nl"/>
     
  <!-- Deferred Binding for better browser compatibility -->
     <replace-with class="com.bradrydzewski.gwt.calendar.client.util.impl.FormattingImpl">
