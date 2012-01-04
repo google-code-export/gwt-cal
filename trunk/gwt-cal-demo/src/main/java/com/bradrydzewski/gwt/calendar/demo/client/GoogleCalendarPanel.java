@@ -73,7 +73,6 @@ public class GoogleCalendarPanel extends FlowPanel {
 
         datePicker.setValue(new Date());
         datePicker.addValueChangeHandler(new ValueChangeHandler<Date>() {
-            @Override
             public void onValueChange(ValueChangeEvent<Date> event) {
                 calendar.setDate(event.getValue());
             }
@@ -125,7 +124,6 @@ public class GoogleCalendarPanel extends FlowPanel {
         // window events to handle resizing
         Window.enableScrolling(false);
         Window.addResizeHandler(new ResizeHandler() {
-            @Override
             public void onResize(ResizeEvent event) {
                 resizeTimer.schedule(500);
             }
@@ -161,7 +159,6 @@ public class GoogleCalendarPanel extends FlowPanel {
         //calendar.setView(Calendar.DAY_VIEW);
         calendar.setWidth("100%");
         calendar.addDeleteHandler(new DeleteHandler<Appointment>() {
-            @Override
             public void onDelete(DeleteEvent<Appointment> event) {
 //            	boolean commit = true;
                 boolean commit = Window
@@ -175,7 +172,6 @@ public class GoogleCalendarPanel extends FlowPanel {
             }
         });
         calendar.addUpdateHandler(new UpdateHandler<Appointment>() {
-            @Override
             public void onUpdate(UpdateEvent<Appointment> event) {
                 boolean commit = Window
                         .confirm(
@@ -188,7 +184,6 @@ public class GoogleCalendarPanel extends FlowPanel {
             }
         });
         calendar.addOpenHandler(new OpenHandler<Appointment>() {
-            @Override
             public void onOpen(OpenEvent<Appointment> event) {
                 final DialogBox dialogBox =
                         createCalendaryEventDialogBox(event);
@@ -199,7 +194,6 @@ public class GoogleCalendarPanel extends FlowPanel {
             }
         });
         calendar.addCreateHandler(new CreateHandler<Appointment>() {
-			@Override
 			public void onCreate(CreateEvent<Appointment> event) {
                 boolean commit = Window
                         .confirm("Are you sure you want to create a new appointment");
@@ -259,7 +253,6 @@ public class GoogleCalendarPanel extends FlowPanel {
         
         
         calendar.addDateRequestHandler(new DateRequestHandler<Date>(){
-			@Override
 			public void onDateRequested(DateRequestEvent<Date> event) {
 				Window.alert("requested: " + event.getTarget() + " " + ((Element)event.getClicked()).getInnerText());
 			}
@@ -280,7 +273,6 @@ public class GoogleCalendarPanel extends FlowPanel {
         calendarViewsTabBar.selectTab(1);
         calendarViewsTabBar
                 .addSelectionHandler(new SelectionHandler<Integer>() {
-                    @Override
                     public void onSelection(SelectionEvent<Integer> event) {
                         int tabIndex = event.getSelectedItem();
                         if (tabIndex == 0) {
