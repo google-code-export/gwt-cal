@@ -106,7 +106,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		todayButton.setStyleName("todayButton");
 		todayButton.setText("Today");
 		todayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				datePicker.setValue(new Date(), true);
 				//dayView.setDate(new Date());
@@ -115,7 +114,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		previousDayButton.setStyleName("previousButton");
 		previousDayButton.setHTML("&laquo;");
 		previousDayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				Date d = datePicker.getValue();
 				d.setDate(d.getDate()-1);
@@ -125,7 +123,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		nextDayButton.setStyleName("nextButton");
 		nextDayButton.setHTML("&raquo;");
 		nextDayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				Date d = datePicker.getValue();
 				d.setDate(d.getDate()+1);
@@ -163,7 +160,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		footerPanel.add(new HTML("<a href='http://code.google.com/p/gwt-cal'>gwt-cal</a> widget for Google Web Toolkit, GPLv3, by <a href='http://www.google.com/profiles/Brad.Rydzewski'>Brad Rydzewski</a>"));
 		
 		oneDayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = oneDayButton;
@@ -173,7 +169,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			}
 		});
 		threeDayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = threeDayButton;
@@ -183,7 +178,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			}
 		});
 		weekDayButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = weekDayButton;
@@ -193,7 +187,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			}
 		});
 		monthButton.addClickHandler(new ClickHandler(){
-			@Override
 			public void onClick(ClickEvent event) {
 				activeDayButton.removeStyleName("active");
 				activeDayButton = monthButton;
@@ -203,14 +196,11 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		});
 		
 		datePicker.addValueChangeHandler(new ValueChangeHandler<Date>(){
-			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				calendar.setDate(event.getValue());
 			}
 		});
 		calendar.addDeleteHandler(new DeleteHandler<Appointment>(){
-
-			@Override
 			public void onDelete(DeleteEvent<Appointment> event) {
 				boolean commit = Window.confirm("Are you sure you want to delete appointment \"" + event.getTarget().getTitle() + "\"");
 				if(commit==false) {
@@ -222,8 +212,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 			
 		});
 		calendar.addOpenHandler(new OpenHandler<Appointment>(){
-
-			@Override
 			public void onOpen(OpenEvent<Appointment> event) {
 				Window.alert("You double-clicked appointment \"" + event.getTarget().getTitle() + "\"");
 			}
@@ -231,8 +219,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		});
 		
 		calendar.addSelectionHandler(new SelectionHandler<Appointment>(){
-
-			@Override
 			public void onSelection(SelectionEvent<Appointment> event) {
 				System.out.println("selected " + event.getSelectedItem().getTitle());
 			}
@@ -240,8 +226,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		});
 		
 		calendar.addTimeBlockClickHandler(new TimeBlockClickHandler<Date>(){
-
-			@Override
 			public void onTimeBlockClick(TimeBlockClickEvent<Date> event) {
 				Window.alert("you clicked time block " + event.getTarget());
 			}
@@ -270,7 +254,6 @@ public class iCalCalendarPanel extends AbsolutePanel {
 		//window events to handle resizing
 		Window.enableScrolling(false);
 		Window.addResizeHandler(new ResizeHandler(){
-			@Override
 			public void onResize(ResizeEvent event) {
 				int h = event.getHeight();
 				calendar.setHeight(h-headerPanel.getOffsetHeight()-footerPanel.getOffsetHeight()+"px");
