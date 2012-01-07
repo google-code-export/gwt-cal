@@ -111,6 +111,6 @@ public class CalendarSettings {
     }
     
     public enum Click {
-        Double, Single, None
+        Double, Single, Drag
     }
 }

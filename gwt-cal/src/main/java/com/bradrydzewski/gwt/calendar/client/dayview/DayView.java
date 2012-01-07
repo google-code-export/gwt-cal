@@ -383,14 +383,28 @@ public class DayView extends CalendarView {
 		if(proxyResizeController == null) {
 			proxyResizeController = new DayViewResizeController(dayViewBody.getGrid().grid);
 			proxyResizeController.addDragHandler(new DragHandler(){
-
+				long startTime = 0L;
+				int initialX = 0;
+				int initialY = 0;
+				Date startDate;
+				
 				public void onDragEnd(DragEndEvent event) {
-					Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
-					
-					calendarWidget.fireCreateEvent(appt);
+					long clickTime = System.currentTimeMillis() - startTime;
+					int y = event.getContext().mouseY;
+					if (clickTime <= 500 && initialY == y) {
+						calendarWidget.fireTimeBlockClickEvent(startDate);
+					} else {
+						Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
+						calendarWidget.fireCreateEvent(appt);						
+					}
 				}
 
-				public void onDragStart(DragStartEvent event) {}
+				public void onDragStart(DragStartEvent event) {
+					startTime = System.currentTimeMillis();
+					initialX = event.getContext().mouseX;
+					initialY = event.getContext().mouseY;
+					startDate = getCoordinatesDate(initialX, initialY);
+				}
 
 				public void onPreviewDragEnd(DragEndEvent event)
 						throws VetoDragException {}
@@ -401,8 +415,7 @@ public class DayView extends CalendarView {
 	}
 	
 	@SuppressWarnings("deprecation")
-	private void timeBlockClick(int x, int y) {
-
+	private Date getCoordinatesDate(int x, int y) {
 		int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
 		int top = dayViewBody.getScrollPanel().getAbsoluteTop();
 		int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
@@ -428,7 +441,28 @@ public class DayView extends CalendarView {
 				* (60 / getSettings().getIntervalsPerHour()));
 		newStartDate.setDate(newStartDate.getDate() + (int) day);
 		
-		if (getSettings().getTimeBlockClickNumber() != Click.None) {
+		return newStartDate;
+	}
+	
+	@SuppressWarnings("deprecation")
+	private void timeBlockClick(int x, int y) {		
+		int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
+		int top = dayViewBody.getScrollPanel().getAbsoluteTop();
+		int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
+		int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
+		
+		// x & y are based on screen position,need to get x/y relative to
+		// component
+		int relativeY = y - top + scrollOffset;
+		int relativeX = x - left;
+		
+		// find the interval clicked and day clicked
+		double day = Math.floor((double) relativeX
+				/ ((double) width / (double) calendarWidget.getDays()));
+
+		Date newStartDate = getCoordinatesDate(x, y);
+		
+		if (getSettings().getTimeBlockClickNumber() != Click.Drag) {
 			calendarWidget.fireTimeBlockClickEvent(newStartDate);
 		} else {
 			int snapSize = calendarWidget.getSettings().getPixelsPerInterval();
