@@ -4,7 +4,7 @@
 
   * Updated project to use gwt 2.4.0
   * Updated project to use gwt-dnd 3.1.2
-  * The whole project is no 100% mavenized
+  * The whole project is now 100% mavenized
   * Added Swedish and Dutch locales
   * Added support to create an Appointment with Drag&Drop
   * See the full list of enhancements and issues [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9.3 here]
