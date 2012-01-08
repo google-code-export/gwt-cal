@@ -39,6 +39,8 @@ gwt-cal currently supports the following locales:
  * Spanish, Mexico (es_MX)
  * Norwegian (no)
  * Italian (it)
+ * Swedish (sv)
+ * Dutch (nl)
 
 If you would like to add your locale, please send us a properties file to add to our project.
 
