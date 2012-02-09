@@ -1,157 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
 	<parent>
-		<groupId>com.bradrydzewski</groupId>
-		<artifactId>gwt-cal-parent</artifactId>
-		<version>0.9.3-SNAPSHOT</version>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>7</version>
 	</parent>
-    
-    <groupId>com.bradrydzewski</groupId>
-    <artifactId>gwt-cal</artifactId>
-    <packaging>jar</packaging>
-        
-    <name>gwt-cal</name>
-    <description>a personal calendar widget similar to iCal, Outlook,
+
+	<groupId>com.bradrydzewski</groupId>
+	<artifactId>gwt-cal</artifactId>
+	<version>0.9.4-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>gwt-cal</name>
+	<description>a personal calendar widget similar to iCal, Outlook,
         Google Calendar, etc
     </description>
-    <url>http://code.google.com/p/gwt-cal/</url>
-    
-    <licenses>
-        <license>
-            <name>GNU General Public License v3</name>
-            <url>http://www.gnu.org/licenses/gpl.html</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
-    
+	<url>http://code.google.com/p/gwt-cal/</url>
+
+	<properties>
+		<gwt.version>2.4.0</gwt.version>
+		<gwt-dnd.version>3.1.2</gwt-dnd.version>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>GNU General Public License v3</name>
+			<url>http://www.gnu.org/licenses/gpl.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
 	<issueManagement>
-	  <system>Google Code</system>
-	  <url>http://code.google.com/p/gwt-cal/issues</url>
+		<system>Google Code</system>
+		<url>http://code.google.com/p/gwt-cal/issues</url>
 	</issueManagement>
-      
-    <developers>
-        <developer>
-            <name>Brad Rydzewski</name>
-            <url>http://www.google.com/profiles/Brad.Rydzewski</url>
+
+	<developers>
+		<developer>
+			<name>Brad Rydzewski</name>
+			<url>http://www.google.com/profiles/Brad.Rydzewski</url>
 			<roles>
-			  <role>owner</role>
-			  <role>developer</role>
+				<role>owner</role>
+				<role>developer</role>
 			</roles>
-        </developer>
-        <developer>
-            <name>Carlos Morales</name>
-            <url>http://code.google.com/u/carlos.morales.duran/</url>
+		</developer>
+		<developer>
+			<name>Carlos Morales</name>
+			<url>http://code.google.com/u/carlos.morales.duran/</url>
 			<roles>
-			  <role>owner</role>
-			  <role>developer</role>
+				<role>owner</role>
+				<role>developer</role>
 			</roles>
-        </developer>
-        <developer>
-            <name>Carlos Tasada</name>
-            <url>http://code.google.com/u/ctasada/</url>
+		</developer>
+		<developer>
+			<name>Carlos Tasada</name>
+			<url>http://code.google.com/u/ctasada/</url>
 			<roles>
-			  <role>developer</role>
+				<role>developer</role>
 			</roles>
-        </developer>
+		</developer>
 	</developers>
 
-<!--
-	NOT ALLOWED: When using the Maven Central Repository
--->
+	<!-- NOT ALLOWED: When using the Maven Central Repository -->
 	<scm>
-	  <connection>
+		<connection>
 	    scm:svn:http://gwt-cal.googlecode.com/svn/trunk
 	  </connection>
-	  <developerConnection>
+		<developerConnection>
 	    scm:svn:https://gwt-cal.googlecode.com/svn/trunk
 	  </developerConnection>
-	  <url>
+		<url>
 	    http://gwt-cal.googlecode.com/svn/trunk
 	  </url>
 	</scm>
-  
-    <build>
-        <plugins>
-            <plugin>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.0.2</version>
-                <configuration>
-                    <source>1.5</source>
-                    <target>1.5</target>
-                </configuration>
-            </plugin>
-            <plugin>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.4.3</version>
-                <configuration>
-                    <excludes>
-                        <exclude>**/*GwtCalTest.java</exclude>
-                    </excludes>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>gwt-maven-plugin</artifactId>
-                <version>2.4.0</version>
-                <configuration>
-                    <module>com.bradrydzewski.gwt.calendar.Calendar</module>
-                    <includes>**/*GwtCalTest.java</includes>
-                </configuration>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>test</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <dependencies>
-                    <dependency>
-                        <groupId>com.google.gwt</groupId>
-                        <artifactId>gwt-user</artifactId>
-                        <version>${gwt.version}</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>com.allen-sauer.gwt.dnd</groupId>
-                        <artifactId>gwt-dnd</artifactId>
-                        <version>${gwt-dnd.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-        </plugins>
-        <resources>
-            <resource>
-                <directory>src/main/java</directory>
-                <includes>
-                    <include>**/client/**</include>
-                    <include>**/public/**</include>
-                    <include>**/*.gwt.xml</include>
-                    <include>**/*.gwt.xml</include>
-                    <include>**/*.gif</include>
-                    <include>**/*.png</include>
-                    <include>**/*.css</include>
-                </includes>
-            </resource>
-        </resources>
-    </build>
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.10</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.google.gwt</groupId>
-            <artifactId>gwt-user</artifactId>
-            <version>${gwt.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.allen-sauer.gwt.dnd</groupId>
-            <artifactId>gwt-dnd</artifactId>
-            <version>${gwt-dnd.version}</version>
-        </dependency>
-    </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.0.2</version>
+				<configuration>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.4.3</version>
+				<configuration>
+					<excludes>
+						<exclude>**/*GwtCalTest.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>2.4.0</version>
+				<configuration>
+					<module>com.bradrydzewski.gwt.calendar.Calendar</module>
+					<includes>**/*GwtCalTest.java</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>com.google.gwt</groupId>
+						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
+					</dependency>
+					<dependency>
+						<groupId>com.allen-sauer.gwt.dnd</groupId>
+						<artifactId>gwt-dnd</artifactId>
+						<version>${gwt-dnd.version}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/client/**</include>
+					<include>**/public/**</include>
+					<include>**/*.gwt.xml</include>
+					<include>**/*.gwt.xml</include>
+					<include>**/*.gif</include>
+					<include>**/*.png</include>
+					<include>**/*.css</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.10</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwt.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.allen-sauer.gwt.dnd</groupId>
+			<artifactId>gwt-dnd</artifactId>
+			<version>${gwt-dnd.version}</version>
+		</dependency>
+	</dependencies>
 </project>

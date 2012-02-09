@@ -2,24 +2,27 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<parent>
-		<groupId>com.bradrydzewski</groupId>
-		<artifactId>gwt-cal-parent</artifactId>
-		<version>0.9.3-SNAPSHOT</version>
-	</parent>
 
 	<groupId>com.bradrydzewski</groupId>
 	<artifactId>gwt-cal-demo</artifactId>
+	<version>0.9.4-SNAPSHOT</version>
 	<packaging>war</packaging>
+
+	<properties>
+		<gwt.version>2.4.0</gwt.version>
+		<gwt-dnd.version>3.1.2</gwt-dnd.version>
+	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.bradrydzewski</groupId>
 			<artifactId>gwt-cal</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.allen-sauer.gwt.dnd</groupId>
 			<artifactId>gwt-dnd</artifactId>
+			<version>${gwt-dnd.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -56,10 +59,12 @@
 					<dependency>
 						<groupId>com.google.gwt</groupId>
 						<artifactId>gwt-user</artifactId>
+						<version>${gwt.version}</version>
 					</dependency>
 					<dependency>
 						<groupId>com.allen-sauer.gwt.dnd</groupId>
 						<artifactId>gwt-dnd</artifactId>
+						<version>${gwt-dnd.version}</version>
 					</dependency>
 				</dependencies>
 			</plugin>
