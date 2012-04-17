@@ -94,16 +94,18 @@ public /**
             FlowPanel flowPanel = new FlowPanel();
             flowPanel.setStyleName("hour-layout");
             
-
-            
             String amPm = " ";
-            if(i<13)
+            if (i < 13) {
                 amPm += CalendarFormat.INSTANCE.getAm();
-            else if(i>13)
+            } else if (i > 13) {
                 amPm += CalendarFormat.INSTANCE.getPm();
-            else {
-            	hour = CalendarFormat.INSTANCE.getNoon();
-            	amPm = "";
+            } else {
+				if (CalendarFormat.INSTANCE.isUseNoonLabel()) {
+					hour = CalendarFormat.INSTANCE.getNoon();
+					amPm = "";
+				} else {
+					amPm += CalendarFormat.INSTANCE.getPm();
+				}
             }
             
             Label hourLabel = new Label(hour);

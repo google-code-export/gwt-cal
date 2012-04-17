@@ -46,8 +46,6 @@ public class CalendarFormat {
    private static final DateTimeFormat DEFAULT_DATE_FORMAT =
       DateTimeFormat.getFormat(MESSAGES.dateFormat());
 
-   
-
    private static String DEFAULT_AM_LABEL = MESSAGES.am();
    private static String DEFAULT_PM_LABEL = MESSAGES.pm();
    private static String DEFAULT_NOON_LABEL = MESSAGES.noon();
@@ -66,6 +64,8 @@ public class CalendarFormat {
    private String pm = null;
    private String noon = null;
 
+   private boolean useNoonLabel = true;
+	
    private int firstDayOfWeek = Integer.valueOf(MESSAGES.firstDayOfWeek());
 
    public static CalendarFormat INSTANCE = new CalendarFormat();
@@ -307,4 +307,19 @@ public class CalendarFormat {
    public String[] getHourLabels() {
       return hours;
    }
+
+   /**
+    * Indicates if we want to use the NoonLabel or the 12 p.m.
+    * @param use <code>true</true> if we want to use the NoonLabel, <code>false</true> otherwise
+    */
+	public void setUseNoonLabel(boolean use) {
+		this.useNoonLabel = use;
+	}
+
+	/**
+	 * Indicates if we are using the NoonLabel for the 12 p.m.
+	 */
+	public boolean isUseNoonLabel() {
+		return useNoonLabel;
+	}
 }
