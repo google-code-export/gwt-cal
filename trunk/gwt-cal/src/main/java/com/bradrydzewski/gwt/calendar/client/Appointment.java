@@ -318,6 +318,8 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		clone.setTitle(this.title);
 		clone.setStyle(this.style);
         clone.setCustomStyle(this.customStyle);
+        clone.setReadOnly(this.readOnly);
+
 		return clone;
 	}
 
