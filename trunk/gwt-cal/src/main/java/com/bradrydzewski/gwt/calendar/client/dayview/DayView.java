@@ -395,7 +395,8 @@ public class DayView extends CalendarView {
 						calendarWidget.fireTimeBlockClickEvent(startDate);
 					} else {
 						Appointment appt = ((AppointmentWidget) event.getContext().draggable.getParent()).getAppointment();
-						calendarWidget.fireCreateEvent(appt);						
+						calendarWidget.setCommittedAppointment(appt);
+						calendarWidget.fireCreateEvent(appt);
 					}
 				}
 
@@ -404,6 +405,7 @@ public class DayView extends CalendarView {
 					initialX = event.getContext().mouseX;
 					initialY = event.getContext().mouseY;
 					startDate = getCoordinatesDate(initialX, initialY);
+					calendarWidget.setRollbackAppointment(null);
 				}
 
 				public void onPreviewDragEnd(DragEndEvent event)
