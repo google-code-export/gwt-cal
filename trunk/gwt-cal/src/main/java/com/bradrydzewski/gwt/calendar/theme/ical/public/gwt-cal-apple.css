@@ -102,7 +102,21 @@
 	table-layout: fixed;
 	border-collapse: collapse;
 }
-
+/*
+.gwt-cal .gwt-calendar-header {
+	border-left: 1px solid #C3D9FF;
+	position: absolute;
+	background: red;
+	top: 0px;
+	height: 100%;
+	text-align: center;
+	font-family: arial;
+	font-size: 12px;
+	padding-top: 2px;
+	font-weight: bold;
+	color:#FFFFFF;
+}
+*/
 .gwt-cal .gwt-calendar-header table { width:100%;table-layout:fixed; border-collapse:collapse; }
 
 .gwt-cal .gwt-calendar-header .year-cell {
@@ -153,6 +167,25 @@
 	border-bottom: 3px solid #D9D9D9;
 }
 
+.gwt-cal .gwt-calendar-header .week-cell-container {
+	height: 20px;
+	position: relative;
+	overflow: hidden;
+	background:#C3D9FF ;
+}
+
+.gwt-cal .gwt-calendar-header .week-cell {
+	border-left: 1px solid #E8EEF7;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	text-align: center;
+	font-family: arial;
+	font-size: 12px;
+	padding-top: 2px;
+	font-weight: normal;
+	background:#E8EEF7;
+}
 
 /* Multi-day appointment section */
 .gwt-cal .multiDayBody {
@@ -302,6 +335,7 @@
 
 .gwt-cal-MonthView .dayCell,
 .gwt-cal-MonthView .dayCell-today { border-left: 1px solid #E7E7E7;border-bottom: 1px solid #E7E7E7;  }
+.gwt-cal-MonthView .dayCell .weekNumberLabel { height:20px; text-align:center;background-color: rgb(195, 217, 255);font-size:13px;color:rgb(17, 42, 187);}
 
 .gwt-cal-MonthView .weekDayLabel, 
 .gwt-cal-MonthView .weekDayLabel-today { height:20px; text-align:center;background-color: #FFF;font-size:13px;color:#666; border-bottom:1px solid #E7E7E7;}
@@ -313,6 +347,7 @@
 .gwt-Cal-MonthView .dayCellLabel-today,
 .gwt-Cal-MonthView .dayCellLabel-today-disabled { background-color: #F2F2F2; }
 .gwt-cal-MonthView .dayCell-today {   background-color: #F2F2F2;}
+.gwt-cal-MonthView .dayCell-weekend { background-color: rgb(255, 255, 204);}
 
 .gwt-cal-MonthView .moreAppointments { position:absolute;text-align:center;text-decoration:underline;color:#000;}
 

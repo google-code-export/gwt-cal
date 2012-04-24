@@ -33,10 +33,14 @@ import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
+import com.bradrydzewski.gwt.calendar.client.DateUtils;
+import com.bradrydzewski.gwt.calendar.client.event.DaySelectionHandler;
+import com.bradrydzewski.gwt.calendar.client.event.WeekSelectionHandler;
 import com.bradrydzewski.gwt.calendar.client.util.AppointmentUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
@@ -104,12 +108,19 @@ public class DayView extends CalendarView {
 		appointmentWidgets.clear();
 
 		// HERE IS WHERE WE DO THE LAYOUT
-		final Date tmpDate = (Date) calendarWidget.getDate().clone();
+		Date startDate = (Date) calendarWidget.getDate().clone();
+		Date endDate = (Date) calendarWidget.getDate().clone();
+		endDate.setDate(endDate.getDate() + 1);
+		DateUtils.resetTime(startDate);
+		DateUtils.resetTime(endDate);
 
+		  startDate.setHours(startDate.getHours());
+		  endDate.setHours(endDate.getHours());
+		  
 		for (int i = 0; i < calendarWidget.getDays(); i++) {
 
 			ArrayList<Appointment> filteredList = AppointmentUtil
-					.filterListByDate(calendarWidget.getAppointments(), tmpDate);
+					.filterListByDate(calendarWidget.getAppointments(), startDate, endDate);
 
 			// perform layout
 			ArrayList<AppointmentAdapter> appointmentAdapters = layoutStrategy
@@ -118,7 +129,8 @@ public class DayView extends CalendarView {
 			// add all appointments back to the grid
 			addAppointmentsToGrid(appointmentAdapters, false);
 
-			tmpDate.setDate(tmpDate.getDate() + 1);
+			startDate.setDate(startDate.getDate() + 1);
+			endDate.setDate(endDate.getDate() + 1);
 		}
 		
         ArrayList<Appointment> filteredList =
@@ -539,5 +551,14 @@ public class DayView extends CalendarView {
 		return appointmentAdapters;
 	}
 
+	public HandlerRegistration addWeekSelectionHandler(
+			WeekSelectionHandler<Date> handler) {
+		return dayViewHeader.addWeekSelectionHandler(handler);
+	}
+
+	public HandlerRegistration addDaySelectionHandler(
+			DaySelectionHandler<Date> handler) {
+		return dayViewHeader.addDaySelectionHandler(handler);
+	}
 
 }

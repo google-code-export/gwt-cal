@@ -245,7 +245,44 @@ public class DateUtils {
    }
    
    @SuppressWarnings("deprecation")
-public static boolean isWeekend(final Date day) {
+   public static boolean isWeekend(final Date day) {
 	   return day.getDay()==0 || day.getDay()==6;
    }
+   
+	@SuppressWarnings("deprecation")
+	public static Integer weekday(final Date date) {
+		int firstDayOfWeek = Integer.valueOf(CalendarFormat.INSTANCE.getFirstDayOfWeek());
+		
+		int weekday = date.getDay();
+		if ((firstDayOfWeek == 1) && (weekday == 0)) {
+			weekday = 7;
+		}
+		return weekday;
+	}
+
+	@SuppressWarnings("deprecation")
+	public static int calendarWeekIso(final Date inputDate) {
+		final int daysWeek = 7;
+		int firstDayOfWeek = Integer.valueOf(CalendarFormat.INSTANCE.getFirstDayOfWeek());
+		
+		int thursdayDay = 4 + firstDayOfWeek;
+
+		Date thisThursday = new Date(inputDate.getYear(), inputDate.getMonth(),
+				inputDate.getDate() - weekday(inputDate) + thursdayDay);
+
+		Date firstThursdayOfYear = new Date(thisThursday.getYear(), 0, 1);
+
+		while (weekday(firstThursdayOfYear) != thursdayDay) {
+			firstThursdayOfYear.setDate(firstThursdayOfYear.getDate() + 1);
+		}
+
+		Date firstMondayOfYear = new Date(firstThursdayOfYear.getYear(), 0,
+				firstThursdayOfYear.getDate() - 3);
+
+		Long cw = (thisThursday.getTime() - firstMondayOfYear.getTime())
+				/ MILLIS_IN_A_DAY / daysWeek + 1;
+
+		return cw.intValue();
+	}
+   
 }
