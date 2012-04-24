@@ -1,5 +1,11 @@
 #summary gwt-cal project release notes
 
+=== Version 0.9.4 (in progress) ===
+
+  * Available in public Maven repository
+  * Added support for ISO Weeks
+  * See the full list of enhancements and issues [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9.4 here]
+
 === Version 0.9.3 (January 7, 2012) ===
 
   * Updated project to use gwt 2.4.0
