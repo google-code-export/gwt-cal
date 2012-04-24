@@ -45,3 +45,10 @@ By default, the `DayView`'s scroll bar starts at 00:00. You can force it to auto
 {{{
 calendar.scrollToHour(7);
 }}}
+
+== Show ISO Week Numbers ==
+By default, the `DayView` doesn't show the ISO week numbers. In some countries it's quite common to work with the week numbers, and this setting allows to show them:
+
+{{{
+calendar.setShowWeekNumbers(true);
+}}}
