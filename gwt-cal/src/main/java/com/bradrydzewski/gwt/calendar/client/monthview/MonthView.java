@@ -40,6 +40,8 @@ import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
+import com.bradrydzewski.gwt.calendar.client.event.HasDaySelectionHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.HasWeekSelectionHandlers;
 import com.bradrydzewski.gwt.calendar.client.util.FormattingUtil;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
@@ -48,6 +50,7 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -76,7 +79,7 @@ import com.google.gwt.user.client.ui.Widget;
  * @author Brad Rydzewski
  * @since 0.9.0
  */
-public class MonthView extends CalendarView {
+public class MonthView extends CalendarView implements HasWeekSelectionHandlers<Date>, HasDaySelectionHandlers<Date> {
 
 	public static final Comparator<Appointment> APPOINTMENT_COMPARATOR = new Comparator<Appointment>() {
 
@@ -104,6 +107,7 @@ public class MonthView extends CalendarView {
 	private final static String MORE_LABEL_STYLE = "moreAppointments";
 	private final static String CELL_HEADER_STYLE = "dayCellLabel";
 	private final static String WEEKDAY_LABEL_STYLE = "weekDayLabel";
+	private final static String WEEKNUMBER_LABEL_STYLE = "weekNumberLabel";
 
 
 	/**
@@ -120,7 +124,9 @@ public class MonthView extends CalendarView {
 	 * All "+ n more" Labels, mapped to its cell in the MonthView Grid.
 	 */
 	private HashMap<Element, Integer> moreLabels = new HashMap<Element, Integer>();
-
+	private ArrayList<Label> dayLabels = new ArrayList<Label>();
+	private ArrayList<Widget> dayPanels = new ArrayList<Widget>();
+	
 	/**
 	 * The first date displayed on the MonthView (1st cell.) This date is not
 	 * necessarily the first date of the month as the month view will sometimes
@@ -228,6 +234,8 @@ public class MonthView extends CalendarView {
 		monthCalendarGrid.clear();
 		appointmentsWidgets.clear();
 		moreLabels.clear();
+		dayLabels.clear();
+		dayPanels.clear();
 		selectedAppointmentWidgets.clear();
 		while (monthCalendarGrid.getRowCount() > 0) {
 			monthCalendarGrid.removeRow(0);
@@ -258,6 +266,15 @@ public class MonthView extends CalendarView {
 				   calendarWidget.getAppointments(),
 				   calculatedCellAppointments - 1);
 
+		int dayIndex = 0;
+		for (int row = 0; row < monthCalendarGrid.getRowCount() - 1; row++) {
+			for (int col = 0; col < DAYS_IN_A_WEEK; col++) {
+				Widget lbl = dayPanels.get(dayIndex);
+				placeDayLabelInGrid(lbl, col, row);
+				dayIndex++;
+			}
+		}
+		
 		// Get the layouts for each week in the month
 		WeekLayoutDescription[] weeks = monthLayoutDescription
 				.getWeekDescriptions();
@@ -474,19 +491,22 @@ public class MonthView extends CalendarView {
 			monthCalendarGrid.getCellFormatter().setStyleName(0, i,
 					WEEKDAY_LABEL_STYLE);
 		}
-		Date date = (Date) firstDateDisplayed.clone();
+      Date date = (Date)firstDateDisplayed.clone();
 		monthViewRequiredRows = MonthViewDateUtils.monthViewRequiredRows(
 				calendarWidget.getDate(), firstDayOfWeek);
+		int weekNumber = DateUtils.calendarWeekIso(date);
+		
 		for (int monthGridRowIndex = 1; monthGridRowIndex <= monthViewRequiredRows; monthGridRowIndex++) {
 			for (int dayOfWeekIndex = 0; dayOfWeekIndex < DAYS_IN_A_WEEK; dayOfWeekIndex++) {
 
 				if (monthGridRowIndex != 1 || dayOfWeekIndex != 0) {
 					moveOneDayForward(date);
+					weekNumber = DateUtils.calendarWeekIso(date);
 				}
-
+				
 				configureDayInGrid(monthGridRowIndex, dayOfWeekIndex,
-						String.valueOf(date.getDate()), date.equals(today),
-						date.getMonth() != month);
+						date, date.equals(today),
+						date.getMonth() != month, weekNumber);
 			}
 		}
 	}
@@ -498,8 +518,8 @@ public class MonthView extends CalendarView {
 	 *            The row in the grid on which the day will be set
 	 * @param col
 	 *            The col in the grid on which the day will be set
-	 * @param text
-	 *            The heading in the day cell, i.e. the day number
+	 * @param date
+	 *            The Date in the grid
 	 * @param isToday
 	 *            Indicates whether the day corresponds to today in the month
 	 *            view
@@ -507,9 +527,13 @@ public class MonthView extends CalendarView {
 	 *            Indicates whether the day is in the current visualized month
 	 *            or belongs to any of the two adjacent months of the current
 	 *            month
+	 * @param weekNumber
+	 *            The weekNumber to show in the cell, only appears in the first col.
 	 */
-	private void configureDayInGrid(int row, int col, String text,
-			boolean isToday, boolean notInCurrentMonth) {
+	private void configureDayInGrid(int row, int col, Date date,
+			boolean isToday, boolean notInCurrentMonth, int weekNumber) {
+		HorizontalPanel panel = new HorizontalPanel();
+		String text = String.valueOf(date.getDate());
 		Label label = new Label(text);
 
 		StringBuilder headerStyle = new StringBuilder(CELL_HEADER_STYLE);
@@ -517,6 +541,9 @@ public class MonthView extends CalendarView {
 		if (isToday) {
 			headerStyle.append("-today");
 			cellStyle.append("-today");
+	    } else if(DateUtils.isWeekend(date)) {
+			headerStyle.append("-weekend");
+			cellStyle.append("-weekend");
 		}
 
 		if (notInCurrentMonth) {
@@ -524,8 +551,24 @@ public class MonthView extends CalendarView {
 		}
 
 		label.setStyleName(headerStyle.toString());
+		addDayClickHandler(label, (Date)date.clone());
 
-		monthCalendarGrid.setWidget(row, col, label);
+		if (col == 0 && getSettings().isShowingWeekNumbers()) {
+			Label weekLabel = new Label(String.valueOf(weekNumber));
+			weekLabel.setStyleName(WEEKNUMBER_LABEL_STYLE);
+			
+			panel.add(weekLabel);
+			panel.setCellWidth(weekLabel, "25px");
+			DOM.setStyleAttribute(label.getElement(), "paddingLeft", "5px");
+			addWeekClickHandler(weekLabel, (Date)date.clone());
+		}
+		panel.add(label);
+		
+		appointmentCanvas.add(panel);
+		dayLabels.add(label);
+		dayPanels.add(panel);
+
+		//monthCalendarGrid.setWidget(row, col, panel);
 		monthCalendarGrid.getCellFormatter().setVerticalAlignment(row, col,
 				HasVerticalAlignment.ALIGN_TOP);
 		monthCalendarGrid.getCellFormatter().setStyleName(row, col,
@@ -636,8 +679,7 @@ public class MonthView extends CalendarView {
 		int gridHeight = monthCalendarGrid.getOffsetHeight();
 		int weekdayRowHeight = monthCalendarGrid.getRowFormatter()
 				.getElement(0).getOffsetHeight();
-		int dayHeaderHeight = monthCalendarGrid.getFlexCellFormatter()
-				.getElement(1, 0).getFirstChildElement().getOffsetHeight();
+		int dayHeaderHeight = dayLabels.get(0).getOffsetHeight(); 
 
 		calculatedCellOffsetHeight = (float) (gridHeight - weekdayRowHeight)
 				/ monthViewRequiredRows;
@@ -670,7 +712,7 @@ public class MonthView extends CalendarView {
 
 	private void placeItemInGrid(Widget panel, int colStart, int colEnd,
 			int row, int cellPosition) {
-		int paddingTop = appointmentPaddingTop();
+		int paddingTop = appointmentPaddingTop() + 3;
 		int height = appointmentHeight();
 
 		float left = (float) colStart / (float) DAYS_IN_A_WEEK * 100f + .5f;
@@ -686,6 +728,22 @@ public class MonthView extends CalendarView {
 //		 calculatedDayHeaderHeight + " + " + paddingTop + " + (" +
 //		 cellPosition+"*("+height+"+"+paddingTop + "));");
 
+		DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
+		DOM.setStyleAttribute(panel.getElement(), "top", top + "px");
+		DOM.setStyleAttribute(panel.getElement(), "left", left + "%");
+		DOM.setStyleAttribute(panel.getElement(), "width", width + "%");
+	}
+
+	private void placeDayLabelInGrid(Widget panel, int col, int row) {
+		int paddingTop = appointmentPaddingTop();
+
+		float left = (float) col / (float) DAYS_IN_A_WEEK * 100f + .5f;
+
+		float width = (1f / (float) DAYS_IN_A_WEEK) * 100f - 1f;
+
+		float top = calculatedWeekDayHeaderHeight
+				+ (row * calculatedCellOffsetHeight)
+				+ paddingTop;
 		DOM.setStyleAttribute(panel.getElement(), "position", "absolute");
 		DOM.setStyleAttribute(panel.getElement(), "top", top + "px");
 		DOM.setStyleAttribute(panel.getElement(), "left", left + "%");

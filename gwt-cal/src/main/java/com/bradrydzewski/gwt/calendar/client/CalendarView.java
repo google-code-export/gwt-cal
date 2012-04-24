@@ -20,8 +20,19 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.Date;
 
+import com.bradrydzewski.gwt.calendar.client.event.DaySelectionEvent;
+import com.bradrydzewski.gwt.calendar.client.event.DaySelectionHandler;
+import com.bradrydzewski.gwt.calendar.client.event.HasDaySelectionHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.HasWeekSelectionHandlers;
+import com.bradrydzewski.gwt.calendar.client.event.WeekSelectionEvent;
+import com.bradrydzewski.gwt.calendar.client.event.WeekSelectionHandler;
+import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.Label;
 
 /**
  * Abstract base class defining the operations to render a calendar and
@@ -32,7 +43,7 @@ import com.google.gwt.user.client.Event;
  *
  * @author Brad Rydzewski
  */
-public abstract class CalendarView implements HasSettings {
+public abstract class CalendarView implements HasSettings, HasWeekSelectionHandlers<Date>, HasDaySelectionHandlers<Date> {
 
     /**
      * Calendar widget bound to the view.
@@ -46,7 +57,7 @@ public abstract class CalendarView implements HasSettings {
      * default.
      */
     private int displayedDays = 3;
-
+    
     /**
      * Attaches this view to the provided {@link CalendarWidget}.
      *
@@ -262,4 +273,42 @@ public abstract class CalendarView implements HasSettings {
 //    public final void setCommittedAppointment(Appointment appt) {
 //    	calendarWidget.setCommittedAppointment(appt);
 //    }
+	
+	protected void addDayClickHandler(final Label dayLabel, final Date day) {
+		dayLabel.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				fireSelectedDay(day);
+			}
+		});
+	}
+	
+	protected void addWeekClickHandler(final Label weekLabel, final Date day) {
+		weekLabel.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				fireSelectedWeek(day);
+			}
+		});
+	}
+	
+	protected void fireSelectedDay(final Date day) {
+		DaySelectionEvent.fire(this, day);
+	}
+	
+	protected void fireSelectedWeek(final Date day) {
+		WeekSelectionEvent.fire(this, day);
+	}
+
+	public HandlerRegistration addWeekSelectionHandler(
+			WeekSelectionHandler<Date> handler) {
+		return calendarWidget.addHandler(handler, WeekSelectionEvent.getType());
+	}
+
+	public HandlerRegistration addDaySelectionHandler(
+			DaySelectionHandler<Date> handler) {
+		return calendarWidget.addHandler(handler, DaySelectionEvent.getType());
+	}
+	
+	public void fireEvent(GwtEvent<?> event) {
+		calendarWidget.fireEvent(event);
+	}
 }

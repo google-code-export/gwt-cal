@@ -48,15 +48,20 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
      * displayed.
      */
     public Calendar() {
-        this(CalendarViews.DAY);
+        this(CalendarViews.DAY, CalendarSettings.DEFAULT_SETTINGS);
     }
 
+    public Calendar(CalendarSettings settings) {
+    	this(CalendarViews.DAY, settings);
+    }
+    
     /**
      * Constructs a <code>Calendar</code> with the given
      * CalendarView displayed by default.
      */
-    public Calendar(CalendarViews view) {
+    public Calendar(CalendarViews view, CalendarSettings settings) {
         super();
+        this.setSettings(settings);
         setView(view);
     }
 

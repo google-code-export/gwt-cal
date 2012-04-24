@@ -149,7 +149,6 @@
 	font-size: 12px;
 	padding-top: 2px;
 	font-weight: bold;
-	color:#FFFFFF;
 }
 
 .gwt-cal .gwt-calendar-header .splitter {
@@ -160,7 +159,25 @@
 	border-bottom: 0px solid #C3D9FF;
 }
 
+.gwt-cal .gwt-calendar-header .week-cell-container {
+	height: 20px;
+	position: relative;
+	overflow: hidden;
+	background:#C3D9FF ;
+}
 
+.gwt-cal .gwt-calendar-header .week-cell {
+	border-left: 1px solid #E8EEF7;
+	position: absolute;
+	top: 0px;
+	height: 100%;
+	text-align: center;
+	font-family: arial;
+	font-size: 12px;
+	padding-top: 2px;
+	font-weight: normal;
+	background:#E8EEF7;
+}
 
 
 
@@ -356,6 +373,7 @@
 
 .gwt-cal-MonthView .dayCell,
 .gwt-cal-MonthView .dayCell-today { border-left: 1px solid rgb(195, 217, 255);border-bottom: 1px solid rgb(195, 217, 255);  }
+.gwt-cal-MonthView .dayCell .weekNumberLabel { height:20px; text-align:center;background-color: rgb(195, 217, 255);font-size:13px;color:rgb(17, 42, 187);}
 
 .gwt-cal-MonthView .weekDayLabel, 
 .gwt-cal-MonthView .weekDayLabel-today { height:20px; text-align:center;background-color: rgb(195, 217, 255);font-size:13px;color:rgb(17, 42, 187);}
@@ -367,6 +385,7 @@
 .gwt-Cal-MonthView .dayCellLabel-today,
 .gwt-Cal-MonthView .dayCellLabel-today-disabled { background-color: rgb(187, 204, 221); }
 .gwt-cal-MonthView .dayCell-today {   background-color: rgb(255, 255, 204);}
+.gwt-cal-MonthView .dayCell-weekend { background-color: rgb(255, 255, 204);}
 
 .gwt-cal-MonthView .moreAppointments { position:absolute;text-align:center;text-decoration:underline;}
 

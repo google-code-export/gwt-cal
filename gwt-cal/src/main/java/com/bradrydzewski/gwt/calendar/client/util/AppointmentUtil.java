@@ -93,14 +93,9 @@ public class AppointmentUtil {
      * passed <code>startDate</code>
      */
     @SuppressWarnings("deprecation")
-    public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate) {
+    public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate, Date endDate) {
 
         ArrayList<Appointment> group = new ArrayList<Appointment>();
-        startDate = new Date(startDate.getYear(), startDate.getMonth(),
-                startDate.getDate(), 0, 0, 0);
-        Date endDate = new Date(startDate.getYear(), startDate.getMonth(),
-                startDate.getDate(), 0, 0, 0);
-        endDate.setDate(endDate.getDate() + 1);
 
         for (Appointment appointment : fullList) {
            if (!appointment.isMultiDay() && !appointment.isAllDay() &&

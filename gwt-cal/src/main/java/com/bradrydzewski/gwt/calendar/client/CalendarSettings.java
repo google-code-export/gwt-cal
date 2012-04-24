@@ -28,6 +28,7 @@ public class CalendarSettings {
     private int scrollToHour = 8; //default hour that gets scrolled to
     private boolean enableDragDrop = true;
     private boolean offsetHourLabels = false;
+    private boolean showWeekNumbers = false;
     private boolean dragDropCreation = true;
     
     /*
@@ -108,6 +109,14 @@ public class CalendarSettings {
 
     public boolean getEnableDragDropCreation() {
     	return dragDropCreation;
+    }
+    
+    public void setShowWeekNumbers(boolean showWeekNumbers) {
+    	this.showWeekNumbers = showWeekNumbers;
+    }
+    
+    public boolean isShowingWeekNumbers() {
+    	return showWeekNumbers;
     }
     
     public enum Click {
