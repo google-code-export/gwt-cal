@@ -311,6 +311,7 @@ public class CalendarFormat {
    /**
     * Indicates if we want to use the NoonLabel or the 12 p.m.
     * @param use <code>true</true> if we want to use the NoonLabel, <code>false</true> otherwise
+    * @since 0.9.4
     */
 	public void setUseNoonLabel(boolean use) {
 		this.useNoonLabel = use;
@@ -318,6 +319,7 @@ public class CalendarFormat {
 
 	/**
 	 * Indicates if we are using the NoonLabel for the 12 p.m.
+	 * @since 0.9.4
 	 */
 	public boolean isUseNoonLabel() {
 		return useNoonLabel;

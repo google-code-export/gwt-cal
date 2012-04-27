@@ -111,10 +111,19 @@ public class CalendarSettings {
     	return dragDropCreation;
     }
     
+    /**
+     * 
+     * @param showWeekNumbers
+     * @since 0.9.4
+     */
     public void setShowWeekNumbers(boolean showWeekNumbers) {
     	this.showWeekNumbers = showWeekNumbers;
     }
     
+    /**
+     * 
+     * @since 0.9.4
+     */
     public boolean isShowingWeekNumbers() {
     	return showWeekNumbers;
     }
