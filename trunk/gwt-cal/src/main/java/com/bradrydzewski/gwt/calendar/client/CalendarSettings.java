@@ -30,6 +30,7 @@ public class CalendarSettings {
     private boolean offsetHourLabels = false;
     private boolean showWeekNumbers = false;
     private boolean dragDropCreation = true;
+    private boolean showMultiDay = true;
     
     /*
      * Clicks required to fire TimeBlockClickEvent.
@@ -126,6 +127,22 @@ public class CalendarSettings {
      */
     public boolean isShowingWeekNumbers() {
     	return showWeekNumbers;
+    }
+    
+    /**
+     * 
+     * @since 0.9.4
+     */
+    public void setShowMultiday(boolean visible) {
+    	this.showMultiDay = visible;
+    }
+    
+    /**
+     * 
+     * @since 0.9.4
+     */
+    public boolean isMultidayVisible() {
+    	return showMultiDay;
     }
     
     public enum Click {

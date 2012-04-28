@@ -85,7 +85,9 @@ public class DayView extends CalendarView {
 		// PERFORM APPOINTMENT LAYOUT NOW
 		final Date date = (Date) calendarWidget.getDate().clone();
 
-		multiViewBody.setDays((Date) date.clone(), calendarWidget.getDays());
+		if (getSettings().isMultidayVisible()) {		
+			multiViewBody.setDays((Date) date.clone(), calendarWidget.getDays());
+		}
 		dayViewHeader.setDays((Date) date.clone(), calendarWidget.getDays());
 		dayViewHeader.setYear((Date) date.clone());
 		dayViewBody.setDays((Date) date.clone(), calendarWidget.getDays());
@@ -141,9 +143,11 @@ public class DayView extends CalendarView {
         int desiredHeight = layoutStrategy.doMultiDayLayout(filteredList,
         		adapterList, calendarWidget.getDate(), calendarWidget.getDays());
         
-        multiViewBody.grid.setHeight(desiredHeight + "px");
-        
-        addAppointmentsToGrid(adapterList, true);
+        if (getSettings().isMultidayVisible()) {
+        	multiViewBody.grid.setHeight(desiredHeight + "px");
+        	
+        	addAppointmentsToGrid(adapterList, true);
+        }
 	}
 
 	/**
@@ -194,9 +198,14 @@ public class DayView extends CalendarView {
 	public void doSizing() {
 
 		if (calendarWidget.getOffsetHeight() > 0) {
-			dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
-					- dayViewHeader.getOffsetHeight()
-					- multiViewBody.getOffsetHeight() + "px");
+			if (getSettings().isMultidayVisible()) {
+				dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
+						- dayViewHeader.getOffsetHeight()
+						- multiViewBody.getOffsetHeight() + "px");
+			} else {
+				dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
+						- dayViewHeader.getOffsetHeight() + "px");
+			}
 		}
 
 		// multiViewBody.grid.setHeight(desiredHeight + "px");
@@ -307,11 +316,15 @@ public class DayView extends CalendarView {
 			dayViewBody = new DayViewBody(this);
 			dayViewHeader = new DayViewHeader(this);
 			layoutStrategy = new DayViewLayoutStrategy(this);
-			multiViewBody = new DayViewMultiDayBody(this);
+			if (getSettings().isMultidayVisible()) {
+				multiViewBody = new DayViewMultiDayBody(this);
+			}
 		}
 
 		calendarWidget.getRootPanel().add(dayViewHeader);
-		calendarWidget.getRootPanel().add(multiViewBody);
+		if (getSettings().isMultidayVisible()) {		
+			calendarWidget.getRootPanel().add(multiViewBody);
+		}
 		calendarWidget.getRootPanel().add(dayViewBody);
 		
 		if (getSettings() != null) {
