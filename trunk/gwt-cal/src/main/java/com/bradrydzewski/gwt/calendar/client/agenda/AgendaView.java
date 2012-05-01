@@ -221,23 +221,25 @@ public class AgendaView extends CalendarView {
 		
 
 		//Get the start date, make sure time is 0:00:00 AM
-		Date tmpDate = (Date) calendarWidget.getDate().clone();
+		Date startDate = (Date) calendarWidget.getDate().clone();
 		Date today = new Date();
+		Date endDate = (Date) calendarWidget.getDate().clone();
+		endDate.setDate(endDate.getDate() + 1);
       DateUtils.resetTime(today);
-      DateUtils.resetTime(tmpDate);
-		
-		
+      DateUtils.resetTime(startDate);
+      DateUtils.resetTime(endDate);
+        
 		int row = 0;
 
 		for (int i = 0; i < calendarWidget.getDays(); i++) {
 
 			// Filter the list by date
 			ArrayList<Appointment> filteredList = AppointmentUtil
-					.filterListByDate(calendarWidget.getAppointments(), tmpDate);
+					.filterListByDate(calendarWidget.getAppointments(), startDate, endDate);
 
 			if (filteredList != null && filteredList.size() > 0) {
 
-				appointmentGrid.setText(row, 0, DEFAULT_DATE_FORMAT.format(tmpDate));
+				appointmentGrid.setText(row, 0, DEFAULT_DATE_FORMAT.format(startDate));
 
 				appointmentGrid.getCellFormatter().setVerticalAlignment(row, 0,
 						HasVerticalAlignment.ALIGN_TOP);
@@ -251,7 +253,7 @@ public class AgendaView extends CalendarView {
 				String rowStyle = (i % 2 == 0) ? "row" : "row-alt";
 
 				//If a Row represents the current date (Today) then we style it differently
-				if (tmpDate.equals(today))
+				if (startDate.equals(today))
 					rowStyle += "-today";
 
 
@@ -318,7 +320,8 @@ public class AgendaView extends CalendarView {
 			}
 
 			// increment the date
-			tmpDate.setDate(tmpDate.getDate() + 1);
+			startDate.setDate(startDate.getDate() + 1);
+			endDate.setDate(endDate.getDate() + 1);
 		}
 	}
 
