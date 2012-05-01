@@ -29,6 +29,12 @@ import java.io.Serializable;
 public class Attendee implements Serializable {
 
    /**
+    * The <code>Attendee</code> id. This field can be used to relate the Attendee with some
+    * external source (contact, resource, ....)
+    */
+	private  String id;
+	
+   /**
     * The <code>Attendee</code> name (if a person) or description
     * (when a resource).
     */
@@ -122,5 +128,23 @@ public class Attendee implements Serializable {
     */
 	public void setImageUrl(String imageUrl) {
 		this.imageUrl = imageUrl;
+	}
+
+	/**
+	 * Returns the attendance ID.
+	 * @return The attendance ID
+	 * @since 0.9.4
+	 */
+	public String getId() {
+		return id;
+	}
+	
+	/**
+	 * Sets the attendance the ID.
+	 * @param id The ID 
+	 * @since 0.9.4
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 }
