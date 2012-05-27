@@ -18,6 +18,10 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 public class CalendarSettings {
 
     public static CalendarSettings DEFAULT_SETTINGS = new CalendarSettings();
@@ -31,7 +35,8 @@ public class CalendarSettings {
     private boolean showWeekNumbers = false;
     private boolean dragDropCreation = true;
     private boolean showMultiDay = true;
-    
+    private List<Date> holidays = new ArrayList<Date>();
+
     /*
      * Clicks required to fire TimeBlockClickEvent.
      */
@@ -127,6 +132,22 @@ public class CalendarSettings {
      */
     public boolean isShowingWeekNumbers() {
     	return showWeekNumbers;
+    }
+    
+    /**
+     * 
+     * @since 0.9.4
+     */
+    public void setHolidays(List<Date> holidays) {
+    	this.holidays = holidays;
+    }
+    
+    /**
+     * 
+     * @since 0.9.4
+     */
+    public List<Date> getHolidays() {
+    	return holidays;
     }
     
     /**

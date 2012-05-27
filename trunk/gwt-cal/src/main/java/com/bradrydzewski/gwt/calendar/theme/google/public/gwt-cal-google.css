@@ -151,6 +151,20 @@
 	font-weight: bold;
 }
 
+.gwt-cal .gwt-calendar-header .day-cell-holiday {
+	border-left: 1px solid #C3D9FF;
+	position: absolute;
+	background: red;
+	top: 0px;
+	height: 100%;
+	text-align: center;
+	font-family: arial;
+	font-size: 12px;
+	padding-top: 2px;
+	font-weight: bold;
+	color:#FFFFFF;
+}
+
 .gwt-cal .gwt-calendar-header .splitter {
 	height: 1px;
 	_height: 1px;
@@ -386,6 +400,7 @@
 .gwt-Cal-MonthView .dayCellLabel-today-disabled { background-color: rgb(187, 204, 221); }
 .gwt-cal-MonthView .dayCell-today {   background-color: rgb(255, 255, 204);}
 .gwt-cal-MonthView .dayCell-weekend { background-color: rgb(255, 255, 204);}
+.gwt-cal-MonthView .dayCell-holiday { background-color: rgb(255, 255, 204);}
 
 .gwt-cal-MonthView .moreAppointments { position:absolute;text-align:center;text-decoration:underline;}
 
