@@ -538,10 +538,21 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
 
 		StringBuilder headerStyle = new StringBuilder(CELL_HEADER_STYLE);
 		StringBuilder cellStyle = new StringBuilder(CELL_STYLE);
+		boolean found = false;
+		
+		for (Date day : getSettings().getHolidays()) {
+			if (DateUtils.areOnTheSameDay(day, date)) {
+				headerStyle.append("-holiday");
+				cellStyle.append("-holiday");
+				found = true;
+				break;
+			}
+		}
+
 		if (isToday) {
 			headerStyle.append("-today");
 			cellStyle.append("-today");
-	    } else if(DateUtils.isWeekend(date)) {
+	    } else if(!found && DateUtils.isWeekend(date)) {
 			headerStyle.append("-weekend");
 			cellStyle.append("-weekend");
 		}

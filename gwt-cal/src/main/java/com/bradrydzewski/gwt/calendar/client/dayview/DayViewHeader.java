@@ -134,11 +134,20 @@ public class DayViewHeader extends Composite implements HasWeekSelectionHandlers
 			DOM.setStyleAttribute(dayLabel.getElement(), "left", dayLeft + "%");
 			
 			addDayClickHandler(dayLabel, (Date) date.clone());
+
+			boolean found = false;
+			for (Date day : settings.getSettings().getHolidays()) {
+				if (DateUtils.areOnTheSameDay(day, date)) {
+					dayLabel.setStyleName("day-cell-holiday");
+					found = true;
+					break;
+				}
+			}
 			
 			// set the style of the header to show that it is today
 			if (DateUtils.areOnTheSameDay(new Date(), date)) {
 				dayLabel.setStyleName("day-cell-today");
-			} else if (DateUtils.isWeekend(date)) {
+			} else if (!found && DateUtils.isWeekend(date)) {
 				dayLabel.setStyleName("day-cell-weekend");
 			}
 			
