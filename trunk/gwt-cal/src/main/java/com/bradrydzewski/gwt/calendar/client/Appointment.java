@@ -82,9 +82,8 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	}
 
 	/**
-	 * Returns the unique identifier for this <code>Appointment</code>.
-	 * The field is optional (and not used by gwt-cal) and therefore
-	 * may be null.
+	 * Returns the unique identifier for this <code>Appointment</code>. The
+	 * field is optional (and not used by gwt-cal) and therefore may be null.
 	 * 
 	 * @return A unique identifier for this Appointment (optional).
 	 */
@@ -93,8 +92,8 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	}
 
 	/**
-	 * Sets the unique identifier of this <code>Appointment</code>.
-	 * This identifier is optional.
+	 * Sets the unique identifier of this <code>Appointment</code>. This
+	 * identifier is optional.
 	 * 
 	 * @param id
 	 */
@@ -305,24 +304,6 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		this.allDay = allDay;
 	}
 
-	public Appointment clone() {
-		Appointment clone = new Appointment();
-        clone.setId(this.id);
-		clone.setAllDay(this.allDay);
-        clone.setAttendees(this.attendees);
-		clone.setCreatedBy(this.createdBy);
-		clone.setDescription(this.description);
-		clone.setEnd(DateUtils.newDate(this.end));
-		clone.setLocation(this.location);
-		clone.setStart(DateUtils.newDate(this.start));
-		clone.setTitle(this.title);
-		clone.setStyle(this.style);
-        clone.setCustomStyle(this.customStyle);
-        clone.setReadOnly(this.readOnly);
-
-		return clone;
-	}
-
 	public AppointmentStyle getStyle() {
 		return style;
 	}
@@ -338,12 +319,126 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	public void setCustomStyle(String customStyle) {
 		this.customStyle = customStyle;
 	}
-	
+
 	public boolean isReadOnly() {
 		return readOnly;
 	}
-	
+
 	public void setReadOnly(boolean readOnly) {
 		this.readOnly = readOnly;
 	}
+	
+	public Appointment clone() {
+		Appointment clone = new Appointment();
+		clone.setId(this.id);
+		clone.setAllDay(this.allDay);
+		clone.setAttendees(new ArrayList<Attendee>(this.attendees));
+		clone.setCreatedBy(this.createdBy);
+		clone.setDescription(this.description);
+		clone.setEnd(DateUtils.newDate(this.end));
+		clone.setLocation(this.location);
+		clone.setStart(DateUtils.newDate(this.start));
+		clone.setTitle(this.title);
+		clone.setStyle(this.style);
+		clone.setCustomStyle(this.customStyle);
+		clone.setReadOnly(this.readOnly);
+
+		return clone;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + Boolean.valueOf(this.allDay).hashCode();
+		result = prime * result + ((attendees == null) ? 0 : attendees.hashCode());
+		result = prime * result + ((createdBy == null) ? 0 : createdBy.hashCode());
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((end == null) ? 0 : end.hashCode());
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		result = prime * result + ((location == null) ? 0 : location.hashCode());
+		result = prime * result + ((title == null) ? 0 : title.hashCode());
+		result = prime * result + Boolean.valueOf(this.readOnly).hashCode();
+		
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (!(obj instanceof Appointment)) {
+			return false;
+		}
+		Appointment other = (Appointment) obj;
+		if (id == null) {
+			if (other.id != null) {
+				return false;
+			}
+		} else if (!id.equals(other.id)) {
+			return false;
+		}
+		if (description == null) {
+			if (other.description != null) {
+				return false;
+			}
+		} else if (!description.equals(other.description)) {
+			return false;
+		}
+		if (allDay != other.allDay) {
+			return false;
+		}
+		if (attendees == null) {
+			if (other.attendees != null) {
+				return false;
+			}
+		} else if (!attendees.equals(other.attendees)) {
+			return false;
+		}
+		if (createdBy == null) {
+			if (other.createdBy != null) {
+				return false;
+			}
+		} else if (!createdBy.equals(other.createdBy)) {
+			return false;
+		}
+		if (end == null) {
+			if (other.end != null) {
+				return false;
+			}
+		} else if (!end.equals(other.end)) {
+			return false;
+		}
+		if (start == null) {
+			if (other.start != null) {
+				return false;
+			}
+		} else if (!start.equals(other.start)) {
+			return false;
+		}
+		if (location == null) {
+			if (other.location != null) {
+				return false;
+			}
+		} else if (!location.equals(other.location)) {
+			return false;
+		}
+		if (title == null) {
+			if (other.title != null) {
+				return false;
+			}
+		} else if (!title.equals(other.title)) {
+			return false;
+		}
+		if (readOnly != other.readOnly) {
+			return false;
+		}
+
+		return true;
+	}	
 }
