@@ -69,7 +69,9 @@ public class AppointmentManagerTest {
 
     @Test
     public void removeAppointmentParameterNotInCollection() {
-        manager.addAppointment(new Appointment());
+    	Appointment app = new Appointment();
+    	app.setId("123");
+        manager.addAppointment(app);
         manager.removeAppointment(new Appointment());
         assertEquals(
                 "Removing an appointment previously not in the list should not change the list.",
@@ -203,7 +205,9 @@ public class AppointmentManagerTest {
     @Test
     public void selectPreviousAppointment() {
         Appointment firstAppointment = new Appointment();
+        firstAppointment.setId("1");
         Appointment secondAppointment = new Appointment();
+        secondAppointment.setId("2");
         manager.addAppointment(firstAppointment);
         manager.addAppointment(secondAppointment);
         manager.setSelectedAppointment(secondAppointment);
@@ -226,6 +230,7 @@ public class AppointmentManagerTest {
     @Test
     public void selectNextAppointmentCurrentIsTheLast() {
         Appointment lastAppointment = new Appointment();
+        lastAppointment.setId("last");
         manager.addAppointment(new Appointment());
         manager.addAppointment(lastAppointment);
         manager.setSelectedAppointment(lastAppointment);
