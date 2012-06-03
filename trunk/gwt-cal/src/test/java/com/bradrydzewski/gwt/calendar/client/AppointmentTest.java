@@ -63,7 +63,7 @@ public class AppointmentTest {
         assertEquals(original.getLocation(), clone.getLocation());
         assertEquals(original.getCreatedBy(), clone.getCreatedBy());
 
-        assertSame(original.getAttendees(), clone.getAttendees());
+        assertEquals(original.getAttendees(), clone.getAttendees());
 
         assertEquals(original.isAllDay(), clone.isAllDay());
         assertEquals(original.getStyle(), clone.getStyle());
