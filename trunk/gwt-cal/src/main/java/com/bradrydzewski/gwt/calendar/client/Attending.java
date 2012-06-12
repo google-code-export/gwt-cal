@@ -18,6 +18,10 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
+import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
 /**
  * Indicates whether or not an Attendee will be attending an
  * {@link Appointment}.
@@ -25,7 +29,7 @@ package com.bradrydzewski.gwt.calendar.client;
  * @author Brad Rydzewski
  * @since 0.9.0
  */
-public enum Attending {
+public enum Attending implements Serializable, IsSerializable {
 	/**
 	 * Indicates an Attendee will be attending.
 	 */
