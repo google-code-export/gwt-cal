@@ -62,8 +62,8 @@ public class WeekLayoutDescription {
 
    public boolean areThereAppointmentsOnDay(int day) {
       assertValidDayIndex(day);
-      return days[day] != null ||
-         topAppointmentsManager.areThereAppointmentsOn(day);
+	  return days[day] != null
+				|| topAppointmentsManager.areThereAppointmentsOn(day);
    }
 
    public DayLayoutDescription getDayLayoutDescription(int day) {

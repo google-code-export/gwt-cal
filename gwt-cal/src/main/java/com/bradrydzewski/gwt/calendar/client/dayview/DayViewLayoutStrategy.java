@@ -42,14 +42,13 @@ public class DayViewLayoutStrategy {
 
     private static final int MINUTES_PER_HOUR = 60;
     private static final int HOURS_PER_DAY = 24;
-    private HasSettings settings = null;
+    private final HasSettings settings;
 
-    public DayViewLayoutStrategy(HasSettings settings) {
+    public DayViewLayoutStrategy(final HasSettings settings) {
         this.settings = settings;
     }
 
-    public ArrayList<AppointmentAdapter> doLayout(List<Appointment> appointments, int dayIndex, int dayCount) {
-
+    public List<AppointmentAdapter> doLayout(List<Appointment> appointments, int dayIndex, int dayCount) {
 
         int intervalsPerHour = settings.getSettings().getIntervalsPerHour(); //30 minute intervals
         float intervalSize = settings.getSettings().getPixelsPerInterval(); //25 pixels per interval
@@ -312,8 +311,7 @@ public class DayViewLayoutStrategy {
         return appointmentCells;
     }
 
-    public int doMultiDayLayout(ArrayList<Appointment> appointments, ArrayList<AppointmentAdapter> adapters, Date start, int days) {
-
+    public int doMultiDayLayout(List<Appointment> appointments, List<AppointmentAdapter> adapters, Date start, int days) {
 
         //create array to hold all appointments for a particular day
         //HashMap<Date, ArrayList<AppointmentAdapter>> appointmentDayMap 
@@ -393,7 +391,7 @@ public class DayViewLayoutStrategy {
                         break; //break out of loop, nothing found in row slot
                     }
                     }catch(Exception ex) {
-                    	System.out.println("Exception: y=" + y + " x=" + x + " adapters.size=" + adapters.size() + " start="+adapter.getAppointment().getStart() + " end="+adapter.getAppointment().getEnd().toString());
+                    	//System.out.println("Exception: y=" + y + " x=" + x + " adapters.size=" + adapters.size() + " start="+adapter.getAppointment().getStart() + " end="+adapter.getAppointment().getEnd().toString());
                     }
                 }
 
@@ -415,8 +413,8 @@ public class DayViewLayoutStrategy {
                     //now we set the appointment's location
                     //Appointment appt = adapter.getAppointment();
                     float top = adapter.getCellStart() * 25f + 5f;
-                    float width = ((float) adapter.getColumnSpan() + 1f) / days * 100f - 1f;//10f=padding
-                    float left = ((float) adapter.getColumnStart()) / days * 100f + .5f;//10f=padding
+                    float width = ((float) adapter.getColumnSpan() + 1f) / days * 100f - 1f; //10f=padding
+                    float left = ((float) adapter.getColumnStart()) / days * 100f + .5f; //10f=padding
                     //float left = (float) adapter.getColumnStart() / (float) apptCell.getIntersectingBlocks().get(0).getTotalColumns() * 100;
                     adapter.setWidth(width);
                     adapter.setLeft(left);
@@ -432,7 +430,7 @@ public class DayViewLayoutStrategy {
 
         }
 
-        int height = (maxRow+1) * 25 + 5;
+		int height = (maxRow + 1) * 25 + 5;
         return Math.max(height, minHeight);
     }
     

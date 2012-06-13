@@ -18,7 +18,6 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
-import com.bradrydzewski.gwt.calendar.client.agenda.AgendaView;
 import com.bradrydzewski.gwt.calendar.client.dayview.DayView;
 import com.bradrydzewski.gwt.calendar.client.monthview.MonthView;
 import com.google.gwt.user.client.Timer;
@@ -30,7 +29,7 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
     /**
      * The component to manage the presentation of appointments as a list.
      */
-    private AgendaView agendaView = null;
+    //private AgendaView agendaView = null;
 
 	/**
      * The component to manage the presentation of appointments in a single day
@@ -79,7 +78,7 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
      * the list of appointments.
      * @param view
      */
-    public void setView(CalendarViews view) {
+    final public void setView(CalendarViews view) {
         setView(view, getDays());
     }
 
@@ -94,8 +93,9 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
     public void setView(CalendarViews view, int days) {
         switch (view) {
             case DAY: {
-                if (dayView == null)
+                if (dayView == null) {
                     dayView = new DayView();
+                }
                 dayView.setDisplayedDays(days);
                 setView(dayView);
                 break;
@@ -108,10 +108,11 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
                 throw new RuntimeException("Agenda View is not yet supported");
             }
             case MONTH: {
-            	if(monthView==null)
-            		monthView = new MonthView();
-                setView(monthView);
-                break;
+				if (monthView == null) {
+					monthView = new MonthView();
+				}
+				setView(monthView);
+				break;
             }
         }
     }

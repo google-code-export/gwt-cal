@@ -236,9 +236,9 @@ public class DateUtils {
      * @return A new date object representing the same date and time as the passed
      * object
      */
-   public static Date newDate(Date date){
+	public static Date newDate(Date date) {
        Date result = null;
-       if ( date != null ) {
+		if (date != null) {
            result = new Date(date.getTime());
        }
        return result;

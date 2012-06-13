@@ -20,6 +20,7 @@ package com.bradrydzewski.gwt.calendar.client;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Manages operations and state for the entire set of appointments displayed by
@@ -84,7 +85,7 @@ public class AppointmentManager {
      *
      * @return The appointments managed by this <code>AppointmentManager</code>.
      */
-    public ArrayList<Appointment> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 
@@ -109,7 +110,7 @@ public class AppointmentManager {
      * @param appointments The appointments that will be made part of this
      *                     manager's managed collection
      */
-    public void addAppointments(ArrayList<Appointment> appointments) {
+    public void addAppointments(List<Appointment> appointments) {
         if (appointments != null) {
             for (Appointment appointment : appointments) {
                 addAppointment(appointment);
@@ -260,9 +261,8 @@ public class AppointmentManager {
             int lastIndex = getAppointments().size() - 1;
 
             Appointment nextAppt;
-            if (selectedApptIndex < lastIndex &&
-                    (nextAppt = getAppointments().get(selectedApptIndex + 1)) !=
-                            null) {
+			if (selectedApptIndex < lastIndex
+					&& (nextAppt = getAppointments().get(selectedApptIndex + 1)) != null) {
                 selectedAppointment = nextAppt;
                 moveSucceeded = true;
             }
@@ -312,13 +312,12 @@ public class AppointmentManager {
     	
     	//if there is no committed appointment, we assume
     	// this was a delete operation. We re-add the appointment
-    	if(committedAppointment==null) {
+		if (committedAppointment == null) {
     		addAppointment(rollbackAppointment);
     		
         //if there is no rollback appointment, we assume
         // this was an add or update operation. We remove the appointment
-    	} else if(rollbackAppointment==null){
-
+		} else if (rollbackAppointment == null) {
     		removeAppointment(committedAppointment);
     		
         //else, we assume this is an update

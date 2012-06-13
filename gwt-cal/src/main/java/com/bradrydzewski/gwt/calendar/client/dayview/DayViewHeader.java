@@ -74,9 +74,8 @@ public class DayViewHeader extends Composite implements HasWeekSelectionHandlers
       header.insertCell(0, 0);
       header.setWidget(0, 1, timePanel);
       header.getCellFormatter().setStyleName(0, 0, YEAR_CELL_STYLE);
-      header.getCellFormatter().setWidth(0, 2,
-                                         WindowUtils.getScrollBarWidth(true) +
-                                            "px");
+	  header.getCellFormatter().setWidth(0, 2,
+				WindowUtils.getScrollBarWidth(true) + "px");
       // header.getCellFormatter().setStyleName(1, 0,SPLITTER_STYLE);
 
       header.getFlexCellFormatter().setColSpan(1, 0, 3);

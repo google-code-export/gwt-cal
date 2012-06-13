@@ -44,7 +44,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
    /**
     * Flextable that displays a Month in grid format.
     */
-   private FlexTable monthGrid;
+   final private FlexTable monthGrid;
 
    /**
     * List of all cells currently highlighted as an appointment is being
@@ -53,18 +53,18 @@ public class MonthViewDropController extends AbsolutePositionDropController {
    private Element[] highlightedCells;
    private static final String BACKGROUND = "backgroundColor";
 
-   public MonthViewDropController(AbsolutePanel dropTarget,
-      FlexTable monthGrid) {
+   public MonthViewDropController(final AbsolutePanel dropTarget,
+		   final FlexTable monthGrid) {
 
       super(dropTarget);
       this.monthGrid = monthGrid;
    }
 
-   public void setDaysPerWeek(int daysPerWeek) {
+   public void setDaysPerWeek(final int daysPerWeek) {
       this.daysPerWeek = daysPerWeek;
    }
 
-   public void setWeeksPerMonth(int weeksPerMonth) {
+   public void setWeeksPerMonth(final int weeksPerMonth) {
       this.weeksPerMonth = weeksPerMonth;
    }
 
@@ -72,7 +72,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
       return firstDateDisplayed;
    }
 
-   public void setFirstDateDisplayed(Date firstDateDisplayed) {
+   public void setFirstDateDisplayed(final Date firstDateDisplayed) {
       this.firstDateDisplayed = firstDateDisplayed;
    }
 
@@ -84,7 +84,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
     *                dragged
     */
    @Override
-   public void onMove(DragContext context) {
+   public void onMove(final DragContext context) {
       //super.onMove(context);
 
       //get the draggable object
@@ -116,7 +116,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
          Date endDate =
             ((AppointmentWidget) draggable.widget).getAppointment().getEnd();
 
-         int dateDiff = DateUtils.differenceInDays(endDate, startDate)+1;
+		 int dateDiff = DateUtils.differenceInDays(endDate, startDate) + 1;
          dateDiff = (dateDiff <= 0) ? 1 : dateDiff;
          highlightedCells = getCells(row, col, dateDiff);
 
@@ -140,7 +140,7 @@ public class MonthViewDropController extends AbsolutePositionDropController {
     *                coordinates of the drop, etc.
     */
    @Override
-   public void onDrop(DragContext context) {
+   public void onDrop(final DragContext context) {
       super.onDrop(context);
 
       for (Element elem : highlightedCells) {
@@ -211,14 +211,14 @@ public class MonthViewDropController extends AbsolutePositionDropController {
       return elems;
    }
 
-   public int getRow(DragContext context, Draggable draggable) {
+   public int getRow(final DragContext context, final Draggable draggable) {
       int y =
          context.desiredDraggableY - dropTargetOffsetY + draggable.relativeY;
       return (int)
          Math.floor(y / (monthGrid.getOffsetHeight() / weeksPerMonth)) + 1;
    }
 
-   public int getColumn(DragContext context, Draggable draggable) {
+   public int getColumn(final DragContext context, final Draggable draggable) {
       int x =
          context.desiredDraggableX - dropTargetOffsetX + draggable.relativeX;
       return (int) 

@@ -60,11 +60,10 @@ public /**
         prepare();
     }
 
-    public void prepare() {
+    final public void prepare() {
         timelinePanel.clear();
-        float labelHeight = 
-                settings.getSettings().getIntervalsPerHour() * 
-                settings.getSettings().getPixelsPerInterval();
+		float labelHeight = settings.getSettings().getIntervalsPerHour()
+				* settings.getSettings().getPixelsPerInterval();
         //float timeineHeight = labelHeight * HOURS_PER_DAY;
         //this.setHeight(timeineHeight+"px");
 

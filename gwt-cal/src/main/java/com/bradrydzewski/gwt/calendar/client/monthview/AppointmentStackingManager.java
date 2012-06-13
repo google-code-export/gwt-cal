@@ -137,27 +137,25 @@ public class AppointmentStackingManager {
    }
 
    private boolean assignLayer(int layer,
-      AppointmentLayoutDescription description) {
-      ArrayList<AppointmentLayoutDescription> layerDescriptions =
-         layeredDescriptions.get(layer);
+			AppointmentLayoutDescription description) {
+		ArrayList<AppointmentLayoutDescription> layerDescriptions = layeredDescriptions
+				.get(layer);
 
-      boolean assigned = false;
-      if (!overlapsWithDescriptionInLayer(layerDescriptions,
-                                          description.getWeekStartDay(),
-                                          description.getWeekEndDay())) {
-         highestLayer = Math.max(highestLayer, layer);
-         if (layer > layerOverflowLimit &&
-            description.spansMoreThanADay()) {
-            AppointmentLayoutDescription split = description.split();
-            layerDescriptions.add(description);
-            assignLayer(split);
-         } else {
-            layerDescriptions.add(description);
-         }
+		boolean assigned = false;
+		if (!overlapsWithDescriptionInLayer(layerDescriptions,
+				description.getWeekStartDay(), description.getWeekEndDay())) {
+			highestLayer = Math.max(highestLayer, layer);
+			if (layer > layerOverflowLimit && description.spansMoreThanADay()) {
+				AppointmentLayoutDescription split = description.split();
+				layerDescriptions.add(description);
+				assignLayer(split);
+			} else {
+				layerDescriptions.add(description);
+			}
 
-         assigned = true;
-      }
-      return assigned;
+			assigned = true;
+		}
+		return assigned;
    }
 
    /**

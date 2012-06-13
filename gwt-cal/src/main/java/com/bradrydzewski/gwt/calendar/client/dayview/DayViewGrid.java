@@ -74,11 +74,10 @@ public class DayViewGrid /*Impl*/ extends Composite {
 		grid.clear();
                 
 		
-		int intervalsPerHour = settings.getSettings().getIntervalsPerHour();//2; //30 minute intervals
+		int intervalsPerHour = settings.getSettings().getIntervalsPerHour(); //2; //30 minute intervals
 		float intervalSize = settings.getSettings().getPixelsPerInterval();
 
-		this.setHeight( (intervalsPerHour * (intervalSize) * 24 ) +"px" );
-		
+		this.setHeight((intervalsPerHour * (intervalSize) * 24) + "px");		
 					
 		float dayWidth = 100f / days;
 		float dayLeft = 0f;
@@ -92,7 +91,7 @@ public class DayViewGrid /*Impl*/ extends Composite {
 			//create major interval
 			SimplePanel sp1 = new SimplePanel();
 			sp1.setStyleName("major-time-interval");
-			sp1.setHeight(intervalSize+FormattingUtil.getBorderOffset()+"px");
+			sp1.setHeight(intervalSize + FormattingUtil.getBorderOffset() + "px");
 			
 			//if working hours set
 			if (isWorkingHours) {
@@ -102,7 +101,7 @@ public class DayViewGrid /*Impl*/ extends Composite {
 			//add to body
 			grid.add(sp1);
 			
-			for(int x=0;x<intervalsPerHour-1;x++) {
+			for (int x = 0; x < intervalsPerHour - 1; x++) {
 				SimplePanel sp2 = new SimplePanel();
 				sp2.setStyleName("minor-time-interval");
 				

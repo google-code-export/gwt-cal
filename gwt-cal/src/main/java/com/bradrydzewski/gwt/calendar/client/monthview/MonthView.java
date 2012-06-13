@@ -333,7 +333,7 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
                                               appointmentLayer);
                     if (appointmentLayer > calculatedCellAppointments - 1) {
                         int remaining = count + topAppointmentManager.multidayAppointmentsOverLimitOn(dayOfWeek) - i;
-                        if ( remaining == 1 ) {
+						if (remaining == 1) {
                            layOnAppointment(appointment, dayOfWeek, dayOfWeek,
                                             weekOfMonth, appointmentLayer);
                         } else {
@@ -345,7 +345,8 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
                                      weekOfMonth, appointmentLayer);
                     appointmentLayer++;
                 }
-            } else if ( topAppointmentManager.multidayAppointmentsOverLimitOn(dayOfWeek) > 0 ) {
+			} else if (topAppointmentManager
+					.multidayAppointmentsOverLimitOn(dayOfWeek) > 0) {
                layOnNMoreLabel(topAppointmentManager
                   .multidayAppointmentsOverLimitOn(dayOfWeek),
                                dayOfWeek, weekOfMonth);               
@@ -353,15 +354,14 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
         }
     }
 
-   private void layOnNMoreLabel(int moreCount, int dayOfWeek, int weekOfMonth){
-      Label more = new Label(CalendarFormat.MESSAGES.more(moreCount));
-      more.setStyleName(MORE_LABEL_STYLE);
-      placeItemInGrid(more, dayOfWeek, dayOfWeek,weekOfMonth,
-                      calculatedCellAppointments);
-      appointmentCanvas.add(more);
-      moreLabels.put(more.getElement(),(dayOfWeek)+(weekOfMonth*7));
-   }
-
+	private void layOnNMoreLabel(int moreCount, int dayOfWeek, int weekOfMonth) {
+		Label more = new Label(CalendarFormat.MESSAGES.more(moreCount));
+		more.setStyleName(MORE_LABEL_STYLE);
+		placeItemInGrid(more, dayOfWeek, dayOfWeek, weekOfMonth,
+				calculatedCellAppointments);
+		appointmentCanvas.add(more);
+		moreLabels.put(more.getElement(), (dayOfWeek) + (weekOfMonth * 7));
+	}
 
 	private void layOnAppointment(Appointment appointment, int colStart,
 			int colEnd, int row, int cellPosition) {

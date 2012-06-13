@@ -18,8 +18,8 @@
 
 package com.bradrydzewski.gwt.calendar.client;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.event.CreateEvent;
 import com.bradrydzewski.gwt.calendar.client.event.CreateHandler;
@@ -184,7 +184,7 @@ public class CalendarWidget extends InteractiveWidget implements
     * @return The set of appointments to be displayed by this calendar widget
     * @see AppointmentManager#getAppointments()
     */
-   public ArrayList<Appointment> getAppointments() {
+   public List<Appointment> getAppointments() {
       return appointmentManager.getAppointments();
    }
 
@@ -240,8 +240,7 @@ public class CalendarWidget extends InteractiveWidget implements
     * @param appointment item to be added
     */
    public void addAppointment(Appointment appointment) {
-      if ( appointment == null )
-      {
+		if (appointment == null) {
          throw new NullPointerException("Added appointment cannot be null.");
       }
       appointmentManager.addAppointment(appointment);
@@ -253,7 +252,7 @@ public class CalendarWidget extends InteractiveWidget implements
     *
     * @param appointments items to be added.
     */
-   public void addAppointments(ArrayList<Appointment> appointments) {
+   public void addAppointments(List<Appointment> appointments) {
       appointmentManager.addAppointments(appointments);
       refresh();
    }
@@ -397,8 +396,9 @@ public class CalendarWidget extends InteractiveWidget implements
 
    public boolean selectNextAppointment() {
       boolean selected = appointmentManager.selectNextAppointment();
-      if (selected)
+      if (selected) {
          fireSelectionEvent(getSelectedAppointment());
+      }
       return selected;
    }
 
@@ -470,8 +470,9 @@ public class CalendarWidget extends InteractiveWidget implements
 	   // and will cause this method to be called with a null
 	   // appointment. this is a temp workaround, but basically
 	   // an appointment cannot be hovered twice in a row
-	   if(appointment!=null && !appointment.equals(
-			   appointmentManager.getHoveredAppointment())) {
+		if (appointment != null
+				&& !appointment.equals(appointmentManager
+						.getHoveredAppointment())) {
 		   appointmentManager.setHoveredAppointment(appointment);
 		   MouseOverEvent.fire(this, appointment, element);
 	   }
