@@ -76,15 +76,12 @@ public class AppointmentLayoutDescription {
 
    public AppointmentLayoutDescription split() {
       AppointmentLayoutDescription secondPart = null;
-      if ( spansMoreThanADay() )
-      {
+		if (spansMoreThanADay()) {
          secondPart =
             new AppointmentLayoutDescription(fromWeekDay + 1, toWeekDay,
                                                  appointment);
          this.toWeekDay = this.fromWeekDay;
-      }
-      else
-      {
+		} else {
          secondPart = this;
       }
       return secondPart;
@@ -100,11 +97,9 @@ public class AppointmentLayoutDescription {
    }
 
    @Override public String toString() {
-      return "AppointmentLayoutDescription{" +
-         "stackOrder=" + stackOrder +
-         ", fromWeekDay=" + fromWeekDay +
-         ", toWeekDay=" + toWeekDay +
-         ", appointment=[" + appointment.getTitle() + "]@" + appointment.hashCode() + 
-         '}';
+		return "AppointmentLayoutDescription{" + "stackOrder=" + stackOrder
+				+ ", fromWeekDay=" + fromWeekDay + ", toWeekDay=" + toWeekDay
+				+ ", appointment=[" + appointment.getTitle() + "]@"
+				+ appointment.hashCode() + '}';
    }
 }

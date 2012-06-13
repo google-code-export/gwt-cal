@@ -1,6 +1,7 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 
@@ -18,8 +19,7 @@ public class DayLayoutDescription {
      * The list of <em>simple</em> appointments (not multiday, not all-day) in
      * this single day.
      */
-    private ArrayList<Appointment> appointments
-            = new java.util.ArrayList<Appointment>();
+    private List<Appointment> appointments = new ArrayList<Appointment>();
 
     /**
      * The index of the represented day in the corresponding parent week.
@@ -30,7 +30,7 @@ public class DayLayoutDescription {
         this.dayIndex = dayIndex;
     }
 
-    public ArrayList<Appointment> getAppointments() {
+    public List<Appointment> getAppointments() {
         return appointments;
     }
 

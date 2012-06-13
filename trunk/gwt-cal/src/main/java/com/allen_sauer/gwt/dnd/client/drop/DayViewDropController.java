@@ -14,48 +14,48 @@ public class DayViewDropController extends AbsolutePositionDropController {
 
 	private int gridY;
 	
-	int intervalsPerHour;
-	int snapSize;
-	int columns;
-	int rows;
-	Date date;
+	private int intervalsPerHour;
+	private int snapSize;
+	private int columns;
+	private int rows;
+	private Date date;
 	private int maxProxyHeight = -1;
 	
-	public void setColumns(int columns) {
+	public void setColumns(final int columns) {
 		this.columns = columns;
 	}
 
-	public void setDate(Date date) {
+	public void setDate(final Date date) {
 		this.date = date;
 	}
 	
-	public void setSnapSize(int snapSize) {
+	public void setSnapSize(final int snapSize) {
 		this.snapSize = snapSize;
 	}
 	
-	public void setIntervalsPerHour(int intervalsPerHour) {
+	public void setIntervalsPerHour(final int intervalsPerHour) {
 		this.intervalsPerHour = intervalsPerHour;
-		this.rows = intervalsPerHour*24;
+		this.rows = intervalsPerHour * 24;
 	}
 
-	public void setMaxProxyHeight(int maxProxyHeight) {
+	public void setMaxProxyHeight(final int maxProxyHeight) {
 		this.maxProxyHeight = maxProxyHeight;
 	}
 	
-	public DayViewDropController(AbsolutePanel dropTarget) {
+	public DayViewDropController(final AbsolutePanel dropTarget) {
 		super(dropTarget);
 	}
 
 	@SuppressWarnings("deprecation")
 	@Override
-	public void onDrop(DragContext context) {
+	public void onDrop(final DragContext context) {
 
 		super.onDrop(context);
 		
 		//get the top and left position and the widget
 		int top =draggableList.get(0).desiredY;
 		int left=draggableList.get(0).desiredX;
-		Widget widget=context.draggable;
+		Widget widget = context.draggable;
 
 		//set the 'snapped' top and left position of the widget
 		left = Math.max(0, Math.min(left, dropTarget.getOffsetWidth() - widget.getOffsetWidth()));
@@ -70,7 +70,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		//figure out which day (column) the appointment was dragged to
 		int day = (int) Math.floor(left / gridX);
 		day = Math.max(0, day);
-		day = Math.min(day, columns-1);
+		day = Math.min(day, columns - 1);
 
 		//get the appointment, create the start & end date
 		Appointment appt = ((AppointmentWidget)widget).getAppointment();
@@ -141,7 +141,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 //	}
 	
 	@Override
-	public void onMove(DragContext context) {
+	public void onMove(final DragContext context) {
 		super.onMove(context);
 
 		gridX = (int) Math.floor(dropTarget.getOffsetWidth() / columns);
@@ -162,7 +162,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 	}
 
 	@Override
-	public void onEnter(DragContext context) {
+	public void onEnter(final DragContext context) {
 		super.onEnter(context);
 		
 		for (Draggable draggable : draggableList) {

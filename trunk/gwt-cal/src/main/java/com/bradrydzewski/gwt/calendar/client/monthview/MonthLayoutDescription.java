@@ -1,7 +1,7 @@
 package com.bradrydzewski.gwt.calendar.client.monthview;
 
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
@@ -23,7 +23,7 @@ public class MonthLayoutDescription {
 
    public MonthLayoutDescription(Date calendarFirstDay,
       int monthViewRequiredRows,
-      ArrayList<Appointment> appointments, int maxLayer) {
+      List<Appointment> appointments, int maxLayer) {
       this.calendarFirstDay = calendarFirstDay;
       this.calendarLastDay =
          calculateLastDate(calendarFirstDay, monthViewRequiredRows);
@@ -32,7 +32,7 @@ public class MonthLayoutDescription {
 
    public MonthLayoutDescription(Date calendarFirstDay,
       int monthViewRequiredRows,
-      ArrayList<Appointment> appointments) {
+      List<Appointment> appointments) {
       this(calendarFirstDay, monthViewRequiredRows,
            appointments, Integer.MAX_VALUE);
    }
@@ -45,7 +45,7 @@ public class MonthLayoutDescription {
       }
    }
 
-   private void placeAppointments(ArrayList<Appointment> appointments,
+   private void placeAppointments(List<Appointment> appointments,
       int maxLayer) {
 
       for (Appointment appointment : appointments) {

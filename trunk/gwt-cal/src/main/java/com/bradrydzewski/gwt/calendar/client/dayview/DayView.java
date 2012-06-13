@@ -121,11 +121,11 @@ public class DayView extends CalendarView {
 		  
 		for (int i = 0; i < calendarWidget.getDays(); i++) {
 
-			ArrayList<Appointment> filteredList = AppointmentUtil
+			List<Appointment> filteredList = AppointmentUtil
 					.filterListByDate(calendarWidget.getAppointments(), startDate, endDate);
 
 			// perform layout
-			ArrayList<AppointmentAdapter> appointmentAdapters = layoutStrategy
+			List<AppointmentAdapter> appointmentAdapters = layoutStrategy
 					.doLayout(filteredList, i, calendarWidget.getDays());
 
 			// add all appointments back to the grid
@@ -135,7 +135,7 @@ public class DayView extends CalendarView {
 			endDate.setDate(endDate.getDate() + 1);
 		}
 		
-        ArrayList<Appointment> filteredList =
+        List<Appointment> filteredList =
             AppointmentUtil.filterListByDateRange(calendarWidget.getAppointments(),
             		calendarWidget.getDate(), calendarWidget.getDays());
         
@@ -212,7 +212,7 @@ public class DayView extends CalendarView {
 	}
 
 	public void onDeleteKeyPressed() {
-		if (calendarWidget.getSelectedAppointment()!=null) {
+		if (calendarWidget.getSelectedAppointment() != null) {
 			calendarWidget.fireDeleteEvent(calendarWidget.getSelectedAppointment());
 		}
 	}
@@ -244,10 +244,10 @@ public class DayView extends CalendarView {
         Appointment appt =
         	findAppointmentByElement(element);
         
-        if (appt!=null) {
+		if (appt != null) {
         	selectAppointment(appt);
         } else if ((getSettings().getTimeBlockClickNumber() == Click.Single
-				|| getSettings().getEnableDragDropCreation())
+				|| getSettings().isEnableDragDropCreation())
 				&& element == dayViewBody.getGrid().gridOverlay
 				.getElement()) {
 			int x = DOM.eventGetClientX(event);

@@ -43,10 +43,10 @@ public class MouseOverEvent<T> extends GwtEvent<MouseOverHandler<T>> {
     * @param target the dom element
     */
    public static <T> void fire(HasMouseOverHandlers<T> source, T target, Object element) {
-      if (TYPE != null) {
-         MouseOverEvent<T> event = new MouseOverEvent<T>(target,element);
-         source.fireEvent(event);
-      }
+		if (TYPE != null) {
+			MouseOverEvent<T> event = new MouseOverEvent<T>(target, element);
+			source.fireEvent(event);
+		}
    }
    
    protected MouseOverEvent(T target, Object element) {

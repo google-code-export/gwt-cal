@@ -69,7 +69,7 @@ public class DayViewResizeController extends AbstractDragController {
         
         //set the end based on the new dragged value
         end.setHours(0);
-        end.setMinutes((intervalStart + intervalSpan)*(60/intervalsPerHour));
+		end.setMinutes((intervalStart + intervalSpan) * (60 / intervalsPerHour));
         
         //update the end
         appt.setEnd(end);

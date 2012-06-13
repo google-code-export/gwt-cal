@@ -24,7 +24,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 
 @SuppressWarnings("deprecation")
-public class CalendarFormat {
+final public class CalendarFormat {
 
    public static final CalendarConstants MESSAGES =
       (CalendarConstants) GWT.create(CalendarConstants.class);
@@ -231,7 +231,8 @@ public class CalendarFormat {
 	   
       for (int i = 0; i < HOURS_IN_DAY; i++) {
          date.setHours(i);
-         hour = timeFormat.format(date);//shortTimeFormat.format(date);
+         hour = timeFormat.format(date);
+         //shortTimeFormat.format(date);
          hours[i] = hour;
       }
    }

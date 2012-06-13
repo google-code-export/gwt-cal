@@ -72,8 +72,8 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * <li><code><code>location</code></li>
 	 * <li><code>createdBy</code></li>
 	 * </ul>
-	 * the <code>attendees</code> collection empty and the <code>allDay</code>
-	 * property <code>false</code>.
+	 * the <code>attendees</code> collection empty the <code>allDay</code> and
+	 * the <code>readOnly</code> property <code>false</code>.
 	 * </p>
 	 * 
 	 */
@@ -97,7 +97,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * 
 	 * @param id
 	 */
-	public void setId(String id) {
+	public void setId(final String id) {
 		this.id = id;
 	}
 
@@ -116,7 +116,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param start
 	 *            A date object with the date and time this appointment starts
 	 */
-	public void setStart(Date start) {
+	public void setStart(final Date start) {
 		this.start = start;
 	}
 
@@ -135,7 +135,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param end
 	 *            A date object with the date and time this appointment starts
 	 */
-	public void setEnd(Date end) {
+	public void setEnd(final Date end) {
 		this.end = end;
 	}
 
@@ -154,7 +154,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param title
 	 *            The title's short text
 	 */
-	public void setTitle(String title) {
+	public void setTitle(final String title) {
 		this.title = title;
 	}
 
@@ -173,7 +173,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param description
 	 *            The title's short text
 	 */
-	public void setDescription(String description) {
+	public void setDescription(final String description) {
 		this.description = description;
 	}
 
@@ -192,7 +192,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param location
 	 *            The <code>appointment</code> location
 	 */
-	public void setLocation(String location) {
+	public void setLocation(final String location) {
 		this.location = location;
 	}
 
@@ -211,7 +211,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param createdBy
 	 *            The <code>appointment</code> creator description.
 	 */
-	public void setCreatedBy(String createdBy) {
+	public void setCreatedBy(final String createdBy) {
 		this.createdBy = createdBy;
 	}
 
@@ -231,7 +231,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 *            The entities associated (<em>attending</em>) this
 	 *            <code>Appointment</code>
 	 */
-	public void setAttendees(List<Attendee> attendees) {
+	public void setAttendees(final List<Attendee> attendees) {
 		this.attendees = attendees;
 	}
 
@@ -250,7 +250,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 *         <code>this</code> appointment <em>is after</em>
 	 *         <code>appointment</code>.
 	 */
-	public int compareTo(Appointment appointment) {
+	public int compareTo(final Appointment appointment) {
 		int compare = this.getStart().compareTo(appointment.getStart());
 
 		if (compare == 0) {
@@ -300,7 +300,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * @param allDay
 	 *            The current value of the <code>allDay</code> property
 	 */
-	public void setAllDay(boolean allDay) {
+	public void setAllDay(final boolean allDay) {
 		this.allDay = allDay;
 	}
 
@@ -308,7 +308,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		return style;
 	}
 
-	public void setStyle(AppointmentStyle style) {
+	public void setStyle(final AppointmentStyle style) {
 		this.style = style;
 	}
 
@@ -316,7 +316,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		return customStyle;
 	}
 
-	public void setCustomStyle(String customStyle) {
+	public void setCustomStyle(final String customStyle) {
 		this.customStyle = customStyle;
 	}
 
@@ -324,7 +324,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 		return readOnly;
 	}
 
-	public void setReadOnly(boolean readOnly) {
+	public void setReadOnly(final boolean readOnly) {
 		this.readOnly = readOnly;
 	}
 	
@@ -365,7 +365,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	}
 
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(final Object obj) {
 		if (this == obj) {
 			return true;
 		}

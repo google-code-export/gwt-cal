@@ -20,6 +20,7 @@ package com.bradrydzewski.gwt.calendar.client.agenda;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.Attendee;
@@ -215,7 +216,7 @@ public class AgendaView extends CalendarView {
 
 		appointmentAdapterList.clear();
 		appointmentGrid.clear();
-		for(int i=appointmentGrid.getRowCount()-1;i>=0;i--){
+		for (int i = appointmentGrid.getRowCount() - 1; i >= 0; i--) {
 			appointmentGrid.removeRow(i);
 		}
 		
@@ -234,7 +235,7 @@ public class AgendaView extends CalendarView {
 		for (int i = 0; i < calendarWidget.getDays(); i++) {
 
 			// Filter the list by date
-			ArrayList<Appointment> filteredList = AppointmentUtil
+			List<Appointment> filteredList = AppointmentUtil
 					.filterListByDate(calendarWidget.getAppointments(), startDate, endDate);
 
 			if (filteredList != null && filteredList.size() > 0) {
@@ -340,7 +341,7 @@ public class AgendaView extends CalendarView {
 			AgendaViewAppointmentAdapter adapter =
 				getAppointmentFromClickedWidget((Widget)event.getSource());
 
-			if(adapter!=null) {
+			if (adapter != null) {
 				if(event.getSource().equals(adapter.getDetailsLabel())) {
 					//set the selected appointment
 					calendarWidget.setSelectedAppointment(adapter.getAppointment(), true);

@@ -19,6 +19,7 @@ package com.bradrydzewski.gwt.calendar.client.util;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.DateUtils;
@@ -32,19 +33,19 @@ import com.bradrydzewski.gwt.calendar.client.DateUtils;
  */
 public class AppointmentUtil {
 
-    public static ArrayList<Appointment> filterListByDateRange(ArrayList<Appointment> fullList, Date date,
+    public static List<Appointment> filterListByDateRange(List<Appointment> fullList, Date date,
                                                   int days) {
         ArrayList<Appointment> group = new ArrayList<Appointment>();
         Date startDate = (Date) date.clone();
         DateUtils.resetTime(startDate);
         Date endDate = DateUtils.shiftDate(date, days);
 
-        for (Appointment appointment : fullList) {
-            if ((appointment.isMultiDay() || appointment.isAllDay()) &&
-            		rangeContains(appointment, startDate, endDate)) {
-                group.add(appointment);
-            }
-        }
+		for (Appointment appointment : fullList) {
+			if ((appointment.isMultiDay() || appointment.isAllDay())
+					&& rangeContains(appointment, startDate, endDate)) {
+				group.add(appointment);
+			}
+		}
 
         return group;
     }
@@ -92,8 +93,7 @@ public class AppointmentUtil {
      * @return A list with all appointments whose start date is on or after the
      * passed <code>startDate</code>
      */
-    @SuppressWarnings("deprecation")
-    public static ArrayList<Appointment> filterListByDate(ArrayList<Appointment> fullList, Date startDate, Date endDate) {
+    public static List<Appointment> filterListByDate(List<Appointment> fullList, Date startDate, Date endDate) {
 
         ArrayList<Appointment> group = new ArrayList<Appointment>();
 

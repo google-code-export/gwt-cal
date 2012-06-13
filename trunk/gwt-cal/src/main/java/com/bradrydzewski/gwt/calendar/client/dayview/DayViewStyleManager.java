@@ -21,7 +21,7 @@ public abstract class DayViewStyleManager {
 
     protected static final String COLOR_STYLE_ATTRIBUTE = "color";
 
-	public void applyStyle(AppointmentWidget widget, boolean selected){
+	public void applyStyle(AppointmentWidget widget, boolean selected) {
         doApplyStyleInternal(widget, selected);
     }
 
@@ -67,7 +67,7 @@ public abstract class DayViewStyleManager {
 
 		DOM.setStyleAttribute(headerElem, COLOR_STYLE_ATTRIBUTE, style.getHeaderText());
 
-		DOM.setStyleAttribute(headerElem, BACKGROUND_COLOR_STYLE_ATTRIBUTE,style.getBackgroundHeader());
+		DOM.setStyleAttribute(headerElem, BACKGROUND_COLOR_STYLE_ATTRIBUTE, style.getBackgroundHeader());
 
 		if (multiDay)
 			return;

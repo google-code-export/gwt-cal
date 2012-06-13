@@ -49,7 +49,7 @@ public class CalendarSettings {
         return pixelsPerInterval;
     }
 
-    public void setPixelsPerInterval(int px) {
+    public void setPixelsPerInterval(final int px) {
         pixelsPerInterval = px;
     }
 
@@ -57,7 +57,7 @@ public class CalendarSettings {
         return intervalsPerHour;
     }
 
-    public void setIntervalsPerHour(int intervals) {
+    public void setIntervalsPerHour(final int intervals) {
         intervalsPerHour = intervals;
     }
 
@@ -65,7 +65,7 @@ public class CalendarSettings {
         return workingHourStart;
     }
 
-    public void setWorkingHourStart(int start) {
+    public void setWorkingHourStart(final int start) {
         workingHourStart = start;
     }
 
@@ -73,7 +73,7 @@ public class CalendarSettings {
         return workingHourEnd;
     }
 
-    public void setWorkingHourEnd(int end) {
+    public void setWorkingHourEnd(final int end) {
         workingHourEnd = end;
     }
 
@@ -81,7 +81,7 @@ public class CalendarSettings {
         return scrollToHour;
     }
 
-    public void setScrollToHour(int hour) {
+    public void setScrollToHour(final int hour) {
         scrollToHour = hour;
     }
 
@@ -89,7 +89,7 @@ public class CalendarSettings {
         return enableDragDrop;
     }
 
-    public void setEnableDragDrop(boolean enableDragDrop) {
+    public void setEnableDragDrop(final boolean enableDragDrop) {
         this.enableDragDrop = enableDragDrop;
     }
 
@@ -97,7 +97,7 @@ public class CalendarSettings {
         return offsetHourLabels;
     }
 
-    public void setOffsetHourLabels(boolean offsetHourLabels) {
+    public void setOffsetHourLabels(final boolean offsetHourLabels) {
         this.offsetHourLabels = offsetHourLabels;
     }
 
@@ -105,15 +105,23 @@ public class CalendarSettings {
         return timeBlockClickNumber;
     }
 
-    public void setTimeBlockClickNumber(Click timeBlockClickNumber) {
+    public void setTimeBlockClickNumber(final Click timeBlockClickNumber) {
         this.timeBlockClickNumber = timeBlockClickNumber;
     }
     
-    public void setEnableDragDropCreation(boolean dragDropCreation) {
+    public void setEnableDragDropCreation(final boolean dragDropCreation) {
     	this.dragDropCreation = dragDropCreation;
     }
 
+    /**
+     * @deprecated  As of release 0.9.4, replaced by {@link #isEnableDragDropCreation()}
+     */
+    @Deprecated
     public boolean getEnableDragDropCreation() {
+    	return dragDropCreation;
+    }
+    
+    public boolean isEnableDragDropCreation() {
     	return dragDropCreation;
     }
     
@@ -122,7 +130,7 @@ public class CalendarSettings {
      * @param showWeekNumbers
      * @since 0.9.4
      */
-    public void setShowWeekNumbers(boolean showWeekNumbers) {
+    public void setShowWeekNumbers(final boolean showWeekNumbers) {
     	this.showWeekNumbers = showWeekNumbers;
     }
     
@@ -154,7 +162,7 @@ public class CalendarSettings {
      * 
      * @since 0.9.4
      */
-    public void setShowMultiday(boolean visible) {
+    public void setShowMultiday(final boolean visible) {
     	this.showMultiDay = visible;
     }
     
