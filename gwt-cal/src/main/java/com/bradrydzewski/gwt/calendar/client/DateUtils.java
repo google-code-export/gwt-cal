@@ -30,6 +30,16 @@ public class DateUtils {
 
    public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
 
+   private static int dayStartsAt = 0;
+   
+   public static void setDayStartsAt(int start) {
+	   dayStartsAt = start;
+   }
+   
+   public static int getDayStartsAt() {
+	   return dayStartsAt;
+   }
+   
    /**
     * Provides a <code>null</code>-safe way to return the number of milliseconds
     * on a <code>date</code>.
@@ -103,7 +113,7 @@ public class DateUtils {
       long milliseconds = safeInMillis(date);
       milliseconds = (milliseconds / 1000) * 1000;
       date.setTime(milliseconds);
-      date.setHours(0);
+      date.setHours(DateUtils.getDayStartsAt());
       date.setMinutes(0);
       date.setSeconds(0);
    }
@@ -120,11 +130,32 @@ public class DateUtils {
     *         <em>exact</em> same values (whatever they are)
     */
    @SuppressWarnings("deprecation")
-   public static boolean areOnTheSameDay(Date dateOne, Date dateTwo) {
-      return dateOne.getDate() == dateTwo.getDate() &&
-         dateOne.getMonth() == dateTwo.getMonth() &&
-         dateOne.getYear() == dateTwo.getYear();
-   }
+	public static boolean areOnTheSameDay(Date dateOne, Date dateTwo) {
+		Date end;
+		Date start;
+		
+		if (dateTwo.getTime() > dateOne.getTime()) {
+			end = (Date) dateTwo.clone();
+			start = (Date) dateOne.clone();
+		} else {
+			start = (Date) dateTwo.clone();
+			end = (Date) dateOne.clone();
+		}
+
+		if (DateUtils.dayStartsAt != 0) {
+			long time = start.getTime()
+			- (1000 * 60 * 60 * DateUtils.dayStartsAt);
+			start = new Date(time);
+			
+			time = end.getTime()
+					- (1000 * 60 * 60 * DateUtils.dayStartsAt);
+			end = new Date(time);
+		}
+
+		return start.getDate() == end.getDate()
+				&& start.getMonth() == end.getMonth()
+				&& start.getYear() == end.getYear();
+	}
 
    /**
     * Indicates whether two dates are on the same month of the same year.
@@ -136,8 +167,15 @@ public class DateUtils {
     */
    @SuppressWarnings("deprecation")
    public static boolean areOnTheSameMonth(Date dateOne, Date dateTwo) {
-      return dateOne.getYear() == dateTwo.getYear() &&
-            dateOne.getMonth() == dateTwo.getMonth();
+	   Date end = (Date)dateTwo.clone();
+	   
+	  if (DateUtils.dayStartsAt != 0) {
+		  long time = end.getTime() - (1000 * 60 * 60 * DateUtils.dayStartsAt);
+		  end = new Date(time);
+	  }
+	   
+      return dateOne.getYear() == end.getYear() &&
+            dateOne.getMonth() == end.getMonth();
    }
 
    /**
@@ -225,7 +263,11 @@ public class DateUtils {
     */
    @SuppressWarnings("deprecation")
    public static int minutesSinceDayStarted(Date day) {
-      return day.getHours() * 60 + day.getMinutes();
+      int minutes = (day.getHours() - dayStartsAt) * 60 + day.getMinutes();
+      if (day.getHours() < dayStartsAt) {
+    	  minutes = ((24 - dayStartsAt) + day.getHours()) * 60 + day.getMinutes();
+      }
+      return minutes;
    }
 
     /**

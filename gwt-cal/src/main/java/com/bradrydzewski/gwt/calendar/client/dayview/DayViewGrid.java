@@ -81,12 +81,14 @@ public class DayViewGrid /*Impl*/ extends Composite {
 					
 		float dayWidth = 100f / days;
 		float dayLeft = 0f;
+		
+		int dayStartsAt = settings.getSettings().getDayStartsAt();
 
 		// for(int days=0;days<3;days++) {
 
 		for (int i = 0; i < HOURS_PER_DAY; i++) {
 			
-			boolean isWorkingHours = (i >= workingHourStart && i <= workingHourStop);
+			boolean isWorkingHours = ((i + dayStartsAt) >= workingHourStart && (i + dayStartsAt) <= workingHourStop);
 			
 			//create major interval
 			SimplePanel sp1 = new SimplePanel();

@@ -30,6 +30,7 @@ import com.allen_sauer.gwt.dnd.client.drop.DayViewDropController;
 import com.allen_sauer.gwt.dnd.client.drop.DayViewPickupDragController;
 import com.allen_sauer.gwt.dnd.client.drop.DayViewResizeController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
+import com.bradrydzewski.gwt.calendar.client.CalendarSettings;
 import com.bradrydzewski.gwt.calendar.client.CalendarSettings.Click;
 import com.bradrydzewski.gwt.calendar.client.CalendarView;
 import com.bradrydzewski.gwt.calendar.client.CalendarWidget;
@@ -88,6 +89,7 @@ public class DayView extends CalendarView {
 		if (getSettings().isMultidayVisible()) {		
 			multiViewBody.setDays((Date) date.clone(), calendarWidget.getDays());
 		}
+
 		dayViewHeader.setDays((Date) date.clone(), calendarWidget.getDays());
 		dayViewHeader.setYear((Date) date.clone());
 		dayViewBody.setDays((Date) date.clone(), calendarWidget.getDays());
@@ -95,16 +97,19 @@ public class DayView extends CalendarView {
 
 		dropController.setColumns(calendarWidget.getDays());
 		dropController.setIntervalsPerHour(calendarWidget.getSettings().getIntervalsPerHour());
+		dropController.setDayStartsAt(getSettings().getDayStartsAt());
 		dropController.setDate((Date)calendarWidget.getDate().clone());
 		dropController.setSnapSize(
 				calendarWidget.getSettings().getPixelsPerInterval());
 		dropController.setMaxProxyHeight(getMaxProxyHeight());
 		resizeController.setIntervalsPerHour(
 				calendarWidget.getSettings().getIntervalsPerHour());
+		resizeController.setDayStartsAt(getSettings().getDayStartsAt());
 		resizeController.setSnapSize(
 				calendarWidget.getSettings().getPixelsPerInterval());
 		proxyResizeController.setSnapSize(calendarWidget.getSettings().getPixelsPerInterval());
 		proxyResizeController.setIntervalsPerHour(calendarWidget.getSettings().getIntervalsPerHour());
+		proxyResizeController.setDayStartsAt(getSettings().getDayStartsAt());
 		
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
@@ -191,7 +196,7 @@ public class DayView extends CalendarView {
 	
 	@Override
     public void scrollToHour(final int hour) {
-        dayViewBody.getScrollPanel().setVerticalScrollPosition(hour *
+        dayViewBody.getScrollPanel().setVerticalScrollPosition((hour - getSettings().getDayStartsAt()) *
                 getSettings().getIntervalsPerHour() * getSettings().getPixelsPerInterval());
     }
 	
@@ -461,7 +466,7 @@ public class DayView extends CalendarView {
 
 		// create new appointment date based on click
 		Date newStartDate = calendarWidget.getDate();
-		newStartDate.setHours(0);
+		newStartDate.setHours(getSettings().getDayStartsAt());
 		newStartDate.setMinutes(0);
 		newStartDate.setSeconds(0);
 		newStartDate.setMinutes((int) interval

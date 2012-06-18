@@ -43,6 +43,36 @@ public class DateUtilsTest {
    private DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
 
    @Test
+   public void minutesSinceDayStarted() throws Exception {
+	   DateUtils.setDayStartsAt(6);
+	   
+	   Date date = new Date();
+	   date.setHours(6);
+	   date.setMinutes(0);
+	   date.setSeconds(0);
+	   int minutes = DateUtils.minutesSinceDayStarted(date);
+	   assertEquals(0 * 60, minutes);
+	   
+	   date.setHours(8);
+	   minutes = DateUtils.minutesSinceDayStarted(date);
+	   assertEquals(2 * 60, minutes);
+	   
+	   date.setHours(18);
+	   minutes = DateUtils.minutesSinceDayStarted(date);
+	   assertEquals(12 * 60, minutes);
+
+	   date.setHours(23);
+	   minutes = DateUtils.minutesSinceDayStarted(date);
+	   assertEquals(17 * 60, minutes);
+	   
+	   date.setHours(1);
+	   minutes = DateUtils.minutesSinceDayStarted(date);
+	   assertEquals(19 * 60, minutes);
+	   
+	   DateUtils.setDayStartsAt(0);
+   }
+   
+   @Test
    public void moveOneDayForward_WithinSameMonth() throws Exception {
       assertEquals(date("01/31/2010"), moveOneDayForward(date("01/30/2010")));
    }
