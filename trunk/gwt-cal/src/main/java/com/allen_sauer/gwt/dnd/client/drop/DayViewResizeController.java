@@ -15,6 +15,7 @@ public class DayViewResizeController extends AbstractDragController {
 		super(boundaryPanel);
 	}
 
+	int dayStartsAt = 0;
 	int snapSize;
 	int intervalsPerHour;
 
@@ -26,6 +27,10 @@ public class DayViewResizeController extends AbstractDragController {
 		this.intervalsPerHour = intervalsPerHour;
 	}
 
+	public void setDayStartsAt(int dayStartsAt) {
+		this.dayStartsAt = dayStartsAt;
+	}
+	
 	public void dragMove() {
 
 		Widget appointment = context.draggable.getParent();
@@ -64,12 +69,12 @@ public class DayViewResizeController extends AbstractDragController {
         float topFloat = DOM.getIntStyleAttribute(apptWidget.getElement(), "top");
         
         //get the grid span
-        int intervalStart = Math.round(topFloat / snapSize);
+        //int intervalStart = Math.round(topFloat / snapSize);
         int intervalSpan = Math.round(apptHeight / snapSize);
         
         //set the end based on the new dragged value
-        end.setHours(0);
-		end.setMinutes((intervalStart + intervalSpan) * (60 / intervalsPerHour));
+        //end.setHours(dayStartsAt);
+		end.setMinutes(end.getMinutes() + intervalSpan * (60 / intervalsPerHour));
         
         //update the end
         appt.setEnd(end);

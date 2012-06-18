@@ -25,6 +25,7 @@ import java.util.List;
 public class CalendarSettings {
 
     public static CalendarSettings DEFAULT_SETTINGS = new CalendarSettings();
+    
     private int pixelsPerInterval = 30; //IE6 cannot be less than 20!!!!! 
     private int intervalsPerHour = 2;
     private int workingHourStart = 8;
@@ -36,10 +37,11 @@ public class CalendarSettings {
     private boolean dragDropCreation = true;
     private boolean showMultiDay = true;
     private List<Date> holidays = new ArrayList<Date>();
-
-    /*
-     * Clicks required to fire TimeBlockClickEvent.
-     */
+	private int dayStartsAt = 0;
+    
+	/*
+	 * Clicks required to fire TimeBlockClickEvent.
+	 */
     private Click timeBlockClickNumber = Click.Single;
 
     public CalendarSettings() {
@@ -121,6 +123,15 @@ public class CalendarSettings {
     	return dragDropCreation;
     }
     
+    public void setDayStartsAt(int dayStartsAt) {
+		this.dayStartsAt = dayStartsAt;
+		DateUtils.setDayStartsAt(dayStartsAt);
+	}
+
+	public int getDayStartsAt() {
+		return dayStartsAt;
+	}
+
     public boolean isEnableDragDropCreation() {
     	return dragDropCreation;
     }
@@ -142,18 +153,10 @@ public class CalendarSettings {
     	return showWeekNumbers;
     }
     
-    /**
-     * 
-     * @since 0.9.4
-     */
     public void setHolidays(List<Date> holidays) {
     	this.holidays = holidays;
     }
     
-    /**
-     * 
-     * @since 0.9.4
-     */
     public List<Date> getHolidays() {
     	return holidays;
     }

@@ -80,10 +80,18 @@ public /**
 
         //boolean includeAMPM = !CalendarFormat.INSTANCE.getAm().equals("");
         
+		int dayStartsAt = settings.getSettings().getDayStartsAt();
+        
         while (i < CalendarFormat.HOURS_IN_DAY) {
 
-            String hour = CalendarFormat.INSTANCE.getHourLabels()[i];
-            i++;
+
+			int index = i + dayStartsAt;
+			if (index >= CalendarFormat.HOURS_IN_DAY) {
+				index = index - CalendarFormat.HOURS_IN_DAY;
+			}
+			String hour = CalendarFormat.INSTANCE.getHourLabels()[index];
+			index++;
+			i++;
 
             //block
             SimplePanel hourWrapper = new SimplePanel();
@@ -94,18 +102,19 @@ public /**
             flowPanel.setStyleName("hour-layout");
             
             String amPm = " ";
-            if (i < 13) {
+
+			if (index < 13)
                 amPm += CalendarFormat.INSTANCE.getAm();
-            } else if (i > 13) {
+			else if (index > 13)
                 amPm += CalendarFormat.INSTANCE.getPm();
-            } else {
+            else {
 				if (CalendarFormat.INSTANCE.isUseNoonLabel()) {
 					hour = CalendarFormat.INSTANCE.getNoon();
 					amPm = "";
 				} else {
 					amPm += CalendarFormat.INSTANCE.getPm();
 				}
-            }
+			}
             
             Label hourLabel = new Label(hour);
             hourLabel.setStylePrimaryName("hour-text");
@@ -122,4 +131,3 @@ public /**
         }
     }
 }
-

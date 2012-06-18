@@ -13,7 +13,7 @@ public class DayViewDropController extends AbsolutePositionDropController {
 	private int gridX;
 
 	private int gridY;
-	
+	int dayStartsAt = 0;
 	private int intervalsPerHour;
 	private int snapSize;
 	private int columns;
@@ -36,6 +36,10 @@ public class DayViewDropController extends AbsolutePositionDropController {
 	public void setIntervalsPerHour(final int intervalsPerHour) {
 		this.intervalsPerHour = intervalsPerHour;
 		this.rows = intervalsPerHour * 24;
+	}
+
+	public void setDayStartsAt(final int dayStartsAt) {
+		this.dayStartsAt = dayStartsAt;
 	}
 
 	public void setMaxProxyHeight(final int maxProxyHeight) {
@@ -76,15 +80,14 @@ public class DayViewDropController extends AbsolutePositionDropController {
 		Appointment appt = ((AppointmentWidget)widget).getAppointment();
 		Date start = (Date)date.clone();
 		Date end = (Date)date.clone();
-		
 		start.setDate(start.getDate()+day);
 		end.setDate(end.getDate()+day);
 		
-        start.setHours(0);
+        start.setHours(dayStartsAt);
         start.setMinutes(0);
         start.setSeconds(0);
         start.setMinutes((intervalStart)*(60/intervalsPerHour));
-        end.setHours(0);
+        end.setHours(dayStartsAt);
         end.setMinutes(0);
         end.setSeconds(0);
         end.setMinutes((intervalStart + intervalSpan)*(60/intervalsPerHour));
