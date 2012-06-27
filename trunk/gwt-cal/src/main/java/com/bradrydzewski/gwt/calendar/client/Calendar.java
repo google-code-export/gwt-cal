@@ -42,6 +42,8 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
      */
     private MonthView monthView = null;
 
+    private CalendarViews selectedView = null;
+    
     /**
      * Constructs a <code>Calendar</code> with the DayView currently
      * displayed.
@@ -115,15 +117,21 @@ public class Calendar extends CalendarWidget implements RequiresResize, Provides
 				break;
             }
         }
+        
+        selectedView = view;
     }
     
-
-    
+    /**
+     * Gets the current view of this calendar.
+     * @return Current view
+     */
+    public CalendarViews getCalendarView() {
+    	return selectedView;
+    }
     
 	public void onResize() {
 		resizeTimer.schedule(500);
 	}
-	
     
     private Timer resizeTimer = new Timer() {
     	/**
