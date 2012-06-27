@@ -4,6 +4,12 @@
 
   * Available in public Maven repository
   * Added support for ISO Weeks
+  * Added support to specify a list of Holidays
+  * Added support to specify the day starting time.
+  * Option to hide the multi day view section
+  * Option to define if should show the NoonLabel or 12:00
+  * Added multiple locales (Thanks to Dennis Foster)
+  * Some API improvements
   * See the full list of enhancements and issues [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9.4 here]
 
 === Version 0.9.3 (January 7, 2012) ===
