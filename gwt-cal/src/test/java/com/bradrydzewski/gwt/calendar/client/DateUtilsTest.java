@@ -230,4 +230,19 @@ public class DateUtilsTest {
       return dateFormatter.parse(dateString);
    }
 
+   @Test
+   public void testDaysInMonth() throws Exception {
+	   Date jan = date("01/01/2009");
+	   assertEquals(31, DateUtils.daysInMonth(jan));
+	   
+	   Date feb = date("02/01/2009");
+	   assertEquals(28, DateUtils.daysInMonth(feb));
+	   
+	   Date feb2 = date("02/01/2012");
+	   assertEquals(29, DateUtils.daysInMonth(feb2));
+	   
+	   Date nov = date("11/01/2009");
+	   assertEquals(30, DateUtils.daysInMonth(nov));
+
+   }
 }

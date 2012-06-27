@@ -28,8 +28,15 @@ import java.util.Date;
  */
 public class DateUtils {
 
-   public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
-
+	/**
+	 * Number of milliseconds in a day.
+	 */
+	public static final long MILLIS_IN_A_DAY = 1000 * 60 * 60 * 24;
+	/**
+	 * Defines the Number of Days in a Week.
+	 */
+	public static final int DAYS_IN_A_WEEK = 7;
+	
    private static int dayStartsAt = 0;
    
    public static void setDayStartsAt(int start) {
@@ -326,5 +333,73 @@ public class DateUtils {
 
 		return cw.intValue();
 	}
+	
+	/**
+	 * Adds or subtracts the specified amount of days for the given Date.
+	 * 
+	 * @param date
+	 *            A point in time
+	 * @param days
+	 *            Number of days to add or substract
+	 * @return A new object <em>days</em> after to the passed <code>date</code>
+	 */
+	public static Date addDays(final Date date, final int days) {
+		return new Date(date.getTime() + (days * MILLIS_IN_A_DAY));
+	}
+	
+	/**
+	 * Adds or subtracts the specified amount of weeks for the given Date.
+	 * 
+	 * @param date
+	 *            A point in time
+	 * @param weeks
+	 *            Number of weeks to add or substract
+	 * @return A new object <em>weeks</em> after to the passed <code>date</code>
+	 */
+	public static Date addWeeks(final Date date, final int weeks) {
+		return new Date(date.getTime() + (weeks * (MILLIS_IN_A_DAY * DAYS_IN_A_WEEK)));
+	}
    
+	/**
+	 * Adds or subtracts the specified amount of months for the given Date.
+	 * 
+	 * @param date
+	 *            A point in time
+	 * @param months
+	 *            Number of months to add or substract
+	 * @return A new object <em>weeks</em> after to the passed <code>date</code>
+	 */
+	public static Date addMonths(final Date date, final int months) {
+		return new Date(date.getTime() + (months * (MILLIS_IN_A_DAY * DAYS_IN_A_WEEK)));
+	}
+	
+	/**
+	 * Returns the total number of days between <code>start</code> and
+	 * <code>end</code>. The calculation is rounded to take in account
+	 * the saving day calculation.
+	 * 
+	 * @param start
+	 *            The first day in the period
+	 * @param end
+	 *            The last day in the period
+	 * @return The number of days between <code>start</code> and
+	 *         <code>end</code>, the minimum difference being one (
+	 *         <code>1</code>)
+	 */
+	public static int daysInPeriod(final Date start, final Date end) {
+		long diff = end.getTime() - start.getTime();
+		double days = ((double)diff / MILLIS_IN_A_DAY) + 1;
+
+		Long result = Math.round(days);
+		return result.intValue();
+	}
+
+	/**
+	 * Calculates the amount of days in the month the
+	 * @param day
+	 * @return
+	 */
+	public static int daysInMonth(final Date date) {
+		return 32 - new Date(date.getYear(), date.getMonth(), 32).getDate();	
+	}
 }
