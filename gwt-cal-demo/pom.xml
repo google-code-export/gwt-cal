@@ -30,6 +30,12 @@
 			<version>${gwt.version}</version>
 			<scope>provided</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-dev</artifactId>
+			<version>${gwt.version}</version>
+			<scope>provided</scope>
+		</dependency>		
 	</dependencies>
 
 	<build>
@@ -72,6 +78,19 @@
 					<webXml>${basedir}/war/WEB-INF/web.xml</webXml>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<buildOutputDirectory>${basedir}/war/WEB-INF/classes</buildOutputDirectory>
+					<additionalProjectnatures>
+					    <projectnature>org.eclipse.jdt.core.javanature</projectnature>
+					    <projectnature>org.eclipse.wst.common.project.facet.core.nature</projectnature>
+					    <projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+					</additionalProjectnatures>
+				</configuration>
+			</plugin>			
 		</plugins>
 		<resources>
 			<resource>
