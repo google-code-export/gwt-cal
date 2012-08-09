@@ -147,12 +147,11 @@ public class GoogleCalendarPanel extends FlowPanel {
     @SuppressWarnings("deprecation")
     private void configureCalendar() {
     	
-    	
         // change hour offset to false to facilitate google style
         settings.setOffsetHourLabels(false);
         settings.setEnableDragDrop(true);
         settings.setEnableDragDropCreation(true);
-        settings.setTimeBlockClickNumber(Click.None);
+        settings.setTimeBlockClickNumber(Click.Drag);
     	
         calendar = new Calendar();
         calendar.setSettings(settings);
