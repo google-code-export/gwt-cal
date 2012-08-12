@@ -31,12 +31,12 @@ import java.util.Map;
  * following appointments:
  * <ul>
  * <li>10:00 - 10:30, where start / end are same as time block</li>
- * <li>9:00 - 10:30, where appointment start before and ends at
- * same time as tiem block</li>
+ * <li>9:00 - 10:30, where the appointment starts before the time block
+ * starts but ends at same time as time block</li>
  * <li>9:00 - 10:20, where appointment start before
  * and ends after start of time block</li>
  * <li>9:00 - 11:00, where appointment starts before and ends after the time
- * block</li>
+ * block does</li>
  * <li>10:05 - 10:25, where appointment starts after but ends before the
  * time block</li> </ul></p> 
  * Above

@@ -150,61 +150,56 @@ public abstract class CalendarView implements HasSettings, HasWeekSelectionHandl
     public abstract void onMouseOver(Element element, Event event);
     
     /**
-     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DELETE}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DELETE}
      * keystrokes.
      */
     public void onDeleteKeyPressed() {
     }
 
     /**
-     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_UP}
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_UP}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_UP} keystrokes.
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_UP} keystrokes.
      */
     public void onUpArrowKeyPressed() {
     }
 
     /**
-     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DOWN}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DOWN}
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DOWN}
      * keystrokes.
      */
     public void onDownArrowKeyPressed() {
     }
 
     /**
-     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_LEFT}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_LEFT}
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_LEFT}
      * keystrokes.
      */
     public void onLeftArrowKeyPressed() {
     }
 
     /**
-     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
+     * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_RIGHT}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes.KEY_RIGHT}
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_RIGHT}
      * keystrokes.
      */
     public void onRightArrowKeyPressed() {
     }
 
-    /* appointment */
     public abstract void onAppointmentSelected(Appointment appt);
     
-    //public abstract void onAppointmentUpdated(Appointment oldAppt, Appointment newAppt);
-    
-    //public abstract void onAppointmentDeleted(Appointment appt);
-
     public final void selectAppointment(Appointment appt) {
         calendarWidget.setSelectedAppointment(appt, true);
     }
@@ -249,31 +244,6 @@ public abstract class CalendarView implements HasSettings, HasWeekSelectionHandl
 		calendarWidget.setSettings(settings);
 	}
 
-//    /* loading and unloading of view */
-//    onLoad()
-//    onUnload()
-//
-//    /* size */
-//    onResize()
-//    onLayout()
-//
-//    /* widget */
-//    onParentSizeChanged()
-//    onParentWidthChanged()
-//    onParentHeightChanged()
-//
-//    getParent()
-//    getDate()
-//    getDays()
-    
-//    public final void setRollbackAppointment(Appointment appt) {
-//    	calendarWidget.setRollbackAppointment(appt);
-//    }
-//
-//    public final void setCommittedAppointment(Appointment appt) {
-//    	calendarWidget.setCommittedAppointment(appt);
-//    }
-	
 	protected void addDayClickHandler(final Label dayLabel, final Date day) {
 		dayLabel.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {

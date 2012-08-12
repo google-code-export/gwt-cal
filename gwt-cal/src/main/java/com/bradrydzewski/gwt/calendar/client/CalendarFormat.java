@@ -185,7 +185,7 @@ final public class CalendarFormat {
     *
     * @param hourLabels The labels to be used as labels for the hours of the
     *                   day.
-    * @throws IllegalArgumentException If the <code>hourLabes</code> array is
+    * @throws IllegalArgumentException If the <code>hourLabels</code> array is
     *                                  <code>null</code>, does not have 24
     *                                  elements, or any of the elements is
     *                                  <code>null</code>
@@ -208,22 +208,6 @@ final public class CalendarFormat {
     * Default logic to generate the labels for the hours.
     */
    private void generateHourLabels() {
-//      Date date = new Date();
-//      DateTimeFormat shortTimeFormat = DateTimeFormat.getShortTimeFormat();
-//      date.setHours(12);
-//      date.setMinutes(0);
-//      String hour = shortTimeFormat.format(date);
-//      String hourFormat = "h";
-//
-//      if (!hour.equals("12:00 DEFAULT_PM_LABEL")) {
-//         noon = hour;
-//         am = "";
-//         pm = "";
-//         hourFormat = shortTimeFormat.getPattern();
-//      }
-//
-//      shortTimeFormat = DateTimeFormat.getFormat(hourFormat);
-
 	   Date date = new Date();
 	   date.setHours(0);
 	   date.setMinutes(0);

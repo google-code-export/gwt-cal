@@ -27,12 +27,13 @@ import com.bradrydzewski.gwt.calendar.client.Appointment;
 
 /**
  * The Appointment Adapter is used to track the layout of an
- * AppointmentInterface. It adds additional fields required to
+ * {@link Appointment}. It adds additional fields required to
  * calculate layout that are used by the Layout Strategy classes.
  * 
  * This adapter allows us to keep these fields outside of the
- * main AppointmentInterface and implementations hiding
- * the layout complexity from the user.
+ * {@link Appointment} class and keep the layout computations' complexity
+ * away from the user.
+ *
  * @author Brad Rydzewski
  */
 public class AppointmentAdapter {
@@ -52,8 +53,6 @@ public class AppointmentAdapter {
     private float width;
     private float height;
 
-    
-    
     public float getTop() {
 		return top;
 	}
