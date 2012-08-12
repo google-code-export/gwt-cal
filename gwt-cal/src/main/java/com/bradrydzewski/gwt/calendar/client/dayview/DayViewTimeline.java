@@ -26,32 +26,17 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 
-public /**
-         * The Timeline Class is a sequential display of the hours in a day. Each
-         * hour label should visually line up to a cell in the DayGrid.
-         * 
-         * @author Brad
-         */
-        class DayViewTimeline extends Composite {
+/**
+ * A sequential display of the hours in a day. Each
+ * hour label should visually line up to a cell in the DayGrid.
+ *
+ * @author Brad Rydzewski
+ */
+public class DayViewTimeline extends Composite {
 
-    //private static final int MINUTES_PER_HOUR = 60;
-    private static final int HOURS_PER_DAY = 24;
-//	private int intervalsPerHour = settings.getIntervalsPerHour();//2; //30 minute intervals
-//	private float intervalSize = settings.getPixelsPerInterval();//25f; //25 pixels per interval
     private AbsolutePanel timelinePanel = new AbsolutePanel();
     private HasSettings settings = null;
     private static final String TIME_LABEL_STYLE = "hour-label";
-//    private final String[] HOURS = new String[]{"12 DEFAULT_AM_LABEL", "1 DEFAULT_AM_LABEL", "2 DEFAULT_AM_LABEL", "3 DEFAULT_AM_LABEL",
-//        "4 DEFAULT_AM_LABEL", "5 DEFAULT_AM_LABEL", "6 DEFAULT_AM_LABEL", "7 DEFAULT_AM_LABEL", "8 DEFAULT_AM_LABEL", "9 DEFAULT_AM_LABEL", "10 DEFAULT_AM_LABEL",
-//        "11 DEFAULT_AM_LABEL", "Noon", "1 DEFAULT_PM_LABEL", "2 DEFAULT_PM_LABEL", "3 DEFAULT_PM_LABEL", "4 DEFAULT_PM_LABEL", "5 DEFAULT_PM_LABEL",
-//        "6 DEFAULT_PM_LABEL", "7 DEFAULT_PM_LABEL", "8 DEFAULT_PM_LABEL", "9 DEFAULT_PM_LABEL", "10 DEFAULT_PM_LABEL", "11 DEFAULT_PM_LABEL"
-//    };
-//    private final String[] HOURS = new String[]{"12", "1", "2", "3",
-//        "4", "5", "6", "7", "8", "9", "10",
-//        "11", "Noon", "1", "2", "3", "4", "5",
-//        "6", "7", "8", "9", "10", "11"};
-//    private final String DEFAULT_AM_LABEL = " DEFAULT_AM_LABEL";
-//    private final String DEFAULT_PM_LABEL = " DEFAULT_PM_LABEL";
 
     public DayViewTimeline(HasSettings settings) {
         initWidget(timelinePanel);
@@ -60,38 +45,29 @@ public /**
         prepare();
     }
 
-    final public void prepare() {
+    public final void prepare() {
         timelinePanel.clear();
-		float labelHeight = settings.getSettings().getIntervalsPerHour()
-				* settings.getSettings().getPixelsPerInterval();
-        //float timeineHeight = labelHeight * HOURS_PER_DAY;
-        //this.setHeight(timeineHeight+"px");
-
-
+        float labelHeight = settings.getSettings().getIntervalsPerHour()
+                * settings.getSettings().getPixelsPerInterval();
 
         int i = 0;
         if (settings.getSettings().isOffsetHourLabels()) {
-
             i = 1;
             SimplePanel sp = new SimplePanel();
             sp.setHeight((labelHeight / 2) + "px");
             timelinePanel.add(sp);
         }
 
-        //boolean includeAMPM = !CalendarFormat.INSTANCE.getAm().equals("");
-        
-		int dayStartsAt = settings.getSettings().getDayStartsAt();
-        
+        int dayStartsAt = settings.getSettings().getDayStartsAt();
+
         while (i < CalendarFormat.HOURS_IN_DAY) {
-
-
-			int index = i + dayStartsAt;
-			if (index >= CalendarFormat.HOURS_IN_DAY) {
-				index = index - CalendarFormat.HOURS_IN_DAY;
-			}
-			String hour = CalendarFormat.INSTANCE.getHourLabels()[index];
-			index++;
-			i++;
+            int index = i + dayStartsAt;
+            if (index >= CalendarFormat.HOURS_IN_DAY) {
+                index = index - CalendarFormat.HOURS_IN_DAY;
+            }
+            String hour = CalendarFormat.INSTANCE.getHourLabels()[index];
+            index++;
+            i++;
 
             //block
             SimplePanel hourWrapper = new SimplePanel();
@@ -100,33 +76,32 @@ public /**
 
             FlowPanel flowPanel = new FlowPanel();
             flowPanel.setStyleName("hour-layout");
-            
+
             String amPm = " ";
 
-			if (index < 13)
+            if (index < 13)
                 amPm += CalendarFormat.INSTANCE.getAm();
-			else if (index > 13)
+            else if (index > 13)
                 amPm += CalendarFormat.INSTANCE.getPm();
             else {
-				if (CalendarFormat.INSTANCE.isUseNoonLabel()) {
-					hour = CalendarFormat.INSTANCE.getNoon();
-					amPm = "";
-				} else {
-					amPm += CalendarFormat.INSTANCE.getPm();
-				}
-			}
-            
+                if (CalendarFormat.INSTANCE.isUseNoonLabel()) {
+                    hour = CalendarFormat.INSTANCE.getNoon();
+                    amPm = "";
+                } else {
+                    amPm += CalendarFormat.INSTANCE.getPm();
+                }
+            }
+
             Label hourLabel = new Label(hour);
             hourLabel.setStylePrimaryName("hour-text");
             flowPanel.add(hourLabel);
-            
-            Label ampmLabel = new Label(amPm);
-            ampmLabel.setStylePrimaryName("ampm-text");
-            //if(includeAMPM)
-            	flowPanel.add(ampmLabel);
+
+            Label amPmLabel = new Label(amPm);
+            amPmLabel.setStylePrimaryName("ampm-text");
+            flowPanel.add(amPmLabel);
 
             hourWrapper.add(flowPanel);
-            
+
             timelinePanel.add(hourWrapper);
         }
     }

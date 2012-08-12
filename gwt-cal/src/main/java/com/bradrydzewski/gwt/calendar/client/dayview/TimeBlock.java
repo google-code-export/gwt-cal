@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * Represents a block of time that contains one or many Appointments. An example
  * of a timeblock could be 10am - 10:30 am, where a block of time is 30 minutes.
@@ -38,7 +37,7 @@ import java.util.Map;
  * <li>9:00 - 11:00, where appointment starts before and ends after the time
  * block does</li>
  * <li>10:05 - 10:25, where appointment starts after but ends before the
- * time block</li> </ul></p> 
+ * time block</li> </ul></p>
  * Above
  * are example use cases of a time block and how it relates to an appointment.
  * Note that an appointment can intersect with one ore many time blocks. This
@@ -47,109 +46,103 @@ import java.util.Map;
  * itself.
  *
  * @author Brad Rydzewski
- * @version 1.0 6/07/09
- * @since 1.0
  */
 public class TimeBlock {
+    private List<AppointmentAdapter> appointments = new ArrayList<AppointmentAdapter>();
+    private Map<Integer, Integer> occupiedColumns = new HashMap<Integer, Integer>();
+    private int totalColumns = 1;
+    private int order;
+    private String name;
+    private int start;
+    private int end;
+    private float top;
+    private float bottom;
 
-   private List<AppointmentAdapter> appointments =
-      new ArrayList<AppointmentAdapter>();
-   private Map<Integer, Integer> occupiedColumns = new HashMap<Integer, Integer>();
-   private int totalColumns = 1;
-   private int order;
-   private String name;
-   private int start;
-   private int end;
-   private float top;
-   private float bottom;
+    public List<AppointmentAdapter> getAppointments() {
+        return appointments;
+    }
 
-   public List<AppointmentAdapter> getAppointments() {
-      return appointments;
-   }
+    public Map<Integer, Integer> getOccupiedColumns() {
+        return occupiedColumns;
+    }
 
-   public Map<Integer, Integer> getOccupiedColumns() {
-      return occupiedColumns;
-   }
+    public int getFirstAvailableColumn() {
+        int col = 0;
+        while (true) {
+            if (occupiedColumns.containsKey(col))
+                col++;
+            else return col;
+        }
+    }
 
-   public int getFirstAvailableColumn() {
+    public int getTotalColumns() {
+        return totalColumns;
+    }
 
-      int col = 0;
-      while (true) {
-         if (occupiedColumns.containsKey(col))
-            col++;
-         else return col;
-      }
-   }
+    public void setTotalColumns(int totalColumns) {
+        this.totalColumns = totalColumns;
+    }
 
-   public int getTotalColumns() {
-      return totalColumns;
-   }
+    public String getName() {
+        return name;
+    }
 
-   public void setTotalColumns(int totalColumns) {
-      this.totalColumns = totalColumns;
-   }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-   public String getName() {
-      return name;
-   }
+    public int getOrder() {
+        return order;
+    }
 
-   public void setName(String name) {
-      this.name = name;
-   }
+    public void setOrder(int order) {
+        this.order = order;
+    }
 
-   public int getOrder() {
-      return order;
-   }
+    public int getEnd() {
+        return end;
+    }
 
-   public void setOrder(int order) {
-      this.order = order;
-   }
+    public void setEnd(int end) {
+        this.end = end;
+    }
 
-   public int getEnd() {
-      return end;
-   }
+    public int getStart() {
+        return start;
+    }
 
-   public void setEnd(int end) {
-      this.end = end;
-   }
+    public void setStart(int start) {
+        this.start = start;
+    }
 
-   public int getStart() {
-      return start;
-   }
+    public float getBottom() {
+        return bottom;
+    }
 
-   public void setStart(int start) {
-      this.start = start;
-   }
+    public void setBottom(float bottom) {
+        this.bottom = bottom;
+    }
 
-   public float getBottom() {
-      return bottom;
-   }
+    public float getTop() {
+        return top;
+    }
 
-   public void setBottom(float bottom) {
-      this.bottom = bottom;
-   }
+    public void setTop(float top) {
+        this.top = top;
+    }
 
-   public float getTop() {
-      return top;
-   }
+    public boolean intersectsWith(int apptStart, int apptEnd) {
+        //scenario 1: start date of appt between start and end of block
+        if (apptStart >= this.getStart() && apptStart < this.getEnd())
+            return true;
 
-   public void setTop(float top) {
-      this.top = top;
-   }
+        //scenario 2: end date of appt > block start date &
+        //  start date of appt before block start date
+        return apptEnd > this.getStart() && apptStart < this.getStart();
+    }
 
-   public boolean intersectsWith(int apptStart, int apptEnd) {
-
-      //scenario 1: start date of appt between start and end of block
-      if (apptStart >= this.getStart() && apptStart < this.getEnd())
-         return true;
-
-      //scenario 2: end date of appt > block start date &
-      //  start date of appt before block start date
-      return apptEnd > this.getStart() && apptStart < this.getStart();
-   }
-
-   public boolean intersectsWith(AppointmentAdapter appt) {
-      return intersectsWith(appt.getAppointmentStart(),
-                            appt.getAppointmentEnd());
-   }
+    public boolean intersectsWith(AppointmentAdapter appt) {
+        return intersectsWith(appt.getAppointmentStart(),
+                appt.getAppointmentEnd());
+    }
 }

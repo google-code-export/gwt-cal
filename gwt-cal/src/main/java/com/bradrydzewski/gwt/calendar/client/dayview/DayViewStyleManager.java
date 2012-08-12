@@ -40,7 +40,6 @@ public abstract class DayViewStyleManager {
 		// Is MultiDay?
 		boolean multiDay = appointment.isMultiDay() || appointment.isAllDay();
 
-
 		//Lookup the style from the map
 		ThemeAppointmentStyle style = getViewAppointmentStyleForTheme(appointment);
 
@@ -54,7 +53,6 @@ public abstract class DayViewStyleManager {
 		//TODO: need to check for a custom style
 		if(style==null)
 			style =  getDefaultViewAppointmentStyleForTheme();
-
 
 		if (multiDay)
 			DOM.setStyleAttribute(elem, BACKGROUND_COLOR_STYLE_ATTRIBUTE, style.getBackgroundHeader());

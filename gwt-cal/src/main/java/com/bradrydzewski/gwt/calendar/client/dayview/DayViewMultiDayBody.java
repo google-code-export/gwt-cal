@@ -28,6 +28,7 @@ import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.SimplePanel;
 
 /**
+ * A widget to render multi-day appointments in a day view.
  *
  * @author Brad Rydzewski
  */
@@ -49,8 +50,8 @@ public class DayViewMultiDayBody extends Composite {
         this.header.setStyleName("multiDayBody");
         this.setWidth("100%");
 
-        //insert two rows ... first row holds multi-day appointments
-        // second row is just a splitter
+        /* insert two rows ... first row holds multi-day appointments,
+         * second row is just a splitter */
         header.insertRow(0);
         header.insertRow(0);
         //insert 3 cells
@@ -71,7 +72,6 @@ public class DayViewMultiDayBody extends Composite {
         header.getCellFormatter().setWidth(0, 2,
                 WindowUtils.getScrollBarWidth(true) + "px");
 
-
         //default grid to 50px height
         grid.setHeight("30px");
 
@@ -91,15 +91,12 @@ public class DayViewMultiDayBody extends Composite {
         float dayLeft;
 
         for (int day = 0; day < days; day++) {
-
             dayLeft = dayWidth * day;
-
             SimplePanel dayPanel = new SimplePanel();
             dayPanel.setStyleName("day-separator");
             grid.add(dayPanel);
             DOM.setStyleAttribute(dayPanel.getElement(), "left", dayLeft + "%");
         }
-
 
         gridOverlay.setHeight("100%");
         gridOverlay.setWidth("100%");
