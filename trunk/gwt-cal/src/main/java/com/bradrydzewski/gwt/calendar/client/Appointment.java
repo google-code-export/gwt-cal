@@ -95,7 +95,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * Sets the unique identifier of this <code>Appointment</code>. This
 	 * identifier is optional.
 	 * 
-	 * @param id
+	 * @param id Arbitrary string to uniquely identify the appointment.
 	 */
 	public void setId(final String id) {
 		this.id = id;

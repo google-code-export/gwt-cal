@@ -26,11 +26,6 @@ import com.google.gwt.user.client.ui.RequiresResize;
 
 public class Calendar extends CalendarWidget implements RequiresResize, ProvidesResize {
 
-    /**
-     * The component to manage the presentation of appointments as a list.
-     */
-    //private AgendaView agendaView = null;
-
 	/**
      * The component to manage the presentation of appointments in a single day
      * layout.
