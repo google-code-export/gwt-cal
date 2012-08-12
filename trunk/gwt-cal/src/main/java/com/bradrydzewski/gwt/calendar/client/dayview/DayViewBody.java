@@ -81,10 +81,7 @@ public class DayViewBody extends Composite {
       layout.getCellFormatter().setVerticalAlignment(0, 0, valign);
       layout.getCellFormatter().setVerticalAlignment(0, 1, valign);
 
-      // grid.build(8, 17, 1);
       grid.setStyleName("gwt-appointment-panel");
-      // timeline.prepare();
-
 
       //TODO: use CSS to set table layout
       layout.getCellFormatter().setWidth(0, 0, "50px");

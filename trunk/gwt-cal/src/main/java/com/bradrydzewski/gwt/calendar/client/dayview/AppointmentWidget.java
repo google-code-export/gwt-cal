@@ -43,11 +43,9 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AppointmentWidget extends FlowPanel {
 
-
    class Div extends ComplexPanel implements HasAllMouseHandlers {
 
       public Div() {
-
          setElement(DOM.createDiv());
       }
 
@@ -90,7 +88,6 @@ public class AppointmentWidget extends FlowPanel {
    private float left;
    private float width;
    private float height;
-   //private AbsolutePanel mainPanel = new AbsolutePanel();
    private Widget headerPanel = new Div();
    private Panel bodyPanel = new SimplePanel();
    private Widget footerPanel = new Div();
@@ -100,9 +97,6 @@ public class AppointmentWidget extends FlowPanel {
    private Appointment appointment;
 
    public AppointmentWidget() {
-
-      //initWidget(mainPanel);
-
       this.setStylePrimaryName("gwt-appointment");
       headerPanel.setStylePrimaryName("header");
       bodyPanel.setStylePrimaryName("body");
@@ -115,9 +109,6 @@ public class AppointmentWidget extends FlowPanel {
       this.add(footerPanel);
       this.add(timelinePanel);
       timelinePanel.add(timelineFillPanel);
-      // DOM.setStyleAttribute(footerPanel.getElement(), "height", "1px");
-      // DOM.setStyleAttribute(footerPanel.getElement(), "overvlow",
-      // "hidden");
       DOM.setStyleAttribute(this.getElement(), "position", "absolute");
    }
    
@@ -148,7 +139,6 @@ public class AppointmentWidget extends FlowPanel {
    public boolean isSelected() {
       return selected;
    }
-
 
    public float getTop() {
       return top;
@@ -248,75 +238,4 @@ public class AppointmentWidget extends FlowPanel {
     	  this.remove(footerPanel);
       }
    }
-
-   
-
-//   public void setSelected1(boolean selected) {
-//
-//      // set selected
-//      this.selected = selected;
-//
-//      // remove selected style (if exists)
-//      this.removeStyleDependentName("selected");
-//
-//      // if selected, add the selected style
-//      if (selected) {
-//         this.addStyleDependentName("selected");
-//      }
-//
-//      if (multiDay)
-//         return;
-//
-//      if (selected && this.getAppointment().getAppointmentStyle()
-//         .getSelectedBackgroundImage() != null) {
-//         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "url(" +
-//            this.getAppointment().getAppointmentStyle()
-//               .getSelectedBackgroundImage() + ")");
-//
-//      } else {
-//         DOM.setStyleAttribute(this.getElement(), "backgroundImage", "none");
-////         System.out.println("set bg image to none");
-//      }
-//   }
-//   
-//   public void setAppointmentStyle1(AppointmentStyle style) {
-//
-//      if (appointment.getAppointmentStyle() != null) {
-//         if (multiDay)
-//            DOM.setStyleAttribute(
-//               getElement(), "backgroundColor",
-//               appointment.getAppointmentStyle().getBackgroundHeader());
-//         else
-//            DOM.setStyleAttribute(
-//               getElement(), "backgroundColor",
-//               appointment.getAppointmentStyle().getBackground());
-//
-//         DOM.setStyleAttribute(
-//            getElement(), "borderColor",
-//            appointment.getAppointmentStyle().getBackgroundHeader());
-//
-//         DOM.setStyleAttribute(
-//            bodyPanel.getElement(), "color",
-//            appointment.getAppointmentStyle().getSelectedBorder());
-//
-//         DOM.setStyleAttribute(
-//            headerPanel.getElement(), "color",
-//            appointment.getAppointmentStyle().getHeaderText());
-//
-//         DOM.setStyleAttribute(
-//            headerPanel.getElement(), "backgroundColor",
-//            appointment.getAppointmentStyle().getBackgroundHeader());
-//
-//         if (multiDay)
-//            return;
-//
-//         if (selected && style.getSelectedBackgroundImage() != null) {
-//            DOM.setStyleAttribute(
-//               getElement(), "backgroundImage",
-//               "url(" + style.getSelectedBackgroundImage() + ")");
-//         } else {
-//            DOM.setStyleAttribute(getElement(), "backgroundImage", "none");
-//         }
-//      }
-//   }
 }
