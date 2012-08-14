@@ -124,6 +124,10 @@ public class MonthLayoutDescription {
       int daysInMonthGrid = weeks * 7;
       Date endDate = (Date) startDate.clone();
       endDate.setDate(endDate.getDate() + daysInMonthGrid - 1);
+      // fix for issue 164: The endDate is at the end of the day
+      endDate.setHours(23);
+      endDate.setMinutes(59);
+      endDate.setSeconds(59);
       return endDate;
    }
 
