@@ -245,7 +245,7 @@ public class DayView extends CalendarView {
 		if (appointment != null) {
         	selectAppointment(appointment);
         } else if ((getSettings().getTimeBlockClickNumber() == Click.Single
-				|| getSettings().isEnableDragDropCreation())
+				|| getSettings().getTimeBlockClickNumber() == Click.Drag)
 				&& element == dayViewBody.getGrid().gridOverlay
 				.getElement()) {
 			int x = DOM.eventGetClientX(event);
