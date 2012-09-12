@@ -34,7 +34,6 @@ public class CalendarSettings {
     private boolean enableDragDrop = true;
     private boolean offsetHourLabels = false;
     private boolean showWeekNumbers = false;
-    private boolean dragDropCreation = true;
     private boolean showMultiDay = true;
     private List<Date> holidays = new ArrayList<Date>();
 	private int dayStartsAt = 0;
@@ -111,16 +110,20 @@ public class CalendarSettings {
         this.timeBlockClickNumber = timeBlockClickNumber;
     }
     
+    /**
+     * @deprecated  As of release 0.9.4 removed since is not really needed
+     */
+    @Deprecated
     public void setEnableDragDropCreation(final boolean dragDropCreation) {
-    	this.dragDropCreation = dragDropCreation;
+    	
     }
 
     /**
-     * @deprecated  As of release 0.9.4, replaced by {@link #isEnableDragDropCreation()}
+     * @deprecated  As of release 0.9.4 removed since is not really needed
      */
     @Deprecated
     public boolean getEnableDragDropCreation() {
-    	return dragDropCreation;
+    	return false;
     }
     
     public void setDayStartsAt(int dayStartsAt) {
@@ -132,10 +135,6 @@ public class CalendarSettings {
 		return dayStartsAt;
 	}
 
-    public boolean isEnableDragDropCreation() {
-    	return dragDropCreation;
-    }
-    
     /**
      * 
      * @param showWeekNumbers
