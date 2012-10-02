@@ -133,7 +133,7 @@ public class Appointment implements Comparable<Appointment>, Serializable {
 	 * Sets the end time-stamp of this <code>Appointment</code>.
 	 * 
 	 * @param end
-	 *            A date object with the date and time this appointment starts
+	 *            A date object with the date and time this appointment ends on
 	 */
 	public void setEnd(final Date end) {
 		this.end = end;
