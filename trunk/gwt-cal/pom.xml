@@ -22,8 +22,9 @@
 	<properties>
 		<gwt.version>2.4.0</gwt.version>
 		<gwt-dnd.version>3.1.2</gwt-dnd.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-
+	
 	<licenses>
 		<license>
 			<name>GNU General Public License v3</name>

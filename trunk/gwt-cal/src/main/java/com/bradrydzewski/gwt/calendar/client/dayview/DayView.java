@@ -442,7 +442,7 @@ public class DayView extends CalendarView {
 		int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
 		int top = dayViewBody.getScrollPanel().getAbsoluteTop();
 		int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
-		int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
+		int scrollOffset = dayViewBody.getScrollPanel().getVerticalScrollPosition();
 
 		// x & y are based on screen position,need to get x/y relative to
 		// component
@@ -467,12 +467,11 @@ public class DayView extends CalendarView {
 		return newStartDate;
 	}
 	
-	@SuppressWarnings("deprecation")
 	private void timeBlockClick(int x, int y) {		
 		int left = dayViewBody.getGrid().gridOverlay.getAbsoluteLeft();
 		int top = dayViewBody.getScrollPanel().getAbsoluteTop();
 		int width = dayViewBody.getGrid().gridOverlay.getOffsetWidth();
-		int scrollOffset = dayViewBody.getScrollPanel().getScrollPosition();
+		int scrollOffset = dayViewBody.getScrollPanel().getVerticalScrollPosition();
 		
 		// x & y are based on screen position,need to get x/y relative to
 		// component
