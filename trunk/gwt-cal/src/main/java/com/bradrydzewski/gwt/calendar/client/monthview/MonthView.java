@@ -47,6 +47,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.HasVerticalAlignment;
@@ -450,8 +451,8 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
 	}
 
 	private void dayClicked(Event event) {
-		int y = event.getClientY() - DOM.getAbsoluteTop(appointmentCanvas.getElement());
-		int x = event.getClientX() - DOM.getAbsoluteLeft(appointmentCanvas.getElement());
+		int y = event.getClientY() + Window.getScrollTop() - DOM.getAbsoluteTop(appointmentCanvas.getElement());
+		int x = event.getClientX() + Window.getScrollLeft() - DOM.getAbsoluteLeft(appointmentCanvas.getElement());
 
 		int row = (int) Math.floor(y / (appointmentCanvas.getOffsetHeight() / monthViewRequiredRows));
 		int col = (int) Math.floor(x / (appointmentCanvas.getOffsetWidth() / DAYS_IN_A_WEEK));
