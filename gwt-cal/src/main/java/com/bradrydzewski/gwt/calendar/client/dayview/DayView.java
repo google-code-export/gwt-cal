@@ -44,6 +44,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Window;
 
 public class DayView extends CalendarView {
 
@@ -227,8 +228,8 @@ public class DayView extends CalendarView {
 			// exit out
 		} else if (getSettings().getTimeBlockClickNumber() == Click.Double
 				&& element == dayViewBody.getGrid().gridOverlay.getElement()) {
-			int x = DOM.eventGetClientX(event);
-			int y = DOM.eventGetClientY(event);
+			int x = DOM.eventGetClientX(event) + Window.getScrollLeft();
+			int y = DOM.eventGetClientY(event) + Window.getScrollTop();
 			timeBlockClick(x, y);
 		}
 	}
@@ -248,8 +249,8 @@ public class DayView extends CalendarView {
 				|| getSettings().getTimeBlockClickNumber() == Click.Drag)
 				&& element == dayViewBody.getGrid().gridOverlay
 				.getElement()) {
-			int x = DOM.eventGetClientX(event);
-			int y = DOM.eventGetClientY(event);
+			int x = DOM.eventGetClientX(event) + Window.getScrollLeft();
+			int y = DOM.eventGetClientY(event) + Window.getScrollTop();
 			timeBlockClick(x, y);
 		}
 	}
