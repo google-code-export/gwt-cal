@@ -284,7 +284,7 @@
 .gwt-cal .dv-appointment-multiday-selected .body {
 	padding-left: 8px;
 	padding-top: 1px;
-	white-space: wrap;
+	white-space: normal;
 }
 
 .gwt-cal .dv-appointment .footer,
