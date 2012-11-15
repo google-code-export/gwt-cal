@@ -97,6 +97,7 @@ public abstract class InteractiveWidget extends Composite {
      * Makes the widget's focus panel invisible.
      */
     private void hideFocusPanel() {
+/*
         focusPanel.setVisible(false);
         RootPanel.get().add(focusPanel);
         DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
@@ -104,6 +105,13 @@ public abstract class InteractiveWidget extends Composite {
         DOM.setStyleAttribute(focusPanel.getElement(), "left", "0");
         DOM.setStyleAttribute(focusPanel.getElement(), "height", "100%");
         DOM.setStyleAttribute(focusPanel.getElement(), "width", "100%");
+*/
+        RootPanel.get().add(focusPanel);
+        DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
+        DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
+        DOM.setStyleAttribute(focusPanel.getElement(), "height", "0px");
+        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0px");
     }
 
     public ComplexPanel getRootPanel() {
@@ -137,6 +145,7 @@ public abstract class InteractiveWidget extends Composite {
 
     /**
      * Processes {@link com.google.gwt.event.dom.client.KeyCodes.KEY_DELETE}
+     * and {@link com.google.gwt.event.dom.client.KeyCodes.KEY_BACKSPACE}
      * keystrokes. Concrete interactive widgets should provide the component's
      * specific logic.
      */
@@ -215,6 +224,10 @@ public abstract class InteractiveWidget extends Composite {
      */
     protected void keyboardNavigation(int key) {
         switch (key) {
+        	case KeyCodes.KEY_BACKSPACE: {
+                onDeleteKeyPressed();
+                break;        		
+        	}
             case KeyCodes.KEY_DELETE: {
                 onDeleteKeyPressed();
                 break;
