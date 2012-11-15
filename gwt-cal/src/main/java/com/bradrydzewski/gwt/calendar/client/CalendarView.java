@@ -151,10 +151,11 @@ public abstract class CalendarView implements HasSettings, HasWeekSelectionHandl
     
     /**
      * Processes user {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DELETE}
+     * and {@link com.google.gwt.event.dom.client.KeyCodes.KEY_BACKSPACE}
      * keystrokes. The <code>CalendarView</code> implementation is empty so that
      * subclasses are not forced to implement it if no specific logic is needed
-     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DELETE}
-     * keystrokes.
+     * for {@link com.google.gwt.event.dom.client.KeyCodes#KEY_DELETE} or
+     * {@link com.google.gwt.event.dom.client.KeyCodes#KEY_BACKSPACE} keystrokes.
      */
     public void onDeleteKeyPressed() {
     }
