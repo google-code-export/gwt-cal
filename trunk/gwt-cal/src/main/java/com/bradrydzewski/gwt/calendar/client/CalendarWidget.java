@@ -56,10 +56,12 @@ import com.google.gwt.user.client.ui.Widget;
  * that maintains a calendar model (a set of {@link Appointment} objects)
  * managed through an {@link AppointmentManager}.
  * <p/>
- * TODO: Need Calendar "View" - CHECK TODO: Need CalendarSettings TODO: Need
- * LayoutStrategy - CHECK TODO: Need DragDropStrategy TODO: Need ResizeStrategy
- * ??? or is this same as DragDrop TODO: Add AppointmentBuilder ??? downside is
- * that if the Appointment object is updated, need to refersh widget
+ * TODO: Need Calendar "View" - CHECK 
+ * TODO: Need CalendarSettings 
+ * TODO: Need LayoutStrategy - CHECK 
+ * TODO: Need DragDropStrategy 
+ * TODO: Need ResizeStrategy ??? or is this same as DragDrop 
+ * TODO: Add AppointmentBuilder ??? downside is that if the Appointment object is updated, need to refersh widget
  *
  * @author Brad Rydzewski
  * @see com.bradrydzewski.gwt.calendar.client.InteractiveWidget
@@ -345,7 +347,7 @@ public class CalendarWidget extends InteractiveWidget implements
    public void onLoad() {
 	   Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 		public void execute() {
-			doSizing();
+			refresh();
 			}
 	   });
    }
