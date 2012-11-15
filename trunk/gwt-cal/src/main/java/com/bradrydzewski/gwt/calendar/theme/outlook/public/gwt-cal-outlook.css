@@ -177,7 +177,7 @@
 .gwt-cal .gwt-appointment .body {
     padding-left: 8px;
     padding-top: 1px;
-    white-space: wrap;
+    white-space: normal;
 }
 
 .gwt-cal .gwt-appointment .footer {
