@@ -97,21 +97,15 @@ public abstract class InteractiveWidget extends Composite {
      * Makes the widget's focus panel invisible.
      */
     private void hideFocusPanel() {
-/*
-        focusPanel.setVisible(false);
+    	/*
+    	 * Careful: Seems that making the focusPanel too big is blocking the keyevents
+    	 */
         RootPanel.get().add(focusPanel);
         DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
         DOM.setStyleAttribute(focusPanel.getElement(), "top", "0");
-        DOM.setStyleAttribute(focusPanel.getElement(), "left", "0");
-        DOM.setStyleAttribute(focusPanel.getElement(), "height", "100%");
-        DOM.setStyleAttribute(focusPanel.getElement(), "width", "100%");
-*/
-        RootPanel.get().add(focusPanel);
-        DOM.setStyleAttribute(focusPanel.getElement(), "position", "absolute");
-        DOM.setStyleAttribute(focusPanel.getElement(), "top", "-10");
         DOM.setStyleAttribute(focusPanel.getElement(), "left", "-10");
-        DOM.setStyleAttribute(focusPanel.getElement(), "height", "0px");
-        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0px");
+        DOM.setStyleAttribute(focusPanel.getElement(), "height", "100%");
+        DOM.setStyleAttribute(focusPanel.getElement(), "width", "0");
     }
 
     public ComplexPanel getRootPanel() {
