@@ -10,7 +10,7 @@
 
 	<groupId>com.bradrydzewski</groupId>
 	<artifactId>gwt-cal</artifactId>
-	<version>0.9.4</version>
+	<version>0.9.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>gwt-cal</name>
 	<description>a personal calendar widget similar to iCal, Outlook,
@@ -66,13 +66,13 @@
 	<!-- NOT ALLOWED: When using the Maven Central Repository -->
 	<scm>
 		<connection>
-	    scm:svn:http://gwt-cal.googlecode.com/svn/tags/gwt-cal-0.9.4
+	    scm:svn:http://gwt-cal.googlecode.com/svn/trunk
 	  </connection>
 		<developerConnection>
-	    scm:svn:https://gwt-cal.googlecode.com/svn/tags/gwt-cal-0.9.4
+	    scm:svn:https://gwt-cal.googlecode.com/svn/trunk
 	  </developerConnection>
 		<url>
-	    http://gwt-cal.googlecode.com/svn/tags/gwt-cal-0.9.4
+	    http://gwt-cal.googlecode.com/svn/trunk
 	  </url>
 	</scm>
 
