@@ -5,7 +5,6 @@ import java.util.Date;
 import com.allen_sauer.gwt.dnd.client.AbstractDragController;
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.bradrydzewski.gwt.calendar.client.dayview.AppointmentWidget;
-import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.AbsolutePanel;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -66,7 +65,7 @@ public class DayViewResizeController extends AbstractDragController {
         Date end = (Date)appt.getStart().clone();
         
         //get the "top" location of the appointment widget
-        float topFloat = DOM.getIntStyleAttribute(apptWidget.getElement(), "top");
+        //float topFloat = DOM.getIntStyleAttribute(apptWidget.getElement(), "top");
         
         //get the grid span
         //int intervalStart = Math.round(topFloat / snapSize);
