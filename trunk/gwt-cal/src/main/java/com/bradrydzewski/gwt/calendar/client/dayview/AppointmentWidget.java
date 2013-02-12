@@ -21,6 +21,7 @@ import java.util.Date;
 
 import com.bradrydzewski.gwt.calendar.client.Appointment;
 import com.google.gwt.event.dom.client.HasAllMouseHandlers;
+import com.google.gwt.event.dom.client.HasAllTouchHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -33,6 +34,14 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
+import com.google.gwt.event.dom.client.TouchCancelEvent;
+import com.google.gwt.event.dom.client.TouchCancelHandler;
+import com.google.gwt.event.dom.client.TouchEndEvent;
+import com.google.gwt.event.dom.client.TouchEndHandler;
+import com.google.gwt.event.dom.client.TouchMoveEvent;
+import com.google.gwt.event.dom.client.TouchMoveHandler;
+import com.google.gwt.event.dom.client.TouchStartEvent;
+import com.google.gwt.event.dom.client.TouchStartHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.ComplexPanel;
@@ -43,7 +52,7 @@ import com.google.gwt.user.client.ui.Widget;
 
 public class AppointmentWidget extends FlowPanel {
 
-   class Div extends ComplexPanel implements HasAllMouseHandlers {
+   class Div extends ComplexPanel implements HasAllMouseHandlers, HasAllTouchHandlers {
 
       public Div() {
          setElement(DOM.createDiv());
@@ -73,10 +82,25 @@ public class AppointmentWidget extends FlowPanel {
          return addDomHandler(handler, MouseMoveEvent.getType());
       }
 
-      public HandlerRegistration addMouseWheelHandler(
-         MouseWheelHandler handler) {
+      public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
          return addDomHandler(handler, MouseWheelEvent.getType());
       }
+
+		public HandlerRegistration addTouchStartHandler(TouchStartHandler handler) {
+			return addDomHandler(handler, TouchStartEvent.getType());
+		}
+
+		public HandlerRegistration addTouchMoveHandler(TouchMoveHandler handler) {
+			return addDomHandler(handler, TouchMoveEvent.getType());
+		}
+
+		public HandlerRegistration addTouchEndHandler(TouchEndHandler handler) {
+			return addDomHandler(handler, TouchEndEvent.getType());
+		}
+
+		public HandlerRegistration addTouchCancelHandler(TouchCancelHandler handler) {
+			return addDomHandler(handler, TouchCancelEvent.getType());
+		}
    }
 
    private String title;
