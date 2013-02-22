@@ -19,6 +19,7 @@ package com.bradrydzewski.gwt.calendar.client.dayview;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
@@ -45,6 +46,7 @@ import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Widget;
 
 public class DayView extends CalendarView {
 
@@ -59,6 +61,9 @@ public class DayView extends CalendarView {
 	 * appointment.
 	 */
 	private List<AppointmentWidget> selectedAppointmentWidgets = new ArrayList<AppointmentWidget>();
+
+    private List<Widget> resizeControlledWidgets = new LinkedList<Widget>();
+    private List<Widget> dragControlledWidgets = new LinkedList<Widget>();
 
 	private final DayViewStyleManager styleManager = GWT.create(DayViewStyleManager.class);
 	
@@ -109,6 +114,15 @@ public class DayView extends CalendarView {
 		proxyResizeController.setIntervalsPerHour(calendarWidget.getSettings().getIntervalsPerHour());
 		proxyResizeController.setDayStartsAt(getSettings().getDayStartsAt());
 		
+        for (Widget widget : resizeControlledWidgets) {
+            resizeController.makeNotDraggable(widget);
+        }
+        resizeControlledWidgets.clear();
+        for (Widget widget : dragControlledWidgets) {
+            dragController.makeNotDraggable(widget);
+        }
+        dragControlledWidgets.clear();
+
 		this.selectedAppointmentWidgets.clear();
 		appointmentWidgets.clear();
 
@@ -186,7 +200,9 @@ public class DayView extends CalendarView {
 				//make footer 'draggable'
 				if (calendarWidget.getSettings().isEnableDragDrop() && !appt.getAppointment().isReadOnly()) {
 					resizeController.makeDraggable(panel.getResizeHandle());
+                    resizeControlledWidgets.add(panel.getResizeHandle());
 	            	dragController.makeDraggable(panel, panel.getMoveHandle());
+                    dragControlledWidgets.add(panel);
 				}
 			}
 		}
