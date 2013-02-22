@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
 import com.allen_sauer.gwt.dnd.client.DragEndEvent;
 import com.allen_sauer.gwt.dnd.client.DragHandler;
@@ -81,6 +83,8 @@ import com.google.gwt.user.client.ui.Widget;
  * @since 0.9.0
  */
 public class MonthView extends CalendarView implements HasWeekSelectionHandlers<Date>, HasDaySelectionHandlers<Date> {
+
+    private List<Widget> dragControlledWidgets = new LinkedList<Widget>();
 
 	public static final Comparator<Appointment> APPOINTMENT_COMPARATOR = new Comparator<Appointment>() {
 
@@ -231,6 +235,12 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
 	@Override
 	public void doLayout() {
 		// Clear all existing appointments
+
+        for (Widget dragControlledWidget : dragControlledWidgets) {
+            dragController.makeNotDraggable(dragControlledWidget);
+        }
+        dragControlledWidgets.clear();
+
 		appointmentCanvas.clear();
 		monthCalendarGrid.clear();
 		appointmentsWidgets.clear();
@@ -373,8 +383,10 @@ public class MonthView extends CalendarView implements HasWeekSelectionHandlers<
 		boolean selected = calendarWidget.isTheSelectedAppointment(appointment);
 		styleManager.applyStyle(panel, selected);
 		
-		if(calendarWidget.getSettings().isEnableDragDrop() && !appointment.isReadOnly())
+		if(calendarWidget.getSettings().isEnableDragDrop() && !appointment.isReadOnly()){
 			dragController.makeDraggable(panel);
+            dragControlledWidgets.add(panel);
+        }
 
 		if(selected)
 			selectedAppointmentWidgets.add(panel);
