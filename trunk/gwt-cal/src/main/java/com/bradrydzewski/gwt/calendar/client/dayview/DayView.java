@@ -215,16 +215,20 @@ public class DayView extends CalendarView {
     }
 	
 	public void doSizing() {
-
 		if (calendarWidget.getOffsetHeight() > 0) {
+			int height = 0;
 			if (getSettings().isMultidayVisible()) {
-				dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
+				height = calendarWidget.getOffsetHeight() - 2
 						- dayViewHeader.getOffsetHeight()
-						- multiViewBody.getOffsetHeight() + "px");
+						- multiViewBody.getOffsetHeight();
 			} else {
-				dayViewBody.setHeight(calendarWidget.getOffsetHeight() - 2
-						- dayViewHeader.getOffsetHeight() + "px");
+				height = calendarWidget.getOffsetHeight() - 2
+						- dayViewHeader.getOffsetHeight();
 			}
+			if (height < 0) {
+				height = 0;
+			}
+			dayViewBody.setHeight(height + "px");
 		}
 	}
 
