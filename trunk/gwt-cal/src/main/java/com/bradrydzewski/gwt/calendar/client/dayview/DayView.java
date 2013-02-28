@@ -161,7 +161,10 @@ public class DayView extends CalendarView {
         		adapterList, calendarWidget.getDate(), calendarWidget.getDays());
         
         if (getSettings().isMultidayVisible()) {
-        	multiViewBody.grid.setHeight(desiredHeight + "px");
+        	if (getSettings().getMultiDayMaxPixelsHeight() > 0) {
+        		desiredHeight = Math.min(desiredHeight, getSettings().getMultiDayMaxPixelsHeight());
+        	}
+        	multiViewBody.setViewHeight(desiredHeight + "px");
         	
         	addAppointmentsToGrid(adapterList, true);
         }
@@ -192,7 +195,7 @@ public class DayView extends CalendarView {
 
 			if (addToMultiView) {
 				panel.setMultiDay(true);
-				this.multiViewBody.grid.add(panel);
+				this.multiViewBody.add(panel);
 			} else {
 				panel.setDescription(appt.getAppointment().getDescription());
 				dayViewBody.getGrid().grid.add(panel);

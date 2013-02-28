@@ -35,6 +35,7 @@ public class CalendarSettings {
     private boolean offsetHourLabels = false;
     private boolean showWeekNumbers = false;
     private boolean showMultiDay = true;
+    private int multiDayMaxPixesHeight = -1; // -1 means no maximum height 
     private List<Date> holidays = new ArrayList<Date>();
 	private int dayStartsAt = 0;
     
@@ -176,6 +177,24 @@ public class CalendarSettings {
     	return showMultiDay;
     }
     
+    /**
+     * 
+     * @param maxHeight MultiDay Area Maximum Height in pixels
+     * @since 0.9.5
+     */
+    public void setMultiDayMaxPixelsHeight(final int maxHeight) {
+    	this.multiDayMaxPixesHeight = maxHeight;
+    }
+
+    /**
+     * 
+     * @returns maxHeight MultiDay Area Maximum Height in pixels
+     * @since 0.9.5
+     */
+    public int getMultiDayMaxPixelsHeight() {
+    	return this.multiDayMaxPixesHeight;
+    }
+
     public enum Click {
         Double, Single, Drag
     }
