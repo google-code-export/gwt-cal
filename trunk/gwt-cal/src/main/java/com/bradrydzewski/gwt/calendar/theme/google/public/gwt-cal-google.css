@@ -5,7 +5,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 100%;
-	overflow: hidden;
 	border: 1px solid #C3D9FF;
 }
 
@@ -376,7 +375,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 100%;
-	overflow: hidden;
 }
 /*.gwt-cal-MonthView .calendar-month-day-header {  height:20px;width:14.285px;text-align:center;font-family:arial;font-size:11px;background:#F2F2F2;text-align:center;}
 .gwt-cal-MonthView .calendar-month-header { display:block;height:15px;text-align:center;font-family:arial;font-size:11px;background:#F2F2F2;text-align:right;padding-right:5px; }

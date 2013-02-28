@@ -5,9 +5,8 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 100%;
-	overflow: hidden;
 	border: 1px solid #C1C1C1;
-        background:#FFF;
+    background:#FFF;
 }
 
 .gwt-cal .major-time-interval {
@@ -328,7 +327,6 @@
 	white-space: nowrap;
 	overflow: hidden;
 	width: 100%;
-	overflow: hidden;
 }
 .gwt-cal-MonthView .grid {table-layout:fixed;background:#FFF;width:100%;height:100%;border-collapse:collapse;}
 .gwt-cal-MonthView .canvas {white-space:nowrap;overflow:hidden;position:absolute;top:0px;left:0px;width:100%;height:100%;font-family:arial;font-size:12px;background: transparent;}
