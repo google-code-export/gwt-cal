@@ -1,6 +1,11 @@
 #summary gwt-cal project release notes
 
-=== Version 0.9.4 (in progress) ===
+=== Version 0.9.5 (in progress) ===
+  * Tablet/Touch device support
+  * Added scrollbar to multi day body
+  * See the full list of enhancements and issues [http://code.google.com/p/gwt-cal/issues/list?can=1&q=label:Release0.9.5 here]
+
+=== Version 0.9.4 (January 14, 2013) ===
 
   * Available in public Maven repository
   * Added support for ISO Weeks
