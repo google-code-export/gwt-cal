@@ -40,7 +40,7 @@ import org.junit.Test;
  */
 public class DateUtilsTest {
 
-   private DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
+   private final DateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy");
 
    @Test
    public void minutesSinceDayStarted() throws Exception {
@@ -244,5 +244,17 @@ public class DateUtilsTest {
 	   Date nov = date("11/01/2009");
 	   assertEquals(30, DateUtils.daysInMonth(nov));
 
+   }
+   
+   @Test
+   public void testCalendarWeekIso() throws Exception {
+	   Date date = date("01/01/2009");
+	   assertEquals(1, DateUtils.calendarWeekIso(date));
+	   date = date("01/01/2015");
+	   assertEquals(1, DateUtils.calendarWeekIso(date));
+	   date = date("01/01/2016");
+	   assertEquals(53, DateUtils.calendarWeekIso(date));
+	   date = date("01/04/2016");
+	   assertEquals(1, DateUtils.calendarWeekIso(date));
    }
 }
