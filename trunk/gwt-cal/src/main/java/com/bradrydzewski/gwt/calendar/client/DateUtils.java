@@ -36,8 +36,10 @@ public class DateUtils {
 	 * Defines the Number of Days in a Week.
 	 */
 	public static final int DAYS_IN_A_WEEK = 7;
-	
-   private static int dayStartsAt = 0;
+	private static final int ISO_THURSDAY = 4;
+	private static final int MAX_DAY_OF_WEEK = 6;
+	    
+	private static int dayStartsAt = 0;
    
    public static void setDayStartsAt(int start) {
 	   dayStartsAt = start;
@@ -299,9 +301,7 @@ public class DateUtils {
    }
    
 	@SuppressWarnings("deprecation")
-	public static Integer weekday(final Date date) {
-		int firstDayOfWeek = Integer.valueOf(CalendarFormat.INSTANCE.getFirstDayOfWeek());
-		
+	public static Integer weekday(final int firstDayOfWeek, final Date date) {
 		int weekday = date.getDay();
 		if ((firstDayOfWeek == 1) && (weekday == 0)) {
 			weekday = 7;
@@ -309,31 +309,25 @@ public class DateUtils {
 		return weekday;
 	}
 
-	@SuppressWarnings("deprecation")
+    @SuppressWarnings("deprecation")
 	public static int calendarWeekIso(final Date inputDate) {
-		final int daysWeek = 7;
-		int firstDayOfWeek = Integer.valueOf(CalendarFormat.INSTANCE.getFirstDayOfWeek());
-		
-		int thursdayDay = 4 + firstDayOfWeek;
+    	int dayOfWeek = inputDate.getDay();
+        
+        // ISO 8601 use weeks that start on monday so we use
+        // MON = 1, TUE = 2,...SUN = 7;
+        if (dayOfWeek == 0) {
+        	dayOfWeek = 7;
+        }
+        
+        // Find nearest Thursday (defines the week in ISO 8601).
+        int thursdayDiff = 4 - dayOfWeek;
+        Date nearestThursday = new Date(inputDate.getTime() + thursdayDiff * MILLIS_IN_A_DAY);
+        
+        Date firstOfJanuary = new Date(nearestThursday.getYear(), 0, 1);
+        
+        return (int) (((nearestThursday.getTime() - firstOfJanuary.getTime()) / MILLIS_IN_A_DAY) / 7 + 1);
+    }
 
-		Date thisThursday = new Date(inputDate.getYear(), inputDate.getMonth(),
-				inputDate.getDate() - weekday(inputDate) + thursdayDay);
-
-		Date firstThursdayOfYear = new Date(thisThursday.getYear(), 0, 1);
-
-		while (weekday(firstThursdayOfYear) != thursdayDay) {
-			firstThursdayOfYear.setDate(firstThursdayOfYear.getDate() + 1);
-		}
-
-		Date firstMondayOfYear = new Date(firstThursdayOfYear.getYear(), 0,
-				firstThursdayOfYear.getDate() - 3);
-
-		Long cw = (thisThursday.getTime() - firstMondayOfYear.getTime())
-				/ MILLIS_IN_A_DAY / daysWeek + 1;
-
-		return cw.intValue();
-	}
-	
 	/**
 	 * Adds or subtracts the specified amount of days for the given Date.
 	 * 
